@@ -20,6 +20,8 @@ input {
 }
 
 #sidebar-container {
+    width: min-content;
+    max-width: 100%;
     position: relative;
     top: 0;
     left: 0;
