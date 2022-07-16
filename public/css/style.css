@@ -15,6 +15,13 @@ input {
     font-family: 'Helvetica Neue', 'Arial', sans-serif;
 }
 
+button {
+    appearance: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
 a {
     text-decoration: none;
     border-bottom: 1px solid transparent;
@@ -60,6 +67,7 @@ h1.title {
 }
 
 #search-container {
+    position: relative;
     padding: 2px;
 }
 
@@ -74,12 +82,33 @@ h1.title {
     width: 100%;
     font-size: 22px;
     padding: 16px 12px;
+    padding-right: 2.5em;
     border: none;
     letter-spacing: 0.75px;
 }
 
 #search-container input:placeholder-shown {
     font-style: italic;
+}
+
+#search-container .search-submit {
+    position: absolute;
+    top: 14px;
+    right: 12px;
+    padding: 4px 6px;
+    font-size: 22px;
+    color: #777;
+    cursor: not-allowed;
+}
+
+#search-container input:not(:placeholder-shown) + .search-submit {
+    color: #000;
+    cursor: pointer;
+}
+
+#search-container .search-submit::before {
+    font-family: 'Font Awesome 6 Free';
+    content: '\f002';
 }
 
 #search-results-container {
@@ -93,11 +122,7 @@ h1.title {
     border: none;
 }
 
-
 #search-results-container > .search-result {
-    appearance: none;
-    background: none;
-    border: none;
     width: 100%;
     color: #666;
     font-size: 18px;
@@ -115,6 +140,25 @@ h1.title {
 
 .search-result + .search-result {
     margin-top: 4px;
+}
+
+.card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+.card-close {
+    position: relative;
+    top: 0;
+    right: 0;
+    padding: 8px;
+}
+
+.card-close::before {
+    font-family: 'Font Awesome 6 Free';
+    font-size: 24px;
+    content: '\f00d';
 }
 
 .stop-details-card {
@@ -158,12 +202,27 @@ h1.title {
     border-radius: 8px;
 }
 
+.stop-accessibility-state::before {
+    font-family: 'Font Awesome 6 Free';
+    font-size: 24px;
+    margin-inline: -8px 10px;
+    vertical-align: -2px;
+}
+
 .stop-accessibility-state.state-accessible {
     color: #1b3898;
     background-color: #7b99f9;
 }
 
+.stop-accessibility-state.state-accessible::before {
+    content: '\e2ce';
+}
+
 .stop-accessibility-state.state-inaccessible {
     color: #971b1b;
     background-color: #f97b7b;
+}
+
+.stop-accessibility-state.state-inaccessible::before {
+    content: '\f05e';
 }

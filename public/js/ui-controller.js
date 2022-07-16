@@ -26,7 +26,12 @@ $("#search-container input").on('input', function (event) {
 });
 
 $("form#search-container").on('submit', function (event) {
+    $("#search-results-container .search-result").eq(0).click();
     event.preventDefault();
+});
+
+$(".card-close").click(function () {
+    $(this).parents(".stop-details-card").addClass("hidden");
 });
 
 const openSearchResult = event => {
