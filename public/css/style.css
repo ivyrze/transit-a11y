@@ -3,6 +3,9 @@
 }
 
 body {
+    font-size: 18px;
+    line-height: 1.6;
+    color: #333;
     margin: 0;
 }
 
@@ -10,6 +13,17 @@ body,
 button,
 input {
     font-family: 'Helvetica Neue', 'Arial', sans-serif;
+}
+
+a {
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.3s ease;
+}
+
+a:hover,
+a:active {
+    border-bottom-color: currentcolor;
 }
 
 #map-container {
@@ -29,22 +43,29 @@ input {
 }
 
 h1.title {
+    color: #1f1f1f;
     font-size: 34px;
+    line-height: 1.25;
     margin: 15px 0;
     text-transform: lowercase;
     text-shadow: 0 0 35px #f3f3f3;
 }
 
-#search-container {
+#search-container,
+.stop-details-card {
     width: 460px;
     max-width: 100%;
-    padding: 2px;
     background-color: #fff;
     box-shadow: 0 5px 25px rgb(0 0 0 / 25%);
 }
 
+#search-container {
+    padding: 2px;
+}
+
 #search-container,
-#search-container input {
+#search-container input,
+.stop-details-card {
     border-radius: 10px;
     overflow: hidden;
 }
@@ -94,4 +115,55 @@ h1.title {
 
 .search-result + .search-result {
     margin-top: 4px;
+}
+
+.stop-details-card {
+    padding: 22px 14px;
+}
+
+.stop-details-card.hidden {
+    display: none;
+}
+
+#search-container + .stop-details-card {
+    margin-top: 24px;
+}
+
+.stop-details-card h2 {
+    font-size: 25px;
+    letter-spacing: -0.5px;
+    margin-block: 0;
+}
+
+.stop-details-card .subtitle {
+    color: #999;
+    letter-spacing: 0.25px;
+}
+
+.stop-details-card .source-link {
+    font-size: 16px;
+    color: #bbb;
+}
+
+.stop-details-card .source-link > a {
+    color: inherit;
+}
+
+.stop-accessibility-state {
+    font-size: 20px;
+    font-weight: bold;
+    padding: 28px 16px;
+    margin: 18px 0;
+    text-align: center;
+    border-radius: 8px;
+}
+
+.stop-accessibility-state.state-accessible {
+    color: #1b3898;
+    background-color: #7b99f9;
+}
+
+.stop-accessibility-state.state-inaccessible {
+    color: #971b1b;
+    background-color: #f97b7b;
 }

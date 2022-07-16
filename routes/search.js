@@ -9,11 +9,16 @@ router.post('/', async function(req, res, next) {
     client.on('error', (err) => console.error('Redis client error', err));
     await client.connect();
     
-    // Treat special characters as an OR operator
+    // Run query, treating special characters as an OR operator
     const query = req.body.query.split(/[^\w\d]/g).filter(word => word).join("|");
+    let results = await client.ft.search('idx:stops', query + "*");
     
-    const results = await client.ft.search('idx:stops', query + "*");
-    res.json({ results: results.documents });
+    results = results.documents.map(result => {
+        result.id = result.id.replace('stops:', '');
+        return result;
+    });
+    
+    res.json({ results });
 });
 
 export { router };

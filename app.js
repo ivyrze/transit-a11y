@@ -5,6 +5,7 @@ import helmet from 'helmet';
 
 import { router as indexRouter } from './routes/index.js';
 import { router as searchRouter } from './routes/search.js';
+import { router as stopDetailsRouter } from './routes/stop-details.js';
 
 dotenv.config();
 
@@ -24,6 +25,7 @@ app.use(express.static('public'));
 // Setup routes
 app.use('/', indexRouter);
 app.use('/api/search', searchRouter);
+app.use('/api/stop-details', stopDetailsRouter);
 
 // Start server
 const port = process.env.PORT || 8000;
