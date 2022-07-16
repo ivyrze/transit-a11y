@@ -1,0 +1,26 @@
+{
+  "name": "transit-a11y",
+  "type": "module",
+  "version": "1.0",
+  "scripts": {
+    "develop": "nodemon app.js",
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.0.1",
+    "express": "~4.16.1",
+    "helmet": "^5.1.0",
+    "morgan": "~1.9.1",
+    "pug": "2.0.0-beta11",
+    "redis": "^4.1.0"
+  },
+  "devDependencies": {
+    "@mapbox/mapbox-sdk": "^0.13.4",
+    "axios": "^0.27.2",
+    "csv-parser": "^3.0.0",
+    "node-stream-zip": "^1.15.0",
+    "nodemon": "^2.0.19",
+    "progress": "^2.0.3",
+    "temp": "^0.9.4"
+  }
+}

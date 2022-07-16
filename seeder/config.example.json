@@ -1,0 +1,13 @@
+{
+    "agencies": [
+        {
+            "id": "cta",
+            "url": "http://www.transitchicago.com/downloads/sch_data/google_transit.zip",
+            "transformations": [
+                {
+                    "type": "parenthesis"
+                }
+            ]
+        }
+    ]
+}
