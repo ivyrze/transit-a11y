@@ -11,8 +11,9 @@ router.post('/', async function(req, res, next) {
     
     let details = await client.hGetAll('stops:' + req.body.id);
     const coordinates = await client.geoPos('stops-geospatial', req.body.id);
-    Object.assign(details, { coordinates: coordinates[0] });
+    client.quit();
     
+    Object.assign(details, { coordinates: coordinates[0] });
     if (!details ||
         !details.name ||
         !details.accessibility ||
