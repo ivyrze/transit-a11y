@@ -15,7 +15,7 @@ dotenv.config();
 const config = JSON.parse(await readFile('seeder/config.json'));
 
 // Create database connection
-const client = createClient(process.env.REDIS_CONNECTION_URL);
+const client = createClient({ url: process.env.REDIS_URL });
 
 client.on('error', (err) => console.error('Redis client error', err));
 await client.connect();

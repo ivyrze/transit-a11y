@@ -4,7 +4,7 @@ import { createClient } from 'redis';
 var router = express.Router();
 
 router.post('/', async function(req, res, next) {
-    const client = createClient(process.env.REDIS_CONNECTION_URL);
+    const client = createClient({ url: process.env.REDIS_URL });
     
     client.on('error', (err) => console.error('Redis client error', err));
     await client.connect();
