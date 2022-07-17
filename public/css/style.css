@@ -19,6 +19,7 @@ button {
     appearance: none;
     background: none;
     border: none;
+    color: #000;
     cursor: pointer;
 }
 
@@ -228,4 +229,14 @@ h1.title {
 
 .stop-accessibility-state.state-inaccessible::before {
     content: '\f05e';
+}
+
+@media screen and (max-width: 480px) {
+    #sidebar-container {
+        padding: 25px;
+    }
+    
+    h1.title {
+        font-size: 28px;
+    }
 }
