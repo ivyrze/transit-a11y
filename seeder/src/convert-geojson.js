@@ -52,7 +52,7 @@ const geojson = (mode, dataset) => {
         
         stream.end();
         stream.on("finish", (e) => {
-            console.log("Converted " + mode + " to GeoJSON conversion.");
+            console.log("Converted " + mode + " to GeoJSON successfully.");
             resolve(stream.path);
         });
     });
