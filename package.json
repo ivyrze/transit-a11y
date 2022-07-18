@@ -16,6 +16,7 @@
   },
   "devDependencies": {
     "@mapbox/mapbox-sdk": "^0.13.4",
+    "@turf/turf": "^6.5.0",
     "axios": "^0.27.2",
     "csv-parser": "^3.0.0",
     "node-stream-zip": "^1.15.0",

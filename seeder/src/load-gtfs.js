@@ -15,7 +15,7 @@ const load = (agency) => {
             [ stops, routes ] = slimDataset(stops, routes);
             
             routes.forEach(route => {
-                route.route_shape = assembleRouteShape(route.route_id, trips, shapes);
+                route.route_shapes = assembleRouteShape(route.route_id, trips, shapes);
             });
             
             resolve({ stops, routes });
@@ -77,24 +77,23 @@ const readArchive = path => {
 
 const slimDataset = (stops, routes) => {
     // Show only rail stations and routes
-    stops = stops.filter(stop => {
-        return stop.location_type == 1;
-    });
-    
-    routes = routes.filter(route => {
-        return route.route_type == 1;
-    });
+    stops = stops.filter(stop => stop.location_type == 1);
+    routes = routes.filter(route => route.route_type == 1);
     
     return [ stops, routes ];
 };
 
 const assembleRouteShape = (route, trips, shapes) => {
-    for (let trip of trips) {
-        // Use the first trip to represent the route
-        if (trip.route_id == route) {
-            return assembleShape(trip.shape_id, shapes);
+    let routeShapes = {};
+    trips.forEach(trip => {
+        // Collect each unique path that a given route takes
+        if (trip.route_id == route && !routeShapes[trip.shape_id]) {
+            routeShapes[trip.shape_id] = assembleShape(trip.shape_id, shapes);
         }
-    }
+    });
+    
+    // Remove the keys that were used temporarily to prevent duplicates
+    return Object.values(routeShapes);
 };
 
 const assembleShape = (id, shapes) => {
@@ -104,12 +103,13 @@ const assembleShape = (id, shapes) => {
         if (point.shape_id == id) {
             // Order the points by the saved sequence index
             shape[point.shape_pt_sequence] = {
-                shape_pt_lat: point.shape_pt_lat,
-                shape_pt_lon: point.shape_pt_lon
+                shape_pt_lon: point.shape_pt_lon,
+                shape_pt_lat: point.shape_pt_lat
             };
         }
     });
     
+    // Remove filler array indicies
     return shape.filter(point => point);
 }
 
