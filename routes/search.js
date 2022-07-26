@@ -4,6 +4,14 @@ import { createClient } from 'redis';
 var router = express.Router();
 
 router.post('/', async function(req, res, next) {
+    // Check incoming parameters
+    if (!req.body.query ||
+        !req.body.longitude ||
+        !req.body.latitude) {
+        res.status(400).send(); next(); return;
+    }
+    
+    // Establish database connection
     const client = createClient({ url: process.env.REDIS_URL });
     
     client.on('error', (err) => console.error('Redis client error', err));
