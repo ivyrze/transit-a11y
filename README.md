@@ -14,6 +14,8 @@ cp seeder/config.example.json seeder/config.json
 node seeder/seeder.js
 ```
 
+By default, the seeder script will upload route and stop GeoJSON to Mapbox Tilesets. You can change this behavior with the `--skip-geojson` or `--export-local` flags.
+
 ## Development
 
 You can run the Express server locally with:

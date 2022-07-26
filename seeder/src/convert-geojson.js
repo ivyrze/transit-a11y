@@ -1,10 +1,15 @@
 import * as turf from '@turf/turf';
+import * as fs from 'fs';
 import temp from 'temp';
 
-const geojson = (mode, dataset) => {
+const geojson = (mode, dataset, local) => {
     return new Promise((resolve, error) => {
-        temp.track();
-        const stream = temp.createWriteStream({ suffix: '.geojson' });
+        if (!local) {
+            temp.track();
+            var stream = temp.createWriteStream({ suffix: '.geojsonld' });
+        } else {
+            var stream = fs.createWriteStream(mode + '.geojsonld');
+        }
         
         dataset.forEach(data => {
             if (mode == 'routes') {

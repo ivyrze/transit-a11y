@@ -13,6 +13,7 @@ import * as transformers from './src/transformers/index.js';
 // Read config file
 dotenv.config();
 const config = JSON.parse(await readFile('seeder/config.json'));
+const args = process.argv.slice(2);
 
 // Create database connection
 const client = createClient({ url: process.env.REDIS_URL });
@@ -49,6 +50,12 @@ Promise.all(importPromises.concat(cleanPromise)).then((agencies) => {
     // Create indicies
     indicies(client).then(() => client.quit());
     
+    // Respect short-circuit command line option
+    if (args.includes('--skip-geojson')) {
+        console.log("Skipping GeoJSON export and upload.");
+        return;
+    }
+    
     // Merge the datasets from each agency into one
     let { stops, routes } = agencies.reduce((result, current) => {
         Object.keys(current ?? {}).forEach(key => {
@@ -59,7 +66,17 @@ Promise.all(importPromises.concat(cleanPromise)).then((agencies) => {
     }, {});
     agencies = undefined;
     
-    // Convert to GeoJSON and upload to Mapbox
-    geojson('stops', stops).then(json => mapbox('transit-a11y-stops', json))
-    geojson('routes', routes).then(json => mapbox('transit-a11y-routes', json))
+    // Convert to GeoJSON and optionally upload to Mapbox
+    const local = args.includes('--export-local');
+    const stopsPromise = geojson('stops', stops, local);
+    const routesPromise = geojson('routes', routes, local);
+    
+    if (!local) {
+        stopsPromise.then(json => mapbox('transit-a11y-stops', json))
+        routesPromise.then(json => mapbox('transit-a11y-routes', json))
+    } else {
+        Promise.all([ stopsPromise, routesPromise ]).then(() => {
+            console.log("Exported GeoJSON to the project root directory.");
+        });
+    }
 });
