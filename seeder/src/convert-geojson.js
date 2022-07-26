@@ -48,13 +48,13 @@ const geojson = (mode, dataset, local) => {
             let feature;
             if (mode == 'routes') {
                 feature = (geometry.length == 1) ?
-                    turf.lineString(geometry[0]) :
-                    turf.multiLineString(geometry);
+                    turf.lineString(geometry[0], properties) :
+                    turf.multiLineString(geometry, properties);
                 
                 feature = turf.simplify(feature,
                     { tolerance: 1 / 10 ** 5, highQuality: true });
             } else {
-                feature = turf.point(geometry)
+                feature = turf.point(geometry, properties)
             }
             
             // Use line-delimited GeoJSON format
