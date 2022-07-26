@@ -3,7 +3,6 @@ const clean = client => {
     
     return Promise.all([
         client.del("stops"),
-        client.del("stops-geospatial"),
         cleanKeyPattern(client, "stops:*")
     ]).then(() => {
         console.log("Cleaning completed successfully.");

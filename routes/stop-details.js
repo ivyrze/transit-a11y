@@ -10,10 +10,10 @@ router.post('/', async function(req, res, next) {
     await client.connect();
     
     let details = await client.hGetAll('stops:' + req.body.id);
-    const coordinates = await client.geoPos('stops-geospatial', req.body.id);
+    let [ longitude, latitude ] = details.coordinates.split(',');
+    details.coordinates = { longitude, latitude };
     client.quit();
     
-    Object.assign(details, { coordinates: coordinates[0] });
     if (!details ||
         !details.name ||
         !details.accessibility ||

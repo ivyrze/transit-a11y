@@ -6,7 +6,8 @@ const indicies = async client => {
     if (!existing.includes('idx:stops')) {
         return client.ft.create('idx:stops',
             {
-                name: { type: SchemaFieldTypes.TEXT }
+                name: { type: SchemaFieldTypes.TEXT },
+                coordinates: { type: SchemaFieldTypes.GEO }
             },
             {
                 ON: 'HASH',

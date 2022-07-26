@@ -6,11 +6,7 @@ const store = async (client, stops) => {
             client.sAdd('stops', stop.stop_id);
             client.hSet('stops:' + stop.stop_id, 'name', stop.stop_name);
             client.hSet('stops:' + stop.stop_id, 'accessibility', stop.wheelchair_boarding);
-            client.geoAdd('stops-geospatial', {
-                longitude: stop.stop_lon,
-                latitude: stop.stop_lat,
-                member: stop.stop_id
-            });
+            client.hSet('stops:' + stop.stop_id, 'coordinates', stop.stop_lon + ',' + stop.stop_lat);
         });
         
         resolve();

@@ -2,12 +2,14 @@ $("#search-container input").on('input', function (event) {
     const query = $("#search-container input").val();
     
     if (query.trim().length > 1) {
+        const { lng: longitude, lat: latitude } = map.getCenter();
+        
         $.ajax({
             url: "/api/search",
             type: "post",
             dataType: "json",
             encode: true,
-            data: { query }
+            data: { query, longitude, latitude }
         }).done(function (data) {
             $("#search-results-container .search-result").remove();
             data.results.forEach(result => {
@@ -15,7 +17,7 @@ $("#search-container input").on('input', function (event) {
                     $("<button>")
                         .addClass("search-result")
                         .attr("data-stop-id", result.id)
-                        .text(result.value.name)
+                        .text(result.name)
                         .click(openSearchResult)
                 );
             });
