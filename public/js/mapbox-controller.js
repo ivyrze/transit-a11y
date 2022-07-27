@@ -4,21 +4,27 @@ const map = new mapboxgl.Map({
     style: styleUrl,
 });
 
-map.on('click', [ 'stops-label', 'stops-icon' ], function (e) {
-    const features = map.queryRenderedFeatures(e.point, {
-        layers: [ 'stops-label', 'stops-icon' ]
-    });
+const layers = [
+    'stops-icon',
+    'stops-label',
+    'stops-label-warning'
+];
+
+map.on('load', getAlerts);
+
+map.on('click', layers, function (e) {
+    const features = map.queryRenderedFeatures(e.point, { layers });
     
     if (features) {
         openStop(features[0].properties.stop_id);
     }
 });
 
-map.on('mouseenter', [ 'stops-label', 'stops-icon' ], () => {
+map.on('mouseenter', layers, () => {
     map.getCanvas().style.cursor = 'pointer';
 });
 
-map.on('mouseleave', [ 'stops-label', 'stops-icon' ], () => {
+map.on('mouseleave', layers, () => {
     map.getCanvas().style.cursor = '';
 });
 
@@ -35,4 +41,16 @@ const flyToStop = coordinates => {
         duration: 2500,
         essential: false
     });
+};
+
+const updateMapAlerts = alerts => {
+    const filter = [
+        [
+            'index-of',
+            ['get', 'stop_id'],
+            ['literal', alerts]
+        ], -1
+    ];
+    map.setFilter('stops-label', ['==', ...filter]);
+    map.setFilter('stops-label-warning', ['!=', ...filter]);
 };

@@ -19,6 +19,10 @@ router.post('/', async function(req, res, next) {
     let details = await client.hGetAll('stops:' + req.body.id);
     let [ longitude, latitude ] = details.coordinates.split(',');
     details.coordinates = { longitude, latitude };
+    
+    let alert = await client.hGetAll('alerts:' + req.body.id);
+    if (Object.keys(alert).length) { details.alert = alert; }
+    
     client.quit();
     
     // Check outgoing data

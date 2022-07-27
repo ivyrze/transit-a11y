@@ -49,21 +49,25 @@ const openStop = id => {
         encode: true,
         data: { id },
     }).done(function (data) {
-        if (parseInt(data.accessibility)) {
-            $(".stop-accessibility-state")
-                .removeClass("state-inaccessible")
-                .addClass("state-accessible")
-                .text("Likely accessible");
-            $(".stop-accessibility-info")
-                .text("This station is equipped with elevators or has at-grade, platform-level boarding.");
+         if (data.alert) {
+            var state = 'state-warning';
+            var heading = "Service disruption";
+            var description = data.alert.description;
+        } else if (parseInt(data.accessibility)) {
+            var state = 'state-accessible';
+            var heading = "Likely accessible";
+            var description = "This station is equipped with elevators or has at-grade, platform-level boarding.";
         } else {
-            $(".stop-accessibility-state")
-                .removeClass("state-accessible")
-                .addClass("state-inaccessible")
-                .text("Not accessible");
-            $(".stop-accessibility-info")
-                .text("This station has significant access barriers and is not equipped with alternative entryways.");
+            var state = 'state-inaccessible';
+            var heading = "Not accessible";
+            var description = "This station has significant access barriers and is not equipped with alternative entryways.";
         }
+        
+        $(".stop-accessibility-state")
+            .attr("class", "stop-accessibility-state " + state)
+            .text(heading);
+            
+        $(".stop-accessibility-info").text(description);
         
         $(".stop-details-card h2").text(data.name);
         $(".stop-details-card.hidden").removeClass("hidden");
@@ -72,5 +76,11 @@ const openStop = id => {
             data.coordinates.longitude,
             data.coordinates.latitude
         ]);
+    });
+};
+
+const getAlerts = () => {
+    $.get("/api/list-alerts").done(function (data) {
+        updateMapAlerts(data.alerts);
     });
 };

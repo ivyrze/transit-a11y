@@ -1,6 +1,6 @@
 # is the metro accessible?
 
-Explore and search for wheelchair-accessible public transit stops.
+Explore and search for wheelchair-accessible public transit stops. Reports real-time alerts of barriers like elevator breakdowns.
 
 ## Initial Setup
 
