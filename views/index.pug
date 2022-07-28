@@ -9,7 +9,8 @@ block head
 block content
     #map-container
     #sidebar-container
-        h1.title #{title}
+        h1.title
+            a #{title}
         form#search-container(action='/api/search' method='post')
             input(
                 type='text'
@@ -23,7 +24,8 @@ block content
             ul#search-results-container(
                 aria-label='Search results'
             )
-        .stop-details-card.hidden
+        
+        .stop-details-card.sidebar-card.hidden
             .card-header
                 h2
                 button.card-close(aria-label='Close')
@@ -33,6 +35,22 @@ block content
             a.stop-alert-link.link-external.hidden(target='_blank')= 'View service alert details'
             span.source-link='Source: '
                 a(href='https://www.transitchicago.com/accessibility/' target='_blank')= 'Chicago Transportation Authority'
+        
+        .about-card.sidebar-card.hidden
+            .card-header
+                h2= 'About'
+                button.card-close(aria-label='Close')
+            p
+                |Decades after the passage of the Americans with Disabilities Act, public
+                |transportation still remains largely inaccessible to a population that
+                |relies on it most. These barriers push disabled people to their physical
+                |and financial limits, yet agencies #[a(href='https://www.nytimes.com/2022/06/22/nyregion/nyc-subway-accessibility-disabilities-elevators.html' target='_blank')= 'such as the New York MTA']
+                |still have gone largely unchecked in their discriminatory practices.
+            p
+                |This app is was designed by Ivy, a wheelchair user, for other wheelchair
+                |users and their allies. This project is free and
+                |#[a(href='https://github.com/ivyrze/transit-a11y' target='blank')= 'open-source'],
+                |so donation contributions are always appreciated.
     
     script.
         var styleUrl = '#{styleUrl}';

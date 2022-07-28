@@ -1,3 +1,8 @@
+$("h1.title > a").click(function () {
+    $(".sidebar-card").not(".about-card").addClass("hidden");
+    $(".about-card").toggleClass("hidden");
+});
+
 $("#search-container input").on('input', function (event) {
     const query = $("#search-container input").val();
     
@@ -33,7 +38,7 @@ $("form#search-container").on('submit', function (event) {
 });
 
 $(".card-close").click(function () {
-    $(this).parents(".stop-details-card").addClass("hidden");
+    $(this).parents(".sidebar-card").addClass("hidden");
 });
 
 const openSearchResult = event => {
@@ -79,6 +84,7 @@ const openStop = id => {
         $(".stop-accessibility-info").text(description);
         $(".stop-details-card h2").text(data.name);
         
+        $(".sidebar-card").not(".stop-details-card").addClass("hidden");
         $(".stop-details-card.hidden").removeClass("hidden");
         
         flyToStop([
