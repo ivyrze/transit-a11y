@@ -66,10 +66,19 @@ const openStop = id => {
         $(".stop-accessibility-state")
             .attr("class", "stop-accessibility-state " + state)
             .text(heading);
-            
-        $(".stop-accessibility-info").text(description);
         
+        if (data.alert && data.alert.link) {
+            $(".stop-alert-link").attr("href", data.alert.link);
+            $(".stop-alert-link.hidden").removeClass("hidden");
+            $(".stop-details-card .source-link").addClass("hidden");
+        } else {
+            $(".stop-alert-link").addClass("hidden");
+            $(".stop-details-card .source-link.hidden").removeClass("hidden");
+        }
+        
+        $(".stop-accessibility-info").text(description);
         $(".stop-details-card h2").text(data.name);
+        
         $(".stop-details-card.hidden").removeClass("hidden");
         
         flyToStop([

@@ -34,6 +34,23 @@ a:active {
     border-bottom-color: currentcolor;
 }
 
+.hidden {
+    display: none !important;
+}
+
+.link-external {
+    color: inherit;
+    font-size: 0.75em;
+    font-weight: 500;
+    text-transform: uppercase;
+}
+
+.link-external::after {
+    content: '\f08e';
+    font-family: 'Font Awesome 6 Free';
+    margin-left: 8px;
+}
+
 #map-container {
     position: absolute;
     inset: 0;
@@ -164,11 +181,7 @@ h1.title {
 }
 
 .stop-details-card {
-    padding: 22px 14px;
-}
-
-.stop-details-card.hidden {
-    display: none;
+    padding: 22px 14px 28px;
 }
 
 #search-container + .stop-details-card {
@@ -187,7 +200,13 @@ h1.title {
     letter-spacing: 0.25px;
 }
 
+.stop-details-card .stop-alert-link {
+    display: inline-block;
+    margin-bottom: 2px;
+}
+
 .stop-details-card .source-link {
+    display: block;
     font-size: 16px;
     font-weight: 300;
     color: #bbb;
