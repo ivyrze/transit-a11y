@@ -113,7 +113,7 @@ h1.title {
 #search-container .search-submit {
     position: absolute;
     top: 14px;
-    right: 12px;
+    right: 14px;
     padding: 4px 6px;
     font-size: 22px;
     color: #777;
@@ -171,12 +171,25 @@ h1.title {
     position: relative;
     top: 0;
     right: 0;
-    padding: 8px;
+    font-size: 24px;
+    width: 1.6em;
+    aspect-ratio: 1 / 1;
+    border-radius: 50%;
+    padding-top: 3px;
+    margin-right: -2px;
+    transition: background-color 0.2s ease;
+}
+
+.card-close:hover {
+    background-color: #f3f3f3;
+}
+
+.card-close:active {
+    background-color: #e4e4e4;
 }
 
 .card-close::before {
     font-family: 'Font Awesome 6 Free';
-    font-size: 24px;
     content: '\f00d';
 }
 
