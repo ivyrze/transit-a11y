@@ -5,9 +5,9 @@ const colorContinuity = (source) => {
     
     const replaced = colors.some(color => {
         const colorUpper = color.charAt(0).toUpperCase() + color.slice(1);
+        let routeName = source.route_long_name ?? source.route_short_name;
         
-        if (source.route_long_name.startsWith(colorUpper) ||
-            source.route_short_name.startsWith(colorUpper)) {
+        if (routeName.startsWith(colorUpper)) {
             source.route_color = color;
             return true;
         }

@@ -1,25 +1,23 @@
+import * as gtfs from 'gtfs';
 import unzip from 'node-stream-zip';
-import csv from 'csv-parser';
+import readline from 'readline';
 import axios from 'axios';
 import progress from 'progress';
 import { default as temp } from 'temp';
 
 const load = (agency) => {
-    return new Promise(async (resolve, error) => {   
+    return new Promise(async resolve => {   
         temp.track();
-        let path = await downloadArchive(agency);
+        let archive = await downloadArchive(agency);
         
-        readArchive(path).then((dataset) => {
-            let { stops, routes, trips, shapes } = Object.fromEntries(dataset);
-            
-            [ stops, routes ] = slimDataset(stops, routes);
-            
-            routes.forEach(route => {
-                route.route_shapes = assembleRouteShape(route.route_id, trips, shapes);
-            });
-            
-            resolve({ stops, routes });
-        });
+        const database = await readArchive(archive);
+        let [ stops, routes ] = await loadPartialDataset(database);
+        
+        await Promise.all(routes.map(async route => {
+            route.route_shapes = await assembleRouteShape(database, route.route_id);
+        }));
+        
+        resolve({ stops, routes });
     });
 };
 
@@ -40,7 +38,7 @@ const downloadArchive = (agency) => {
             });
             
             let stream = temp.createWriteStream({ suffix: ".zip" });
-            data.pipe(stream).on('close', () => {
+            data.pipe(stream).on('finish', () => {
                 resolve(stream.path);
             });
         } else if (agency.path) {
@@ -51,66 +49,73 @@ const downloadArchive = (agency) => {
     });
 };
 
-const readArchive = path => {
-    console.log("Loading " + path + " into memory...");
-    
-    const zip = new unzip.async({ file: path });
-    let promises = [];
-    
-    [ 'stops', 'routes', 'trips', 'shapes' ].forEach((table) => {
-        promises.push(new Promise(async (resolve) => {
-            const stream = await zip.stream(table + '.txt');
+const readArchive = archive => {
+    return new Promise(async resolve => {
+        console.log("Loading " + archive + " into memory...");
+        
+        // Extract zip to a temporary directory
+        const zip = new unzip.async({ file: archive });
+        
+        const tables = Object.keys(await zip.entries());
+        const promises = tables.map(table => new Promise(async resolve => {
+            if (table == 'stop_times') { resolve(0); return; }
             
-            let rows = [];
-            stream
-                .pipe(csv())
-                .on('data', (data) => { rows.push(data); })
-                .on('end', () => { resolve([ table, rows ]); });
+            let count = 0;
+            const reader = readline.createInterface({
+                input: await zip.stream(table)
+            });
+            reader.on('line', () => count++);
+            reader.on('close', () => resolve(count));
         }));
+        
+        const totals = await Promise.all(promises);
+        zip.close();
+        
+        // Combine line counts of all files
+        const total = totals.reduce((previous, current) => previous + current);
+        
+        // Setup import loader and tick function based on log output
+        let loader = new progress('Importing [:bar] :percent :etas remaining ', { total });
+            
+        let prevCount = 0, prevFile = '';
+        const loaderTick = text => {
+            const words = text.split(' - ');
+            if (loader.complete || words.length != 3) { return; }
+            
+            let count = words[2].match(/^(\d+)/);
+            if (!count || !count.length) { return; } 
+            
+            count = parseInt(count[0]); let file = words[1];
+            
+            if (file != prevFile) { prevCount = 0; }
+            loader.tick(count - prevCount);
+            
+            prevCount = count; prevFile = file;
+        };
+        
+        // Do the GTFS/SQL importing
+        let config = {
+            agencies: [ { path: archive, exclude: [ 'stop_times' ] } ],
+            logFunction: loaderTick
+        };
+        
+        gtfs.importGtfs(config).then(() => resolve(config));
     });
-    
-    const promise = Promise.all(promises);
-    promise.then(() => { zip.close(); temp.cleanup(); });
-    
-    return promise;
 };
 
-const slimDataset = (stops, routes) => {
+const loadPartialDataset = async database => {
+    await gtfs.openDb(database);
+    
     // Show only rail stations and routes
-    stops = stops.filter(stop => stop.location_type == 1);
-    routes = routes.filter(route => route.route_type == 1);
+    const stops = gtfs.getStops({ location_type: 1 });
+    const routes = gtfs.getRoutes({ route_type: 1 });
     
-    return [ stops, routes ];
+    return Promise.all([ stops, routes ]);
 };
 
-const assembleRouteShape = (route, trips, shapes) => {
-    let routeShapes = {};
-    trips.forEach(trip => {
-        // Collect each unique path that a given route takes
-        if (trip.route_id == route && !routeShapes[trip.shape_id]) {
-            routeShapes[trip.shape_id] = assembleShape(trip.shape_id, shapes);
-        }
-    });
-    
-    // Remove the keys that were used temporarily to prevent duplicates
-    return Object.values(routeShapes);
+const assembleRouteShape = async (database, route) => {
+    await gtfs.openDb(database);
+    return gtfs.getShapes({ route_id: route });
 };
-
-const assembleShape = (id, shapes) => {
-    let shape = [];
-    shapes.forEach(point => {
-        // Find specified shape in the dataset
-        if (point.shape_id == id) {
-            // Order the points by the saved sequence index
-            shape[point.shape_pt_sequence] = {
-                shape_pt_lon: point.shape_pt_lon,
-                shape_pt_lat: point.shape_pt_lat
-            };
-        }
-    });
-    
-    // Remove filler array indicies
-    return shape.filter(point => point);
-}
 
 export { load };

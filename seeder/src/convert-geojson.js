@@ -1,6 +1,17 @@
-import * as turf from '@turf/turf';
-import * as fs from 'fs';
 import temp from 'temp';
+import combine from '@turf/combine';
+import * as gtfsUtils from 'gtfs/lib/geojson-utils.js';
+import * as turfUtils from '@turf/helpers';
+import * as fs from 'fs';
+
+const routeProperties = [
+    'route_color'
+];
+const stopProperties = [
+    'stop_id',
+    'stop_name',
+    'wheelchair_boarding'
+];
 
 const geojson = (mode, dataset, local) => {
     return new Promise((resolve, error) => {
@@ -11,53 +22,11 @@ const geojson = (mode, dataset, local) => {
             var stream = fs.createWriteStream(mode + '.geojsonld');
         }
         
-        dataset.forEach(data => {
-            if (mode == 'routes') {
-                var geometry = data.route_shapes.map(shape => {
-                    return shape.map(point => {
-                        return [
-                            parseFloat(point.shape_pt_lon),
-                            parseFloat(point.shape_pt_lat)
-                        ];
-                    });
-                });
-                var properties = [
-                    'route_color'
-                ];
-            } else if (mode == 'stops') {
-                var geometry = [
-                    parseFloat(data.stop_lon),
-                    parseFloat(data.stop_lat)
-                ];
-                var properties = [
-                    'stop_id',
-                    'stop_name',
-                    'wheelchair_boarding'
-                ];
-            } else {
-                console.error("Unknown GeoJSON conversion mode.");
-                return undefined;
-            }
-            
-            // Supplement the property keys with the actual value
-            properties = Object.fromEntries(properties.map(property => {
-                return [ property, data[property] ];
-            }));
-            
-            // Build GeoJSON feature
-            let feature;
-            if (mode == 'routes') {
-                feature = (geometry.length == 1) ?
-                    turf.lineString(geometry[0], properties) :
-                    turf.multiLineString(geometry, properties);
-                
-                feature = turf.simplify(feature,
-                    { tolerance: 1 / 10 ** 5, highQuality: true });
-            } else {
-                feature = turf.point(geometry, properties)
-            }
-            
-            // Use line-delimited GeoJSON format
+        const features = (mode == 'routes') ?
+            routesGeoJSON(dataset) : stopsGeoJSON(dataset);
+        
+        // Use line-delimited GeoJSON format
+        features.forEach(feature => {
             stream.write(JSON.stringify(feature) + "\n");
         });
         
@@ -67,6 +36,41 @@ const geojson = (mode, dataset, local) => {
             resolve(stream.path);
         });
     });
-}
+};
+
+const routesGeoJSON = routes => {
+    return routes.map(route => {
+        // Simplify route shape representation and isolate geometry
+        let features = gtfsUtils.shapesToGeoJSONFeatures(route.route_shapes);
+        
+        // Merge to multi line string format and remove collection wrapper
+        if (features.length > 1) {
+            features = combine(turfUtils.featureCollection(features)).features;
+        }
+        features = features[0];
+        
+        // Gather properties to be reattached
+        features.properties = Object.fromEntries(routeProperties.map(property => {
+            return [ property, route[property] ];
+        }));
+        
+        return features;
+    });
+};
+
+const stopsGeoJSON = stops => {
+    let features = gtfsUtils.stopsToGeoJSON(stops).features;
+    
+    // Remove unnecessary properties
+    features.forEach(feature => {
+        Object.keys(feature.properties).forEach(property => {
+            if (!stopProperties.includes(property)) {
+                delete feature.properties[property];
+            }
+        })
+    });
+    
+    return features;
+};
 
 export { geojson };
