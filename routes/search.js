@@ -1,5 +1,6 @@
 import express from 'express';
 import { createClient } from 'redis';
+import { colorSort } from '../utils.js';
 
 var router = express.Router();
 
@@ -54,9 +55,10 @@ router.post('/', async function(req, res, next) {
     // Add route associations
     for await (let result of results) {
         const routes = await client.sMembers('stops:' + result.id + ':routes');
-        result.routes = await Promise.all(routes.sort().map(route => {
+        result.routes = await Promise.all(routes.map(route => {
             return client.hGetAll('routes:' + route);
         }));
+        result.routes.sort(colorSort);
     }
     client.quit();
     

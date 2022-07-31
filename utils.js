@@ -1,3 +1,9 @@
+import color from 'color';
+
+const colorSort = (a, b) => {
+    return (color(a.color).hue() > color(b.color).hue()) ? 1 : -1;
+};
+
 const cleanKeyPattern = (client, pattern) => {
     return new Promise(async (resolve) => {
         let stream = client.scanIterator({
@@ -13,4 +19,4 @@ const cleanKeyPattern = (client, pattern) => {
     });
 };
 
-export { cleanKeyPattern };
+export { colorSort, cleanKeyPattern };
