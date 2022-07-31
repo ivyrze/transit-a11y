@@ -1,10 +1,3 @@
-const clean = client => {
-    return Promise.all([
-        client.del("alerts"),
-        cleanKeyPattern(client, "alerts:*")
-    ]);
-};
-
 const cleanKeyPattern = (client, pattern) => {
     return new Promise(async (resolve) => {
         let stream = client.scanIterator({
@@ -20,4 +13,4 @@ const cleanKeyPattern = (client, pattern) => {
     });
 };
 
-export { clean };
+export { cleanKeyPattern };

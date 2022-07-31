@@ -1,5 +1,5 @@
 import { createClient } from 'redis';
-import { clean } from './clean.js';
+import { cleanKeyPattern } from '../utils.js';
 
 import * as cta from './agencies/chicago-cta.js';
 
@@ -38,6 +38,13 @@ const update = async agencies => {
     console.log("Stored alerts for " + agencies.length + " agencies.");
     
     client.quit();
+};
+
+const clean = client => {
+    return Promise.all([
+        client.del("alerts"),
+        cleanKeyPattern(client, "alerts:*")
+    ]);
 };
 
 export { start };

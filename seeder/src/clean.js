@@ -1,3 +1,5 @@
+import { cleanKeyPattern } from '../../utils.js';
+
 const clean = client => {
     console.log("Cleaning existing GTFS data...");
     
@@ -8,21 +10,6 @@ const clean = client => {
         cleanKeyPattern(client, "routes:*")
     ]).then(() => {
         console.log("Cleaning completed successfully.");
-    });
-};
-
-const cleanKeyPattern = (client, pattern) => {
-    return new Promise(async (resolve) => {
-        let stream = client.scanIterator({
-            MATCH: pattern,
-            COUNT: 100
-        });
-    
-        for await (const key of stream) {
-            client.unlink(key);
-        }
-        
-        resolve();
     });
 };
 

@@ -2,12 +2,11 @@ import dotenv from 'dotenv';
 import { readFile } from 'fs/promises';
 import { createClient } from 'redis';
 
-import { clean } from './src/clean-redis.js';
-import { load } from './src/load-gtfs.js';
-import { store } from './src/store-redis.js';
-import { indicies } from './src/indicies-redis.js';
-import { geojson } from './src/convert-geojson.js';
-import { mapbox } from './src/upload-mapbox.js';
+import { clean } from './src/clean.js';
+import { load } from './src/load.js';
+import { store, indicies } from './src/store.js';
+import { geojson } from './src/convert.js';
+import { mapbox } from './src/upload.js';
 import * as transformers from './src/transformers/index.js';
 
 // Read config file
