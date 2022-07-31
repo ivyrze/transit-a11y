@@ -13,7 +13,13 @@ block content
     #sidebar-container
         h1.title
             a #{title}
-        form#search-container(action='/api/search' method='post')
+        form#search-container(
+            action='/api/search'
+            method='post'
+            autocomplete='off'
+            autocorrect='off'
+            spellcheck='false'
+        )
             input(
                 type='text'
                 name='search'
