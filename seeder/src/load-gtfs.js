@@ -13,6 +13,10 @@ const load = (agency) => {
         const database = await readArchive(archive);
         let [ stops, routes ] = await loadPartialDataset(database);
         
+        await Promise.all(stops.map(async stop => {
+            stop.routes = await associateStopsRoutes(database, stop.stop_id);
+        }));
+        
         await Promise.all(routes.map(async route => {
             route.route_shapes = await assembleRouteShape(database, route.route_id);
         }));
@@ -58,8 +62,6 @@ const readArchive = archive => {
         
         const tables = Object.keys(await zip.entries());
         const promises = tables.map(table => new Promise(async resolve => {
-            if (table == 'stop_times') { resolve(0); return; }
-            
             let count = 0;
             const reader = readline.createInterface({
                 input: await zip.stream(table)
@@ -95,7 +97,7 @@ const readArchive = archive => {
         
         // Do the GTFS/SQL importing
         let config = {
-            agencies: [ { path: archive, exclude: [ 'stop_times' ] } ],
+            agencies: [ { path: archive } ],
             logFunction: loaderTick
         };
         
@@ -111,6 +113,27 @@ const loadPartialDataset = async database => {
     const routes = gtfs.getRoutes({ route_type: 1 });
     
     return Promise.all([ stops, routes ]);
+};
+
+const associateStopsRoutes = async (database, stop) => {
+    await gtfs.openDb(database);
+    
+    let childStops = await gtfs.getStops({ parent_station: stop });
+    
+    const matches = await Promise.all(childStops.map(childStop =>
+        gtfs.getRoutes(
+            { stop_id: childStop.stop_id, route_type: 1 },
+            [ 'route_id', 'route_short_name', 'route_long_name', 'route_color' ]
+        )
+    ));
+    
+    // De-duplicate route-stop matches
+    let routes = {};
+    matches.flat().forEach(match => {
+        routes[match.route_id] = match;
+    });
+    
+    return Object.values(routes);
 };
 
 const assembleRouteShape = async (database, route) => {

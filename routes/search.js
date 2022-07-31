@@ -26,7 +26,6 @@ router.post('/', async function(req, res, next) {
         req.body.longitude, req.body.latitude,
         '100', 'mi'
     ]);
-    client.quit();
     
     // Reorganize raw Redis results
     const count = raw.shift();
@@ -51,6 +50,15 @@ router.post('/', async function(req, res, next) {
         delete result.accessibility;
         return result;
     });
+    
+    // Add route associations
+    for await (let result of results) {
+        const routes = await client.sMembers('stops:' + result.id + ':routes');
+        result.routes = await Promise.all(routes.sort().map(route => {
+            return client.hGetAll('routes:' + route);
+        }));
+    }
+    client.quit();
     
     res.json({ results });
 });

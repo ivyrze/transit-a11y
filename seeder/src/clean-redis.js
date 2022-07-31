@@ -3,7 +3,9 @@ const clean = client => {
     
     return Promise.all([
         client.del("stops"),
-        cleanKeyPattern(client, "stops:*")
+        client.del("routes"),
+        cleanKeyPattern(client, "stops:*"),
+        cleanKeyPattern(client, "routes:*")
     ]).then(() => {
         console.log("Cleaning completed successfully.");
     });

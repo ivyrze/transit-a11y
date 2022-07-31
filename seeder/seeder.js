@@ -28,7 +28,7 @@ config.agencies.forEach(agency => {
     importPromises.push(new Promise(async (resolve) => {
         let { stops, routes } = await load(agency);
         
-        stops = stops.map(stop => transformers.idPrefixer(stop, agency.id))
+        stops = stops.map(stop => transformers.idPrefixer(stop, agency.id)) // todo
         routes = routes.map(route => transformers.colorContinuity(route));
         
         // Config-specified transformations
@@ -40,7 +40,7 @@ config.agencies.forEach(agency => {
         
         // Store stops in Redis database
         cleanPromise.then(() => {
-            store(client, stops);
+            store(client, stops, routes);
             resolve({ stops, routes });
         });
     }));

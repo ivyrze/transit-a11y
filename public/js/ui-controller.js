@@ -3,7 +3,7 @@ $("h1.title > a").click(function () {
     $(".about-card").toggleClass("hidden");
 });
 
-$("#search-container input").on('input', function (event) {
+$("#search-container input").on('input', function () {
     const query = $("#search-container input").val();
     
     if (query.trim().length > 1) {
@@ -15,18 +15,7 @@ $("#search-container input").on('input', function (event) {
             dataType: "json",
             encode: true,
             data: { query, longitude, latitude }
-        }).done(function (data) {
-            $("#search-results-container .search-result").remove();
-            data.results.forEach(result => {
-                $("#search-results-container").append(
-                    $("<button>")
-                        .addClass("search-result")
-                        .attr("data-stop-id", result.id)
-                        .text(result.name)
-                        .click(openSearchResult)
-                );
-            });
-        });
+        }).done(showSearchResults);
     } else {
         $("#search-results-container .search-result").remove();
     }
@@ -41,10 +30,32 @@ $(".card-close").click(function () {
     $(this).parents(".sidebar-card").addClass("hidden");
 });
 
+const showSearchResults = data => {
+    $("#search-results-container .search-result").remove();
+    data.results.forEach(result => {
+        let button = $("<button>")
+            .addClass("search-result")
+            .attr("data-stop-id", result.id)
+            .text(result.name)
+            .click(openSearchResult);
+        
+        result.routes.forEach(route => {
+            var icon = $("<span>")
+                .addClass("route-icon")
+                .addClass("route-" + route.color)
+                .attr("aria-label", route.name)
+                .text(route.name.charAt(0))
+            button.append(icon);
+        });
+        
+        $("#search-results-container").append(button);
+    });
+};
+
 const openSearchResult = event => {
     $("#search-results-container .search-result").remove();
     openStop($(event.target).attr("data-stop-id"));
-}
+};
 
 const openStop = id => {
     $.ajax({
