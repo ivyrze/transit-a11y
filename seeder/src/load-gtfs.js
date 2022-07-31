@@ -5,24 +5,22 @@ import axios from 'axios';
 import progress from 'progress';
 import { default as temp } from 'temp';
 
-const load = (agency) => {
-    return new Promise(async resolve => {   
-        temp.track();
-        let archive = await downloadArchive(agency);
-        
-        const database = await readArchive(archive);
-        let [ stops, routes ] = await loadPartialDataset(database);
-        
-        await Promise.all(stops.map(async stop => {
-            stop.routes = await associateStopsRoutes(database, stop.stop_id);
-        }));
-        
-        await Promise.all(routes.map(async route => {
-            route.route_shapes = await assembleRouteShape(database, route.route_id);
-        }));
-        
-        resolve({ stops, routes });
-    });
+const load = async agency => {
+    temp.track();
+    let archive = await downloadArchive(agency);
+    
+    const database = await readArchive(archive);
+    let [ stops, routes ] = await loadPartialDataset(database);
+    
+    for await (let stop of stops) {
+        stop.routes = await associateStopsRoutes(database, stop.stop_id);
+    }
+    
+    for await (let route of routes) {
+        route.route_shapes = await assembleRouteShape(database, route.route_id);
+    }
+    
+    return { stops, routes };
 };
 
 const downloadArchive = (agency) => {
@@ -53,56 +51,55 @@ const downloadArchive = (agency) => {
     });
 };
 
-const readArchive = archive => {
-    return new Promise(async resolve => {
-        console.log("Loading " + archive + " into memory...");
+const readArchive = async archive => {
+    console.log("Loading " + archive + " into memory...");
+    
+    // Extract zip to a temporary directory
+    const zip = new unzip.async({ file: archive });
+    
+    const tables = Object.keys(await zip.entries());
+    const promises = tables.map(table => new Promise(async resolve => {
+        let count = 0;
+        const reader = readline.createInterface({
+            input: await zip.stream(table)
+        });
+        reader.on('line', () => count++);
+        reader.on('close', () => resolve(count));
+    }));
+    
+    const totals = await Promise.all(promises);
+    zip.close();
+    
+    // Combine line counts of all files
+    const total = totals.reduce((previous, current) => previous + current);
+    
+    // Setup import loader and tick function based on log output
+    let loader = new progress('Importing [:bar] :percent :etas remaining ', { total });
         
-        // Extract zip to a temporary directory
-        const zip = new unzip.async({ file: archive });
+    let prevCount = 0, prevFile = '';
+    const loaderTick = text => {
+        const words = text.split(' - ');
+        if (loader.complete || words.length != 3) { return; }
         
-        const tables = Object.keys(await zip.entries());
-        const promises = tables.map(table => new Promise(async resolve => {
-            let count = 0;
-            const reader = readline.createInterface({
-                input: await zip.stream(table)
-            });
-            reader.on('line', () => count++);
-            reader.on('close', () => resolve(count));
-        }));
+        let count = words[2].match(/^(\d+)/);
+        if (!count || !count.length) { return; } 
         
-        const totals = await Promise.all(promises);
-        zip.close();
+        count = parseInt(count[0]); let file = words[1];
         
-        // Combine line counts of all files
-        const total = totals.reduce((previous, current) => previous + current);
+        if (file != prevFile) { prevCount = 0; }
+        loader.tick(count - prevCount);
         
-        // Setup import loader and tick function based on log output
-        let loader = new progress('Importing [:bar] :percent :etas remaining ', { total });
-            
-        let prevCount = 0, prevFile = '';
-        const loaderTick = text => {
-            const words = text.split(' - ');
-            if (loader.complete || words.length != 3) { return; }
-            
-            let count = words[2].match(/^(\d+)/);
-            if (!count || !count.length) { return; } 
-            
-            count = parseInt(count[0]); let file = words[1];
-            
-            if (file != prevFile) { prevCount = 0; }
-            loader.tick(count - prevCount);
-            
-            prevCount = count; prevFile = file;
-        };
-        
-        // Do the GTFS/SQL importing
-        let config = {
-            agencies: [ { path: archive } ],
-            logFunction: loaderTick
-        };
-        
-        gtfs.importGtfs(config).then(() => resolve(config));
-    });
+        prevCount = count; prevFile = file;
+    };
+    
+    // Do the GTFS/SQL importing
+    let config = {
+        agencies: [ { path: archive } ],
+        logFunction: loaderTick
+    };
+    
+    await gtfs.importGtfs(config);
+    return config;
 };
 
 const loadPartialDataset = async database => {
