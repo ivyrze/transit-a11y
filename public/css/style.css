@@ -262,8 +262,8 @@ h1.title > a {
 }
 
 .sidebar-card .subtitle {
-    color: #999;
     letter-spacing: 0.25px;
+    opacity: 0.5;
 }
 
 .stop-details-card .stop-alert-link {
@@ -275,7 +275,7 @@ h1.title > a {
     display: block;
     font-size: 16px;
     font-weight: 300;
-    color: #bbb;
+    opacity: 0.4;
 }
 
 .stop-details-card .source-link > a {
@@ -331,6 +331,101 @@ h1.title > a {
 
 .about-card p:last-of-type {
     margin-block-end: 10px;
+}
+
+@media screen and (prefers-color-scheme: dark) {
+    body {
+        color: #ccc;
+        background-color: #2a2a2a;
+    }
+    
+    h1,
+    h2,
+    button {
+        color: #f9f9f9;
+    }
+    
+    a {
+        color: #7786b6;
+    }
+    
+    h1.title > a {
+        color: inherit;
+    }
+    
+    input,
+    #search-container input:not(:placeholder-shown) + .search-submit {
+        color: #fff;
+    }
+    
+    h1.title {
+        text-shadow: 0 0 35px #070707;
+    }
+    
+    #search-container,
+    #search-container input,
+    .sidebar-card {
+        background-color: #111;
+    }
+    
+    #search-results-container {
+        border-top-color: #272727;
+    }
+    
+    #search-results-container > .search-result {
+        color: #bbb;
+    }
+    
+    #search-results-container > .search-result:hover {
+        color: #e8e8e8;
+    }
+    
+    .search-result > .route-icon {
+        color: #222;
+    }
+    
+    .stop-accessibility-state.state-accessible {
+        color: #102057;
+        background-color: #435caa;
+    }
+    
+    .stop-accessibility-state.state-warning {
+        color: #754703;
+        background-color: #dd9222;
+    }
+    
+    .stop-accessibility-state.state-inaccessible {
+        color: #650303;
+        background-color: #c43d3d;
+    }
+    
+    .card-close:hover {
+        background-color: #212121;
+    }
+    
+    .card-close:active {
+        background-color: #2e2e2e;
+    }
+    
+    #map-container a {
+        border-bottom: none;
+    }
+    
+    #map-container .mapboxgl-ctrl.mapboxgl-ctrl-attrib {
+        background-color: rgba(0, 0, 0, 0.2);
+    }
+    
+    #map-container .mapboxgl-ctrl-attrib-button {
+        filter: invert(0.6);
+    }
+    
+    #map-container .mapboxgl-ctrl-attrib a {
+        color: #999;
+    }
+    
+    #map-container a.mapboxgl-ctrl-logo {
+        opacity: 0.5;
+    }
 }
 
 @media screen and (max-width: 480px) {

@@ -6,7 +6,8 @@ router.get('/', function(req, res, next) {
     res.render('index', {
         title: 'Is the Metro accessible?',
         accessToken: process.env.MAPBOX_PUBLIC_ACCESS_TOKEN,
-        styleUrl: process.env.MAPBOX_STYLE_URL
+        lightStyleUrl: process.env.MAPBOX_LIGHT_STYLE_URL,
+        darkStyleUrl: process.env.MAPBOX_DARK_STYLE_URL
     });
 });
 

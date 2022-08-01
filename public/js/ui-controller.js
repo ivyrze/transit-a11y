@@ -30,6 +30,10 @@ $(".card-close").click(function () {
     $(this).parents(".sidebar-card").addClass("hidden");
 });
 
+const prefersLightScheme = () => {
+    return window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+};
+
 const showSearchResults = data => {
     $("#search-results-container .search-result").remove();
     data.results.forEach(result => {

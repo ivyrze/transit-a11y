@@ -1,7 +1,7 @@
 mapboxgl.accessToken = accessToken;
 const map = new mapboxgl.Map({
     container: 'map-container',
-    style: styleUrl,
+    style: prefersLightScheme() ? lightStyleUrl : darkStyleUrl,
 });
 
 const layers = [
@@ -9,6 +9,10 @@ const layers = [
     'stops-label',
     'stops-label-warning'
 ];
+
+window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', () => {
+    map.setStyle(prefersLightScheme() ? lightStyleUrl : darkStyleUrl);
+});
 
 map.on('load', getAlerts);
 
