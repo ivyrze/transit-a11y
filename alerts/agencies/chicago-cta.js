@@ -15,13 +15,23 @@ const status = () => {
             let alerts = {};
             response.data.CTAAlerts.Alert.forEach(alert => {
                 if (alert.Impact.startsWith("Elevator")) {
+                    // Handle returned type inconsistency
+                    let services = alert.ImpactedService.Service;
+                    if (!Array.isArray(services)) {
+                        services = [ services ];
+                    }
+                    
+                    // Grab affected train stop ID
                     let stop;
-                    alert.ImpactedService.Service.forEach(service => {
+                    services.forEach(service => {
                         if (service.ServiceType == 'T') {
                             stop = service.ServiceId;
                         }
                     });
                     
+                    if (!stop) { return; }
+                    
+                    // Also add alert description and link
                     alerts[agencyPrefix + '-' + stop] = {
                         description: alert.ShortDescription,
                         link: alert.AlertURL['#cdata-section'],
