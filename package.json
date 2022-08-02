@@ -7,6 +7,7 @@
     "start": "node app.js"
   },
   "dependencies": {
+    "axios": "^0.27.2",
     "color": "^4.2.3",
     "dotenv": "^16.0.1",
     "express": "~4.16.1",
@@ -19,7 +20,6 @@
     "@mapbox/mapbox-sdk": "^0.13.4",
     "@turf/combine": "^6.5.0",
     "@turf/helpers": "^6.5.0",
-    "axios": "^0.27.2",
     "gtfs": "^3.5.1",
     "node-stream-zip": "^1.15.0",
     "nodemon": "^2.0.19",
