@@ -31,11 +31,13 @@ config.agencies.forEach(agency => {
         routes = routes.map(route => transformers.colorContinuity(route));
         
         // Config-specified transformations
-        agency.transformations.forEach(transformation => {
-            stops = stops.map(stop => {
-                return transformers[transformation.type](stop, transformation, 'stop_name');
+        if (agency.transformations) {
+            agency.transformations.forEach(transformation => {
+                stops = stops.map(stop => {
+                    return transformers[transformation.type](stop, transformation, 'stop_name');
+                });
             });
-        });
+        }
         
         // Store stops in Redis database
         cleanPromise.then(() => {
