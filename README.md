@@ -3,10 +3,7 @@
 Explore and search for wheelchair-accessible public transit stops. Reports real-time alerts of barriers like elevator breakdowns.
 
 ## Initial Setup
-
-Paste your Redis connection string and [Mapbox access token](https://account.mapbox.com/access-tokens/) into your `.env` file. Be sure your token has the `tilesets:write` scope.
-
-Install dependencies and seed the database with GTFS data. This may take several minutes.
+Setup your environment variables by referencing `.env.example` or the [wiki documentation](https://github.com/ivyrze/transit-a11y/wiki/Setting-up-environment-variables). Then, install dependencies and seed the database with GTFS data. This may take several minutes.
 
 ```
 npm install
