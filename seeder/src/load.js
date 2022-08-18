@@ -10,7 +10,7 @@ const load = async agency => {
     let archive = await downloadArchive(agency);
     
     const database = await readArchive(archive);
-    let [ stops, routes ] = await loadPartialDataset(database);
+    let [ stops, routes ] = await loadPartialDataset(database, agency.vehicle);
     
     for await (let stop of stops) {
         stop.routes = await associateStopsRoutes(database, stop.stop_id);
@@ -102,24 +102,24 @@ const readArchive = async archive => {
     return config;
 };
 
-const loadPartialDataset = async database => {
+const loadPartialDataset = async (database, vehicle) => {
     await gtfs.openDb(database);
     
     // Show only rail stations and routes
     const stops = gtfs.getStops({ location_type: 1 });
-    const routes = gtfs.getRoutes({ route_type: 1 });
+    const routes = gtfs.getRoutes({ route_type: vehicle });
     
     return Promise.all([ stops, routes ]);
 };
 
-const associateStopsRoutes = async (database, stop) => {
+const associateStopsRoutes = async (database, stop, vehicle) => {
     await gtfs.openDb(database);
     
     let childStops = await gtfs.getStops({ parent_station: stop });
     
     const matches = await Promise.all(childStops.map(childStop =>
         gtfs.getRoutes(
-            { stop_id: childStop.stop_id, route_type: 1 },
+            { stop_id: childStop.stop_id, route_type: vehicle },
             [ 'route_id', 'route_short_name', 'route_long_name', 'route_color' ]
         )
     ));

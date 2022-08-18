@@ -3,6 +3,7 @@
         {
             "id": "cta",
             "url": "http://www.transitchicago.com/downloads/sch_data/google_transit.zip",
+            "vehicle": 1,
             "transformations": [
                 {
                     "type": "parenthesis"
