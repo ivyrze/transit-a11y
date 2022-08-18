@@ -20,35 +20,13 @@ router.post('/', async function(req, res, next) {
     
     // Run query, treating special characters as an OR operator
     const query = req.body.query.split(/[^\w\d]/g).filter(word => word).join("|");
-    let raw = await client.sendCommand([
-        'FT.SEARCH', 'idx:stops',
-        query + '*',
-        'GEOFILTER', 'coordinates',
-        req.body.longitude, req.body.latitude,
-        '100', 'mi'
-    ]);
+    const geofilter = [ req.body.longitude, req.body.latitude, '100', 'mi' ].join(' ');
     
-    // Reorganize raw Redis results
-    const count = raw.shift();
+    let results = await client.ft.search('idx:stops', query + '* ' + ' @coordinates:[' + geofilter + ']');
     
-    let results = [];
-    for (let i = 0; i < count * 2; i++) {
-        // Move id inside of property arrays
-        results.push([ 'id', raw[i] ].concat(raw[++i]));
-    }
-    results = results.map(result => {
-        // Transform from flat array to key-value object
-        let entries = {};
-        for (let i = 0; i < result.length; i += 2) {
-            entries[result[i]] = result[i + 1];
-        }
-        return entries;
-    });
-    
-    results = results.map(result => {
+    results = results.documents.map(result => {
         result.id = result.id.replace('stops:', '');
-        delete result.coordinates;
-        delete result.accessibility;
+        result.name = result.value.name;
         return result;
     });
     
