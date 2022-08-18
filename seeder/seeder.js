@@ -28,6 +28,7 @@ const processAgency = async agency => {
     let { stops, routes } = await load(agency);
     
     stops = stops.map(stop => transformers.idPrefixer(stop, agency.id));
+    routes = routes.map(route => transformers.idPrefixer(route, agency.id));
     routes = routes.map(route => transformers.colorContinuity(route));
     
     // Config-specified transformations
