@@ -13,7 +13,7 @@ const load = async agency => {
     let [ stops, routes ] = await loadPartialDataset(database, agency.vehicle);
     
     for await (let stop of stops) {
-        stop.routes = await associateStopsRoutes(database, stop.stop_id);
+        stop.routes = await associateStopsRoutes(database, stop.stop_id, agency.vehicle);
     }
     
     for await (let route of routes) {
