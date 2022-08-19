@@ -7,7 +7,7 @@ const colorContinuity = (source) => {
         const colorUpper = color.charAt(0).toUpperCase() + color.slice(1);
         let routeName = source.route_long_name ?? source.route_short_name;
         
-        if (routeName.startsWith(colorUpper)) {
+        if (routeName.includes(colorUpper)) {
             source.route_color = color;
             return true;
         }
@@ -20,5 +20,6 @@ const colorContinuity = (source) => {
     }
     
     return source;
-}
+};
+
 export { colorContinuity };

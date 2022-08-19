@@ -9,6 +9,17 @@
                     "type": "parenthesis"
                 }
             ]
+        },
+        {
+            "id": "trimet",
+            "url": "http://developer.trimet.org/schedule/gtfs.zip",
+            "vehicle": 0,
+            "transformations": [
+                {
+                    "type": "remove",
+                    "target": "MAX Station"
+                }
+            ]
         }
     ]
 }
