@@ -41,7 +41,7 @@ const processAgency = async config => {
     }
     
     // Store stops in Redis database
-    await store(client, stops, routes);
+    await store(client, agency, stops, routes);
     return { stops, routes };
 };
 

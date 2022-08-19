@@ -1,8 +1,12 @@
 import { SchemaFieldTypes } from 'redis';
 
-const store = async (client, stops, routes) => {
+const store = async (client, agency, stops, routes) => {
     return new Promise(resolve => {
         console.log("Storing " + stops.length + " stops into the database...");
+        
+        client.sAdd('agencies', agency.agency_id);
+        client.hSet('agencies:' + agency.agency_id, 'name', agency.agency_name);
+        client.hSet('agencies:' + agency.agency_id, 'url', agency.agency_url);
         
         stops.forEach(stop => {
             client.sAdd('stops', stop.stop_id);

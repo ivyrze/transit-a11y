@@ -5,7 +5,8 @@ var router = express.Router();
 
 router.post('/', async function(req, res, next) {
     // Check incoming parameters
-    if (!req.body.id) {
+    if (!req.body.id ||
+        req.body.id.split('-').length <= 1) {
         res.status(400).send(); next(); return;
     }
     
@@ -23,6 +24,9 @@ router.post('/', async function(req, res, next) {
     let alert = await client.hGetAll('alerts:' + req.body.id);
     if (Object.keys(alert).length) { details.alert = alert; }
     
+    const key = req.body.id.split('-').slice(0, -1).join('-');
+    details.agency = await client.hGetAll('agencies:' + key);
+    
     client.quit();
     
     // Check outgoing data
@@ -31,7 +35,8 @@ router.post('/', async function(req, res, next) {
         !details.accessibility ||
         !details.coordinates ||
         !details.coordinates.latitude ||
-        !details.coordinates.longitude) {
+        !details.coordinates.longitude ||
+        !details.agency) {
         res.status(404).send(); next(); return;
     }
     

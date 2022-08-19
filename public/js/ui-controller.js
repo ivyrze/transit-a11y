@@ -102,6 +102,10 @@ const openStop = id => {
         $(".sidebar-card").not(".stop-details-card").addClass("hidden");
         $(".stop-details-card.hidden").removeClass("hidden");
         
+        $(".stop-details-card .source-link > a")
+            .attr("href", data.agency.url)
+            .text(data.agency.name);
+        
         flyToStop([
             data.coordinates.longitude,
             data.coordinates.latitude
