@@ -5,31 +5,48 @@ import axios from 'axios';
 import progress from 'progress';
 import { default as temp } from 'temp';
 
-const load = async agency => {
+const load = async config => {
     temp.track();
-    let archive = await downloadArchive(agency);
+    let archive = await downloadArchive(config);
     
+    // Import to intermediate database and query for relevant data
     const database = await readArchive(archive);
-    let [ stops, routes ] = await loadPartialDataset(database, agency.vehicle);
+    let [ agencies, stops, routes ] = await loadPartialDataset(database, config.vehicle);
     
-    for await (let stop of stops) {
-        stop.routes = await associateStopsRoutes(database, stop.stop_id, agency.vehicle);
+    // Reduce down to single agency based on config key
+    let agency = (agencies.length == 1) ? agencies[0] :
+        agencies.find(agency => agency.agency_id.toLowerCase() == config.id);
+    
+    agency.agency_id = config.id;
+    
+    // Remove routes that aren't associated with the agency
+    if (agencies.length > 1) {
+        routes = routes.filter(route => route.agency_id.toLowerCase() == config.id);
     }
     
+    // Link stops to the routes that serve them
+    for await (let stop of stops) {
+        stop.routes = await associateStopsRoutes(database, stop.stop_id, config.vehicle);
+    }
+    
+    // Remove stops that are served by irrelevant vehicle types
+    stops = stops.filter(stop => stop.routes.length);
+    
+    // Query for all shapes associated with every route
     for await (let route of routes) {
         route.route_shapes = await assembleRouteShape(database, route.route_id);
     }
     
-    return { stops, routes };
+    return { agency, stops, routes };
 };
 
-const downloadArchive = (agency) => {
+const downloadArchive = config => {
     return new Promise(async (resolve, error) => {   
-        if (agency.url) {
-            console.log("Starting download of " + agency.url + "...");
+        if (config.url) {
+            console.log("Starting download of " + config.url + "...");
             
             const { data, headers } = await axios(
-                { url: agency.url, responseType: 'stream' });
+                { url: config.url, responseType: 'stream' });
             
             const factor = Math.pow(2, 20);
             let loader = new progress('Downloading [:bar] :rate/mbps :percent ',
@@ -43,8 +60,8 @@ const downloadArchive = (agency) => {
             data.pipe(stream).on('finish', () => {
                 resolve(stream.path);
             });
-        } else if (agency.path) {
-            resolve(agency.path);
+        } else if (config.path) {
+            resolve(config.path);
         } else {
             error('No agency URL or filename specified');
         }
@@ -106,10 +123,11 @@ const loadPartialDataset = async (database, vehicle) => {
     await gtfs.openDb(database);
     
     // Show only rail stations and routes
+    const agencies = gtfs.getAgencies({}, [ 'agency_id', 'agency_name', 'agency_url' ]);
     const stops = gtfs.getStops({ location_type: 1 });
     const routes = gtfs.getRoutes({ route_type: vehicle });
     
-    return Promise.all([ stops, routes ]);
+    return Promise.all([ agencies, stops, routes ]);
 };
 
 const associateStopsRoutes = async (database, stop, vehicle) => {

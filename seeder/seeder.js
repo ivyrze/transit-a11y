@@ -11,7 +11,7 @@ import * as transformers from './src/transformers/index.js';
 
 // Read config file
 dotenv.config();
-const config = JSON.parse(await readFile('seeder/config.json'));
+const configs = JSON.parse(await readFile('seeder/config.json'));
 const args = process.argv.slice(2);
 
 // Create database connection
@@ -24,16 +24,16 @@ await client.connect();
 await clean(client);
 
 // Import and process GTFS data
-const processAgency = async agency => {
-    let { stops, routes } = await load(agency);
+const processAgency = async config => {
+    let { agency, stops, routes } = await load(config);
     
-    stops = stops.map(stop => transformers.idPrefixer(stop, agency.id));
-    routes = routes.map(route => transformers.idPrefixer(route, agency.id));
+    stops = stops.map(stop => transformers.idPrefixer(stop, config.id));
+    routes = routes.map(route => transformers.idPrefixer(route, config.id));
     routes = routes.map(route => transformers.colorContinuity(route));
     
     // Config-specified transformations
-    if (agency.transformations) {
-        agency.transformations.forEach(transformation => {
+    if (config.transformations) {
+        config.transformations.forEach(transformation => {
             stops = stops.map(stop => {
                 return transformers[transformation.type](stop, transformation, 'stop_name');
             });
@@ -45,9 +45,9 @@ const processAgency = async agency => {
     return { stops, routes };
 };
 
-let agencies = [];
-for await (let agency of config.agencies) {
-    agencies.push(await processAgency(agency));
+let datasets = [];
+for await (let config of configs.agencies) {
+    datasets.push(await processAgency(config));
 }
 
 // Create indicies
@@ -60,14 +60,14 @@ if (args.includes('--skip-geojson')) {
 }
 
 // Merge the datasets from each agency into one
-let { stops, routes } = agencies.reduce((result, current) => {
+let { stops, routes } = datasets.reduce((result, current) => {
     Object.keys(current ?? {}).forEach(key => {
         if (!result[key]) { result[key] = []; }
         result[key] = result[key].concat(current[key]);
     });
     return result;
 }, {});
-agencies = undefined;
+datasets = undefined;
 
 // Convert to GeoJSON and optionally upload to Mapbox
 const local = args.includes('--export-local');
