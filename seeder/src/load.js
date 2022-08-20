@@ -24,6 +24,9 @@ const load = async config => {
         routes = routes.filter(route => route.agency_id.toLowerCase() == config.id);
     }
     
+    // Set stops to be accessible by default
+    stops.forEach(stop => stop.wheelchair_boarding = stop.wheelchair_boarding ?? 1);
+    
     // Link stops to the routes that serve them
     for await (let stop of stops) {
         stop.routes = await associateStopsRoutes(database, stop.stop_id, config.vehicle);
