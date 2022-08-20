@@ -1,7 +1,8 @@
-mapboxgl.accessToken = accessToken;
+mapboxgl.accessToken = options.accessToken;
 const map = new mapboxgl.Map({
     container: 'map-container',
-    style: prefersLightScheme() ? lightStyleUrl : darkStyleUrl,
+    style: prefersLightScheme() ? options.lightStyleUrl : options.darkStyleUrl,
+    ...(options.mapCenter && { center: options.mapCenter, zoom: 10 })
 });
 
 const layers = [
@@ -11,7 +12,7 @@ const layers = [
 ];
 
 window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', () => {
-    map.setStyle(prefersLightScheme() ? lightStyleUrl : darkStyleUrl);
+    map.setStyle(prefersLightScheme() ? options.lightStyleUrl : options.darkStyleUrl);
 });
 
 map.on('load', getAlerts);

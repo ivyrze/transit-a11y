@@ -7,6 +7,7 @@ const store = async (client, agency, stops, routes) => {
         client.sAdd('agencies', agency.agency_id);
         client.hSet('agencies:' + agency.agency_id, 'name', agency.agency_name);
         client.hSet('agencies:' + agency.agency_id, 'url', agency.agency_url);
+        client.hSet('agencies:' + agency.agency_id, 'center', agency.agency_center.join(','));
         
         stops.forEach(stop => {
             client.sAdd('stops', stop.stop_id);
