@@ -23,7 +23,12 @@ app.use(express.urlencoded({ extended: true }));
 // Setup view engine
 app.set('views', 'views');
 app.set('view engine', 'pug');
-app.use(express.static('public'));
+
+// Setup static assets and caching
+[ 'css', 'fonts', 'img', 'js' ].forEach(dir => {
+    app.use('/' + dir, express.static('public/' + dir,
+        (dir == 'fonts') ? { maxAge: 1000 * 60**2 * 24 * 7 } : {}));
+});
 
 // Setup routes
 app.use('/', indexRouter);
