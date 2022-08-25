@@ -55,7 +55,7 @@ const createTileset = (client, id, source) => {
                 [id]: {
                     source: source,
                     minzoom: 8,
-                    maxzoom: 10
+                    maxzoom: 13
                 }
             }
         }
