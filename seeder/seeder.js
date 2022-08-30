@@ -4,6 +4,7 @@ import { createClient } from 'redis';
 
 import { clean } from './src/clean.js';
 import { load } from './src/load.js';
+import { extend } from './src/extend.js';
 import { store, indicies } from './src/store.js';
 import { geojson } from './src/convert.js';
 import { mapbox } from './src/upload.js';

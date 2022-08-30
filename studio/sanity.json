@@ -1,0 +1,33 @@
+{
+    "root": true,
+    "project": {
+        "name": "transit-a11y"
+    },
+    "plugins": [
+        "@sanity/base",
+        "@sanity/default-layout",
+        "@sanity/default-login",
+        "@sanity/desk-tool"
+    ],
+    "env": {
+        "development": {
+            "api": {
+                "dataset": "development"
+            },
+            "plugins": [
+                "@sanity/vision"
+            ]
+        },
+        "production": {
+            "api": {
+                "dataset": "production"
+            }
+        }
+    },
+    "parts": [
+        {
+            "name": "part:@sanity/base/schema",
+            "path": "./schemas/schema"
+        }
+    ]
+}
