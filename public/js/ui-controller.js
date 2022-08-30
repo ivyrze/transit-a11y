@@ -87,8 +87,8 @@ const openStop = id => {
             .attr("class", "stop-accessibility-state " + state)
             .text(heading);
         
-        if (data.alert && data.alert.link) {
-            $(".stop-alert-link").attr("href", data.alert.link);
+        if (data.alert && data.alert.url) {
+            $(".stop-alert-link").attr("href", data.alert.url);
             $(".stop-alert-link.hidden").removeClass("hidden");
             $(".stop-details-card .source-link").addClass("hidden");
         } else {

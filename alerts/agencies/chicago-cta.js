@@ -34,7 +34,7 @@ const status = () => {
                     // Also add alert description and link
                     alerts[agencyPrefix + '-' + stop] = {
                         description: alert.ShortDescription,
-                        link: alert.AlertURL['#cdata-section'],
+                        url: alert.AlertURL['#cdata-section'],
                     };
                 }
             });

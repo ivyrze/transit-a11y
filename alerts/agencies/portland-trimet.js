@@ -40,7 +40,7 @@ const status = () => {
                 
                 alerts[stop] = {
                     description: description,
-                    link: alert.info_link_url
+                    url: alert.info_link_url
                 };
             });
             
