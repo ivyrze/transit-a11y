@@ -28,6 +28,10 @@ await clean(client);
 const processAgency = async config => {
     let { agency, stops, routes } = await load(config);
     
+    // Supplement with Sanity CMS data
+    stops = await extend(stops, config.id);
+    
+    // General transformations
     stops = stops.map(stop => transformers.idPrefixer(stop, config.id));
     routes = routes.map(route => transformers.idPrefixer(route, config.id));
     routes = routes.map(route => transformers.colorContinuity(route));

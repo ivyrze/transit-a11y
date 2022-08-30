@@ -27,6 +27,12 @@ router.post('/', async function(req, res, next) {
     const key = req.body.id.split('-').slice(0, -1).join('-');
     details.agency = await client.hGetAll('agencies:' + key);
     
+    // Use stop-specific URL and fallback to agency-wide URL
+    if (details.url) {
+        details.agency.url = details.url;
+        delete details.url;
+    }
+    
     client.quit();
     
     // Check outgoing data
@@ -36,7 +42,9 @@ router.post('/', async function(req, res, next) {
         !details.coordinates ||
         !details.coordinates.latitude ||
         !details.coordinates.longitude ||
-        !details.agency) {
+        !details.agency ||
+        !details.agency.name ||
+        !details.agency.url) {
         res.status(404).send(); next(); return;
     }
     

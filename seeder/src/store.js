@@ -15,6 +15,10 @@ const store = async (client, agency, stops, routes) => {
             client.hSet('stops:' + stop.stop_id, 'accessibility', stop.wheelchair_boarding);
             client.hSet('stops:' + stop.stop_id, 'coordinates', stop.stop_lon + ',' + stop.stop_lat);
             
+            if (stop.stop_url) {
+                client.hSet('stops:' + stop.stop_id, 'url', stop.stop_url);
+            }
+            
             stop.routes.forEach(route => {
                 client.sAdd('stops:' + stop.stop_id + ':routes', route.route_id);
             });
