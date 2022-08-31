@@ -21,6 +21,9 @@ router.post('/', async function(req, res, next) {
     let [ longitude, latitude ] = details.coordinates.split(',');
     details.coordinates = { longitude, latitude };
     
+    let tags = await client.sMembers('stops:' + req.body.id + ':tags');
+    if (tags.length) { details.tags = tags; }
+    
     let alert = await client.hGetAll('alerts:' + req.body.id);
     if (Object.keys(alert).length) { details.alert = alert; }
     

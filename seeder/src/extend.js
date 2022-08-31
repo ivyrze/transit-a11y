@@ -8,13 +8,18 @@ const extend = async (stops, id) => {
         useCdn: false
     });
     
-    const appendicies = await client.fetch('*[_type=="stop" && agency->id=="' + id + '"]{id, url}');
+    const appendicies = await client.fetch('*[_type=="stop" && agency->id=="' + id + '"]{id, tags, url}');
     
     stops.forEach(stop => {
-        const appendix = appendicies.find(appendix => stop.stop_id == appendix.id);
-        if (appendix && appendix.url) {
-            stop.stop_url = appendix.url;
-        }
+        let appendix = appendicies.find(appendix => stop.stop_id == appendix.id);
+        if (!appendix) { return; }
+        
+        delete appendix.id;
+        Object.keys(appendix).forEach(key => {
+            if (appendix[key]?.length) {
+                stop['stop_' + key] = appendix[key];
+            }
+        });
     });
     
     return stops;

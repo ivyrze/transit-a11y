@@ -282,25 +282,33 @@ h1.title > a {
     color: inherit;
 }
 
-.stop-accessibility-state {
-    font-size: 20px;
-    font-weight: bold;
-    padding: 28px 16px;
-    margin: 18px 0;
-    text-align: center;
-    border-radius: 8px;
+ul.stop-tags-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    font-size: 16px;
+    font-weight: 500;
+    list-style: none;
+    padding: 0;
+}
+
+.stop-accessibility-state,
+.stop-tags-container > .stop-tag {
+    line-height: 2em;
+    border-radius: 1em;
+    background-color: #ededed;
+    padding-inline: 12px;
 }
 
 .stop-accessibility-state::before {
     font-family: 'Font Awesome 6 Free';
-    font-size: 24px;
-    margin-inline: -8px 10px;
+    margin-right: 8px;
     vertical-align: -2px;
 }
 
 .stop-accessibility-state.state-accessible {
-    color: #1b3898;
-    background-color: #7b99f9;
+    color: #1a358f;
+    background-color: #85a2ff;
 }
 
 .stop-accessibility-state.state-accessible::before {
@@ -308,8 +316,8 @@ h1.title > a {
 }
 
 .stop-accessibility-state.state-warning {
-    color: #98701b;
-    background-color: #f9d57b;
+    color: #6d4c07;
+    background-color: #ffd57c;
 }
 
 .stop-accessibility-state.state-warning::before {
@@ -317,8 +325,8 @@ h1.title > a {
 }
 
 .stop-accessibility-state.state-inaccessible {
-    color: #971b1b;
-    background-color: #f97b7b;
+    color: #811616;
+    background-color: #ff7d7d;
 }
 
 .stop-accessibility-state.state-inaccessible::before {
@@ -384,19 +392,24 @@ h1.title > a {
         color: #222;
     }
     
+    .stop-tags-container > .stop-tag {
+        color: #dbdbdb;
+        background-color: #222;
+    }
+    
     .stop-accessibility-state.state-accessible {
-        color: #102057;
-        background-color: #435caa;
+        color: #b2c2ff;
+        background-color: #242e4f;
     }
     
     .stop-accessibility-state.state-warning {
-        color: #754703;
-        background-color: #dd9222;
+        color: #f2c789;
+        background-color: #372a15;
     }
     
     .stop-accessibility-state.state-inaccessible {
-        color: #650303;
-        background-color: #c43d3d;
+        color: #fdacac;
+        background-color: #361717;
     }
     
     .card-close:hover {

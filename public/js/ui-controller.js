@@ -69,14 +69,14 @@ const openStop = id => {
         encode: true,
         data: { id },
     }).done(function (data) {
-         if (data.alert) {
+        if (data.alert) {
             var state = 'state-warning';
             var heading = "Service disruption";
             var description = data.alert.description;
         } else if (parseInt(data.accessibility)) {
             var state = 'state-accessible';
             var heading = "Likely accessible";
-            var description = "This station is equipped with elevators or has at-grade, platform-level boarding.";
+            var description = "This station's accessibility features are reported in working order.";
         } else {
             var state = 'state-inaccessible';
             var heading = "Not accessible";
@@ -86,6 +86,27 @@ const openStop = id => {
         $(".stop-accessibility-state")
             .attr("class", "stop-accessibility-state " + state)
             .text(heading);
+        
+        $(".stop-tags-container > .stop-tag").remove();
+        
+        const tagDescriptions = {
+            "at-grade": "At-grade",
+            "above-grade": "Above-grade",
+            "below-grade": "Below-grade",
+            "elevator": "Elevator",
+            "escalator": "Escalator",
+            "ramp-entrance": "Ramp entrance"
+        };
+        
+        if (data.tags) {
+            for (const tag of data.tags) {
+                $(".stop-tags-container").append(
+                    $("<li>")
+                        .addClass("stop-tag")
+                        .text(tagDescriptions[tag])
+                )
+            }
+        }
         
         if (data.alert && data.alert.url) {
             $(".stop-alert-link").attr("href", data.alert.url);

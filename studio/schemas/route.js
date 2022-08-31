@@ -11,6 +11,24 @@ export default {
             validation: rule => rule.required()
         },
         {
+            name: 'tags',
+            type: 'array',
+            of: [{ type: 'string' }],
+            title: 'Tags',
+            description: 'Known accessibility attributes, assuming working order',
+            options: {
+                list: [
+                    { title: 'At-grade', value: 'at-grade' },
+                    { title: 'Above-grade', value: 'above-grade' },
+                    { title: 'Below-grade', value: 'below-grade' },
+                    { title: 'Elevator', value: 'elevator' },
+                    { title: 'Escalator', value: 'escalator' },
+                    { title: 'Ramp entrance', value: 'ramp-entrance' },
+                ],
+                sortable: false
+            }
+        },
+        {
             name: 'url',
             type: 'string',
             title: 'Source link',
