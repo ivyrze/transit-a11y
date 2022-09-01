@@ -54,8 +54,8 @@ a:active {
 }
 
 .link-external::after {
-    content: '\f08e';
-    font-family: 'Font Awesome 6 Free';
+    content: '\ea02';
+    font-family: 'Accessibility Icon Pack';
     margin-left: 8px;
 }
 
@@ -143,8 +143,8 @@ h1.title > a {
 }
 
 #search-container .search-submit::before {
-    font-family: 'Font Awesome 6 Free';
-    content: '\f002';
+    font-family: 'Accessibility Icon Pack';
+    content: '\ea01';
 }
 
 #search-results-container {
@@ -223,6 +223,7 @@ h1.title > a {
     top: 0;
     right: 0;
     font-size: 24px;
+    line-height: 1;
     width: 1.6em;
     aspect-ratio: 1 / 1;
     border-radius: 50%;
@@ -240,8 +241,8 @@ h1.title > a {
 }
 
 .card-close::before {
-    font-family: 'Font Awesome 6 Free';
-    content: '\f00d';
+    font-family: 'Accessibility Icon Pack';
+    content: '\ea03';
 }
 
 .sidebar-card {
@@ -300,19 +301,20 @@ ul.stop-tags-container {
     padding-inline: 12px;
 }
 
-.stop-accessibility-state::before {
-    font-family: 'Font Awesome 6 Free';
+.stop-accessibility-state::before,
+.stop-tag::before {
+    font-family: 'Accessibility Icon Pack';
     margin-right: 8px;
     vertical-align: -2px;
 }
 
+.stop-accessibility-state.state-accessible::before { content: '\ea04'; }
+.stop-accessibility-state.state-warning::before { content: '\ea05'; }
+.stop-accessibility-state.state-inaccessible::before { content: '\ea06'; }
+
 .stop-accessibility-state.state-accessible {
     color: #1a358f;
     background-color: #85a2ff;
-}
-
-.stop-accessibility-state.state-accessible::before {
-    content: '\e2ce';
 }
 
 .stop-accessibility-state.state-warning {
@@ -320,18 +322,17 @@ ul.stop-tags-container {
     background-color: #ffd57c;
 }
 
-.stop-accessibility-state.state-warning::before {
-    content: '\f071';
-}
-
 .stop-accessibility-state.state-inaccessible {
     color: #811616;
     background-color: #ff7d7d;
 }
 
-.stop-accessibility-state.state-inaccessible::before {
-    content: '\f05e';
-}
+.stop-tag.tag-at-grade::before { content: '\ea07'; }
+.stop-tag.tag-above-grade::before { content: '\ea08'; }
+.stop-tag.tag-below-grade::before { content: '\ea09'; }
+.stop-tag.tag-elevator::before { content: '\ea0a'; }
+.stop-tag.tag-escalator::before { content: '\ea0b'; }
+.stop-tag.tag-ramp-entrance::before { content: '\ea0c'; }
 
 .about-card p:first-of-type {
     margin-block-start: 14px;

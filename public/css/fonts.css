@@ -1,4 +1,12 @@
 @font-face {
+    font-family: "Accessibility Icon Pack";
+    src: url("../fonts/icon-pack.woff2") format("woff2"),
+        url("../fonts/icon-pack.woff") format("woff");
+    font-style: normal;
+    font-weight: 400;
+}
+
+@font-face {
     font-family: 'Akzidenz Grotesk';
     src: url('../fonts/akzidenz-light.woff2') format('woff2'),
         url('../fonts/akzidenz-light.woff') format('woff');

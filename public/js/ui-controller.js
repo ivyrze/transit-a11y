@@ -103,6 +103,7 @@ const openStop = id => {
                 $(".stop-tags-container").append(
                     $("<li>")
                         .addClass("stop-tag")
+                        .addClass("tag-" + tag)
                         .text(tagDescriptions[tag])
                 )
             }
