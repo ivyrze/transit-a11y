@@ -1,0 +1,23 @@
+{
+    "accessibilityStates": {
+        "state-warning": {
+            "heading": "Service disruption"
+        },
+        "state-accessible": {
+            "heading": "Likely accessible",
+            "description": "This station's accessibility features are reported in working order."
+        },
+        "state-inaccessible": {
+            "heading": "Not accessible",
+            "description": "This station has significant access barriers and is not equipped with alternative entryways."
+        }
+    },
+    "tagLabels": {
+        "at-grade": "At-grade",
+        "above-grade": "Above-grade",
+        "below-grade": "Below-grade",
+        "elevator": "Elevator",
+        "escalator": "Escalator",
+        "ramp-entrance": "Ramp entrance"
+    }
+}

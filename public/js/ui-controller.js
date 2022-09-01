@@ -1,3 +1,6 @@
+var i18n = {};
+$.getJSON("/js/i18n-strings.json").done(data => i18n = data);
+
 $("h1.title > a").click(function () {
     $(".sidebar-card").not(".about-card").addClass("hidden");
     $(".about-card").toggleClass("hidden");
@@ -69,34 +72,15 @@ const openStop = id => {
         encode: true,
         data: { id },
     }).done(function (data) {
-        if (data.alert) {
-            var state = 'state-warning';
-            var heading = "Service disruption";
-            var description = data.alert.description;
-        } else if (parseInt(data.accessibility)) {
-            var state = 'state-accessible';
-            var heading = "Likely accessible";
-            var description = "This station's accessibility features are reported in working order.";
-        } else {
-            var state = 'state-inaccessible';
-            var heading = "Not accessible";
-            var description = "This station has significant access barriers and is not equipped with alternative entryways.";
-        }
+        const state = (data.alert) ? 'state-warning' :
+            (parseInt(data.accessibility)) ? 'state-accessible' :
+            'state-inaccessible';
         
         $(".stop-accessibility-state")
             .attr("class", "stop-accessibility-state " + state)
-            .text(heading);
+            .text(i18n.accessibilityStates[state].heading);
         
         $(".stop-tags-container > .stop-tag").remove();
-        
-        const tagDescriptions = {
-            "at-grade": "At-grade",
-            "above-grade": "Above-grade",
-            "below-grade": "Below-grade",
-            "elevator": "Elevator",
-            "escalator": "Escalator",
-            "ramp-entrance": "Ramp entrance"
-        };
         
         if (data.tags) {
             for (const tag of data.tags) {
@@ -104,7 +88,7 @@ const openStop = id => {
                     $("<li>")
                         .addClass("stop-tag")
                         .addClass("tag-" + tag)
-                        .text(tagDescriptions[tag])
+                        .text(i18n.tagLabels[tag])
                 )
             }
         }
@@ -118,7 +102,10 @@ const openStop = id => {
             $(".stop-details-card .source-link.hidden").removeClass("hidden");
         }
         
-        $(".stop-accessibility-info").text(description);
+        $(".stop-accessibility-info").text(
+            (state == 'state-warning') ?
+                data.alert.description : i18n.accessibilityStates[state].description
+        );
         $(".stop-details-card h2").text(data.name);
         
         $(".sidebar-card").not(".stop-details-card").addClass("hidden");
