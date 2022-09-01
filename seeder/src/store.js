@@ -1,45 +1,44 @@
 import { SchemaFieldTypes } from 'redis';
 
 const store = async (client, agency, stops, routes) => {
-    return new Promise(resolve => {
-        console.log("Storing " + stops.length + " stops into the database...");
+    console.log("Storing " + stops.length + " stops into the database...");
+    
+    const transaction = client.multi();
+    
+    transaction.sAdd('agencies', agency.agency_id);
+    transaction.hSet('agencies:' + agency.agency_id, 'name', agency.agency_name);
+    transaction.hSet('agencies:' + agency.agency_id, 'url', agency.agency_url);
+    transaction.hSet('agencies:' + agency.agency_id, 'center', agency.agency_center.join(','));
+    
+    stops.forEach(stop => {
+        transaction.sAdd('stops', stop.stop_id);
+        transaction.hSet('stops:' + stop.stop_id, 'name', stop.stop_name);
+        transaction.hSet('stops:' + stop.stop_id, 'accessibility', stop.wheelchair_boarding);
+        transaction.hSet('stops:' + stop.stop_id, 'coordinates', stop.stop_lon + ',' + stop.stop_lat);
         
-        client.sAdd('agencies', agency.agency_id);
-        client.hSet('agencies:' + agency.agency_id, 'name', agency.agency_name);
-        client.hSet('agencies:' + agency.agency_id, 'url', agency.agency_url);
-        client.hSet('agencies:' + agency.agency_id, 'center', agency.agency_center.join(','));
+        if (stop.stop_url) {
+            transaction.hSet('stops:' + stop.stop_id, 'url', stop.stop_url);
+        }
         
-        stops.forEach(stop => {
-            client.sAdd('stops', stop.stop_id);
-            client.hSet('stops:' + stop.stop_id, 'name', stop.stop_name);
-            client.hSet('stops:' + stop.stop_id, 'accessibility', stop.wheelchair_boarding);
-            client.hSet('stops:' + stop.stop_id, 'coordinates', stop.stop_lon + ',' + stop.stop_lat);
-            
-            if (stop.stop_url) {
-                client.hSet('stops:' + stop.stop_id, 'url', stop.stop_url);
-            }
-            
-            if (stop.stop_tags) {
-                stop.stop_tags.forEach(tag => {
-                    client.sAdd('stops:' + stop.stop_id + ':tags', tag);
-                });
-            }
-            
-            stop.routes.forEach(route => {
-                client.sAdd('stops:' + stop.stop_id + ':routes', route.route_id);
+        if (stop.stop_tags) {
+            stop.stop_tags.forEach(tag => {
+                transaction.sAdd('stops:' + stop.stop_id + ':tags', tag);
             });
-        });
+        }
         
-        routes.forEach(route => {
-            client.sAdd('routes', route.route_id);
-            client.hSet('routes:' + route.route_id, 'name', route.route_long_name ?? route.route_short_name);
-            client.hSet('routes:' + route.route_id, 'color', route.route_color);
+        stop.routes.forEach(route => {
+            transaction.sAdd('stops:' + stop.stop_id + ':routes', route.route_id);
         });
-        
-        resolve();
-    }).then(() => {
-        console.log("Storing stop data completed successfully.");
     });
+    
+    routes.forEach(route => {
+        transaction.sAdd('routes', route.route_id);
+        transaction.hSet('routes:' + route.route_id, 'name', route.route_long_name ?? route.route_short_name);
+        transaction.hSet('routes:' + route.route_id, 'color', route.route_color);
+    });
+    
+    await transaction.exec();
+    console.log("Storing stop data completed successfully.");
 };
 
 const indicies = async client => {
