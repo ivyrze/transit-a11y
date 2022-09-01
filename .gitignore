@@ -1,5 +1,6 @@
 .env
 node_modules
+vendor
 routes.geojsonld
 stops.geojsonld
 seeder/config.json
