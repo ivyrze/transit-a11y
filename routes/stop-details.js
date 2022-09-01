@@ -18,8 +18,10 @@ router.post('/', async function(req, res, next) {
     
     // Run query and parse output
     let details = await client.hGetAll('stops:' + req.body.id);
-    let [ longitude, latitude ] = details.coordinates.split(',');
-    details.coordinates = { longitude, latitude };
+    if (Object.keys(details).length) {
+        let [ longitude, latitude ] = details.coordinates.split(',');
+        details.coordinates = { longitude, latitude };
+    }
     
     let tags = await client.sMembers('stops:' + req.body.id + ':tags');
     if (tags.length) { details.tags = tags; }
