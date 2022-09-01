@@ -8,6 +8,7 @@
     "build": "gulp"
   },
   "dependencies": {
+    "@sanity/client": "^3.3.6",
     "axios": "^0.27.2",
     "color": "^4.2.3",
     "dotenv": "^16.0.1",
@@ -21,7 +22,6 @@
   },
   "devDependencies": {
     "@mapbox/mapbox-sdk": "^0.13.4",
-    "@sanity/client": "^3.3.6",
     "@turf/center": "^6.5.0",
     "@turf/combine": "^6.5.0",
     "@turf/helpers": "^6.5.0",

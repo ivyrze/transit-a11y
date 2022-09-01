@@ -1,12 +1,8 @@
 import sanity from '@sanity/client';
+import { sanityOptions } from '../../utils.js';
 
 const extend = async (stops, id) => {
-    const client = sanity({
-        projectId: process.env.SANITY_STUDIO_API_PROJECT_ID,
-        dataset: process.env.NODE_ENV ?? 'development',
-        apiVersion: "2021-10-21",
-        useCdn: false
-    });
+    const client = sanity(sanityOptions);
     
     const appendicies = await client.fetch('*[_type=="stop" && agency->id=="' + id + '"]{id, tags, url}');
     

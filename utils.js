@@ -1,4 +1,14 @@
+import dotenv from 'dotenv';
 import color from 'color';
+
+dotenv.config();
+
+const sanityOptions = {
+    projectId: process.env.SANITY_STUDIO_API_PROJECT_ID,
+    dataset: process.env.NODE_ENV ?? 'development',
+    apiVersion: "2021-10-21",
+    useCdn: false
+};
 
 const colorSort = (a, b) => {
     return (color(a.color).hue() > color(b.color).hue()) ? 1 : -1;
@@ -19,4 +29,4 @@ const cleanKeyPattern = (client, pattern) => {
     });
 };
 
-export { colorSort, cleanKeyPattern };
+export { sanityOptions, colorSort, cleanKeyPattern };

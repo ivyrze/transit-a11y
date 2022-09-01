@@ -11,6 +11,13 @@ export default {
             validation: rule => rule.required()
         },
         {
+            name: 'synonyms',
+            type: 'array',
+            of: [{ type: 'string' }],
+            title: 'Synonyms',
+            description: 'Alternate stop names that could appear in service alerts'
+        },
+        {
             name: 'tags',
             type: 'array',
             of: [{ type: 'string' }],
