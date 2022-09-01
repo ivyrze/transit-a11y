@@ -3,5 +3,6 @@ node_modules
 vendor
 routes.geojsonld
 stops.geojsonld
+studio/dist
 seeder/config.json
 **.zip
