@@ -30,9 +30,7 @@ const load = async config => {
     stops.forEach(stop => stop.wheelchair_boarding = stop.wheelchair_boarding ?? 1);
     
     // Link stops to the routes that serve them
-    for await (let stop of stops) {
-        stop.routes = await associateStopsRoutes(database, stop.stop_id, config.vehicle);
-    }
+    stops = await associateStopsRoutes(database, stops, config.vehicle);
     
     // Remove stops that are served by irrelevant vehicle types
     stops = stops.filter(stop => stop.routes.length);
@@ -137,7 +135,19 @@ const loadPartialDataset = async (database, vehicle) => {
     return Promise.all([ agencies, stops, routes ]);
 };
 
-const associateStopsRoutes = async (database, stop, vehicle) => {
+const associateStopsRoutes = async (database, stops, vehicle) => {
+    let loader = new progress('Processing [:bar] :percent :etas remaining ',
+        { total: stops.length });
+    
+    for await (let stop of stops) {
+        stop.routes = await associateStopRoutes(database, stop.stop_id, vehicle);
+        loader.tick();
+    }
+    
+    return stops;
+};
+
+const associateStopRoutes = async (database, stop, vehicle) => {
     await gtfs.openDb(database);
     
     let childStops = await gtfs.getStops({ parent_station: stop });
