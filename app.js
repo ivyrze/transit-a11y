@@ -16,7 +16,12 @@ const app = express();
 
 // Setup development utilities
 app.use(morgan('dev'));
+
+app.use(helmet.crossOriginResourcePolicy());
+app.use(helmet.crossOriginOpenerPolicy());
 app.use(helmet.hidePoweredBy());
+app.use(helmet.referrerPolicy());
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
