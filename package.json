@@ -7,6 +7,9 @@
     "develop": "npm run build && nodemon app.js",
     "build": "gulp"
   },
+  "engines": {
+    "node": "^14.8.0 || >=16.0.0"
+  },
   "dependencies": {
     "@sanity/client": "^3.3.6",
     "axios": "^0.27.2",
