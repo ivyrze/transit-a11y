@@ -1,6 +1,7 @@
 import dotenv from 'dotenv';
 import { readFile } from 'fs/promises';
 import { createClient } from 'redis';
+import { redisOptions } from '../utils.js';
 
 import { clean } from './src/clean.js';
 import { load } from './src/load.js';
@@ -8,6 +9,7 @@ import { extend } from './src/extend.js';
 import { store, indicies } from './src/store.js';
 import { geojson } from './src/convert.js';
 import { mapbox } from './src/upload.js';
+
 import * as transformers from './src/transformers/index.js';
 
 // Read config file
@@ -16,7 +18,7 @@ const configs = JSON.parse(await readFile('seeder/config.json'));
 const args = process.argv.slice(2);
 
 // Create database connection
-const client = createClient({ url: process.env.REDIS_URL });
+const client = createClient(redisOptions);
 
 client.on('error', (err) => console.error('Redis client error', err));
 await client.connect();

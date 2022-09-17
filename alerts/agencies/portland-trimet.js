@@ -1,4 +1,5 @@
 import { createClient } from 'redis';
+import { redisOptions } from '../utils.js';
 import axios from 'axios';
 
 const endpoint = 'https://developer.trimet.org/ws/v2/alerts';
@@ -7,7 +8,7 @@ const agencyPrefix = 'trimet';
 const status = synonyms => {
     return new Promise(async (resolve, error) => {
         // Establish database connection
-        const client = createClient({ url: process.env.REDIS_URL });
+        const client = createClient(redisOptions);
         
         client.on('error', (err) => console.error('Redis client error', err));
         await client.connect();

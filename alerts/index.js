@@ -1,6 +1,7 @@
 import sanity from '@sanity/client';
 import { sanityOptions, cleanKeyPattern } from '../utils.js';
 import { createClient } from 'redis';
+import { redisOptions } from '../utils.js';
 
 import * as cta from './agencies/chicago-cta.js';
 import * as trimet from './agencies/portland-trimet.js';
@@ -19,7 +20,7 @@ const tick = () => {
 
 const update = async agencies => {
     // Establish database connection
-    const client = createClient({ url: process.env.REDIS_URL });
+    const client = createClient(redisOptions);
     
     client.on('error', (err) => console.error('Redis client error', err));
     await client.connect();

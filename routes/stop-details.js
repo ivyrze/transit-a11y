@@ -1,5 +1,6 @@
 import express from 'express';
 import { createClient } from 'redis';
+import { redisOptions } from '../utils.js';
 
 var router = express.Router();
 
@@ -11,7 +12,7 @@ router.post('/', async function(req, res, next) {
     }
     
     // Establish database connection
-    const client = createClient({ url: process.env.REDIS_URL });
+    const client = createClient(redisOptions);
     
     client.on('error', (err) => console.error('Redis client error', err));
     await client.connect();

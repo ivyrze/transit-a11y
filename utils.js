@@ -3,6 +3,15 @@ import color from 'color';
 
 dotenv.config();
 
+const redisOptions = {
+    url: process.env.REDIS_URL,
+    socket: {
+        reconnectStrategy: retries => {
+            return (retries >= 3) ? 500 : new Error("Connection attempts exceeded")
+        }
+    }
+};
+
 const sanityOptions = {
     projectId: process.env.SANITY_STUDIO_API_PROJECT_ID,
     dataset: process.env.NODE_ENV ?? 'development',
@@ -29,4 +38,4 @@ const cleanKeyPattern = (client, pattern) => {
     });
 };
 
-export { sanityOptions, colorSort, cleanKeyPattern };
+export { redisOptions, sanityOptions, colorSort, cleanKeyPattern };
