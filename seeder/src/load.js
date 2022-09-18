@@ -54,7 +54,7 @@ const downloadArchive = config => {
             
             const factor = Math.pow(2, 20);
             let loader = new progress('Downloading [:bar] :rate/mbps :percent ',
-                { total: parseInt(headers['content-length']) / factor });
+                { width: 51, total: parseInt(headers['content-length']) / factor });
             
             data.on('data', chunk => {
                 loader.tick(chunk.length / factor);
@@ -95,7 +95,8 @@ const readArchive = async archive => {
     const total = totals.reduce((previous, current) => previous + current);
     
     // Setup import loader and tick function based on log output
-    let loader = new progress('Importing [:bar] :percent :etas remaining ', { total });
+    let loader = new progress('Importing [:bar] :percent :etas remaining ',
+        { width: 53, total: total });
         
     let prevCount = 0, prevFile = '';
     const loaderTick = text => {
@@ -136,7 +137,7 @@ const loadPartialDataset = async (database, vehicle) => {
 
 const associateStopsRoutes = async (database, stops, vehicle) => {
     let loader = new progress('Processing [:bar] :percent :etas remaining ',
-        { total: stops.length });
+        { width: 50, total: stops.length });
     
     for await (let stop of stops) {
         stop.routes = await associateStopRoutes(database, stop.stop_id, vehicle);
