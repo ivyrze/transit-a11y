@@ -2,7 +2,7 @@ import express from 'express';
 import { createClient } from 'redis';
 import { redisOptions } from '../utils.js';
 
-var router = express.Router();
+export const router = express.Router();
 
 router.get([ '/', '/agency/:agency' ], async function(req, res, next) {
     if (req.params.agency) {
@@ -30,5 +30,3 @@ router.get([ '/', '/agency/:agency' ], async function(req, res, next) {
         }
     });
 });
-
-export { router };

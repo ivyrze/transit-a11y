@@ -4,38 +4,41 @@ import { default as mapboxTilesets } from '@mapbox/mapbox-sdk/services/tilesets.
 
 dotenv.config();
 
-const mapbox = (id, geojson) => {
-    return new Promise((resolve, error) => {
-        const client = mapboxTilesets(mapboxBase({ accessToken: process.env.MAPBOX_ACCESS_TOKEN }));
-        
-        Promise.all([ deleteTileset(client, id), deleteTilesetSource(client, id) ])
-            .catch(response => {
-                if (response.statusCode != 404) {
-                    console.error("Failed to delete Mapbox tileset and/or source.", error);
-                    error();
-                }
-            })
-            .finally(() => {
-                createTilesetSource(client, id, geojson).then(response => {
-                    createTileset(client, id, response.body.id).then(() => {
-                        console.log("Uploaded Mapbox tileset successfully.");
-                        publishTileset(client, id).then(() => {
-                            console.log("Published Mapbox tileset successfully. It may take a few minutes before processing completes.");
-                            resolve();
-                        }).catch(error => {
-                            console.log("Failed to publish Mapbox tileset.", error);
-                            error();
-                        });
-                    }).catch(error => {
-                        console.log("Failed to create Mapbox tileset.", error);
-                        error();
-                    });
-                }).catch(error => {
-                    console.error("Failed to create Mapbox tileset source.", error);
-                    error();
-                });
-            });
-    });
+export const mapbox = async (id, geojson) => {
+    const client = mapboxTilesets(mapboxBase({ accessToken: process.env.MAPBOX_ACCESS_TOKEN }));
+    
+    try {
+        await deleteTileset(client, id)
+        await deleteTilesetSource(client, id);
+    } catch (error) {
+        if (error.statusCode != 404) {
+            console.error("Failed to delete Mapbox tileset and/or source.");
+            throw error;
+        }
+    }
+    
+    try {
+        var response = await createTilesetSource(client, id, geojson);
+    } catch (error) {
+        console.error("Failed to create Mapbox tileset.");
+        throw error;
+    }
+    
+    try {
+        await createTileset(client, id, response.body.id);
+    } catch (error) {
+        console.error("Failed to create Mapbox tileset source.");
+        throw error;
+    }
+    console.log("Uploaded Mapbox tileset successfully.");
+    
+    try {
+        await publishTileset(client, id);
+    } catch (error) {
+        console.error("Failed to publish Mapbox tileset.");
+        throw error;
+    }
+    console.log("Published Mapbox tileset successfully. It may take a few minutes before processing completes.");
 };
 
 const createTilesetSource = (client, id, geojson) => {
@@ -69,9 +72,7 @@ const publishTileset = (client, id) => {
 };
 
 const deleteTilesetSource = (client, id) => {
-    return client.deleteTilesetSource({
-        id: id
-    }).send();
+    return client.deleteTilesetSource({ id }).send();
 };
 
 const deleteTileset = (client, id) => {
@@ -79,5 +80,3 @@ const deleteTileset = (client, id) => {
         tilesetId: process.env.MAPBOX_USERNAME + "." + id
     }).send();
 };
-
-export { mapbox };

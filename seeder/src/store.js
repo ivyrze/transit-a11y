@@ -1,6 +1,6 @@
 import { SchemaFieldTypes } from 'redis';
 
-const store = async (client, agency, stops, routes) => {
+export const store = async (client, agency, stops, routes) => {
     console.log("Storing " + stops.length + " stops into the database...");
     
     const transaction = client.multi();
@@ -41,7 +41,7 @@ const store = async (client, agency, stops, routes) => {
     console.log("Storing stop data completed successfully.");
 };
 
-const indicies = async client => {
+export const indicies = async client => {
     const existing = await client.ft._list();
     
     if (!existing.includes('idx:stops')) {
@@ -60,5 +60,3 @@ const indicies = async client => {
         return Promise.resolve();
     }
 };
-
-export { store, indicies };

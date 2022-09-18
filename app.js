@@ -12,7 +12,7 @@ import * as alerts from './alerts/index.js';
 
 dotenv.config();
 
-const app = express();
+export const app = express();
 
 // Setup development utilities
 app.use(morgan('dev'));
@@ -49,5 +49,3 @@ app.listen(port, () => {
 
 // Start alert polling
 alerts.start(10 * 60 * 1000);
-
-export { app };

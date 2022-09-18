@@ -7,7 +7,7 @@ import { default as temp } from 'temp';
 import * as turfUtils from '@turf/helpers';
 import turfCenter from '@turf/center';
 
-const load = async config => {
+export const load = async config => {
     temp.track();
     let archive = await downloadArchive(config);
     
@@ -50,8 +50,7 @@ const downloadArchive = config => {
         if (config.url) {
             console.log("Starting download of " + config.url + "...");
             
-            const { data, headers } = await axios(
-                { url: config.url, responseType: 'stream' });
+            const { data, headers } = await axios.get(config.url, { responseType: 'stream' });
             
             const factor = Math.pow(2, 20);
             let loader = new progress('Downloading [:bar] :rate/mbps :percent ',
@@ -183,5 +182,3 @@ const calculateAgencyCenter = routes => {
     
     return turfCenter(turfUtils.featureCollection(points)).geometry.coordinates;
 };
-
-export { load };

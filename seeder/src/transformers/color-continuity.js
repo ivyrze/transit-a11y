@@ -1,4 +1,4 @@
-const colorContinuity = (source) => {
+export const colorContinuity = (source) => {
     const colors = [
         'red', 'orange', 'yellow', 'green', 'blue', 'purple', 'pink', 'brown'
     ];
@@ -21,5 +21,3 @@ const colorContinuity = (source) => {
     
     return source;
 };
-
-export { colorContinuity };

@@ -2,7 +2,7 @@ import express from 'express';
 import { createClient } from 'redis';
 import { redisOptions, colorSort } from '../utils.js';
 
-var router = express.Router();
+export const router = express.Router();
 
 router.post('/', async function(req, res, next) {
     // Check incoming parameters
@@ -42,5 +42,3 @@ router.post('/', async function(req, res, next) {
     
     res.json({ results });
 });
-
-export { router };

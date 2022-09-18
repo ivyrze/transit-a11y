@@ -6,7 +6,7 @@ import { redisOptions } from '../utils.js';
 import * as cta from './agencies/chicago-cta.js';
 import * as trimet from './agencies/portland-trimet.js';
 
-const start = interval => {
+export const start = interval => {
     setInterval(tick, interval);
     setTimeout(tick, 1000);
 };
@@ -15,7 +15,9 @@ const tick = () => {
     console.log("Checking alerts APIs...");
     
     // Call database update after all agency alerts are retrieved
-    Promise.all([ cta, trimet ].map(agency => agency.status(synonyms))).then(update);
+    Promise.all([ cta, trimet ].map(agency => {
+        return agency.status(synonyms).catch(error => console.error(error));
+    })).then(update);
 };
 
 const update = async agencies => {
@@ -58,5 +60,3 @@ const clean = client => {
         cleanKeyPattern(client, "alerts:*")
     ]);
 };
-
-export { start };

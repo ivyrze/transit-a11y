@@ -2,7 +2,7 @@ import express from 'express';
 import { createClient } from 'redis';
 import { redisOptions } from '../utils.js';
 
-var router = express.Router();
+export const router = express.Router();
 
 router.get('/', async function(req, res, next) {
     // Establish database connection
@@ -22,5 +22,3 @@ router.get('/', async function(req, res, next) {
     
     res.json({ alerts });
 });
-
-export { router };

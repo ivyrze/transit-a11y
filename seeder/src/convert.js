@@ -13,8 +13,8 @@ const stopProperties = [
     'wheelchair_boarding'
 ];
 
-const geojson = (mode, dataset, local) => {
-    return new Promise((resolve, error) => {
+export const geojson = (mode, dataset, local) => {
+    return new Promise(resolve => {
         if (!local) {
             temp.track();
             var stream = temp.createWriteStream({ suffix: '.geojsonld' });
@@ -72,5 +72,3 @@ const stopsGeoJSON = stops => {
     
     return features;
 };
-
-export { geojson };

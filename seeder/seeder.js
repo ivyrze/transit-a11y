@@ -85,7 +85,6 @@ if (!local) {
     stopsPromise.then(json => mapbox('transit-a11y-stops', json))
     routesPromise.then(json => mapbox('transit-a11y-routes', json))
 } else {
-    Promise.all([ stopsPromise, routesPromise ]).then(() => {
-        console.log("Exported GeoJSON to the project root directory.");
-    });
+    await Promise.all([ stopsPromise, routesPromise ]);
+    console.log("Exported GeoJSON to the project root directory.");
 }
