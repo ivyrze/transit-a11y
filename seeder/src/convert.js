@@ -13,29 +13,29 @@ const stopProperties = [
     'wheelchair_boarding'
 ];
 
-export const geojson = (mode, dataset, local) => {
-    return new Promise(resolve => {
-        if (!local) {
-            temp.track();
-            var stream = temp.createWriteStream({ suffix: '.geojsonld' });
-        } else {
-            var stream = fs.createWriteStream(mode + '.geojsonld');
-        }
-        
-        const features = (mode == 'routes') ?
-            routesGeoJSON(dataset) : stopsGeoJSON(dataset);
-        
-        // Use line-delimited GeoJSON format
-        features.forEach(feature => {
-            stream.write(JSON.stringify(feature) + "\n");
-        });
-        
-        stream.end();
-        stream.on("finish", () => {
-            console.log("Converted " + mode + " to GeoJSON successfully.");
-            resolve(stream.path);
-        });
+export const geojson = async (mode, dataset, local) => {
+    if (!local) {
+        temp.track();
+        var stream = temp.createWriteStream({ suffix: '.geojsonld' });
+    } else {
+        var stream = fs.createWriteStream(mode + '.geojsonld');
+    }
+    
+    const features = (mode == 'routes') ?
+        routesGeoJSON(dataset) : stopsGeoJSON(dataset);
+    
+    // Use line-delimited GeoJSON format
+    features.forEach(feature => {
+        stream.write(JSON.stringify(feature) + "\n");
     });
+    
+    stream.end();
+    await new Promise(resolve => {
+        stream.on('finish', () => resolve());
+    });
+    
+    console.log("Converted " + mode + " to GeoJSON successfully.");
+    return stream.path;
 };
 
 const routesGeoJSON = routes => {

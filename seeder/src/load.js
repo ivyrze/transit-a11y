@@ -45,31 +45,31 @@ export const load = async config => {
     return { agency, stops, routes };
 };
 
-const downloadArchive = config => {
-    return new Promise(async (resolve, error) => {   
-        if (config.url) {
-            console.log("Starting download of " + config.url + "...");
-            
-            const { data, headers } = await axios.get(config.url, { responseType: 'stream' });
-            
-            const factor = Math.pow(2, 20);
-            let loader = new progress('Downloading [:bar] :rate/mbps :percent ',
-                { width: 51, total: parseInt(headers['content-length']) / factor });
-            
-            data.on('data', chunk => {
-                loader.tick(chunk.length / factor);
-            });
-            
-            let stream = temp.createWriteStream({ suffix: ".zip" });
-            data.pipe(stream).on('finish', () => {
-                resolve(stream.path);
-            });
-        } else if (config.path) {
-            resolve(config.path);
-        } else {
-            error('No agency URL or filename specified');
-        }
-    });
+const downloadArchive = async config => {
+    if (config.url) {
+        console.log("Starting download of " + config.url + "...");
+        
+        const { data, headers } = await axios.get(config.url, { responseType: 'stream' });
+        
+        const factor = Math.pow(2, 20);
+        let loader = new progress('Downloading [:bar] :rate/mbps :percent ',
+            { width: 51, total: parseInt(headers['content-length']) / factor });
+        
+        data.on('data', chunk => {
+            loader.tick(chunk.length / factor);
+        });
+        
+        let stream = temp.createWriteStream({ suffix: ".zip" });
+        await new Promise(resolve => {
+            data.pipe(stream).on('finish', () => resolve());
+        });
+        
+        return stream.path;
+    } else if (config.path) {
+        return config.path;
+    } else {
+        throw 'No agency URL or filename specified';
+    }
 };
 
 const readArchive = async archive => {
