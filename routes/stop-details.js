@@ -1,4 +1,5 @@
 import express from 'express';
+import httpErrors from 'http-errors';
 import { createClient } from 'redis';
 import { redisOptions } from '../utils.js';
 
@@ -8,7 +9,7 @@ router.post('/', async function(req, res, next) {
     // Check incoming parameters
     if (!req.body.id ||
         req.body.id.split('-').length <= 1) {
-        res.status(400).send(); next(); return;
+        next(new httpErrors.BadRequest()); return;
     }
     
     // Establish database connection
@@ -51,7 +52,7 @@ router.post('/', async function(req, res, next) {
         !details.agency ||
         !details.agency.name ||
         !details.agency.url) {
-        res.status(404).send(); next(); return;
+        next(new httpErrors.NotFound()); return;
     }
     
     res.json(details);

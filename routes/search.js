@@ -1,4 +1,5 @@
 import express from 'express';
+import httpErrors from 'http-errors';
 import { createClient } from 'redis';
 import { redisOptions, colorSort } from '../utils.js';
 
@@ -9,7 +10,7 @@ router.post('/', async function(req, res, next) {
     if (!req.body.query ||
         !req.body.longitude ||
         !req.body.latitude) {
-        res.status(400).send(); next(); return;
+        next(new httpErrors.BadRequest()); return;
     }
     
     // Establish database connection

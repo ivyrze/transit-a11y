@@ -1,4 +1,5 @@
 import express from 'express';
+import httpErrors from 'http-errors';
 import { createClient } from 'redis';
 import { redisOptions } from '../utils.js';
 
@@ -17,7 +18,7 @@ router.get('/', async function(req, res, next) {
     
     // Check outgoing data
     if (alerts == undefined) {
-        res.status(500).send(); next(); return;
+        next(new httpErrors.InternalServerError()); return;
     }
     
     res.json({ alerts });

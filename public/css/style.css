@@ -338,8 +338,37 @@ ul.stop-tags-container {
     margin-block-start: 14px;
 }
 
-.about-card p:last-of-type {
+.about-card p:last-of-type,
+.error-card p:last-of-type {
     margin-block-end: 10px;
+}
+
+.error-fullscreen {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100vh;
+    max-width: 460px;
+    margin-inline: auto;
+}
+
+.error-fullscreen,
+.error-card {
+    text-align: center;
+}
+
+.error-fullscreen > h1 {
+    margin-block: 0;
+    letter-spacing: -1px;
+}
+
+.error-icon::before {
+    display: block;
+    font-family: 'Accessibility Icon Pack';
+    font-size: 42px;
+    content: '\ea0d';
+    color: #232323;
+    margin-top: 8px;
 }
 
 @media screen and (prefers-color-scheme: dark) {
@@ -419,6 +448,10 @@ ul.stop-tags-container {
     
     .card-close:active {
         background-color: #2e2e2e;
+    }
+    
+    .error-icon::before {
+        color: #f4f4f4;
     }
     
     #map-container a {

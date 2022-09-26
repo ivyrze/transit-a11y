@@ -1,9 +1,19 @@
+const showCard = (selector, toggle = false) => {
+    $(".sidebar-card").not(selector).addClass("hidden");
+    (toggle) ?
+        $(selector).toggleClass("hidden") :
+        $(selector).removeClass("hidden");
+};
+
+const showError = () => showCard(".error-card");
+
 var i18n = {};
-$.getJSON("/js/i18n-strings.json").done(data => i18n = data);
+$.getJSON("/js/i18n-strings.json")
+    .done(data => i18n = data)
+    .fail(showError);
 
 $("h1.title > a").click(function () {
-    $(".sidebar-card").not(".about-card").addClass("hidden");
-    $(".about-card").toggleClass("hidden");
+    showCard(".about-card", true);
 });
 
 $("#search-container input").on('input', function () {
@@ -108,8 +118,7 @@ const openStop = id => {
         );
         $(".stop-details-card h2").text(data.name);
         
-        $(".sidebar-card").not(".stop-details-card").addClass("hidden");
-        $(".stop-details-card.hidden").removeClass("hidden");
+        showCard(".stop-details-card");
         
         $(".stop-details-card .source-link > a")
             .attr("href", data.agency.url)
@@ -119,11 +128,11 @@ const openStop = id => {
             data.coordinates.longitude,
             data.coordinates.latitude
         ]);
-    });
+    }).fail(showError);
 };
 
 const getAlerts = () => {
     $.get("/api/list-alerts").done(function (data) {
         updateMapAlerts(data.alerts);
-    });
+    }).fail(showError);
 };

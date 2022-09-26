@@ -8,6 +8,8 @@ import { router as searchRouter } from './routes/search.js';
 import { router as stopDetailsRouter } from './routes/stop-details.js';
 import { router as listAlertsRouter } from './routes/list-alerts.js';
 
+import { errorMiddleware, notFoundMiddleware } from './routes/error.js';
+
 import * as alerts from './alerts/index.js';
 
 dotenv.config();
@@ -40,6 +42,10 @@ app.use('/', indexRouter);
 app.use('/api/search', searchRouter);
 app.use('/api/stop-details', stopDetailsRouter);
 app.use('/api/list-alerts', listAlertsRouter);
+
+// Custom error page
+app.use(errorMiddleware);
+app.use(notFoundMiddleware);
 
 // Start server
 const port = process.env.PORT || 8000;
