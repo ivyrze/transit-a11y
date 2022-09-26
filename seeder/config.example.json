@@ -6,6 +6,7 @@
             "vehicle": 1,
             "transformations": [
                 {
+                    "source": "stops.stop_name",
                     "type": "parenthesis"
                 }
             ]
@@ -16,8 +17,19 @@
             "vehicle": 0,
             "transformations": [
                 {
+                    "source": "routes.route_long_name",
+                    "type": "remove",
+                    "target": "MAX"
+                },
+                {
+                    "source": "stops.stop_name",
                     "type": "remove",
                     "target": "MAX Station"
+                },
+                {
+                    "source": "stops.stop_id",
+                    "type": "remove",
+                    "target": "landmark"
                 }
             ]
         }

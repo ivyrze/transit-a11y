@@ -39,13 +39,17 @@ const processAgency = async config => {
     routes = routes.map(route => transformers.colorContinuity(route));
     
     // Config-specified transformations
-    if (config.transformations) {
-        config.transformations.forEach(transformation => {
-            stops = stops.map(stop => {
-                return transformers[transformation.type](stop, transformation, 'stop_name');
-            });
-        });
-    }
+    config.transformations?.forEach(transformation => {
+        const [ dataset, source ] = transformation.source.split('.');
+        
+        if (dataset == 'stops') {
+            stops = stops.map(stop => transformers[transformation.type](stop, transformation, source));
+        } else if (dataset == 'routes') {
+            routes = routes.map(route => transformers[transformation.type](route, transformation, source));
+        } else {
+            throw 'Unrecognized transformation source provided';
+        }
+    });
     
     // Store stops in Redis database
     await store(client, agency, stops, routes);
