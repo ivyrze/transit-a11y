@@ -21,11 +21,14 @@ const tick = () => {
 };
 
 const update = async agencies => {
+    // Remove failed promise results
+    agencies = agencies.filter(agency => agency);
+    
     // Establish database connection
     const client = createClient(redisOptions);
+    client.on('error', error => console.error(error));
     
-    client.on('error', (err) => console.error('Redis client error', err));
-    await client.connect();
+    try { await client.connect(); } catch { return; }
     
     // Remove all existing alerts
     await clean(client);

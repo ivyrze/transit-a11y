@@ -8,8 +8,8 @@ const agencyPrefix = 'trimet';
 export const status = async synonyms => {
     // Establish database connection
     const client = createClient(redisOptions);
+    client.on('error', error => console.error(error));
     
-    client.on('error', (err) => console.error('Redis client error', err));
     await client.connect();
     
     // Request alerts from agency API

@@ -15,9 +15,13 @@ router.post('/', async function(req, res, next) {
     
     // Establish database connection
     const client = createClient(redisOptions);
+    client.on('error', error => console.error(error));
     
-    client.on('error', (err) => console.error('Redis client error', err));
-    await client.connect();
+    try {
+        await client.connect();
+    } catch {
+        next(new httpErrors.InternalServerError()); return;
+    }
     
     // Run query, treating special characters as an OR operator
     const query = req.body.query.split(/[^\w\d]/g).filter(word => word).join("|");

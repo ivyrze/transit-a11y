@@ -19,8 +19,8 @@ const args = process.argv.slice(2);
 
 // Create database connection
 const client = createClient(redisOptions);
+client.on('error', error => console.error(error));
 
-client.on('error', (err) => console.error('Redis client error', err));
 await client.connect();
 
 // Remove existing database data

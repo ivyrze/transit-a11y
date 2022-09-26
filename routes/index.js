@@ -8,9 +8,13 @@ router.get([ '/', '/agency/:agency' ], async function(req, res, next) {
     if (req.params.agency) {
         // Establish database connection
         const client = createClient(redisOptions);
+        client.on('error', error => console.error(error));
         
-        client.on('error', (err) => console.error('Redis client error', err));
-        await client.connect();
+        try {
+            await client.connect();
+        } catch {
+            next(new httpErrors.InternalServerError()); return;
+        }
         
         var center = await client.hGet('agencies:' + req.params.agency, 'center');
         client.quit();

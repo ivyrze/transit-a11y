@@ -14,9 +14,13 @@ router.post('/', async function(req, res, next) {
     
     // Establish database connection
     const client = createClient(redisOptions);
+    client.on('error', error => console.error(error));
     
-    client.on('error', (err) => console.error('Redis client error', err));
-    await client.connect();
+    try {
+        await client.connect();
+    } catch {
+        next(new httpErrors.InternalServerError()); return;
+    }
     
     // Run query and parse output
     let details = await client.hGetAll('stops:' + req.body.id);
