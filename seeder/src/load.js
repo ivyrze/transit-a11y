@@ -12,8 +12,8 @@ export const load = async config => {
     let archive = await downloadArchive(config);
     
     // Import to intermediate database and query for relevant data
-    const database = await readArchive(archive);
-    let [ agencies, stops, routes ] = await loadPartialDataset(database, config.vehicle);
+    await readArchive(archive);
+    let [ agencies, stops, routes ] = await loadPartialDataset(config.vehicle);
     
     // Reduce down to single agency based on config key
     let agency = (agencies.length == 1) ? agencies[0] :
@@ -30,14 +30,14 @@ export const load = async config => {
     stops.forEach(stop => stop.wheelchair_boarding = stop.wheelchair_boarding ?? 1);
     
     // Link stops to the routes that serve them
-    stops = await associateStopsRoutes(database, stops, config.vehicle);
+    stops = await associateStopsRoutes(stops, config.vehicle);
     
     // Remove stops that are served by irrelevant vehicle types
     stops = stops.filter(stop => stop.routes.length);
     
     // Query for all shapes associated with every route
     for await (let route of routes) {
-        route.route_shapes = await assembleRouteShape(database, route.route_id);
+        route.route_shapes = await assembleRouteShape(route.route_id);
     }
     
     agency.agency_center = calculateAgencyCenter(routes);
@@ -121,12 +121,9 @@ const readArchive = async archive => {
     };
     
     await gtfs.importGtfs(config);
-    return config;
 };
 
-const loadPartialDataset = async (database, vehicle) => {
-    await gtfs.openDb(database);
-    
+const loadPartialDataset = async vehicle => {
     // Show only rail stations and routes
     const agencies = gtfs.getAgencies({}, [ 'agency_id', 'agency_name', 'agency_url' ]);
     const stops = gtfs.getStops({ location_type: 1 });
@@ -135,21 +132,19 @@ const loadPartialDataset = async (database, vehicle) => {
     return Promise.all([ agencies, stops, routes ]);
 };
 
-const associateStopsRoutes = async (database, stops, vehicle) => {
+const associateStopsRoutes = async (stops, vehicle) => {
     let loader = new progress('Processing [:bar] :percent :etas remaining ',
         { width: 50, total: stops.length });
     
     for await (let stop of stops) {
-        stop.routes = await associateStopRoutes(database, stop.stop_id, vehicle);
+        stop.routes = await associateStopRoutes(stop.stop_id, vehicle);
         loader.tick();
     }
     
     return stops;
 };
 
-const associateStopRoutes = async (database, stop, vehicle) => {
-    await gtfs.openDb(database);
-    
+const associateStopRoutes = async (stop, vehicle) => {
     let childStops = await gtfs.getStops({ parent_station: stop });
     
     const matches = await Promise.all(childStops.map(childStop =>
@@ -168,8 +163,7 @@ const associateStopRoutes = async (database, stop, vehicle) => {
     return Object.values(routes);
 };
 
-const assembleRouteShape = async (database, route) => {
-    await gtfs.openDb(database);
+const assembleRouteShape = route => {
     return gtfs.getShapes({ route_id: route });
 };
 
