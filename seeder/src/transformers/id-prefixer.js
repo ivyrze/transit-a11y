@@ -1,9 +1,9 @@
 export const idPrefixer = (source, id) => {
-    if (source.stop_id) {
-        source.stop_id = id + "-" + source.stop_id.replace('-', '');
+    const target = (source.stop_id) ? 'stop_id' : 'route_id';
+    source[target] = id + "-" + source[target];
+    
+    if (source.routes) {
         source.routes = source.routes.map(route => idPrefixer(route, id));
-    } else if (source.route_id) {
-        source.route_id = id + "-" + source.route_id;
     }
     
     return source;

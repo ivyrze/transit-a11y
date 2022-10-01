@@ -30,14 +30,6 @@ await clean(client);
 const processAgency = async config => {
     let { agency, stops, routes } = await load(config);
     
-    // Supplement with Sanity CMS data
-    stops = await extend(stops, config.id);
-    
-    // General transformations
-    stops = stops.map(stop => transformers.idPrefixer(stop, config.id));
-    routes = routes.map(route => transformers.idPrefixer(route, config.id));
-    routes = routes.map(route => transformers.colorContinuity(route));
-    
     // Config-specified transformations
     config.transformations?.forEach(transformation => {
         const [ dataset, source ] = transformation.source.split('.');
@@ -50,6 +42,18 @@ const processAgency = async config => {
             throw 'Unrecognized transformation source provided';
         }
     });
+    
+    // Remove disallowed characters
+    stops = stops.map(stop => transformers.idSanitizer(stop));
+    routes = routes.map(route => transformers.idSanitizer(route));
+    
+    // Supplement with Sanity CMS data
+    stops = await extend(stops, config.id);
+    
+    // General transformations
+    stops = stops.map(stop => transformers.idPrefixer(stop, config.id));
+    routes = routes.map(route => transformers.idPrefixer(route, config.id));
+    routes = routes.map(route => transformers.colorContinuity(route));
     
     // Store stops in Redis database
     await store(client, agency, stops, routes);
