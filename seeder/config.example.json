@@ -4,6 +4,7 @@
             "id": "cta",
             "url": "http://www.transitchicago.com/downloads/sch_data/google_transit.zip",
             "vehicle": 1,
+            "stations": true,
             "transformations": [
                 {
                     "source": "stops.stop_name",
@@ -15,6 +16,7 @@
             "id": "trimet",
             "url": "http://developer.trimet.org/schedule/gtfs.zip",
             "vehicle": 0,
+            "stations": true,
             "transformations": [
                 {
                     "source": "routes.route_long_name",

@@ -13,7 +13,7 @@ export const load = async config => {
     
     // Import to intermediate database and query for relevant data
     await readArchive(archive);
-    let [ agencies, stops, routes ] = await loadPartialDataset(config.vehicle);
+    let [ agencies, stops, routes ] = await loadPartialDataset(config.vehicle, config.stations);
     
     // Reduce down to single agency based on config key
     let agency = (agencies.length == 1) ? agencies[0] :
@@ -30,7 +30,7 @@ export const load = async config => {
     stops.forEach(stop => stop.wheelchair_boarding = stop.wheelchair_boarding ?? 1);
     
     // Link stops to the routes that serve them
-    stops = await associateStopsRoutes(stops, config.vehicle);
+    stops = await associateStopsRoutes(stops, config.vehicle, config.stations);
     
     // Remove stops that are served by irrelevant vehicle types
     stops = stops.filter(stop => stop.routes.length);
@@ -123,29 +123,30 @@ const readArchive = async archive => {
     await gtfs.importGtfs(config);
 };
 
-const loadPartialDataset = async vehicle => {
+const loadPartialDataset = async (vehicle, stations) => {
     // Show only rail stations and routes
     const agencies = gtfs.getAgencies({}, [ 'agency_id', 'agency_name', 'agency_url' ]);
-    const stops = gtfs.getStops({ location_type: 1 });
+    const stops = gtfs.getStops({ location_type: (stations) ? 1 : 0 });
     const routes = gtfs.getRoutes({ route_type: vehicle });
     
     return Promise.all([ agencies, stops, routes ]);
 };
 
-const associateStopsRoutes = async (stops, vehicle) => {
+const associateStopsRoutes = async (stops, vehicle, stations) => {
     let loader = new progress('Processing [:bar] :percent :etas remaining ',
         { width: 50, total: stops.length });
     
     for await (let stop of stops) {
-        stop.routes = await associateStopRoutes(stop.stop_id, vehicle);
+        stop.routes = await associateStopRoutes(stop.stop_id, vehicle, stations);
         loader.tick();
     }
     
     return stops;
 };
 
-const associateStopRoutes = async (stop, vehicle) => {
-    let childStops = await gtfs.getStops({ parent_station: stop });
+const associateStopRoutes = async (stop, vehicle, stations) => {
+    let childStops = (!stations) ? [ { stop_id: stop } ] :
+        await gtfs.getStops({ parent_station: stop });
     
     const matches = await Promise.all(childStops.map(childStop =>
         gtfs.getRoutes(
