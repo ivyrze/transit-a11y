@@ -7,6 +7,7 @@ import schemaTypes from 'all:part:@sanity/base/schema-type'
 // Import our custom schema types
 import agency from './agency'
 import stop from './stop'
+import route from './route'
 
 // Then we give our schema to the builder and provide the result to Sanity
 export default createSchema({
@@ -16,6 +17,7 @@ export default createSchema({
     // to the ones provided by any plugins that are installed
     types: schemaTypes.concat([
         agency,
-        stop
+        stop,
+        route
     ]),
 })

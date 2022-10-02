@@ -48,7 +48,7 @@ const processAgency = async config => {
     routes = routes.map(route => transformers.idSanitizer(route));
     
     // Supplement with Sanity CMS data
-    stops = await extend(stops, config.id);
+    ({ stops, routes } = await extend(stops, routes, config.id));
     
     // General transformations
     stops = stops.map(stop => transformers.idPrefixer(stop, config.id));

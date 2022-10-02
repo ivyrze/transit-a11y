@@ -1,22 +1,32 @@
 import sanity from '@sanity/client';
 import { sanityOptions } from '../../utils.js';
 
-export const extend = async (stops, id) => {
+export const extend = async (stops, routes, id) => {
     const client = sanity(sanityOptions);
     
-    const appendicies = await client.fetch('*[_type=="stop" && agency->id=="' + id + '"]{id, tags, url}');
+    const appendicies = await client.fetch(
+        '*[_type in [ "stop", "route" ] && agency->id=="' + id + '"]{\
+            _type == "stop" => { _type, id, tags, url },\
+            _type == "route" => { _type, id, "long_name": name }\
+        }'
+    );
     
-    stops.forEach(stop => {
-        let appendix = appendicies.find(appendix => stop.stop_id == appendix.id);
-        if (!appendix) { return; }
-        
-        delete appendix.id;
-        Object.keys(appendix).forEach(key => {
-            if (appendix[key]?.length) {
-                stop['stop_' + key] = appendix[key];
-            }
+    const dataset = { stop: stops, route: routes };
+    Object.keys(dataset).forEach(type => {
+        dataset[type].forEach(data => {
+            let appendix = appendicies.find(appendix => {
+                return appendix._type == type && appendix.id == data[type + '_id'];
+            });
+            if (!appendix) { return; }
+            
+            delete appendix.id;
+            Object.keys(appendix).forEach(key => {
+                if (appendix[key]?.length) {
+                    data[type + '_' + key] = appendix[key];
+                }
+            });
         });
     });
     
-    return stops;
+    return { stops, routes };
 };
