@@ -59,9 +59,13 @@ const showSearchResults = data => {
         result.routes.forEach(route => {
             var icon = $("<span>")
                 .addClass("route-icon")
-                .addClass("route-" + route.color)
                 .attr("aria-label", route.name)
-                .text(route.name.charAt(0))
+                .text(route.name.charAt(0));
+                
+            (route.color.startsWith("#")) ?
+                icon.css("background-color", route.color) :
+                icon.addClass("route-" + route.color);
+            
             button.append(icon);
         });
         
