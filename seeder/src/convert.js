@@ -4,14 +4,16 @@ import * as gtfsUtils from 'gtfs/lib/geojson-utils.js';
 import * as turfUtils from '@turf/helpers';
 import * as fs from 'fs';
 
-const routeProperties = [
-    'route_color'
-];
-const stopProperties = [
-    'stop_id',
-    'stop_name',
-    'wheelchair_boarding'
-];
+const schema = {
+    routes: [
+        'route_color'
+    ],
+    stops: [
+        'stop_id',
+        'stop_name',
+        'wheelchair_boarding'
+    ]
+};
 
 export const geojson = async (mode, dataset, local) => {
     if (!local) {
@@ -50,7 +52,7 @@ const routesGeoJSON = routes => {
         features = features[0];
         
         // Gather properties to be reattached
-        features.properties = Object.fromEntries(routeProperties.map(property => {
+        features.properties = Object.fromEntries(schema.routes.map(property => {
             return [ property, route[property] ];
         }));
         
@@ -64,7 +66,7 @@ const stopsGeoJSON = stops => {
     // Remove unnecessary properties
     features.forEach(feature => {
         Object.keys(feature.properties).forEach(property => {
-            if (!stopProperties.includes(property)) {
+            if (!schema.stops.includes(property)) {
                 delete feature.properties[property];
             }
         })

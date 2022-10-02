@@ -5,10 +5,19 @@ export const extend = async (stops, routes, id) => {
     const client = sanity(sanityOptions);
     
     const appendicies = await client.fetch(
-        '*[_type in [ "stop", "route" ] && agency->id=="' + id + '"]{\
-            _type == "stop" => { _type, id, tags, url },\
-            _type == "route" => { _type, id, "long_name": name }\
-        }'
+        `*[_type in [ "stop", "route" ] && agency->id=="' + id + '"]{
+            _type == "stop" => {
+                _type,
+                "stop_id": id,
+                "stop_tags": tags,
+                "stop_url": url
+            },
+            _type == "route" => {
+                _type,
+                "route_id": id,
+                "route_long_name": name
+            }
+        }`
     );
     
     const dataset = { stop: stops, route: routes };
@@ -19,10 +28,12 @@ export const extend = async (stops, routes, id) => {
             });
             if (!appendix) { return; }
             
-            delete appendix.id;
+            delete appendix._type;
+            delete appendix[type + "_id"];
+            
             Object.keys(appendix).forEach(key => {
                 if (appendix[key]?.length) {
-                    data[type + '_' + key] = appendix[key];
+                    data[key] = appendix[key];
                 }
             });
         });
