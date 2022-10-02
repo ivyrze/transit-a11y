@@ -30,7 +30,7 @@ $("#search-container input").on('input', function () {
             data: { query, longitude, latitude }
         }).done(showSearchResults);
     } else {
-        $("#search-results-container .search-result").remove();
+        $("#search-results-container > li").remove();
     }
 });
 
@@ -48,7 +48,7 @@ const prefersLightScheme = () => {
 };
 
 const showSearchResults = data => {
-    $("#search-results-container .search-result").remove();
+    $("#search-results-container > li").remove();
     data.results.forEach(result => {
         let button = $("<button>")
             .addClass("search-result")
@@ -65,12 +65,14 @@ const showSearchResults = data => {
             button.append(icon);
         });
         
-        $("#search-results-container").append(button);
+        $("#search-results-container").append(
+            $("<li>").append(button)
+        );
     });
 };
 
 const openSearchResult = event => {
-    $("#search-results-container .search-result").remove();
+    $("#search-results-container > li").remove();
     openStop($(event.target).attr("data-stop-id"));
 };
 
