@@ -1,13 +1,18 @@
 import sanity from '@sanity/client';
 import { sanityOptions } from '../../utils.js';
 
-export const extend = async (stops, routes, id) => {
+export const extend = async (agency, stops, routes, id) => {
     const client = sanity(sanityOptions);
     
     const appendicies = await client.fetch(
-        `*[_type in [ "stop", "route" ] && agency->id=="` + id + `"]{
+        `*[(_type == "agency" && id == "` + id + `")
+        || (_type in [ "stop", "route" ] && agency->id=="` + id + `")]{
+            _type,
+            _type == "agency" => {
+                "agency_id": id,
+                "agency_name": name
+            },
             _type == "stop" => {
-                _type,
                 "stop_id": id,
                 "stop_tags": tags,
                 "stop_url": url,
@@ -15,14 +20,13 @@ export const extend = async (stops, routes, id) => {
                 "accessibility_desc": description
             },
             _type == "route" => {
-                _type,
                 "route_id": id,
                 "route_long_name": name
             }
         }`
     );
     
-    const dataset = { stop: stops, route: routes };
+    const dataset = { agency: [ agency ], stop: stops, route: routes };
     Object.keys(dataset).forEach(type => {
         dataset[type].forEach(data => {
             let appendix = appendicies.find(appendix => {
@@ -42,5 +46,5 @@ export const extend = async (stops, routes, id) => {
         });
     });
     
-    return { stops, routes };
+    return { agency, stops, routes };
 };
