@@ -10,6 +10,7 @@ const schema = {
     stops: {
         id: { from: 'stop_id' },
         name: { from: 'stop_name' },
+        description: { from: 'accessibility_desc', optional: true },
         accessibility: { from: 'wheelchair_boarding' },
         coordinates: { generate: stop => stop.stop_lon + ',' + stop.stop_lat },
         url: { from: 'stop_url', optional: true },

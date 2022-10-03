@@ -119,8 +119,9 @@ const openStop = id => {
         }
         
         $(".stop-accessibility-info").text(
-            (state == 'state-warning') ?
-                data.alert.description : i18n.accessibilityStates[state].description
+            (state == 'state-warning') ? data.alert.description :
+                (data.description) ? data.description :
+                i18n.accessibilityStates[state].description
         );
         $(".stop-details-card h2").text(data.name);
         

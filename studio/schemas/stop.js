@@ -18,6 +18,26 @@ export default {
             description: 'Alternate stop names that could appear in service alerts'
         },
         {
+            name: 'accessibility',
+            type: 'string',
+            title: 'Accessibility state',
+            description: 'Overrides the provided wheelchair boarding value, but not warnings from alerts',
+            options: {
+                list: [
+                    { title: 'Defer to agency', value: undefined },
+                    { title: 'Likely accessible', value: '1' },
+                    { title: 'Not accessible', value: '2' },
+                ]
+            }
+        },
+        {
+            name: 'description',
+            type: 'text',
+            title: 'Accessibility description',
+            description: 'Overrides the generic accessibility state description',
+            rows: 3
+        },
+        {
             name: 'tags',
             type: 'array',
             of: [{ type: 'string' }],

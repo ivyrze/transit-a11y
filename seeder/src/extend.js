@@ -10,7 +10,9 @@ export const extend = async (stops, routes, id) => {
                 _type,
                 "stop_id": id,
                 "stop_tags": tags,
-                "stop_url": url
+                "stop_url": url,
+                "wheelchair_boarding": accessibility,
+                "accessibility_desc": description
             },
             _type == "route" => {
                 _type,
