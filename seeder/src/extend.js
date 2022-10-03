@@ -5,7 +5,7 @@ export const extend = async (stops, routes, id) => {
     const client = sanity(sanityOptions);
     
     const appendicies = await client.fetch(
-        `*[_type in [ "stop", "route" ] && agency->id=="' + id + '"]{
+        `*[_type in [ "stop", "route" ] && agency->id=="` + id + `"]{
             _type == "stop" => {
                 _type,
                 "stop_id": id,
@@ -24,7 +24,8 @@ export const extend = async (stops, routes, id) => {
     Object.keys(dataset).forEach(type => {
         dataset[type].forEach(data => {
             let appendix = appendicies.find(appendix => {
-                return appendix._type == type && appendix.id == data[type + '_id'];
+                return appendix[type + '_id'] == data[type + '_id']
+                    && appendix._type == type;
             });
             if (!appendix) { return; }
             
