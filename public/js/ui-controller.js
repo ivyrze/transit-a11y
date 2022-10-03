@@ -89,7 +89,7 @@ const openStop = id => {
         data: { id },
     }).done(function (data) {
         const state = (data.alert) ? 'state-warning' :
-            (parseInt(data.accessibility)) ? 'state-accessible' :
+            (parseInt(data.accessibility) == 1) ? 'state-accessible' :
             'state-inaccessible';
         
         $(".stop-accessibility-state")
