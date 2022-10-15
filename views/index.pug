@@ -27,6 +27,7 @@ block content
             button.search-submit(
                 aria-label='Submit search'
             )
+                span.icon.icon-search(aria-hidden='true')
             ul#search-results-container(
                 aria-label='Search results'
             )
@@ -35,11 +36,13 @@ block content
             .card-header
                 h2
                 button.card-close(aria-label='Close')
+                    span.icon.icon-close(aria-hidden='true')
             span.subtitle= 'Rail station'
             ul.stop-tags-container
                 li.stop-accessibility-state
             p.stop-accessibility-info
             a.stop-alert-link.link-external.hidden(target='_blank')= 'View service alert details'
+                span.icon.icon-link(aria-hidden='true')
             span.source-link='Source: '
                 a(target='_blank')
         
@@ -47,6 +50,7 @@ block content
             .card-header
                 h2= 'About'
                 button.card-close(aria-label='Close')
+                    span.icon.icon-close(aria-hidden='true')
             p
                 |Decades after the passage of the Americans with Disabilities Act, public
                 |transportation still remains largely inaccessible to a population that
@@ -60,7 +64,7 @@ block content
                 |so donation contributions are always appreciated.
         
         .error-card.sidebar-card.hidden
-            .error-icon
+            span.icon.icon-error(aria-hidden='true')
             h2= 'Something went wrong'
             p
                 | Things aren't working as expected on our end, sorry about that. Try again in a few minutes.

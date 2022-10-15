@@ -53,10 +53,9 @@ a:active {
     text-transform: uppercase;
 }
 
-.link-external::after {
-    content: '\ea02' / '';
-    font-family: 'Accessibility Icon Pack';
+.link-external > .icon {
     margin-left: 8px;
+    vertical-align: -1px;
 }
 
 #map-container {
@@ -140,11 +139,6 @@ h1.title > a {
 #search-container input:not(:placeholder-shown) + .search-submit {
     color: #000;
     cursor: pointer;
-}
-
-#search-container .search-submit::before {
-    font-family: 'Accessibility Icon Pack';
-    content: '\ea01' / '';
 }
 
 ul#search-results-container {
@@ -241,14 +235,9 @@ ul#search-results-container {
     background-color: #e4e4e4;
 }
 
-.card-close::before {
-    font-family: 'Accessibility Icon Pack';
-    content: '\ea03' / '';
-}
-
 .sidebar-card {
     padding: 22px 14px 28px;
-    overflow: scroll;
+    overflow-y: auto;
 }
 
 #search-container + .sidebar-card,
@@ -302,16 +291,11 @@ ul.stop-tags-container {
     padding-inline: 12px;
 }
 
-.stop-accessibility-state::before,
-.stop-tag::before {
-    font-family: 'Accessibility Icon Pack';
+.stop-accessibility-state > .icon,
+.stop-tag > .icon {
     margin-right: 8px;
     vertical-align: -2px;
 }
-
-.stop-accessibility-state.state-accessible::before { content: '\ea04' / ''; }
-.stop-accessibility-state.state-warning::before { content: '\ea05' / ''; }
-.stop-accessibility-state.state-inaccessible::before { content: '\ea06' / ''; }
 
 .stop-accessibility-state.state-accessible {
     color: #1a358f;
@@ -327,13 +311,6 @@ ul.stop-tags-container {
     color: #811616;
     background-color: #ff7d7d;
 }
-
-.stop-tag.tag-at-grade::before { content: '\ea07' / ''; }
-.stop-tag.tag-above-grade::before { content: '\ea08' / ''; }
-.stop-tag.tag-below-grade::before { content: '\ea09' / ''; }
-.stop-tag.tag-elevator::before { content: '\ea0a' / ''; }
-.stop-tag.tag-escalator::before { content: '\ea0b' / ''; }
-.stop-tag.tag-ramp-entrance::before { content: '\ea0c' / ''; }
 
 .about-card p:first-of-type {
     margin-block-start: 14px;
@@ -363,11 +340,9 @@ ul.stop-tags-container {
     letter-spacing: -1px;
 }
 
-.error-icon::before {
+.icon-error {
     display: block;
-    font-family: 'Accessibility Icon Pack';
     font-size: 42px;
-    content: '\ea0d' / '';
     color: #232323;
     margin-top: 8px;
 }
@@ -451,7 +426,7 @@ ul.stop-tags-container {
         background-color: #2e2e2e;
     }
     
-    .error-icon::before {
+    .icon-error {
         color: #f4f4f4;
     }
     

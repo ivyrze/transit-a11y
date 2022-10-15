@@ -1,13 +1,13 @@
 {
     "accessibilityStates": {
-        "state-warning": {
+        "warning": {
             "heading": "Service disruption"
         },
-        "state-accessible": {
+        "accessible": {
             "heading": "Likely accessible",
             "description": "This station's accessibility features are reported in working order."
         },
-        "state-inaccessible": {
+        "inaccessible": {
             "heading": "Not accessible",
             "description": "This station has significant access barriers and is not equipped with alternative entryways."
         }

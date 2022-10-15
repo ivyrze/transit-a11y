@@ -1,12 +1,4 @@
 @font-face {
-    font-family: "Accessibility Icon Pack";
-    src: url("../fonts/icon-pack.woff2") format("woff2"),
-        url("../fonts/icon-pack.woff") format("woff");
-    font-style: normal;
-    font-weight: 400;
-}
-
-@font-face {
     font-family: 'Akzidenz Grotesk';
     src: url('../fonts/akzidenz-light.woff2') format('woff2'),
         url('../fonts/akzidenz-light.woff') format('woff');
@@ -77,3 +69,29 @@
     font-style: italic;
     font-display: swap;
 }
+
+@font-face {
+    font-family: "Accessibility Icon Pack";
+    src: url("../fonts/icon-pack.woff2") format("woff2"),
+        url("../fonts/icon-pack.woff") format("woff");
+    font-style: normal;
+    font-weight: 400;
+}
+
+.icon::before {
+    font-family: 'Accessibility Icon Pack';
+}
+
+.icon.icon-search::before { content: '\ea01'; }
+.icon.icon-link::before { content: '\ea02'; }
+.icon.icon-close::before { content: '\ea03'; }
+.icon.icon-accessible::before { content: '\ea04'; }
+.icon.icon-warning::before { content: '\ea05'; }
+.icon.icon-inaccessible::before { content: '\ea06'; }
+.icon.icon-at-grade::before { content: '\ea07'; }
+.icon.icon-above-grade::before { content: '\ea08'; }
+.icon.icon-below-grade::before { content: '\ea09'; }
+.icon.icon-elevator::before { content: '\ea0a'; }
+.icon.icon-escalator::before { content: '\ea0b'; }
+.icon.icon-ramp-entrance::before { content: '\ea0c'; }
+.icon.icon-error::before { content: '\ea0d'; }

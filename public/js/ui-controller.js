@@ -88,13 +88,16 @@ const openStop = id => {
         encode: true,
         data: { id },
     }).done(function (data) {
-        const state = (data.alert) ? 'state-warning' :
-            (parseInt(data.accessibility) == 1) ? 'state-accessible' :
-            'state-inaccessible';
+        const state = (data.alert) ? 'warning' :
+            (parseInt(data.accessibility) == 1) ? 'accessible' :
+            'inaccessible';
         
         $(".stop-accessibility-state")
-            .attr("class", "stop-accessibility-state " + state)
-            .text(i18n.accessibilityStates[state].heading);
+            .attr("class", "stop-accessibility-state state-" + state)
+            .text(i18n.accessibilityStates[state].heading)
+            .prepend(
+                $("<span>").addClass("icon icon-" + state)
+            );
         
         $(".stop-tags-container > .stop-tag").remove();
         
@@ -103,8 +106,10 @@ const openStop = id => {
                 $(".stop-tags-container").append(
                     $("<li>")
                         .addClass("stop-tag")
-                        .addClass("tag-" + tag)
                         .text(i18n.tagLabels[tag])
+                        .prepend(
+                            $("<span>").addClass("icon icon-" + tag)
+                        )
                 )
             }
         }
@@ -119,7 +124,7 @@ const openStop = id => {
         }
         
         $(".stop-accessibility-info").text(
-            (state == 'state-warning') ? data.alert.description :
+            (state == 'warning') ? data.alert.description :
                 (data.description) ? data.description :
                 i18n.accessibilityStates[state].description
         );
