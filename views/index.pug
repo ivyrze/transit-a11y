@@ -1,6 +1,7 @@
 extends layout
+include mixins.pug
 
-block head
+block append head
     link(href='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.css', rel='stylesheet')
     script(src='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.js')
     script(src='/js/ui-controller.js', defer)
@@ -27,30 +28,21 @@ block content
             button.search-submit(
                 aria-label='Submit search'
             )
-                span.icon.icon-search(aria-hidden='true')
+                +icon('search')
             ul#search-results-container(
                 aria-label='Search results'
             )
         
-        .stop-details-card.sidebar-card.hidden
-            .card-header
-                h2
-                button.card-close(aria-label='Close')
-                    span.icon.icon-close(aria-hidden='true')
-            span.subtitle= 'Rail station'
+        +card('stop-details', '', 'Rail station')
             ul.stop-tags-container
                 li.stop-accessibility-state
             p.stop-accessibility-info
             a.stop-alert-link.link-external.hidden(target='_blank')= 'View service alert details'
-                span.icon.icon-link(aria-hidden='true')
+                +icon('link')
             span.source-link='Source: '
                 a(target='_blank')
         
-        .about-card.sidebar-card.hidden
-            .card-header
-                h2= 'About'
-                button.card-close(aria-label='Close')
-                    span.icon.icon-close(aria-hidden='true')
+        +card('about', 'About')
             p
                 |Decades after the passage of the Americans with Disabilities Act, public
                 |transportation still remains largely inaccessible to a population that
@@ -63,8 +55,8 @@ block content
                 |#[a(href='https://github.com/ivyrze/transit-a11y' target='blank')= 'open-source'],
                 |so donation contributions are always appreciated.
         
-        .error-card.sidebar-card.hidden
-            span.icon.icon-error(aria-hidden='true')
+        +card('error')
+            +icon('error')
             h2= 'Something went wrong'
             p
                 | Things aren't working as expected on our end, sorry about that. Try again in a few minutes.
