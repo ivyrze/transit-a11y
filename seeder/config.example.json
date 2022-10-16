@@ -13,6 +13,18 @@
             ]
         },
         {
+            "id": "dtc",
+            "url": "https://github.com/ivyrze/dtc-gtfs/releases/latest/download/gtfs-static.zip",
+            "vehicle": 12,
+            "stations": true
+        },
+        {
+            "id": "qline",
+            "url": "https://data.trilliumtransit.com/gtfs/qline-mi-us/qline-mi-us.zip",
+            "vehicle": 0,
+            "stations": false
+        },
+        {
             "id": "trimet",
             "url": "http://developer.trimet.org/schedule/gtfs.zip",
             "vehicle": 0,
