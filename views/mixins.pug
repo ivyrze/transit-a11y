@@ -6,7 +6,7 @@ mixin card(selector, header, subtitle)
                 button.card-close(aria-label='Close')
                     +icon('close')
             if subtitle
-                span.subtitle: #{subtitle}
+                span.subtitle #{subtitle}
         block
 
 mixin icon(name)
