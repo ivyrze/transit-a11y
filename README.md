@@ -6,6 +6,8 @@ Currently supports the following agency permalinks:
 
 - Chicago CTA: [`/agency/cta`](https://isthemetroaccessible.com/agency/cta)
 - Portland TriMet MAX: [`/agency/trimet`](https://isthemetroaccessible.com/agency/trimet)
+- Detroit People Mover: [`/agency/dtc`](https://isthemetroaccessible.com/agency/dtc)
+- Detroit QLine: [`/agency/qline`](https://isthemetroaccessible.com/agency/qline)
 
 ## Initial Setup
 Setup your environment variables by referencing `.env.example` or the [wiki documentation](https://github.com/ivyrze/transit-a11y/wiki/Setting-up-environment-variables). Then, install dependencies and seed the database with GTFS data. This may take several minutes.
