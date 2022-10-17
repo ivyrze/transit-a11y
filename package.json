@@ -25,7 +25,7 @@
     "redis": "^4.1.0"
   },
   "devDependencies": {
-    "@mapbox/mapbox-sdk": "^0.13.4",
+    "@mapbox/mapbox-sdk": "0.13.4",
     "@turf/center": "^6.5.0",
     "@turf/combine": "^6.5.0",
     "@turf/helpers": "^6.5.0",
