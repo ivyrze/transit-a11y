@@ -21,6 +21,11 @@ router.get([ '/', '/agency/:agency' ], async function(req, res, next) {
     let bounds = await client.hGet('agencies:' + agency, 'bounds');
     client.quit();
     
+    // Show a not found error for incorrect agency permalinks
+    if (!bounds) {
+        next(new httpErrors.NotFound()); return;
+    }
+    
     bounds = bounds.split(',').map(coordinate => parseFloat(coordinate));
     
     res.render('index', {
