@@ -178,6 +178,6 @@ const calculateAgencyBounds = routes => {
         }));
     });
 
-	const bounds = turfBounds(turfUtils.featureCollection(points));
-	return [ bounds[0], bounds[3], bounds[2], bounds[1] ];
+    const bounds = turfBounds(turfUtils.featureCollection(points));
+    return [ bounds[0], bounds[3], bounds[2], bounds[1] ];
 };
