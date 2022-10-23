@@ -70,6 +70,10 @@ export const store = async (client, agency, stops, routes) => {
     console.log("Storing stop data completed successfully.");
 };
 
+export const defaults = (client, config) => {
+    return client.hSet('config', 'default', config.default);
+};
+
 export const indicies = async client => {
     const existing = await client.ft._list();
     

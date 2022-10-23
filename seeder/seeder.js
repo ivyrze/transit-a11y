@@ -6,7 +6,7 @@ import { redisOptions } from '../utils.js';
 import { clean } from './src/clean.js';
 import { load } from './src/load.js';
 import { extend } from './src/extend.js';
-import { store, indicies } from './src/store.js';
+import { store, defaults, indicies } from './src/store.js';
 import { geojson } from './src/convert.js';
 import { mapbox } from './src/upload.js';
 
@@ -66,7 +66,8 @@ for await (let config of configs.agencies) {
 }
 
 // Create indicies
-indicies(client).then(() => client.quit());
+await Promise.all([ defaults(client, configs), indicies(client) ]);
+client.quit();
 
 // Respect short-circuit command line option
 if (args.includes('--skip-geojson')) {
