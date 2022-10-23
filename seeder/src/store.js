@@ -5,7 +5,7 @@ const schema = {
         id: { from: 'agency_id' },
         name: { from: 'agency_name' },
         url: { from: 'agency_url' },
-        center: { from: 'agency_center', apply: center => center.join(',') }
+        bounds: { from: 'agency_bounds', apply: bounds => bounds.join(',') }
     },
     stops: {
         id: { from: 'stop_id' },

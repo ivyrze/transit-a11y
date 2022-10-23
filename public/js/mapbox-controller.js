@@ -2,7 +2,7 @@ mapboxgl.accessToken = options.accessToken;
 const map = new mapboxgl.Map({
     container: 'map-container',
     style: prefersLightScheme() ? options.lightStyleUrl : options.darkStyleUrl,
-    ...(options.mapCenter && { center: options.mapCenter, zoom: 10 })
+    ...(options.mapBounds && { bounds: options.mapBounds, fitBoundsOptions: { padding: 72 } })
 });
 
 const layers = [

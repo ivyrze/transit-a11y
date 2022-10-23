@@ -16,11 +16,11 @@ router.get([ '/', '/agency/:agency' ], async function(req, res, next) {
             next(new httpErrors.InternalServerError()); return;
         }
         
-        var center = await client.hGet('agencies:' + req.params.agency, 'center');
+        var bounds = await client.hGet('agencies:' + req.params.agency, 'bounds');
         client.quit();
         
-        if (center) {
-            center = center.split(',').map(coordinate => parseFloat(coordinate));
+        if (bounds) {
+            bounds = bounds.split(',').map(coordinate => parseFloat(coordinate));
         }
     }
     
@@ -30,7 +30,7 @@ router.get([ '/', '/agency/:agency' ], async function(req, res, next) {
             accessToken: process.env.MAPBOX_PUBLIC_ACCESS_TOKEN,
             lightStyleUrl: process.env.MAPBOX_LIGHT_STYLE_URL,
             darkStyleUrl: process.env.MAPBOX_DARK_STYLE_URL,
-            ...(center && { mapCenter: center })
+            ...(bounds && { mapBounds: bounds })
         }
     });
 });

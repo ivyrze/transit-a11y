@@ -5,7 +5,7 @@ import axios from 'axios';
 import progress from 'progress';
 import { default as temp } from 'temp';
 import * as turfUtils from '@turf/helpers';
-import turfCenter from '@turf/center';
+import turfBounds from '@turf/bbox';
 
 export const load = async config => {
     temp.track();
@@ -40,7 +40,7 @@ export const load = async config => {
         route.route_shapes = await assembleRouteShape(route.route_id);
     }
     
-    agency.agency_center = calculateAgencyCenter(routes);
+    agency.agency_bounds = calculateAgencyBounds(routes);
     
     return { agency, stops, routes };
 };
@@ -168,13 +168,16 @@ const assembleRouteShape = route => {
     return gtfs.getShapes({ route_id: route });
 };
 
-const calculateAgencyCenter = routes => {
+// Inputs: minX, minY, maxX, maxY
+// Output: South, West, North, East
+const calculateAgencyBounds = routes => {
     let points = [];
     routes.forEach(route => {
         points = points.concat(route.route_shapes.map(shape => {
             return turfUtils.point([ shape.shape_pt_lon, shape.shape_pt_lat ]);
         }));
     });
-    
-    return turfCenter(turfUtils.featureCollection(points)).geometry.coordinates;
+
+	const bounds = turfBounds(turfUtils.featureCollection(points));
+	return [ bounds[0], bounds[3], bounds[2], bounds[1] ];
 };
