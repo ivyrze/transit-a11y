@@ -77,7 +77,7 @@ const showSearchResults = data => {
 
 const openSearchResult = event => {
     $("#search-results-container > li").remove();
-    openStop($(event.target).attr("data-stop-id"));
+    openStop($(event.currentTarget).attr("data-stop-id"));
 };
 
 const openStop = id => {
