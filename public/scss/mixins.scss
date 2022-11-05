@@ -1,0 +1,20 @@
+@use 'sass:map';
+
+@function map-deep-get($map, $keys...) {
+    @each $key in $keys {
+        $map: map.get($map, $key);
+    }
+    @return $map;
+}
+
+@function weight($variant) {
+    @return map-deep-get($font-faces, 'Akzidenz Grotesk', 'variants', $variant, 'weight');
+}
+
+@mixin dark() {
+    @media (prefers-color-scheme: dark) {
+        & {
+            @content;
+        }
+    }
+}

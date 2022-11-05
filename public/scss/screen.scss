@@ -1,0 +1,452 @@
+@use 'sass:list';
+
+body {
+    font-family: 'Akzidenz Grotesk', 'Helvetica Neue', sans-serif;
+    font-size: 18px;
+    line-height: 1.6;
+    color: #454545;
+    margin: 0;
+    
+    @include dark {
+        color: #ccc;
+        background-color: #2a2a2a;
+    }
+}
+
+button {
+    appearance: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-align: center;
+}
+
+h1,
+h2,
+button {
+    color: #1f1f1f;
+    
+    @include dark {
+        color: #f9f9f9;
+    }
+}
+
+input {
+    color: #000;
+    
+    @include dark {
+        color: #fff;
+    }
+}
+
+a {
+    color: #4b5f9f;
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.3s ease;
+    
+    &:hover,
+    &:active {
+        border-bottom-color: currentcolor;
+    }
+    
+    @include dark {
+        color: #7786b6;
+    }
+}
+
+.hidden {
+    display: none !important;
+}
+
+.link-external {
+    color: inherit;
+    font-size: 0.75em;
+    font-weight: weight('medium');
+    text-transform: uppercase;
+    
+    & > .icon {
+        margin-left: 8px;
+        vertical-align: -1px;
+    }
+}
+
+#map-container {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    
+    @include dark {
+        a {
+            border-bottom: none;
+        }
+        
+        .mapboxgl-ctrl.mapboxgl-ctrl-attrib {
+            background-color: rgba(0, 0, 0, 0.2);
+        }
+        
+        .mapboxgl-ctrl-attrib-button {
+            filter: invert(0.6);
+        }
+        
+        .mapboxgl-ctrl-attrib a {
+            color: #999;
+        }
+        
+        a.mapboxgl-ctrl-logo {
+            opacity: 0.5;
+        }
+    }
+}
+
+#sidebar-container {
+    display: flex;
+    flex-direction: column;
+    width: min-content;
+    max-width: 100%;
+    max-height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding: 30px 30px 50px;
+}
+
+h1.title {
+    font-size: 34px;
+    font-weight: weight('light');
+    line-height: 1.25;
+    margin: 15px 0;
+    text-transform: lowercase;
+    text-shadow: 0 0 35px #f3f3f3;
+    
+    @include dark {
+        text-shadow: 0 0 35px #070707;
+    }
+    
+    & > a {
+        color: inherit;
+        cursor: pointer;
+        padding-bottom: 4px;
+        
+        @include dark {
+            color: inherit;
+        }
+    }
+}
+
+#search-container,
+.sidebar-card {
+    width: 460px;
+    max-width: 100%;
+    background-color: #fff;
+    box-shadow: 0 5px 25px rgb(0 0 0 / 25%);
+}
+
+#search-container,
+#search-container input,
+.sidebar-card {
+    border-radius: 10px;
+    overflow: hidden;
+    
+    @include dark {
+        background-color: #111;
+    }
+}
+
+#search-container {
+    position: relative;
+    padding: 2px;
+    flex-shrink: 0;
+    
+    input {
+        width: 100%;
+        font-size: 22px;
+        padding: 12px;
+        padding-right: 2.5em;
+        border: none;
+        letter-spacing: 0.5px;
+        
+        &:placeholder-shown {
+            font-style: italic;
+        }
+    }
+    
+    .search-submit {
+        position: absolute;
+        top: 9px;
+        right: 14px;
+        padding: 4px 6px;
+        font-size: 22px;
+        color: #777;
+        cursor: not-allowed;
+    }
+    
+    input:not(:placeholder-shown) + .search-submit {
+        color: #000;
+        cursor: pointer;
+        
+        @include dark {
+            color: #fff;
+        }
+    }
+}
+
+#search-results-container {
+    margin: 0 12px;
+    padding: 10px 0;
+    border-top: 1px solid #eee;
+    list-style: none;
+    
+    @include dark {
+        border-top-color: #272727;
+    }
+
+    &:empty {
+        padding: 0;
+        border: none;
+    }
+    
+    .search-result {
+        width: 100%;
+        color: #666;
+        font-size: 18px;
+        text-align: left;
+        padding: 4px 0;
+        border-radius: 8px;
+        letter-spacing: 1px;
+        cursor: pointer;
+        transition: color 0.3s ease;
+        
+        @include dark {
+            color: #bbb;
+        }
+    }
+    
+    .search-result:hover {
+        color: #333;
+        
+        @include dark {
+            color: #e8e8e8;
+        }
+    }
+    
+    & > li + li {
+        margin-top: 4px;
+    }
+}
+
+.search-result {
+    & > .route-icon {
+        display: inline-block;
+        width: 1rem;
+        line-height: 1rem;
+        aspect-ratio: 1 / 1;
+        border-radius: 50%;
+        color: #fff;
+        font-size: 12px;
+        font-weight: weight('medium');
+        text-align: center;
+        vertical-align: 1px;
+        letter-spacing: 0;
+        margin-left: 8px;
+        opacity: 0.9;
+        transition: opacity 0.3s ease;
+        
+        @include dark {
+            color: #222;
+        }
+    }
+    
+    &:hover > .route-icon {
+        opacity: 1;
+    }
+}
+
+.route-icon {
+    & + & {
+        margin-left: 6px;
+    }
+    
+    $colors: (
+        'red': #fe5757,
+        'orange': #ffa233,
+        'yellow': #ffd200,
+        'green': #8fdd3c,
+        'blue': #7796ff,
+        'purple': #c77bff,
+        'pink': #ff85c1,
+        'brown': #d39267
+    );
+    
+    @each $name, $color in $colors {
+        &.route-#{$name} {
+            background-color: $color;
+        }
+    }
+}
+
+.card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+.card-close {
+    position: relative;
+    top: 0;
+    right: 0;
+    font-size: 24px;
+    line-height: 1;
+    width: 1.6em;
+    aspect-ratio: 1 / 1;
+    border-radius: 50%;
+    padding: 3px 0 0;
+    margin-right: -2px;
+    transition: background-color 0.2s ease;
+    
+    &:hover {
+        background-color: #f3f3f3;
+        
+        @include dark {
+            background-color: #212121;
+        }
+    }
+    
+    &:active {
+        background-color: #e4e4e4;
+        
+        @include dark {
+            background-color: #2e2e2e;
+        }
+    }
+}
+
+.sidebar-card {
+    padding: 22px 14px 28px;
+    overflow-y: auto;
+
+    & + &,
+    #search-container + & {
+        margin-top: 24px;
+    }
+    
+    h2 {
+        font-size: 25px;
+        font-weight: weight('medium');
+        letter-spacing: -0.5px;
+        margin-block: 0;
+    }
+    
+    .subtitle {
+        letter-spacing: 0.25px;
+        opacity: 0.5;
+    }
+}
+
+.stop-details-card {
+    .stop-alert-link {
+        display: inline-block;
+        margin-bottom: 2px;
+    }
+    
+    .source-link {
+        display: block;
+        font-size: 16px;
+        font-weight: weight('light');
+        opacity: 0.4;
+        
+        & > a {
+            color: inherit;
+        }
+    }
+}
+
+.stop-tags-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    font-size: 16px;
+    font-weight: weight('medium');
+    list-style: none;
+    padding: 0;
+}
+
+.stop-tag,
+.stop-accessibility-state {
+    line-height: 2em;
+    border-radius: 1em;
+    background-color: #ededed;
+    padding-inline: 12px;
+    
+    & > .icon {
+        margin-right: 8px;
+        vertical-align: -2px;
+    }
+}
+
+.stop-tag {
+    @include dark {
+        color: #dbdbdb;
+        background-color: #222;
+    }
+}
+
+.stop-accessibility-state {
+    $colors: (
+        'accessible': (#85a2ff, #1a358f, #242e4f, #b2c2ff),
+        'warning': (#ffd57c, #6d4c07, #372a15, #f2c789),
+        'inaccessible': (#ff7d7d, #811616, #361717, #fdacac)
+    );
+    
+    @each $name, $color in $colors {
+        &.state-#{$name} {
+            background-color: list.nth($color, 1);
+            color: list.nth($color, 2);
+            
+            @include dark {
+                background-color: list.nth($color, 3);
+                color: list.nth($color, 4);
+            }
+        }
+    }
+}
+
+.about-card p:first-of-type {
+    margin-block-start: 14px;
+}
+
+.about-card p:last-of-type,
+.error-card p:last-of-type {
+    margin-block-end: 10px;
+}
+
+.error-fullscreen {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100vh;
+    max-width: 460px;
+    margin-inline: auto;
+    
+    & > h1 {
+        margin-block: 0;
+        letter-spacing: -1px;
+    }
+}
+
+.error-fullscreen,
+.error-card {
+    text-align: center;
+}
+
+.icon-error {
+    display: block;
+    font-size: 42px;
+    color: #232323;
+    margin-top: 8px;
+    
+    @include dark {
+        color: #f4f4f4;
+    }
+}

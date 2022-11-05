@@ -1,0 +1,9 @@
+@import 'mixins';
+
+@import 'fonts';
+@import 'normalize';
+@import 'screen';
+
+@media screen and (max-width: 480px) {
+    @import 'mobile';
+}

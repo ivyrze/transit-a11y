@@ -1,0 +1,81 @@
+$font-faces: (
+    'Akzidenz Grotesk': (
+        prefix: 'akzidenz',
+        variants: (
+            'light': (
+                weight: 300, style: normal
+            ),
+            'light-italic': (
+                weight: 300, style: italic
+            ),
+            'regular': (
+                weight: normal, style: normal
+            ),
+            'regular-italic': (
+                weight: normal, style: italic
+            ),
+            'medium': (
+                weight: 500, style: normal
+            ),
+            'medium-italic': (
+                weight: 500, style: italic
+            ),
+            'bold': (
+                weight: bold, style: normal
+            ),
+            'bold-italic': (
+                weight: bold, style: italic
+            )
+        )
+    ),
+    'Accessibility Icon Pack': (
+        prefix: 'icon',
+        variants: (
+            'pack': (
+                weight: 400, style: normal
+            )
+        )
+    )
+);
+
+@each $name, $options in $font-faces {
+    $prefix: map-get($options, 'prefix');
+    @each $slug, $variant in map-get($options, 'variants') {
+        @font-face {
+            font-family: $name;
+            src: url('../fonts/' + $prefix + '-' + $slug + '.woff2') format('woff2'),
+                url('../fonts/' + $prefix + '-' + $slug + '.woff') format('woff');
+            font-weight: map-get($variant, 'weight');
+            font-style: map-get($variant, 'style');
+            font-display: swap;
+        }
+    }
+}
+
+.icon {
+    &::before {
+        font-family: 'Accessibility Icon Pack';
+    }
+    
+    $icons: (
+        'search': '\ea01',
+        'link': '\ea02',
+        'close': '\ea03',
+        'accessible': '\ea04',
+        'warning': '\ea05',
+        'inaccessible': '\ea06',
+        'at-grade': '\ea07',
+        'above-grade': '\ea08',
+        'below-grade': '\ea09',
+        'elevator': '\ea0a',
+        'escalator': '\ea0b',
+        'ramp-entrance': '\ea0c',
+        'error': '\ea0d'
+    );
+    
+    @each $name, $glyph in $icons {
+        &.icon-#{$name}::before {
+            content: $glyph;
+        }
+    }
+}
