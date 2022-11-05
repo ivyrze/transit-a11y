@@ -60,7 +60,7 @@ const showSearchResults = data => {
             var icon = $("<span>")
                 .addClass("route-icon")
                 .attr("aria-label", route.name)
-                .text(route.name.charAt(0));
+                .text(route.number);
                 
             (route.color.startsWith("#")) ?
                 icon.css("background-color", route.color) :

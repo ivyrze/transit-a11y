@@ -319,16 +319,15 @@ h1.title {
 .search-result {
     & > .route-icon {
         display: inline-block;
-        width: 1rem;
         line-height: 1rem;
-        aspect-ratio: 1 / 1;
-        border-radius: 50%;
+        border-radius: 0.5rem;
         color: #fff;
         font-size: 12px;
         font-weight: weight('medium');
         text-align: center;
         vertical-align: 1px;
         letter-spacing: 0;
+        padding: 0 5px;
         margin-left: 8px;
         opacity: 0.9;
         transition: opacity 0.3s ease;

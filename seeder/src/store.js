@@ -19,7 +19,12 @@ const schema = {
     },
     routes: {
         id: { from: 'route_id' },
-        name: { generate: route => route.route_long_name ?? route.route_short_name },
+        name: { generate: route =>
+            (route.route_long_name ?? route.route_short_name)
+        },
+        number: { generate: route =>
+            (route.route_short_name ?? route.route_long_name).match(/\w(?!.*\d)|\d+/)[0]
+        },
         color: { from: 'route_color' }
     }
 };
