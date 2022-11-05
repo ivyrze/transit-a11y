@@ -58,19 +58,25 @@ $font-faces: (
     }
     
     $icons: (
-        'search': '\ea01',
-        'link': '\ea02',
-        'close': '\ea03',
-        'accessible': '\ea04',
-        'warning': '\ea05',
-        'inaccessible': '\ea06',
-        'at-grade': '\ea07',
-        'above-grade': '\ea08',
-        'below-grade': '\ea09',
-        'elevator': '\ea0a',
-        'escalator': '\ea0b',
-        'ramp-entrance': '\ea0c',
-        'error': '\ea0d'
+        'search': '\e000',
+        'close': '\e001',
+        'add': '\e002',
+        'link': '\e003',
+        'error': '\e004',
+        'accessible': '\e005',
+        'warning': '\e006',
+        'inaccessible': '\e007',
+        'unknown': '\e008',
+        'at-grade': '\e009',
+        'above-grade': '\e00a',
+        'below-grade': '\e00b',
+        'elevator': '\e00c',
+        'escalator': '\e00d',
+        'ramp-entrance': '\e00e',
+        'bench': '\e00f',
+        'shelter': '\e010',
+        'display': '\e011',
+        'heating': '\e012'
     );
     
     @each $name, $glyph in $icons {

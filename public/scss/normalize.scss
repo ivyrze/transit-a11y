@@ -4,6 +4,52 @@
 }
 
 button,
-input {
+input,
+select,
+textarea {
     font: inherit;
+    appearance: none;
+    background: none;
+    border: none;
+}
+
+button {
+    cursor: pointer;
+    text-align: center;
+}
+
+select,
+textarea {
+    width: 100%;
+}
+
+textarea {
+    resize: none;
+}
+
+fieldset {
+    border: none;
+    margin: 0;
+    padding: 0;
+}
+
+select {
+    background-image:
+        linear-gradient(45deg, transparent 50%, #777 50%),
+        linear-gradient(135deg, #777 50%, transparent 50%);
+    background-position:
+        calc(100% - 20px) calc(1em + 4px),
+        calc(100% - 15px) calc(1em + 4px);
+    background-size:
+        5px 5px, 5px 5px;
+    background-repeat: no-repeat;
+    
+    &:focus {
+        background-image:
+            linear-gradient(45deg, #777 50%, transparent 50%),
+            linear-gradient(135deg, transparent 50%, #777 50%);
+        background-position:
+            calc(100% - 15px) calc(1em + 4px),
+            calc(100% - 20px) calc(1em + 4px);
+    }
 }

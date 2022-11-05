@@ -1,10 +1,11 @@
-mixin card(selector, header, subtitle)
+mixin card(selector, header, subtitle, close = true)
     div(class=`sidebar-card ${selector}-card hidden`)
         if header || subtitle
             .card-header
                 h2= header
-                button.card-close(aria-label='Close')
-                    +icon('close')
+                if close
+                    button.card-close(aria-label='Close')
+                        +icon('close')
             if subtitle
                 span.subtitle #{subtitle}
         block

@@ -42,7 +42,46 @@ block content
             span.source-link='Source: '
                 a(target='_blank')
         
-        +card('about', 'About')
+        +card('review-form', 'Rosa Parks Transit Center', 'Bus stop', false)
+            form(
+                action='/api/submit-review'
+                method='post'
+                autocomplete='off'
+            )
+                fieldset
+                    legend= 'What features are available at this stop?'
+                    ul.feature-option-container
+                        li.feature-option
+                            input#feature-bench(type='checkbox' name='features[bench]' checked)
+                            label(for='feature-bench')
+                                +icon('bench')
+                                = 'Bench'
+                        li.feature-option
+                            input#feature-shelter(type='checkbox' name='features[shelter]')
+                            label(for='feature-shelter')
+                                +icon('shelter')
+                                = 'Shelter'
+                        li.feature-option
+                            input#feature-display(type='checkbox' name='features[display]')
+                            label(for='feature-display')
+                                +icon('display')
+                                = 'Display'
+                        li.feature-option
+                            input#feature-heating(type='checkbox' name='features[heating]')
+                            label(for='feature-heating')
+                                +icon('heating')
+                                = 'Heating'
+                fieldset
+                    legend= 'What\'s the accessibility state at this stop?'
+                    select(name='state')
+                fieldset
+                    legend= 'Any additional comments?'
+                    textarea(name="comments" placeholder='Provide additional details about this stop’s accessibility that may be useful to other riders.' rows='3')
+                fieldset.button-set
+                    button.button-filled.button-primary(type='submit')= 'Submit'
+                    button.button-filled.form-cancel(type='button')= 'Cancel'
+        
+        +card('about', 'About', undefined, false)
             p
                 |Decades after the passage of the Americans with Disabilities Act, public
                 |transportation still remains largely inaccessible to a population that

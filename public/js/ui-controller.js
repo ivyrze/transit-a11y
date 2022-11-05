@@ -39,7 +39,7 @@ $("form#search-container").on('submit', function (event) {
     event.preventDefault();
 });
 
-$(".card-close").click(function () {
+$(".card-close, .form-cancel").click(function () {
     $(this).parents(".sidebar-card").addClass("hidden");
 });
 
