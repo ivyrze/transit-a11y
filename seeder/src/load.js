@@ -40,6 +40,9 @@ export const load = async config => {
         route.route_shapes = await assembleRouteShape(route.route_id);
     }
     
+    // Remove routes that have no trips associated with them
+    routes = routes.filter(route => route.route_shapes.length);
+    
     agency.agency_bounds = calculateAgencyBounds(routes);
     
     return { agency, stops, routes };
