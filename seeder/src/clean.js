@@ -9,7 +9,8 @@ export const clean = async client => {
         client.del("routes"),
         cleanKeyPattern(client, "agencies:*"),
         cleanKeyPattern(client, "stops:*"),
-        cleanKeyPattern(client, "routes:*")
+        cleanKeyPattern(client, "routes:*"),
+        cleanKeyPattern(client, "geometry:*")
     ]);
     
     console.log("Cleaning completed successfully.");

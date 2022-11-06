@@ -1,0 +1,539 @@
+{
+    "light-mode": [
+        {
+            "id": "route-outline",
+            "type": "line",
+            "source": "internal-api",
+            "source-layer": "routes",
+            "minzoom": 8,
+            "layout": {"line-cap": "round", "line-join": "round"},
+            "paint": {
+                "line-width": [
+                    "interpolate",
+                    ["linear"],
+                    ["zoom"],
+                    11,
+                    6,
+                    16,
+                    30,
+                    22,
+                    86
+                ],
+                "line-color": [
+                    "match",
+                    ["get", "route_color"],
+                    ["red"],
+                    "hsl(0, 88%, 75%)",
+                    ["orange"],
+                    "hsl(33, 94%, 69%)",
+                    ["yellow"],
+                    "hsl(50, 93%, 73%)",
+                    ["green"],
+                    "hsl(89, 76%, 65%)",
+                    ["blue"],
+                    "hsl(226, 100%, 77%)",
+                    ["purple"],
+                    "hsl(275, 81%, 76%)",
+                    ["pink"],
+                    "hsl(331, 75%, 75%)",
+                    ["brown"],
+                    "hsl(23, 39%, 69%)",
+                    ["get", "route_color"]
+                ],
+                "line-opacity": [
+                    "interpolate",
+                    ["linear"],
+                    ["zoom"],
+                    9,
+                    0,
+                    9.5,
+                    0.25
+                ]
+            }
+        },
+        {
+            "id": "route-primary",
+            "type": "line",
+            "source": "internal-api",
+            "source-layer": "routes",
+            "minzoom": 8,
+            "layout": {"line-cap": "round", "line-join": "round"},
+            "paint": {
+                "line-width": [
+                    "interpolate",
+                    ["linear"],
+                    ["zoom"],
+                    11,
+                    4,
+                    16,
+                    16,
+                    22,
+                    62
+                ],
+                "line-color": [
+                    "match",
+                    ["get", "route_color"],
+                    ["red"],
+                    "hsl(0, 88%, 75%)",
+                    ["orange"],
+                    "hsl(33, 94%, 69%)",
+                    ["yellow"],
+                    "hsl(50, 93%, 73%)",
+                    ["green"],
+                    "hsl(89, 76%, 65%)",
+                    ["blue"],
+                    "hsl(226, 100%, 77%)",
+                    ["purple"],
+                    "hsl(275, 81%, 76%)",
+                    ["pink"],
+                    "hsl(331, 75%, 75%)",
+                    ["brown"],
+                    "hsl(23, 39%, 69%)",
+                    ["get", "route_color"]
+                ],
+                "line-opacity": [
+                    "interpolate",
+                    ["linear"],
+                    ["zoom"],
+                    8.75,
+                    0,
+                    9.5,
+                    1
+                ]
+            }
+        },
+        {
+            "id": "stops-icon",
+            "type": "circle",
+            "source": "internal-api",
+            "source-layer": "stops",
+            "minzoom": 8,
+            "maxzoom": 13.5,
+            "paint": {
+                "circle-translate": [0, 0],
+                "circle-radius": [
+                    "interpolate",
+                    ["linear"],
+                    ["zoom"],
+                    11.5,
+                    2,
+                    13,
+                    4
+                ],
+                "circle-opacity": [
+                    "interpolate",
+                    ["linear"],
+                    ["zoom"],
+                    9.5,
+                    0,
+                    9.75,
+                    1,
+                    13,
+                    1,
+                    13.5,
+                    0
+                ],
+                "circle-color": "#111111"
+            }
+        },
+        {
+            "id": "stops-label",
+            "type": "symbol",
+            "source": "internal-api",
+            "source-layer": "stops",
+            "minzoom": 11,
+            "layout": {
+                "text-optional": true,
+                "text-size": 17,
+                "icon-image": [
+                    "step",
+                    ["zoom"],
+                    "",
+                    13,
+                    [
+                        "match",
+                        ["get", "wheelchair_boarding"],
+                        [1],
+                        "accessible",
+                        "not-accessible"
+                    ]
+                ],
+                "text-font": [
+                    "Akzidenz-Grotesk Std Med Regular",
+                    "Arial Unicode MS Regular"
+                ],
+                "icon-allow-overlap": true,
+                "text-padding": 6,
+                "text-offset": [
+                    "interpolate",
+                    ["linear"],
+                    ["zoom"],
+                    11,
+                    ["literal", [0, -0.35]],
+                    16,
+                    ["literal", [0, -0.85]]
+                ],
+                "icon-optional": true,
+                "text-anchor": "bottom",
+                "text-field": ["to-string", ["get", "stop_name"]],
+                "text-letter-spacing": -0.01,
+                "icon-padding": 5
+            },
+            "paint": {
+                "text-halo-color": "hsla(0, 0%, 96%, 0.4)",
+                "text-color": "hsl(0, 0%, 25%)",
+                "icon-opacity": [
+                    "interpolate",
+                    ["linear"],
+                    ["zoom"],
+                    13,
+                    0,
+                    13.5,
+                    1
+                ],
+                "text-opacity": [
+                    "interpolate",
+                    ["linear"],
+                    ["zoom"],
+                    11,
+                    0,
+                    11.25,
+                    1
+                ],
+                "text-halo-width": 3
+            }
+        },
+        {
+            "id": "stops-label-warning",
+            "type": "symbol",
+            "source": "internal-api",
+            "source-layer": "stops",
+            "minzoom": 11,
+            "filter": ["match", ["id"], [-1], true, false],
+            "layout": {
+                "text-optional": true,
+                "text-size": 17,
+                "icon-image": ["step", ["zoom"], "", 13, "warning"],
+                "text-font": [
+                    "Akzidenz-Grotesk Std Med Regular",
+                    "Arial Unicode MS Regular"
+                ],
+                "icon-allow-overlap": true,
+                "text-padding": 6,
+                "text-offset": [
+                    "interpolate",
+                    ["linear"],
+                    ["zoom"],
+                    11,
+                    ["literal", [0, -0.35]],
+                    16,
+                    ["literal", [0, -0.85]]
+                ],
+                "icon-optional": true,
+                "text-anchor": "bottom",
+                "text-field": ["to-string", ["get", "stop_name"]],
+                "text-letter-spacing": -0.01,
+                "icon-padding": 5
+            },
+            "paint": {
+                "text-halo-color": "hsla(0, 0%, 96%, 0.4)",
+                "text-color": "hsl(0, 0%, 25%)",
+                "icon-opacity": [
+                    "interpolate",
+                    ["linear"],
+                    ["zoom"],
+                    13,
+                    0,
+                    13.5,
+                    1
+                ],
+                "text-opacity": [
+                    "interpolate",
+                    ["linear"],
+                    ["zoom"],
+                    11,
+                    0,
+                    11.25,
+                    1
+                ],
+                "text-halo-width": 3
+            }
+        }
+    ],
+    "dark-mode": [
+        {
+            "id": "route-outline",
+            "type": "line",
+            "source": "internal-api",
+            "source-layer": "routes",
+            "minzoom": 8,
+            "layout": {"line-cap": "round", "line-join": "round"},
+            "paint": {
+                "line-width": [
+                    "interpolate",
+                    ["linear"],
+                    ["zoom"],
+                    11,
+                    6,
+                    16,
+                    30,
+                    22,
+                    86
+                ],
+                "line-color": [
+                    "match",
+                    ["get", "route_color"],
+                    ["red"],
+                    "hsl(0, 60%, 54%)",
+                    ["orange"],
+                    "hsl(33, 84%, 56%)",
+                    ["yellow"],
+                    "hsl(50, 81%, 53%)",
+                    ["green"],
+                    "hsl(89, 57%, 48%)",
+                    ["blue"],
+                    "hsl(226, 62%, 60%)",
+                    ["purple"],
+                    "hsl(275, 46%, 54%)",
+                    ["pink"],
+                    "hsl(331, 57%, 60%)",
+                    ["brown"],
+                    "hsl(23, 48%, 39%)",
+                    ["get", "route_color"]
+                ],
+                "line-opacity": [
+                    "interpolate",
+                    ["linear"],
+                    ["zoom"],
+                    9,
+                    0,
+                    9.5,
+                    0.2
+                ]
+            }
+        },
+        {
+            "id": "route-primary",
+            "type": "line",
+            "source": "internal-api",
+            "source-layer": "routes",
+            "minzoom": 8,
+            "layout": {"line-cap": "round", "line-join": "round"},
+            "paint": {
+                "line-width": [
+                    "interpolate",
+                    ["linear"],
+                    ["zoom"],
+                    11,
+                    4,
+                    16,
+                    16,
+                    22,
+                    62
+                ],
+                "line-color": [
+                    "match",
+                    ["get", "route_color"],
+                    ["red"],
+                    "hsl(0, 60%, 54%)",
+                    ["orange"],
+                    "hsl(33, 84%, 56%)",
+                    ["yellow"],
+                    "hsl(50, 81%, 53%)",
+                    ["green"],
+                    "hsl(89, 57%, 48%)",
+                    ["blue"],
+                    "hsl(226, 62%, 60%)",
+                    ["purple"],
+                    "hsl(275, 46%, 54%)",
+                    ["pink"],
+                    "hsl(331, 57%, 60%)",
+                    ["brown"],
+                    "hsl(23, 48%, 39%)",
+                    ["get", "route_color"]
+                ],
+                "line-opacity": [
+                    "interpolate",
+                    ["linear"],
+                    ["zoom"],
+                    8.75,
+                    0,
+                    9.5,
+                    1
+                ]
+            }
+        },
+        {
+            "id": "stops-icon",
+            "type": "circle",
+            "source": "internal-api",
+            "source-layer": "stops",
+            "minzoom": 8,
+            "maxzoom": 13.5,
+            "paint": {
+                "circle-translate": [0, 0],
+                "circle-radius": [
+                    "interpolate",
+                    ["linear"],
+                    ["zoom"],
+                    11.5,
+                    2,
+                    13,
+                    4
+                ],
+                "circle-opacity": [
+                    "interpolate",
+                    ["linear"],
+                    ["zoom"],
+                    9.5,
+                    0,
+                    9.75,
+                    1,
+                    13,
+                    1,
+                    13.5,
+                    0
+                ],
+                "circle-color": "#f3f3f3",
+                "circle-stroke-width": 1,
+                "circle-stroke-color": "hsl(0, 0%, 13%)",
+                "circle-stroke-opacity": [
+                    "interpolate",
+                    ["linear"],
+                    ["zoom"],
+                    10,
+                    0,
+                    10.25,
+                    0.55,
+                    13,
+                    0.55,
+                    13.5,
+                    0
+                ]
+            }
+        },
+        {
+            "id": "stops-label",
+            "type": "symbol",
+            "source": "internal-api",
+            "source-layer": "stops",
+            "minzoom": 11,
+            "layout": {
+                "text-optional": true,
+                "text-size": 17,
+                "icon-image": [
+                    "step",
+                    ["zoom"],
+                    "",
+                    13,
+                    [
+                        "match",
+                        ["get", "wheelchair_boarding"],
+                        [1],
+                        "accessible",
+                        "not-accessible"
+                    ]
+                ],
+                "text-font": [
+                    "Akzidenz-Grotesk Std Med Regular",
+                    "Arial Unicode MS Regular"
+                ],
+                "icon-allow-overlap": true,
+                "text-padding": 6,
+                "text-offset": [
+                    "interpolate",
+                    ["linear"],
+                    ["zoom"],
+                    11,
+                    ["literal", [0, -0.35]],
+                    16,
+                    ["literal", [0, -0.85]]
+                ],
+                "icon-optional": true,
+                "text-anchor": "bottom",
+                "text-field": ["to-string", ["get", "stop_name"]],
+                "text-letter-spacing": -0.01,
+                "icon-padding": 5
+            },
+            "paint": {
+                "text-halo-color": "hsla(0, 0%, 13%, 0.25)",
+                "text-color": "#f9f9f9",
+                "icon-opacity": [
+                    "interpolate",
+                    ["linear"],
+                    ["zoom"],
+                    13,
+                    0,
+                    13.5,
+                    1
+                ],
+                "text-opacity": [
+                    "interpolate",
+                    ["linear"],
+                    ["zoom"],
+                    11,
+                    0,
+                    11.25,
+                    1
+                ],
+                "text-halo-width": 3
+            }
+        },
+        {
+            "id": "stops-label-warning",
+            "type": "symbol",
+            "source": "internal-api",
+            "source-layer": "stops",
+            "minzoom": 11,
+            "filter": ["match", ["id"], [-1], true, false],
+            "layout": {
+                "text-optional": true,
+                "text-size": 17,
+                "icon-image": ["step", ["zoom"], "", 13, "warning"],
+                "text-font": [
+                    "Akzidenz-Grotesk Std Med Regular",
+                    "Arial Unicode MS Regular"
+                ],
+                "icon-allow-overlap": true,
+                "text-padding": 6,
+                "text-offset": [
+                    "interpolate",
+                    ["linear"],
+                    ["zoom"],
+                    11,
+                    ["literal", [0, -0.35]],
+                    16,
+                    ["literal", [0, -0.85]]
+                ],
+                "icon-optional": true,
+                "text-anchor": "bottom",
+                "text-field": ["to-string", ["get", "stop_name"]],
+                "text-letter-spacing": -0.01,
+                "icon-padding": 5
+            },
+            "paint": {
+                "text-halo-color": "hsla(0, 0%, 13%, 0.55)",
+                "text-color": "#f9f9f9",
+                "icon-opacity": [
+                    "interpolate",
+                    ["linear"],
+                    ["zoom"],
+                    13,
+                    0,
+                    13.5,
+                    1
+                ],
+                "text-opacity": [
+                    "interpolate",
+                    ["linear"],
+                    ["zoom"],
+                    11,
+                    0,
+                    11.25,
+                    1
+                ],
+                "text-halo-width": 2
+            }
+        }
+    ]
+}

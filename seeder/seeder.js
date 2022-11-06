@@ -8,7 +8,6 @@ import { load } from './src/load.js';
 import { extend } from './src/extend.js';
 import { store, defaults, indicies } from './src/store.js';
 import { geojson } from './src/convert.js';
-import { mapbox } from './src/upload.js';
 
 import * as transformers from './src/transformers/index.js';
 
@@ -67,11 +66,11 @@ for await (let config of configs.agencies) {
 
 // Create indicies
 await Promise.all([ defaults(client, configs), indicies(client) ]);
-client.quit();
 
 // Respect short-circuit command line option
 if (args.includes('--skip-geojson')) {
     console.log("Skipping GeoJSON export and upload.");
+    await client.quit();
     process.exit();
 }
 
@@ -86,14 +85,6 @@ let { stops, routes } = datasets.reduce((result, current) => {
 datasets = undefined;
 
 // Convert to GeoJSON and optionally upload to Mapbox
-const local = args.includes('--export-local');
-const stopsPromise = geojson('stops', stops, local);
-const routesPromise = geojson('routes', routes, local);
+await geojson(client, stops, routes);
 
-if (!local) {
-    stopsPromise.then(json => mapbox('transit-a11y-stops', json))
-    routesPromise.then(json => mapbox('transit-a11y-routes', json))
-} else {
-    await Promise.all([ stopsPromise, routesPromise ]);
-    console.log("Exported GeoJSON to the project root directory.");
-}
+await client.quit();

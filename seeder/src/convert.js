@@ -1,8 +1,6 @@
-import temp from 'temp';
 import combine from '@turf/combine';
 import * as gtfsUtils from 'gtfs/lib/geojson-utils.js';
 import * as turfUtils from '@turf/helpers';
-import * as fs from 'fs';
 
 const schema = {
     routes: [
@@ -15,33 +13,18 @@ const schema = {
     ]
 };
 
-export const geojson = async (mode, dataset, local) => {
-    if (!local) {
-        temp.track();
-        var stream = temp.createWriteStream({ suffix: '.geojsonld' });
-    } else {
-        var stream = fs.createWriteStream(mode + '.geojsonld');
-    }
+export const geojson = async (client, stops, routes) => {
+    stops = stopsGeoJSON(stops);
+    routes = routesGeoJSON(routes);
     
-    const features = (mode == 'routes') ?
-        routesGeoJSON(dataset) : stopsGeoJSON(dataset);
+    await client.set('geometry:stops', JSON.stringify(stops));
+    await client.set('geometry:routes', JSON.stringify(routes));
     
-    // Use line-delimited GeoJSON format
-    features.forEach(feature => {
-        stream.write(JSON.stringify(feature) + "\n");
-    });
-    
-    stream.end();
-    await new Promise(resolve => {
-        stream.on('finish', () => resolve());
-    });
-    
-    console.log("Converted " + mode + " to GeoJSON successfully.");
-    return stream.path;
+    console.log("Converted geometry to GeoJSON successfully.");
 };
 
 const routesGeoJSON = routes => {
-    return routes.map(route => {
+    return turfUtils.featureCollection(routes.map(route => {
         // Simplify route shape representation and isolate geometry
         let features = gtfsUtils.shapesToGeoJSONFeatures(route.route_shapes);
         
@@ -57,14 +40,14 @@ const routesGeoJSON = routes => {
         }));
         
         return features;
-    });
+    }));
 };
 
 const stopsGeoJSON = stops => {
-    let features = gtfsUtils.stopsToGeoJSON(stops).features;
+    let collection = gtfsUtils.stopsToGeoJSON(stops);
     
     // Remove unnecessary properties
-    features.forEach(feature => {
+    collection.features.forEach(feature => {
         Object.keys(feature.properties).forEach(property => {
             if (!schema.stops.includes(property)) {
                 delete feature.properties[property];
@@ -72,5 +55,5 @@ const stopsGeoJSON = stops => {
         })
     });
     
-    return features;
+    return collection;
 };

@@ -1,9 +1,21 @@
+var styles;
+$.getJSON("/js/mapbox-style.json")
+    .done(data => styles = data)
+    .fail(showError);
+
+const prefixHostname = (url, type) => {
+    if (url.startsWith('/')) {
+        return { url: window.location.origin + url, type };
+    }
+};
+
 mapboxgl.accessToken = options.accessToken;
 const map = new mapboxgl.Map({
     container: 'map-container',
     style: prefersLightScheme() ? options.lightStyleUrl : options.darkStyleUrl,
     bounds: options.mapBounds,
-    fitBoundsOptions: { padding: 72 }
+    fitBoundsOptions: { padding: 72 },
+    transformRequest: prefixHostname
 });
 
 const layers = [
@@ -14,6 +26,26 @@ const layers = [
 
 window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', () => {
     map.setStyle(prefersLightScheme() ? options.lightStyleUrl : options.darkStyleUrl);
+});
+
+map.on('styledata', () => {
+    if (!map.getSource('internal-api')) {
+        map.addSource('internal-api', {
+            'type': 'vector',
+            'tiles': [
+                '/api/map-tiles/{z}/{x}/{y}'
+            ],
+            'minzoom': 8,
+            'maxzoom': 22
+        });
+    }
+    
+    if (!map.getLayer(layers[0])) {
+        const substyle = prefersLightScheme() ? 'light-mode' : 'dark-mode';
+        for (const layer of styles[substyle]) {
+            map.addLayer(layer);
+        }
+    }
 });
 
 map.on('load', getAlerts);
