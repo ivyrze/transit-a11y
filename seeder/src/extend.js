@@ -14,6 +14,7 @@ export const extend = async (agency, stops, routes, id) => {
             },
             _type == "stop" => {
                 "stop_id": id,
+                "stop_name": name,
                 "stop_tags": tags,
                 "stop_url": url,
                 "wheelchair_boarding": accessibility,

@@ -11,6 +11,12 @@ export default {
             validation: rule => rule.required()
         },
         {
+            name: 'name',
+            type: 'string',
+            title: 'Name',
+            description: 'Overrides the provided stop name'
+        },
+        {
             name: 'synonyms',
             type: 'array',
             of: [{ type: 'string' }],
@@ -68,5 +74,10 @@ export default {
             to: [{ type: 'agency' }],
             validation: rule => rule.required()
         }
-    ]
+    ],
+    preview: {
+        select: {
+            title: 'id'
+        }
+    }
 }
