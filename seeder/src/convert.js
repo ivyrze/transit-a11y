@@ -9,7 +9,8 @@ const schema = {
     stops: [
         'stop_id',
         'stop_name',
-        'wheelchair_boarding'
+        'wheelchair_boarding',
+        'is_major'
     ]
 };
 

@@ -44,7 +44,7 @@
                     "interpolate",
                     ["linear"],
                     ["zoom"],
-                    9,
+                    8,
                     0,
                     9.5,
                     0.25
@@ -95,7 +95,7 @@
                     "interpolate",
                     ["linear"],
                     ["zoom"],
-                    8.75,
+                    8.5,
                     0,
                     9.5,
                     1
@@ -108,7 +108,7 @@
             "source": "internal-api",
             "source-layer": "stops",
             "minzoom": 8,
-            "maxzoom": 13.5,
+            "maxzoom": 14.5,
             "paint": {
                 "circle-translate": [0, 0],
                 "circle-radius": [
@@ -116,7 +116,7 @@
                     ["linear"],
                     ["zoom"],
                     11.5,
-                    2,
+                    3,
                     13,
                     4
                 ],
@@ -124,16 +124,47 @@
                     "interpolate",
                     ["linear"],
                     ["zoom"],
-                    9.5,
-                    0,
-                    9.75,
-                    1,
+                    8,
+                    ["case", ["==", ["get", "is_major"], false], 0, 0],
+                    9,
+                    ["case", ["==", ["get", "is_major"], false], 0, 1],
                     13,
-                    1,
+                    ["case", ["==", ["get", "is_major"], false], 0, 1],
                     13.5,
-                    0
+                    ["case", ["==", ["get", "is_major"], false], 1, 1]
                 ],
-                "circle-color": "#111111"
+                "circle-stroke-width": [
+                    "interpolate",
+                    ["linear"],
+                    ["zoom"],
+                    11,
+                    1,
+                    14,
+                    3
+                ],
+                "circle-stroke-opacity": [
+                    "interpolate",
+                    ["linear"],
+                    ["zoom"],
+                    8,
+                    ["case", ["==", ["get", "is_major"], false], 0, 0],
+                    9,
+                    ["case", ["==", ["get", "is_major"], false], 0, 1],
+                    13,
+                    ["case", ["==", ["get", "is_major"], false], 0, 1],
+                    13.5,
+                    ["case", ["==", ["get", "is_major"], false], 1, 1]
+                ],
+                "circle-color": [
+                    "interpolate",
+                    ["linear"],
+                    ["zoom"],
+                    11,
+                    "hsl(0, 0%, 85%)",
+                    14,
+                    "hsl(0, 0%, 25%)"
+                ],
+                "circle-stroke-color": "#222222"
             }
         },
         {
@@ -149,7 +180,7 @@
                     "step",
                     ["zoom"],
                     "",
-                    13,
+                    14,
                     [
                         "match",
                         ["get", "wheelchair_boarding"],
@@ -177,30 +208,31 @@
                 "text-anchor": "bottom",
                 "text-field": ["to-string", ["get", "stop_name"]],
                 "text-letter-spacing": -0.01,
-                "icon-padding": 5
+                "icon-padding": 5,
+                "text-max-width": 8
             },
             "paint": {
-                "text-halo-color": "hsla(0, 0%, 96%, 0.4)",
+                "text-halo-color": "hsla(0, 0%, 96%, 0.85)",
                 "text-color": "hsl(0, 0%, 25%)",
                 "icon-opacity": [
                     "interpolate",
                     ["linear"],
                     ["zoom"],
-                    13,
+                    14,
                     0,
-                    13.5,
+                    14.5,
                     1
                 ],
                 "text-opacity": [
                     "interpolate",
                     ["linear"],
                     ["zoom"],
-                    11,
-                    0,
-                    11.25,
-                    1
+                    14,
+                    ["case", ["==", ["get", "is_major"], false], 0, 1],
+                    14.5,
+                    ["case", ["==", ["get", "is_major"], false], 1, 1]
                 ],
-                "text-halo-width": 3
+                "text-halo-width": 4
             }
         },
         {
@@ -233,30 +265,31 @@
                 "text-anchor": "bottom",
                 "text-field": ["to-string", ["get", "stop_name"]],
                 "text-letter-spacing": -0.01,
-                "icon-padding": 5
+                "icon-padding": 5,
+                "text-max-width": 8
             },
             "paint": {
-                "text-halo-color": "hsla(0, 0%, 96%, 0.4)",
+                "text-halo-color": "hsla(0, 0%, 96%, 0.85)",
                 "text-color": "hsl(0, 0%, 25%)",
                 "icon-opacity": [
                     "interpolate",
                     ["linear"],
                     ["zoom"],
-                    13,
+                    14,
                     0,
-                    13.5,
+                    14.5,
                     1
                 ],
                 "text-opacity": [
                     "interpolate",
                     ["linear"],
                     ["zoom"],
-                    11,
-                    0,
-                    11.25,
-                    1
+                    14,
+                    ["case", ["==", ["get", "is_major"], false], 0, 1],
+                    14.5,
+                    ["case", ["==", ["get", "is_major"], false], 1, 1]
                 ],
-                "text-halo-width": 3
+                "text-halo-width": 4
             }
         }
     ],
@@ -305,10 +338,10 @@
                     "interpolate",
                     ["linear"],
                     ["zoom"],
-                    9,
+                    8,
                     0,
                     9.5,
-                    0.2
+                    0.25
                 ]
             }
         },
@@ -356,7 +389,7 @@
                     "interpolate",
                     ["linear"],
                     ["zoom"],
-                    8.75,
+                    8.5,
                     0,
                     9.5,
                     1
@@ -369,7 +402,7 @@
             "source": "internal-api",
             "source-layer": "stops",
             "minzoom": 8,
-            "maxzoom": 13.5,
+            "maxzoom": 14.5,
             "paint": {
                 "circle-translate": [0, 0],
                 "circle-radius": [
@@ -377,7 +410,7 @@
                     ["linear"],
                     ["zoom"],
                     11.5,
-                    2,
+                    3,
                     13,
                     4
                 ],
@@ -385,31 +418,47 @@
                     "interpolate",
                     ["linear"],
                     ["zoom"],
-                    9.5,
-                    0,
-                    9.75,
-                    1,
+                    8,
+                    ["case", ["==", ["get", "is_major"], false], 0, 0],
+                    9,
+                    ["case", ["==", ["get", "is_major"], false], 0, 1],
                     13,
-                    1,
+                    ["case", ["==", ["get", "is_major"], false], 0, 1],
                     13.5,
-                    0
+                    ["case", ["==", ["get", "is_major"], false], 1, 1]
                 ],
-                "circle-color": "#f3f3f3",
-                "circle-stroke-width": 1,
-                "circle-stroke-color": "hsl(0, 0%, 13%)",
+                "circle-stroke-width": [
+                    "interpolate",
+                    ["linear"],
+                    ["zoom"],
+                    11,
+                    1,
+                    14,
+                    3
+                ],
                 "circle-stroke-opacity": [
                     "interpolate",
                     ["linear"],
                     ["zoom"],
-                    10,
-                    0,
-                    10.25,
-                    0.55,
+                    8,
+                    ["case", ["==", ["get", "is_major"], false], 0, 0],
+                    9,
+                    ["case", ["==", ["get", "is_major"], false], 0, 1],
                     13,
-                    0.55,
+                    ["case", ["==", ["get", "is_major"], false], 0, 1],
                     13.5,
-                    0
-                ]
+                    ["case", ["==", ["get", "is_major"], false], 1, 1]
+                ],
+                "circle-color": [
+                    "interpolate",
+                    ["linear"],
+                    ["zoom"],
+                    11,
+                    "hsl(0, 0%, 65%)",
+                    14,
+                    "hsl(0, 0%, 95%)"
+                ],
+                "circle-stroke-color": "#3a3a3a"
             }
         },
         {
@@ -425,7 +474,7 @@
                     "step",
                     ["zoom"],
                     "",
-                    13,
+                    14,
                     [
                         "match",
                         ["get", "wheelchair_boarding"],
@@ -453,30 +502,31 @@
                 "text-anchor": "bottom",
                 "text-field": ["to-string", ["get", "stop_name"]],
                 "text-letter-spacing": -0.01,
-                "icon-padding": 5
+                "icon-padding": 5,
+                "text-max-width": 8
             },
             "paint": {
-                "text-halo-color": "hsla(0, 0%, 13%, 0.25)",
+                "text-halo-color": "hsla(0, 0%, 13%, 0.45)",
                 "text-color": "#f9f9f9",
                 "icon-opacity": [
                     "interpolate",
                     ["linear"],
                     ["zoom"],
-                    13,
+                    14,
                     0,
-                    13.5,
+                    14.5,
                     1
                 ],
                 "text-opacity": [
                     "interpolate",
                     ["linear"],
                     ["zoom"],
-                    11,
-                    0,
-                    11.25,
-                    1
+                    14,
+                    ["case", ["==", ["get", "is_major"], false], 0, 1],
+                    14.5,
+                    ["case", ["==", ["get", "is_major"], false], 1, 1]
                 ],
-                "text-halo-width": 3
+                "text-halo-width": 4
             }
         },
         {
@@ -509,30 +559,31 @@
                 "text-anchor": "bottom",
                 "text-field": ["to-string", ["get", "stop_name"]],
                 "text-letter-spacing": -0.01,
-                "icon-padding": 5
+                "icon-padding": 5,
+                "text-max-width": 8
             },
             "paint": {
-                "text-halo-color": "hsla(0, 0%, 13%, 0.55)",
+                "text-halo-color": "hsla(0, 0%, 13%, 0.45)",
                 "text-color": "#f9f9f9",
                 "icon-opacity": [
                     "interpolate",
                     ["linear"],
                     ["zoom"],
-                    13,
+                    14,
                     0,
-                    13.5,
+                    14.5,
                     1
                 ],
                 "text-opacity": [
                     "interpolate",
                     ["linear"],
                     ["zoom"],
-                    11,
-                    0,
-                    11.25,
-                    1
+                    14,
+                    ["case", ["==", ["get", "is_major"], false], 0, 1],
+                    14.5,
+                    ["case", ["==", ["get", "is_major"], false], 1, 1]
                 ],
-                "text-halo-width": 2
+                "text-halo-width": 4
             }
         }
     ]

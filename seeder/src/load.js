@@ -35,6 +35,11 @@ export const load = async config => {
     // Remove stops that are served by irrelevant vehicle types
     stops = stops.filter(stop => stop.routes.length);
     
+    // Determine whether each stop is more or less important
+    if (config.vehicle == 3) {
+        stops = await assignStopMajority(stops);
+    }
+    
     // Query for all shapes associated with every route
     for await (let route of routes) {
         route.route_shapes = await assembleRouteShape(route.route_id);
@@ -165,6 +170,30 @@ const associateStopRoutes = async (stop, vehicle, stations) => {
     });
     
     return Object.values(routes);
+};
+
+const assignStopMajority = async stops => {
+    let timepoints = await gtfs.advancedQuery('stop_times', {
+        query: {
+            'stop_times.timepoint': 1
+        },
+        fields: [ 'stops.stop_id' ],
+        join: [{
+            type: 'INNER',
+            table: 'stops',
+            on: 'stop_times.stop_id=stops.stop_id'
+        }]
+    });
+    
+    // Reorganize to a flattened format
+    timepoints = new Set(timepoints.map(timepoint => timepoint.stop_id));
+    
+    // Assign a boolean based on whether or not a stop has an exact timepoint
+    stops.forEach(stop => {
+        stop.is_major = timepoints.has(stop.stop_id);
+    });
+    
+    return stops;
 };
 
 const assembleRouteShape = route => {
