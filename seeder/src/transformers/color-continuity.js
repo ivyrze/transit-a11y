@@ -5,9 +5,7 @@ export const colorContinuity = (source) => {
     
     const name = source.route_long_name ?? source.route_short_name;
     const replaced = colors.some(color => {
-        const colorUpper = color.charAt(0).toUpperCase() + color.slice(1);
-        
-        if (name.includes(colorUpper)) {
+        if (new RegExp('\\b' + color + '\\b', 'i').test(name)) {
             source.route_color = color;
             return true;
         }
