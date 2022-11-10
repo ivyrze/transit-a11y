@@ -134,7 +134,7 @@ const readArchive = async archive => {
 const loadPartialDataset = async (vehicle, stations) => {
     // Show only rail stations and routes
     const agencies = gtfs.getAgencies({}, [ 'agency_id', 'agency_name', 'agency_url' ]);
-    const stops = gtfs.getStops({ location_type: (stations) ? 1 : 0 });
+    const stops = gtfs.getStops({ location_type: (stations) ? 1 : [ 0, null ] });
     const routes = gtfs.getRoutes({ route_type: vehicle });
     
     return Promise.all([ agencies, stops, routes ]);
