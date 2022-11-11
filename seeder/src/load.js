@@ -7,13 +7,29 @@ import { default as temp } from 'temp';
 import * as turfUtils from '@turf/helpers';
 import turfBounds from '@turf/bbox';
 
+const vehicles = {
+    "streetcar": 0,
+    "light-rail": 0,
+    "tram": 0,
+    "subway": 1,
+    "metro": 1,
+    "rail": 2,
+    "bus": 3,
+    "ferry": 4,
+    "cable-tram": 5,
+    "aerial-lift": 6,
+    "funicular": 7,
+    "trolleybus": 11,
+    "monorail": 12
+};
+
 export const load = async config => {
     temp.track();
     let archive = await downloadArchive(config);
     
     // Import to intermediate database and query for relevant data
     await readArchive(archive);
-    let [ agencies, stops, routes ] = await loadPartialDataset(config.vehicle, config.stations);
+    let [ agencies, stops, routes ] = await loadPartialDataset(vehicles[config.vehicle], config.stations);
     
     // Reduce down to single agency based on config key
     let agency = (agencies.length == 1) ? agencies[0] :
@@ -30,13 +46,13 @@ export const load = async config => {
     stops.forEach(stop => stop.wheelchair_boarding = stop.wheelchair_boarding ?? 1);
     
     // Link stops to the routes that serve them
-    stops = await associateStopsRoutes(stops, config.vehicle, config.stations);
+    stops = await associateStopsRoutes(stops, vehicles[config.vehicle], config.stations);
     
     // Remove stops that are served by irrelevant vehicle types
     stops = stops.filter(stop => stop.routes.length);
     
     // Determine whether each stop is more or less important
-    if (config.vehicle == 3) {
+    if (config.vehicle == "bus") {
         stops = await assignStopMajority(stops);
     }
     
