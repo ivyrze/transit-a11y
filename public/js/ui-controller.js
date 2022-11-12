@@ -143,9 +143,3 @@ const openStop = id => {
         ]);
     }).fail(showError);
 };
-
-const getAlerts = () => {
-    $.get("/api/list-alerts").done(function (data) {
-        updateMapAlerts(data.alerts);
-    }).fail(showError);
-};

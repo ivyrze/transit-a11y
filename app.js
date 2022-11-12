@@ -6,7 +6,6 @@ import helmet from 'helmet';
 import { router as indexRouter } from './routes/index.js';
 import { router as searchRouter } from './routes/search.js';
 import { router as stopDetailsRouter } from './routes/stop-details.js';
-import { router as listAlertsRouter } from './routes/list-alerts.js';
 import { router as mapTilesRouter } from './routes/map-tiles.js';
 
 import { errorMiddleware, notFoundMiddleware } from './routes/error.js';
@@ -42,7 +41,6 @@ app.set('view engine', 'pug');
 app.use('/', indexRouter);
 app.use('/api/search', searchRouter);
 app.use('/api/stop-details', stopDetailsRouter);
-app.use('/api/list-alerts', listAlertsRouter);
 app.use('/api/map-tiles', mapTilesRouter);
 
 // Custom error page

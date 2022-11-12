@@ -186,66 +186,11 @@
                         ["get", "wheelchair_boarding"],
                         [1],
                         "accessible",
+                        [3],
+                        "warning",
                         "not-accessible"
                     ]
                 ],
-                "text-font": [
-                    "Akzidenz-Grotesk Std Med Regular",
-                    "Arial Unicode MS Regular"
-                ],
-                "icon-allow-overlap": true,
-                "text-padding": 6,
-                "text-offset": [
-                    "interpolate",
-                    ["linear"],
-                    ["zoom"],
-                    11,
-                    ["literal", [0, -0.35]],
-                    16,
-                    ["literal", [0, -0.85]]
-                ],
-                "icon-optional": true,
-                "text-anchor": "bottom",
-                "text-field": ["to-string", ["get", "stop_name"]],
-                "text-letter-spacing": -0.01,
-                "icon-padding": 5,
-                "text-max-width": 8
-            },
-            "paint": {
-                "text-halo-color": "hsla(0, 0%, 96%, 0.85)",
-                "text-color": "hsl(0, 0%, 25%)",
-                "icon-opacity": [
-                    "interpolate",
-                    ["linear"],
-                    ["zoom"],
-                    14,
-                    0,
-                    14.5,
-                    1
-                ],
-                "text-opacity": [
-                    "interpolate",
-                    ["linear"],
-                    ["zoom"],
-                    14,
-                    ["case", ["==", ["get", "is_major"], false], 0, 1],
-                    14.5,
-                    ["case", ["==", ["get", "is_major"], false], 1, 1]
-                ],
-                "text-halo-width": 4
-            }
-        },
-        {
-            "id": "stops-label-warning",
-            "type": "symbol",
-            "source": "internal-api",
-            "source-layer": "stops",
-            "minzoom": 11,
-            "filter": ["match", ["id"], [-1], true, false],
-            "layout": {
-                "text-optional": true,
-                "text-size": 17,
-                "icon-image": ["step", ["zoom"], "", 13, "warning"],
                 "text-font": [
                     "Akzidenz-Grotesk Std Med Regular",
                     "Arial Unicode MS Regular"
@@ -480,66 +425,11 @@
                         ["get", "wheelchair_boarding"],
                         [1],
                         "accessible",
+                        [3],
+                        "warning",
                         "not-accessible"
                     ]
                 ],
-                "text-font": [
-                    "Akzidenz-Grotesk Std Med Regular",
-                    "Arial Unicode MS Regular"
-                ],
-                "icon-allow-overlap": true,
-                "text-padding": 6,
-                "text-offset": [
-                    "interpolate",
-                    ["linear"],
-                    ["zoom"],
-                    11,
-                    ["literal", [0, -0.35]],
-                    16,
-                    ["literal", [0, -0.85]]
-                ],
-                "icon-optional": true,
-                "text-anchor": "bottom",
-                "text-field": ["to-string", ["get", "stop_name"]],
-                "text-letter-spacing": -0.01,
-                "icon-padding": 5,
-                "text-max-width": 8
-            },
-            "paint": {
-                "text-halo-color": "hsla(0, 0%, 13%, 0.45)",
-                "text-color": "#f9f9f9",
-                "icon-opacity": [
-                    "interpolate",
-                    ["linear"],
-                    ["zoom"],
-                    14,
-                    0,
-                    14.5,
-                    1
-                ],
-                "text-opacity": [
-                    "interpolate",
-                    ["linear"],
-                    ["zoom"],
-                    14,
-                    ["case", ["==", ["get", "is_major"], false], 0, 1],
-                    14.5,
-                    ["case", ["==", ["get", "is_major"], false], 1, 1]
-                ],
-                "text-halo-width": 4
-            }
-        },
-        {
-            "id": "stops-label-warning",
-            "type": "symbol",
-            "source": "internal-api",
-            "source-layer": "stops",
-            "minzoom": 11,
-            "filter": ["match", ["id"], [-1], true, false],
-            "layout": {
-                "text-optional": true,
-                "text-size": 17,
-                "icon-image": ["step", ["zoom"], "", 13, "warning"],
                 "text-font": [
                     "Akzidenz-Grotesk Std Med Regular",
                     "Arial Unicode MS Regular"

@@ -18,11 +18,7 @@ const map = new mapboxgl.Map({
     transformRequest: prefixHostname
 });
 
-const layers = [
-    'stops-icon',
-    'stops-label',
-    'stops-label-warning'
-];
+const layers = [ 'stops-icon', 'stops-label' ];
 
 window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', () => {
     map.setStyle(prefersLightScheme() ? options.lightStyleUrl : options.darkStyleUrl);
@@ -47,8 +43,6 @@ map.on('styledata', () => {
         }
     }
 });
-
-map.on('load', getAlerts);
 
 map.on('click', layers, function (e) {
     const features = map.queryRenderedFeatures(e.point, { layers });
@@ -79,16 +73,4 @@ const flyToStop = coordinates => {
         duration: 2500,
         essential: false
     });
-};
-
-const updateMapAlerts = alerts => {
-    const filter = [
-        [
-            'index-of',
-            ['get', 'stop_id'],
-            ['literal', alerts]
-        ], -1
-    ];
-    map.setFilter('stops-label', ['==', ...filter]);
-    map.setFilter('stops-label-warning', ['!=', ...filter]);
 };
