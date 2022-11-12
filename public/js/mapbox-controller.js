@@ -43,7 +43,7 @@ map.on('styledata', () => {
     if (!map.getLayer(layers[0])) {
         const substyle = prefersLightScheme() ? 'light-mode' : 'dark-mode';
         for (const layer of styles[substyle]) {
-            map.addLayer(layer);
+            map.addLayer(layer, 'road-label-simple');
         }
     }
 });
