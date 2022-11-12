@@ -1,4 +1,19 @@
 {
+    "stopSubheadings": {
+        "streetcar": "Streetcar station",
+        "light-rail": "Light rail station",
+        "tram": "Tram station",
+        "subway": "Subway station",
+        "metro": "Rail station",
+        "rail": "Rail station",
+        "bus": "Bus stop",
+        "ferry": "Ferry terminal",
+        "cable-tram": "Tram station",
+        "aerial-lift": "Aerial lift station",
+        "funicular": "Funicular station",
+        "trolleybus": "Bus stop",
+        "monorail": "Rail station"
+    },
     "accessibilityStates": {
         "warning": {
             "heading": "Service disruption"

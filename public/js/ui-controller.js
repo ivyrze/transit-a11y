@@ -129,6 +129,7 @@ const openStop = id => {
                 i18n.accessibilityStates[state].description
         );
         $(".stop-details-card h2").text(data.name);
+        $(".stop-details-card .subtitle").text(i18n.stopSubheadings[data.agency.vehicle]);
         
         showCard(".stop-details-card");
         
