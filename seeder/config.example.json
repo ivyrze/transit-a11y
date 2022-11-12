@@ -31,6 +31,44 @@
             "stations": false
         },
         {
+            "id": "ddot",
+            "url": "https://www.detroitmi.gov/Portals/0/docs/deptoftransportation/pdfs/ddot_gtfs.zip",
+            "vehicle": "bus",
+            "stations": false,
+            "transformations": [
+                {
+                    "source": "routes.route_color",
+                    "type": "override",
+                    "target": "#00494a"
+                }
+            ]
+        },
+        {
+            "id": "smart",
+            "url": "https://apps1.smartbus.org/gtfs/smart_gtfs.zip",
+            "vehicle": "bus",
+            "stations": false,
+            "transformations": [
+                {
+                    "source": "routes.route_color",
+                    "type": "override",
+                    "target": "#c73c3c"
+                },
+                {
+                    "source": "routes.route_long_name",
+                    "type": "recapitalize"
+                },
+                {
+                    "source": "stops.stop_name",
+                    "type": "recapitalize"
+                },
+                {
+                    "source": "stops.stop_name",
+                    "type": "prettify"
+                }
+            ]
+        },
+        {
             "id": "trimet",
             "url": "http://developer.trimet.org/schedule/gtfs.zip",
             "vehicle": "light-rail",
