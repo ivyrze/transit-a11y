@@ -1,16 +1,26 @@
 import express from 'express';
+import validator from 'express-validator';
 import httpErrors from 'http-errors';
 import { createClient } from 'redis';
 import { redisOptions } from '../../utils.js';
 
 export const router = express.Router();
 
-router.post('/', async function(req, res, next) {
+const schema = {
+    id: {
+        in: 'body',
+        contains: { options: '-' }
+    }
+};
+
+router.post('/', validator.checkSchema(schema), async function(req, res, next) {
     // Check incoming parameters
-    if (!req.body.id ||
-        req.body.id.split('-').length <= 1) {
+    const errors = validator.validationResult(req);
+    if (!errors.isEmpty()) {
         next(new httpErrors.BadRequest()); return;
     }
+    
+    const { id } = validator.matchedData(req);
     
     // Establish database connection
     const client = createClient(redisOptions);
@@ -23,19 +33,19 @@ router.post('/', async function(req, res, next) {
     }
     
     // Run query and parse output
-    let details = await client.hGetAll('stops:' + req.body.id);
+    let details = await client.hGetAll('stops:' + id);
     if (Object.keys(details).length) {
         let [ longitude, latitude ] = details.coordinates.split(',');
         details.coordinates = { longitude, latitude };
     }
     
-    let tags = await client.sMembers('stops:' + req.body.id + ':tags');
+    let tags = await client.sMembers('stops:' + id + ':tags');
     if (tags.length) { details.tags = tags; }
     
-    let alert = await client.hGetAll('alerts:' + req.body.id);
+    let alert = await client.hGetAll('alerts:' + id);
     if (Object.keys(alert).length) { details.alert = alert; }
     
-    const key = req.body.id.split('-').slice(0, -1).join('-');
+    const key = id.split('-').slice(0, -1).join('-');
     details.agency = await client.hGetAll('agencies:' + key);
     
     // Use stop-specific URL and fallback to agency-wide URL

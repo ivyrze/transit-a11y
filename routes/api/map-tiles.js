@@ -1,6 +1,7 @@
 import vtPbf from 'vt-pbf';
 import geojsonVt from 'geojson-vt';
 import express from 'express';
+import validator from 'express-validator';
 import httpErrors from 'http-errors';
 import { createClient } from 'redis';
 import { redisOptions } from '../../utils.js';
@@ -44,19 +45,34 @@ setInterval(async () => indicies = await generateTileIndicies(), 60 * 1000);
 
 export const router = express.Router();
 
-router.get('/:z/:x/:y', async function(req, res, next) {
+const schema = {
+    z: {
+        in: 'params',
+        isInt: true,
+        toInt: true
+    },
+    x: {
+        in: 'params',
+        isInt: true,
+        toInt: true
+    },
+    y: {
+        in: 'params',
+        isInt: true,
+        toInt: true
+    }
+};
+
+router.get('/:z/:x/:y', validator.checkSchema(schema), async function(req, res, next) {
     // Check incoming parameters
-    if (!req.params.z ||
-        !req.params.x ||
-        !req.params.y) {
+    const errors = validator.validationResult(req);
+    if (!errors.isEmpty()) {
         next(new httpErrors.BadRequest()); return;
     }
     
-    // Generate binary data from the indexed geometry layers
-    const z = parseInt(req.params.z);
-    const x = parseInt(req.params.x);
-    const y = parseInt(req.params.y);
+    const { z, x, y } = validator.matchedData(req);
     
+    // Generate binary data from the indexed geometry layers
     var tiles = {};
     Object.keys(indicies).forEach(layer => {
         tiles[layer] = indicies[layer].getTile(z, x, y);

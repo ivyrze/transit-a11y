@@ -19,6 +19,8 @@ export const sanityOptions = {
     useCdn: false
 };
 
+export const errorFormatter = ({ msg }) => msg;
+
 export const colorSort = (a, b) => {
     return (color(a.color).hue() > color(b.color).hue()) ? 1 : -1;
 };

@@ -1,17 +1,34 @@
 import express from 'express';
+import validator from 'express-validator';
 import httpErrors from 'http-errors';
 import { createClient } from 'redis';
 import { redisOptions, colorSort } from '../../utils.js';
 
 export const router = express.Router();
 
-router.post('/', async function(req, res, next) {
+const schema = {
+    query: {
+        in: 'body',
+        isEmpty: { negated: true }
+    },
+    longitude: {
+        in: 'body',
+        isFloat: true
+    },
+    latitude: {
+        in: 'body',
+        isFloat: true
+    }
+};
+
+router.post('/', validator.checkSchema(schema), async function(req, res, next) {
     // Check incoming parameters
-    if (!req.body.query ||
-        !req.body.longitude ||
-        !req.body.latitude) {
+    const errors = validator.validationResult(req);
+    if (!errors.isEmpty()) {
         next(new httpErrors.BadRequest()); return;
     }
+    
+    const { query, longitude, latitude } = validator.matchedData(req);
     
     // Establish database connection
     const client = createClient(redisOptions);
@@ -24,10 +41,10 @@ router.post('/', async function(req, res, next) {
     }
     
     // Run query, treating special characters as an OR operator
-    const query = req.body.query.split(/[^\w\d]/g).filter(word => word).join("|");
-    const geofilter = [ req.body.longitude, req.body.latitude, '100', 'mi' ].join(' ');
+    const searchable = query.split(/[^\w\d]/g).filter(word => word).join("|");
+    const geofilter = [ longitude, latitude, '100', 'mi' ].join(' ');
     
-    let results = await client.ft.search('idx:stops', query + '* ' + ' @coordinates:[' + geofilter + ']');
+    let results = await client.ft.search('idx:stops', searchable + '* ' + ' @coordinates:[' + geofilter + ']');
     
     results = results.documents.map(result => {
         result.id = result.id.replace('stops:', '');
