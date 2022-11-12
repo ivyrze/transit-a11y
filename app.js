@@ -3,6 +3,9 @@ import express from 'express';
 import morgan from 'morgan';
 import helmet from 'helmet';
 
+import { createClient } from 'redis';
+import { redisOptions } from './utils.js';
+
 import { router as indexRouter } from './routes/index.js';
 import { router as searchRouter } from './routes/api/search.js';
 import { router as stopDetailsRouter } from './routes/api/stop-details.js';
@@ -11,6 +14,7 @@ import { router as mapTilesRouter } from './routes/api/map-tiles.js';
 import { errorMiddleware, notFoundMiddleware } from './routes/error.js';
 
 import * as alerts from './alerts/index.js';
+import * as tiles from './routes/api/map-tiles.js';
 
 dotenv.config();
 
@@ -47,11 +51,19 @@ app.use('/api/map-tiles', mapTilesRouter);
 app.use(errorMiddleware);
 app.use(notFoundMiddleware);
 
+// Establish database connection
+const client = createClient(redisOptions);
+client.on('error', error => console.error(error));
+
+await client.connect();
+app.locals.client = client;
+
 // Start server
 const port = process.env.PORT || 8000;
 app.listen(port, () => {
     console.log(`Listening: http://localhost:${port}`);
 });
 
-// Start alert polling
-alerts.start(10 * 60 * 1000);
+// Start alert polling and tile indexing
+alerts.start(client, 10 * 60 * 1000);
+tiles.start(client);

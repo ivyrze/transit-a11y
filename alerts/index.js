@@ -1,34 +1,28 @@
 import sanity from '@sanity/client';
 import { sanityOptions, cleanKeyPattern } from '../utils.js';
-import { createClient } from 'redis';
-import { redisOptions } from '../utils.js';
 
 import * as cta from './agencies/chicago-cta.js';
 import * as trimet from './agencies/portland-trimet.js';
 
-export const start = interval => {
-    setInterval(tick, interval);
-    setTimeout(tick, 1000);
+export const start = (client, interval) => {
+    setInterval(tick, interval, client);
+    setTimeout(tick, 1000, client);
 };
 
-const tick = () => {
+const tick = async client => {
     console.log("Checking alerts APIs...");
     
     // Call database update after all agency alerts are retrieved
-    Promise.all([ cta, trimet ].map(agency => {
-        return agency.status(synonyms).catch(error => console.error(error));
-    })).then(update);
+    const agencies = await Promise.all([ cta, trimet ].map(agency => {
+        return agency.status(client, synonyms).catch(error => console.error(error));
+    }));
+    
+    update(client, agencies);
 };
 
-const update = async agencies => {
+const update = async (client, agencies) => {
     // Remove failed promise results
     agencies = agencies.filter(agency => agency);
-    
-    // Establish database connection
-    const client = createClient(redisOptions);
-    client.on('error', error => console.error(error));
-    
-    try { await client.connect(); } catch { return; }
     
     // Remove all existing alerts
     await clean(client);
@@ -43,9 +37,9 @@ const update = async agencies => {
         }
     });
     
-    console.log("Stored alerts for " + agencies.length + " agencies.");
+    await client.publish('geometry:updates', 'stops');
     
-    client.quit();
+    console.log("Stored alerts for " + agencies.length + " agencies.");
 };
 
 const extend = async () => {

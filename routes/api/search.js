@@ -1,8 +1,7 @@
 import express from 'express';
 import validator from 'express-validator';
 import httpErrors from 'http-errors';
-import { createClient } from 'redis';
-import { redisOptions, colorSort } from '../../utils.js';
+import { colorSort } from '../../utils.js';
 
 export const router = express.Router();
 
@@ -28,17 +27,8 @@ router.post('/', validator.checkSchema(schema), async function(req, res, next) {
         next(new httpErrors.BadRequest()); return;
     }
     
+    const client = req.app.locals.client;
     const { query, longitude, latitude } = validator.matchedData(req);
-    
-    // Establish database connection
-    const client = createClient(redisOptions);
-    client.on('error', error => console.error(error));
-    
-    try {
-        await client.connect();
-    } catch {
-        next(new httpErrors.InternalServerError()); return;
-    }
     
     // Run query, treating special characters as an OR operator
     const searchable = query.split(/[^\w\d]/g).filter(word => word).join("|");
@@ -60,7 +50,6 @@ router.post('/', validator.checkSchema(schema), async function(req, res, next) {
         }));
         result.routes.sort(colorSort);
     }
-    client.quit();
     
     res.json({ results });
 });

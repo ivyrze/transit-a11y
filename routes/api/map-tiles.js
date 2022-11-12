@@ -3,45 +3,6 @@ import geojsonVt from 'geojson-vt';
 import express from 'express';
 import validator from 'express-validator';
 import httpErrors from 'http-errors';
-import { createClient } from 'redis';
-import { redisOptions } from '../../utils.js';
-
-const generateTileIndicies = async () => {
-    const layers = [ 'stops', 'routes' ];
-    
-    // Establish database connection
-    const client = createClient(redisOptions);
-    client.on('error', error => console.error(error));
-    
-    await client.connect();
-    
-    var indicies = {};
-    for await (const layer of layers) {
-        // Get raw GeoJSON from the database
-        const geojson = JSON.parse(await client.get('geometry:' + layer));
-        
-        // Inject dynamic alert data
-        if (layer == 'stops') {
-            const alerts = await client.sMembers('alerts');
-            geojson.features.forEach(stop => {
-                if (alerts.includes(stop.properties.stop_id)) {
-                    stop.properties.wheelchair_boarding = 3;
-                }
-            });
-        }
-        
-        // Index the layer for quick distribution later
-        indicies[layer] = geojsonVt(geojson, { maxZoom: 24 });
-    }
-    
-    client.quit();
-    
-    return indicies;
-};
-
-var indicies = await generateTileIndicies();
-
-setInterval(async () => indicies = await generateTileIndicies(), 60 * 1000);
 
 export const router = express.Router();
 
@@ -87,3 +48,39 @@ router.get('/:z/:x/:y', validator.checkSchema(schema), async function(req, res, 
         res.send();
     }
 });
+
+var indicies;
+
+export const start = async client => {
+    const subscriber = client.duplicate();
+    await subscriber.connect();
+    
+    await subscriber.subscribe("geometry:updates", async message => {
+        indicies = await generate(client);
+    });
+};
+
+const generate = async client => {
+    const layers = [ 'stops', 'routes' ];
+    
+    var indicies = {};
+    for await (const layer of layers) {
+        // Get raw GeoJSON from the database
+        const geojson = JSON.parse(await client.get('geometry:' + layer));
+        
+        // Inject dynamic alert data
+        if (layer == 'stops') {
+            const alerts = await client.sMembers('alerts');
+            geojson.features.forEach(stop => {
+                if (alerts.includes(stop.properties.stop_id)) {
+                    stop.properties.wheelchair_boarding = 3;
+                }
+            });
+        }
+        
+        // Index the layer for quick distribution later
+        indicies[layer] = geojsonVt(geojson, { maxZoom: 24 });
+    }
+    
+    return indicies;
+};

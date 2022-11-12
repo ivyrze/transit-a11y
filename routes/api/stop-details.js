@@ -1,8 +1,6 @@
 import express from 'express';
 import validator from 'express-validator';
 import httpErrors from 'http-errors';
-import { createClient } from 'redis';
-import { redisOptions } from '../../utils.js';
 
 export const router = express.Router();
 
@@ -20,17 +18,8 @@ router.post('/', validator.checkSchema(schema), async function(req, res, next) {
         next(new httpErrors.BadRequest()); return;
     }
     
+    const client = req.app.locals.client;
     const { id } = validator.matchedData(req);
-    
-    // Establish database connection
-    const client = createClient(redisOptions);
-    client.on('error', error => console.error(error));
-    
-    try {
-        await client.connect();
-    } catch {
-        next(new httpErrors.InternalServerError()); return;
-    }
     
     // Run query and parse output
     let details = await client.hGetAll('stops:' + id);
@@ -53,8 +42,6 @@ router.post('/', validator.checkSchema(schema), async function(req, res, next) {
         details.agency.url = details.url;
         delete details.url;
     }
-    
-    client.quit();
     
     // Check outgoing data
     if (!details ||

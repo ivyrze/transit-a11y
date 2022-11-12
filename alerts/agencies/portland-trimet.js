@@ -1,17 +1,9 @@
-import { createClient } from 'redis';
-import { redisOptions } from '../../utils.js';
 import axios from 'axios';
 
 const endpoint = 'https://developer.trimet.org/ws/v2/alerts';
 const agencyPrefix = 'trimet';
 
-export const status = async synonyms => {
-    // Establish database connection
-    const client = createClient(redisOptions);
-    client.on('error', error => console.error(error));
-    
-    await client.connect();
-    
+export const status = async (client, synonyms) => {
     // Request alerts from agency API
     const response = await axios.get(endpoint, {
         params: { appID: process.env.TRIMET_APP_ID }
@@ -55,6 +47,5 @@ export const status = async synonyms => {
         };
     });
     
-    client.quit();
     return alerts;
 };

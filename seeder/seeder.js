@@ -89,5 +89,6 @@ datasets = undefined;
 
 // Convert to GeoJSON and optionally upload to Mapbox
 await geojson(client, stops, routes);
+await client.publish('geometry:updates', '*');
 
 await client.quit();
