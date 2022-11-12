@@ -1,3 +1,5 @@
+export { override } from './override.js';
+export { coalesce } from './coalesce.js';
 export { remove } from './remove.js';
 export { parenthesis } from './parenthesis.js';
 export { idPrefixer } from './id-prefixer.js';

@@ -8,6 +8,11 @@
             "stations": true,
             "transformations": [
                 {
+                    "source": "stops.wheelchair_boarding",
+                    "type": "coalesce",
+                    "target": "2"
+                },
+                {
                     "source": "stops.stop_name",
                     "type": "parenthesis"
                 }
@@ -31,6 +36,11 @@
             "vehicle": "light-rail",
             "stations": true,
             "transformations": [
+                {
+                    "source": "stops.wheelchair_boarding",
+                    "type": "override",
+                    "target": "1"
+                },
                 {
                     "source": "routes.route_long_name",
                     "type": "remove",
