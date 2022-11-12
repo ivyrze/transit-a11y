@@ -1,7 +1,7 @@
 import express from 'express';
 import httpErrors from 'http-errors';
 import { createClient } from 'redis';
-import { redisOptions, colorSort } from '../utils.js';
+import { redisOptions, colorSort } from '../../utils.js';
 
 export const router = express.Router();
 

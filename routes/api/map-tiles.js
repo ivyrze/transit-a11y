@@ -3,7 +3,7 @@ import geojsonVt from 'geojson-vt';
 import express from 'express';
 import httpErrors from 'http-errors';
 import { createClient } from 'redis';
-import { redisOptions } from '../utils.js';
+import { redisOptions } from '../../utils.js';
 
 const generateTileIndicies = async () => {
     const layers = [ 'stops', 'routes' ];

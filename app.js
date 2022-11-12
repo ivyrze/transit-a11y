@@ -4,9 +4,9 @@ import morgan from 'morgan';
 import helmet from 'helmet';
 
 import { router as indexRouter } from './routes/index.js';
-import { router as searchRouter } from './routes/search.js';
-import { router as stopDetailsRouter } from './routes/stop-details.js';
-import { router as mapTilesRouter } from './routes/map-tiles.js';
+import { router as searchRouter } from './routes/api/search.js';
+import { router as stopDetailsRouter } from './routes/api/stop-details.js';
+import { router as mapTilesRouter } from './routes/api/map-tiles.js';
 
 import { errorMiddleware, notFoundMiddleware } from './routes/error.js';
 
