@@ -6,7 +6,7 @@ import * as trimet from './agencies/portland-trimet.js';
 
 export const start = (client, interval) => {
     setInterval(tick, interval, client);
-    setTimeout(tick, 1000, client);
+    setTimeout(tick, 20 * 1000, client);
 };
 
 const tick = async client => {

@@ -52,6 +52,10 @@ router.get('/:z/:x/:y', validator.checkSchema(schema), async function(req, res, 
 var indicies;
 
 export const start = async client => {
+    // Initial indexing on startup
+    indicies = await generate(client);
+    
+    // Await update notification from new seeds or alerts
     const subscriber = client.duplicate();
     await subscriber.connect();
     

@@ -58,12 +58,12 @@ client.on('error', error => console.error(error));
 await client.connect();
 app.locals.client = client;
 
+// Start alert polling and tile indexing
+await tiles.start(client);
+alerts.start(client, 10 * 60 * 1000);
+
 // Start server
 const port = process.env.PORT || 8000;
 app.listen(port, () => {
     console.log(`Listening: http://localhost:${port}`);
 });
-
-// Start alert polling and tile indexing
-alerts.start(client, 10 * 60 * 1000);
-tiles.start(client);
