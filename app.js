@@ -1,12 +1,17 @@
 import dotenv from 'dotenv';
 import express from 'express';
+import session from 'express-session';
 import morgan from 'morgan';
 import helmet from 'helmet';
+import crypto from 'crypto';
 
 import { createClient } from 'redis';
 import { redisOptions } from './utils.js';
 
 import { router as indexRouter } from './routes/index.js';
+import { router as loginRouter } from './routes/account/login.js';
+import { router as logoutRouter } from './routes/account/logout.js';
+import { router as signUpRouter } from './routes/account/sign-up.js';
 import { router as searchRouter } from './routes/api/search.js';
 import { router as stopDetailsRouter } from './routes/api/stop-details.js';
 import { router as mapTilesRouter } from './routes/api/map-tiles.js';
@@ -31,6 +36,16 @@ app.use(helmet.referrerPolicy());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.use(session({
+    cookie: {
+        secure: process.env.NODE_ENV === 'production',
+        maxAge: 1000 * 60**2 * 10
+    },
+    secret: crypto.randomBytes(64).toString('hex'),
+    saveUninitialized: false,
+    resave: false
+}));
+
 // Setup view engine
 app.set('views', 'views');
 app.set('view engine', 'pug');
@@ -43,6 +58,9 @@ app.set('view engine', 'pug');
 
 // Setup routes
 app.use('/', indexRouter);
+app.use('/account/login', loginRouter);
+app.use('/account/logout', logoutRouter);
+app.use('/account/sign-up', signUpRouter);
 app.use('/api/search', searchRouter);
 app.use('/api/stop-details', stopDetailsRouter);
 app.use('/api/map-tiles', mapTilesRouter);

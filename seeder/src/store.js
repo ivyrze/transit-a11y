@@ -84,7 +84,7 @@ export const indicies = async client => {
     const existing = await client.ft._list();
     
     if (!existing.includes('idx:stops')) {
-        return client.ft.create('idx:stops',
+        await client.ft.create('idx:stops',
             {
                 name: { type: SchemaFieldTypes.TEXT },
                 coordinates: { type: SchemaFieldTypes.GEO }
@@ -94,8 +94,20 @@ export const indicies = async client => {
                 PREFIX: 'stops:'
             }
         );
-    } else {
-        console.log("Skipping index creation – already exists.");
-        return Promise.resolve();
+    }
+    
+    if (!existing.includes('idx:users')) {
+        await client.ft.create('idx:users',
+            {
+                username: { type: SchemaFieldTypes.TAG, NOSTEM: true },
+                email: { type: SchemaFieldTypes.TAG, NOSTEM: true }
+            },
+            {
+                ON: 'HASH',
+                PREFIX: 'users:',
+                NOHL: true,
+                NOFREQS: true
+            }
+        );
     }
 };

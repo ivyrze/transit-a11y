@@ -23,9 +23,10 @@ button {
     }
 }
 
-input[type="text"],
+input,
 select,
 textarea {
+    width: 100%;
     padding: 10px;
     border: 2px solid #999;
     border-radius: 8px;
@@ -41,6 +42,27 @@ textarea {
         @include dark {
             border-color: #888;
         }
+    }
+    
+    form.form-submitted &:invalid {
+        border-color: #c25252;
+        outline-color: #c25252;
+    }
+}
+
+.form-infield {
+    position: relative;
+    
+    label {
+        position: absolute;
+        top: 12px;
+        left: 12px;
+        font-size: 16px;
+        font-weight: weight('regular');
+    }
+    
+    input {
+        padding-top: 38px;
     }
 }
 
@@ -69,7 +91,8 @@ label {
     font-weight: weight('medium');
 }
 
-fieldset {
+fieldset,
+.form-infield + .form-infield {
     margin-top: 15px;
 }
 
@@ -241,11 +264,11 @@ h1.title {
     flex-shrink: 0;
     
     input {
-        width: 100%;
         font-size: 22px;
         padding: 12px;
         padding-right: 2.5em;
         letter-spacing: 0.5px;
+        border: none;
         
         &:placeholder-shown {
             font-style: italic;
@@ -511,6 +534,7 @@ h1.title {
         height: 100%;
         inset: 0;
         margin: 0;
+        border: none;
         border-radius: 8px;
         
         &:checked + label {
@@ -543,12 +567,15 @@ h1.title {
     margin-block-end: 10px;
 }
 
+.form-fullscreen,
 .error-fullscreen {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    height: 100vh;
-    max-width: 460px;
+    margin-block: 50px;
+    padding-inline: 25px;
+    min-height: calc(100vh - 100px);
+    max-width: 510px;
     margin-inline: auto;
     
     & > h1 {

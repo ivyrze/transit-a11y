@@ -1,0 +1,26 @@
+extends ../common/layout.pug
+
+block append head
+    script(src='/js/form-controller.js', defer)
+    
+block content
+    .form-fullscreen
+        h1 #{title}
+        form(
+            method='post'
+            autocomplete='off'
+            autocorrect='off'
+            spellcheck='false'
+        )
+            fieldset
+                .form-infield
+                    label(for="username")= 'Username'
+                    input#username(type="text" name="username" required)
+                .form-infield
+                    label(for="password")= 'Password'
+                    input#password(type="password" name="password" required)
+            fieldset
+                button.button-filled.button-primary(type='submit')= 'Submit'
+            p
+                | Don't have an account?
+                | #[a(href='sign-up')= 'Sign up with an invite code'].
