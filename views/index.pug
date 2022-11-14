@@ -5,6 +5,7 @@ block append head
     link(href='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.css', rel='stylesheet')
     script(src='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.js')
     script(src='/js/ui-controller.js', defer)
+    script(src='/js/form-controller.js', defer)
     script(src='/js/mapbox-controller.js', defer)
 
 block content
@@ -53,7 +54,7 @@ block content
                     legend= 'What features are available at this stop?'
                     ul.feature-option-container
                         li.feature-option
-                            input#feature-bench(type='checkbox' name='features[bench]' checked)
+                            input#feature-bench(type='checkbox' name='features[bench]')
                             label(for='feature-bench')
                                 +icon('bench')
                                 = 'Bench'
@@ -81,6 +82,7 @@ block content
                 fieldset.button-set
                     button.button-filled.button-primary(type='submit')= 'Submit'
                     button.button-filled.form-cancel(type='button')= 'Cancel'
+                input(type='hidden' name='stop')
         
         +card('about', 'About', undefined, false)
             p

@@ -14,6 +14,7 @@ import { router as logoutRouter } from './routes/account/logout.js';
 import { router as signUpRouter } from './routes/account/sign-up.js';
 import { router as searchRouter } from './routes/api/search.js';
 import { router as stopDetailsRouter } from './routes/api/stop-details.js';
+import { router as submitReviewRouter } from './routes/api/submit-review.js';
 import { router as mapTilesRouter } from './routes/api/map-tiles.js';
 
 import { errorMiddleware, notFoundMiddleware } from './routes/error.js';
@@ -63,6 +64,7 @@ app.use('/account/logout', logoutRouter);
 app.use('/account/sign-up', signUpRouter);
 app.use('/api/search', searchRouter);
 app.use('/api/stop-details', stopDetailsRouter);
+app.use('/api/submit-review', submitReviewRouter);
 app.use('/api/map-tiles', mapTilesRouter);
 
 // Custom error page

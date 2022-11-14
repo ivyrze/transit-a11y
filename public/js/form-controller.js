@@ -15,10 +15,18 @@ $("form").submit(function (event) {
     }).done(({ errors }) => {
         if (errors) {
             showErrors(errors);
-        } else {
+        } else if (window.location.pathname.includes('account')) {
             window.location.pathname = '/';
+        } else {
+            $(".review-form-card").addClass("hidden");
         }
-    }).fail(({ errors }) => {
+    }).fail(({ errors, status }) => {
+        if (status == 401) {
+            window.location.pathname = '/account/login';
+        } else if (status != 200 && !errors) {
+            showError();
+        }
+        
         showErrors(errors ?? {});
     });
 });
