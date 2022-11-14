@@ -54,8 +54,9 @@ const processAgency = async config => {
     routes = routes.map(route => transformers.idPrefixer(route, config.id));
     routes = routes.map(route => transformers.colorContinuity(route));
     
-    // Merge vehicle type into agency object for storage
+    // Merge agency constants into object for storage
     agency.agency_vehicle = config.vehicle;
+    agency.agency_reviews = config.reviews;
     
     // Store stops in Redis database
     await store(client, agency, stops, routes);

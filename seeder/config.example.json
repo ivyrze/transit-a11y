@@ -16,19 +16,22 @@
                     "source": "stops.stop_name",
                     "type": "parenthesis"
                 }
-            ]
+            ],
+            "reviews": false
         },
         {
             "id": "dtc",
             "url": "https://github.com/ivyrze/dtc-gtfs/releases/latest/download/gtfs-static.zip",
             "vehicle": "monorail",
-            "stations": true
+            "stations": true,
+            "reviews": false
         },
         {
             "id": "qline",
             "url": "https://data.trilliumtransit.com/gtfs/qline-mi-us/qline-mi-us.zip",
             "vehicle": "streetcar",
-            "stations": false
+            "stations": false,
+            "reviews": false
         },
         {
             "id": "ddot",
@@ -41,7 +44,8 @@
                     "type": "override",
                     "target": "#00494a"
                 }
-            ]
+            ],
+            "reviews": true
         },
         {
             "id": "smart",
@@ -66,7 +70,8 @@
                     "source": "stops.stop_name",
                     "type": "prettify"
                 }
-            ]
+            ],
+            "reviews": true
         },
         {
             "id": "trimet",
@@ -94,7 +99,8 @@
                     "type": "remove",
                     "target": "landmark"
                 }
-            ]
+            ],
+            "reviews": false
         }
     ]
 }

@@ -6,7 +6,8 @@ const schema = {
         name: { from: 'agency_name' },
         url: { from: 'agency_url' },
         bounds: { from: 'agency_bounds', apply: bounds => bounds.join(',') },
-        vehicle: { from: 'agency_vehicle' }
+        vehicle: { from: 'agency_vehicle' },
+        reviews: { from: 'agency_reviews' }
     },
     stops: {
         id: { from: 'stop_id' },
@@ -53,6 +54,10 @@ export const store = async (client, agency, stops, routes) => {
                 
                 if (value == undefined && !options.optional) {
                     throw 'Required field was missing from the dataset';
+                }
+                
+                if (typeof value === 'boolean') {
+                    value = value.toString();
                 }
                 
                 if (key == "id") {
