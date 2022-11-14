@@ -36,11 +36,10 @@ router.post('/', validator.checkSchema(schema), async function(req, res, next) {
     
     let results = await client.ft.search('idx:stops', searchable + '* ' + ' @coordinates:[' + geofilter + ']');
     
-    results = results.documents.map(result => {
-        result.id = result.id.replace('stops:', '');
-        result.name = result.value.name;
-        return result;
-    });
+    results = results.documents.map(result => ({
+        id: result.id.replace('stops:', ''),
+        name: result.value.name
+    }));
     
     // Add route associations
     for await (let result of results) {
