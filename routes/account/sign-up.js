@@ -57,7 +57,7 @@ router.post('/', validator.checkSchema(schema), async function(req, res, next) {
     // Create user object
     const id = generateUUID();
     const hash = bcrypt.hashSync(password);
-    const created = new Date().toISOString().substr(0, 16) + 'Z';
+    const created = new Date().toISOString().substring(0, 16) + 'Z';
     
     await client.sAdd('users', id);
     await client.hSet('users:' + id, { email, username, password: hash, created });
