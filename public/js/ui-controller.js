@@ -43,6 +43,20 @@ $(".card-close, .form-cancel").click(function () {
     $(this).parents(".sidebar-card").addClass("hidden");
 });
 
+$(".review-drawer-toggle").click(function () {
+    const expanded = $(this).attr("aria-expanded") === 'true';
+    $("#review-drawer").toggleClass("hidden");
+    $(this).attr("aria-expanded", !expanded);
+    this.childNodes[0].nodeValue =
+        i18n.reviewsToggleStates[expanded ? 'show' : 'hide'];
+});
+
+$(".review-contribute").click(function () {
+    $(".review-form-card h2").text($(".stop-details-card h2").text());
+    $(".review-form-card .subtitle").text($(".stop-details-card .subtitle").text());
+    showCard(".review-form-card");
+});
+
 const prefersLightScheme = () => {
     return window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
 };
@@ -125,6 +139,33 @@ const openStop = id => {
             $(".stop-details-card .source-link.hidden").removeClass("hidden");
         }
         
+        if (data.reviews) {
+            $("#review-drawer .review-single").remove();
+            
+            for (const review of data.reviews) {
+                constructReviewSingle(review).insertBefore(".review-contribute");
+            }
+            $("#review-drawer time").timeago();
+            
+            if (!data.reviews.length) {
+                $("#review-drawer").removeClass("hidden");
+                $(".review-drawer-toggle").addClass("hidden");
+            } else {
+                $("#review-drawer").addClass("hidden");
+                $(".review-drawer-toggle")
+                    .removeClass("hidden")
+                    .attr("aria-expanded", "false")
+                $(".review-drawer-toggle")[0].childNodes[0].nodeValue =
+                    i18n.reviewsToggleStates["show"];
+            }
+            
+            $(".review-container").removeClass("hidden");
+            $(".stop-details-card .source-link").addClass("hidden");
+        } else {
+            $(".review-container").addClass("hidden");
+            $(".stop-details-card .source-link").removeClass("hidden");
+        }
+        
         $(".stop-accessibility-info").text(
             (state == 'warning') ? data.alert.description :
                 (data.description) ? data.description :
@@ -132,6 +173,8 @@ const openStop = id => {
         );
         $(".stop-details-card h2").text(data.name);
         $(".stop-details-card .subtitle").text(i18n.stopSubheadings[data.agency.vehicle]);
+        
+        $(".review-form-card input[name=\"stop\"]").val(id);
         
         showCard(".stop-details-card");
         
@@ -144,4 +187,46 @@ const openStop = id => {
             data.coordinates.latitude
         ]);
     }).fail(showError);
+};
+
+const constructReviewSingle = review => {
+    const single = $("<article>")
+        .addClass("review-single")
+        .append(
+            $("<div>")
+                .addClass("review-header")
+                .append(
+                    $("<img>")
+                        .addClass("profile-picture")
+                        .attr("src", review.author.avatar)
+                        .attr("alt", "Profile picture")
+                )
+                .append(
+                    $("<span>")
+                        .addClass("review-author")
+                        .text(review.author.username)
+                )
+                .append(
+                    $("<time>")
+                        .addClass("review-timestamp")
+                        .attr("datetime", review.timestamp)
+                )
+        ).append(
+            $("<div>")
+                .attr("class", "review-accessibility-state state-" + review.state)
+                .text(i18n.accessibilityStates[review.state].heading)
+                .prepend(
+                    $("<span>")
+                        .addClass("icon icon-" + review.state)
+                        .attr("aria-hidden", "true")
+                )
+        );
+        
+    if (review.comments) {
+        single.append(
+            $("<p>").text(review.comments)
+        );
+    }
+    
+    return single;
 };

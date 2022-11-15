@@ -1,6 +1,7 @@
 import express from 'express';
 import validator from 'express-validator';
 import httpErrors from 'http-errors';
+import gravatar from 'gravatar';
 
 export const router = express.Router();
 
@@ -41,6 +42,32 @@ router.post('/', validator.checkSchema(schema), async function(req, res, next) {
     if (details.url) {
         details.agency.url = details.url;
         delete details.url;
+    }
+    
+    if (details.agency.reviews === 'true') {
+        // Get list of reviews and more details about the authors
+        let reviews = await client.hGetAll('stops:' + id + ':reviews');
+        let users = Object.keys(reviews);
+        reviews = Object.values(reviews);
+        
+        reviews = await Promise.all(reviews.map(review => {
+            return client.hGetAll('reviews:' + review);
+        }));
+        users = await Promise.all(users.map(user => {
+            return client.hGetAll('users:' + user);
+        }));
+        
+        // Add Gravatar and remove unnecessary data
+        const gravatarOptions = { size: 100, protocol: 'https', default: 'mp' };
+        users = users.map(user => ({
+            username: user.username,
+            avatar: gravatar.url(user.email, gravatarOptions)
+        }));
+        
+        // Merge user data into unified object
+        reviews.forEach((review, index) => { review.author = users[index]; });
+        
+        details.reviews = reviews;
     }
     
     // Check outgoing data

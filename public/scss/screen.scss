@@ -514,6 +514,132 @@ h1.title {
     }
 }
 
+.review-container {
+    border-top: 1px solid #dcdcdc;
+    padding-top: 14px;
+    
+    @include dark {
+        border-top-color: #3d3d3d;
+    }
+}
+
+.review-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+    font-size: 16px;
+    
+    .review-author {
+        font-weight: weight('medium');
+    }
+    
+    .review-timestamp {
+        margin-left: auto;
+        padding-right: 7px;
+        font-weight: weight('light');
+        opacity: 0.5;
+    }
+    
+    .profile-picture {
+        width: 1.5em;
+        height: 1.5em;
+    }
+}
+
+.review-accessibility-state {
+    font-size: 16px;
+    font-weight: weight('medium');
+    
+    $colors: (
+        'accessible': (#1a358f, #b2c2ff),
+        'warning': (#6d4c07, #f2c789),
+        'inaccessible': (#811616, #fdacac)
+    );
+    
+    @each $name, $color in $colors {
+        &.state-#{$name} {
+            color: list.nth($color, 1);
+            
+            @include dark {
+                color: list.nth($color, 2);
+            }
+        }
+    }
+    
+    .icon {
+        vertical-align: middle;
+        margin-right: 6px;
+    }
+}
+
+.review-single {
+    margin-top: 16px;
+    
+    p {
+        margin-top: 6px;
+        margin-bottom: 0;
+    }
+    
+    & + .review-contribute {
+        margin-top: 16px;
+    }
+}
+
+.review-drawer-toggle {
+    width: 100%;
+    text-align: left;
+    font-size: 14px;
+    letter-spacing: 1px;
+    color: #767676;
+    transition: 0.3s ease color;
+    
+    @include dark {
+        color: #828282;
+    }
+    
+    &:hover {
+        color: #646464;
+        
+        @include dark {
+            color: #939393;
+        }
+    }
+    
+    .icon {
+        float: right;
+        margin-right: 4px;
+    }
+    
+    &[aria-expanded="true"] .icon {
+        transform: rotate(180deg);
+    }
+}
+
+.review-drawer-toggle,
+.review-contribute {
+    padding: 4px 0;
+    text-transform: uppercase;
+}
+
+.review-contribute {
+    font-size: 13px;
+    font-weight: weight('medium');
+    letter-spacing: 0.5px;
+    
+    .icon {
+        font-size: 16px;
+        vertical-align: middle;
+        margin-right: 8px;
+    }
+}
+
+.profile-picture {
+    background-color: #ddd;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
 .feature-option-container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));

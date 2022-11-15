@@ -12,7 +12,10 @@ export const styles = () => {
 };
 
 export const scripts = () => {
-    return gulp.src('node_modules/jquery/dist/jquery.min.js')
+    return gulp.src([
+            'node_modules/jquery/dist/jquery.min.js',
+            'node_modules/timeago/jquery.timeago.js'
+        ])
         .pipe(gulp.dest('public/js/vendor/'));
 };
 

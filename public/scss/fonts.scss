@@ -76,7 +76,8 @@ $font-faces: (
         'bench': '\e00f',
         'shelter': '\e010',
         'display': '\e011',
-        'heating': '\e012'
+        'heating': '\e012',
+        'chevron': '\e013'
     );
     
     @each $name, $glyph in $icons {
