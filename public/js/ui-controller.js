@@ -96,7 +96,9 @@ const openStop = id => {
             .attr("class", "stop-accessibility-state state-" + state)
             .text(i18n.accessibilityStates[state].heading)
             .prepend(
-                $("<span>").addClass("icon icon-" + state)
+                $("<span>")
+                    .addClass("icon icon-" + state)
+                    .attr("aria-hidden", "true")
             );
         
         $(".stop-tags-container > .stop-tag").remove();
