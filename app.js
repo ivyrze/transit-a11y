@@ -3,6 +3,7 @@ import express from 'express';
 import session from 'express-session';
 import morgan from 'morgan';
 import helmet from 'helmet';
+import livereload from 'connect-livereload';
 import crypto from 'crypto';
 
 import { createClient } from 'redis';
@@ -46,6 +47,10 @@ app.use(session({
     saveUninitialized: false,
     resave: false
 }));
+
+if (process.env.NODE_ENV !== 'production') {
+    app.use(livereload());
+}
 
 // Setup view engine
 app.set('views', 'views');

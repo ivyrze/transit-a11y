@@ -1,5 +1,6 @@
 import gulp from 'gulp';
 import nodemon from 'gulp-nodemon';
+import livereload from 'gulp-livereload';
 import gulpSass from 'gulp-sass';
 import dartSass from 'sass';
 
@@ -23,12 +24,15 @@ const build = gulp.series(styles, scripts);
 export default build;
 
 const serve = done => {
+    livereload.listen({ quiet: true });
     return nodemon({
         script: 'app.js',
         tasks: [ 'styles' ],
         ext: 'js json scss pug',
         ignore: [ 'seeder' ],
         done: done
+    }).on('start', () => {
+        setTimeout(() => livereload.reload(), 400);
     });
 };
 
