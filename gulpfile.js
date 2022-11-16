@@ -22,10 +22,13 @@ export const scripts = () => {
 const build = gulp.series(styles, scripts);
 export default build;
 
-export const watch = () => {
+const serve = () => {
     return nodemon({
         script: 'app.js',
         tasks: [ 'styles' ],
-        ext: 'js json scss pug'
+        ext: 'js json scss pug',
+        ignore: [ 'seeder' ]
     });
 };
+
+export const watch = gulp.series(build, serve);
