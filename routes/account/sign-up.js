@@ -65,5 +65,9 @@ router.post('/', validator.checkSchema(schema), async function(req, res, next) {
     // Remove invite code from available pool
     await client.sRem('invites', invite);
     
+    // Automatically log the user in
+    req.session.user = id;
+    req.session.save();
+    
     res.json({});
 });

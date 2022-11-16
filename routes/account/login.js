@@ -40,7 +40,9 @@ router.post('/', validator.checkSchema(schema), async function(req, res, next) {
         res.json({ errors: { password: 'Invalid username or password' } }); return;
     }
     
+    // Successfully validated credentials, now create session
     req.session.user = user.documents[0].id.replace('users:', '');
+    req.session.save();
     
     res.json({});
 });
