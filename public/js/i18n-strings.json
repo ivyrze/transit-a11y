@@ -17,16 +17,82 @@
     "accessibilityStates": {
         "accessible": {
             "tag": "Likely accessible",
+            "heading": "Usually free of access barriers",
             "description": "This station's accessibility features are reported in working order.",
             "style": "accessible"
+        },
+        "parking": {
+            "tag": "Sometimes accessible",
+            "heading": "Street parking often blocking curb",
+            "style": "warning"
+        },
+        "other-sometimes": {
+            "tag": "Sometimes accessible",
+            "heading": "Other – sometimes accessible",
+            "style": "warning"
         },
         "service-alert": {
             "tag": "Temporarily inaccessible",
             "style": "warning"
         },
+        "construction": {
+            "tag": "Temporarily inaccessible",
+            "heading": "Construction blocking bus lane or stop",
+            "style": "warning"
+        },
+        "obstacles-temporary": {
+            "tag": "Temporarily inaccessible",
+            "heading": "Unavoidable obstacles",
+            "style": "warning"
+        },
+        "other-temporary": {
+            "tag": "Temporarily inaccessible",
+            "heading": "Other – temporarily inaccessible",
+            "style": "warning"
+        },
+        "limited-manuverability": {
+            "tag": "It's complicated",
+            "heading": "Limited manuverability for some riders",
+            "style": "warning"
+        },
+        "poor-conditions": {
+            "tag": "It's complicated",
+            "heading": "Poor conditions in surrounding areas",
+            "style": "warning"
+        },
+        "other-complicated": {
+            "tag": "It's complicated",
+            "heading": "Other – it's complicated",
+            "style": "warning"
+        },
         "inaccessible": {
             "tag": "Not accessible",
             "description": "This station has significant access barriers and is not equipped with alternative entryways.",
+            "style": "inaccessible"
+        },
+        "missing-landing": {
+            "tag": "Not accessible",
+            "heading": "Missing landing pad for ramp deployment",
+            "style": "inaccessible"
+        },
+        "uneven-surface": {
+            "tag": "Not accessible",
+            "heading": "Uneven surface for alighting or deploying",
+            "style": "inaccessible"
+        },
+        "lacks-curb": {
+            "tag": "Not accessible",
+            "heading": "Lacks curb to create shallow ramp angle",
+            "style": "inaccessible"
+        },
+        "obstacles-permanent": {
+            "tag": "Not accessible",
+            "heading": "Unavoidable obstacles",
+            "style": "inaccessible"
+        },
+        "other-inaccessible": {
+            "tag": "Not accessible",
+            "heading": "Other – not accessible",
             "style": "inaccessible"
         },
         "unknown": {

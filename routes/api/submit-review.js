@@ -29,7 +29,20 @@ const schema = {
     accessibility: {
         in: 'body',
         isIn: { options: [[
-            'likely-accessible'
+            'accessible',
+            'parking',
+            'other-sometimes',
+            'construction',
+            'obstacles-temporary',
+            'other-temporary',
+            'limited-manuverability',
+            'poor-conditions',
+            'other-complicated',
+            'missing-landing',
+            'uneven-surface',
+            'lacks-curb',
+            'obstacles-permanent',
+            'other-inaccessible'
         ]] }
     },
     comments: {
