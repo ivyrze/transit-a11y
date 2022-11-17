@@ -498,7 +498,8 @@ h1.title {
     $colors: (
         'accessible': (#85a2ff, #1a358f, #242e4f, #b2c2ff),
         'warning': (#ffd57c, #6d4c07, #372a15, #f2c789),
-        'inaccessible': (#ff7d7d, #811616, #361717, #fdacac)
+        'inaccessible': (#ff7d7d, #811616, #361717, #fdacac),
+        'unknown': (#b1b1b1, #464646, #222222, #c1c1c1)
     );
     
     @each $name, $color in $colors {
