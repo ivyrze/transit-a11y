@@ -26,7 +26,7 @@ const schema = {
         in: 'body',
         optional: true
     },
-    state: {
+    accessibility: {
         in: 'body',
         isIn: { options: [[
             'likely-accessible'
@@ -51,7 +51,7 @@ router.post('/', validator.checkSchema(schema), async function(req, res, next) {
     }
     
     const client = req.app.locals.client;
-    const { stop, features, state, comments } = validator.matchedData(req);
+    const { stop, features, accessibility, comments } = validator.matchedData(req);
     
     // Verify that the stop exists
     if (!await client.sIsMember('stops', stop)) {
@@ -65,7 +65,7 @@ router.post('/', validator.checkSchema(schema), async function(req, res, next) {
         await client.sRem('reviews', existing);
         await client.del([
             'reviews:' + existing,
-            'reviews:' + existing + ':features'
+            'reviews:' + existing + ':tags'
         ]);
         await client.hDel('stops:' + stop + ':reviews', req.session.user);
         await client.sRem('users:' + req.session.user + ':reviews', existing);
@@ -76,10 +76,10 @@ router.post('/', validator.checkSchema(schema), async function(req, res, next) {
     const timestamp = new Date().toISOString().substring(0, 16) + 'Z';
     
     await client.sAdd('reviews', id);
-    await client.hSet('reviews:' + id, { state, timestamp, ...(comments && { comments }) });
+    await client.hSet('reviews:' + id, { accessibility, timestamp, ...(comments && { comments }) });
     
     if (features) {
-        await client.sAdd('reviews:' + id + ':features', Object.keys(features));
+        await client.sAdd('reviews:' + id + ':tags', Object.keys(features));
     }
     
     await client.hSet('stops:' + stop + ':reviews', req.session.user, id);

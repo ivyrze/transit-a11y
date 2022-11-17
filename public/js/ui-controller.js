@@ -102,16 +102,13 @@ const openStop = id => {
         encode: true,
         data: { id },
     }).done(function (data) {
-        const state = (data.alert) ? 'warning' :
-            (parseInt(data.accessibility) == 1) ? 'accessible' :
-            'inaccessible';
-        
+        const state = i18n.accessibilityStates[data.accessibility];
         $(".stop-accessibility-state")
-            .attr("class", "stop-accessibility-state state-" + state)
-            .text(i18n.accessibilityStates[state].heading)
+            .attr("class", "stop-accessibility-state state-" + state.style)
+            .text(state.tag)
             .prepend(
                 $("<span>")
-                    .addClass("icon icon-" + state)
+                    .addClass("icon icon-" + state.style)
                     .attr("aria-hidden", "true")
             );
         
@@ -168,8 +165,7 @@ const openStop = id => {
         
         $(".stop-accessibility-info").text(
             (state == 'warning') ? data.alert.description :
-                (data.description) ? data.description :
-                i18n.accessibilityStates[state].description
+                (data.description) ? data.description : state.description
         );
         $(".stop-details-card h2").text(data.name);
         $(".stop-details-card .subtitle").text(i18n.stopSubheadings[data.agency.vehicle]);
@@ -190,6 +186,7 @@ const openStop = id => {
 };
 
 const constructReviewSingle = review => {
+    const state = i18n.accessibilityStates[review.accessibility];
     const single = $("<article>")
         .addClass("review-single")
         .append(
@@ -213,11 +210,11 @@ const constructReviewSingle = review => {
                 )
         ).append(
             $("<div>")
-                .attr("class", "review-accessibility-state state-" + review.state)
-                .text(i18n.accessibilityStates[review.state].heading)
+                .attr("class", "review-accessibility-state state-" + state.style)
+                .text(state.heading)
                 .prepend(
                     $("<span>")
-                        .addClass("icon icon-" + review.state)
+                        .addClass("icon icon-" + state.style)
                         .attr("aria-hidden", "true")
                 )
         );

@@ -15,16 +15,19 @@
         "monorail": "Rail station"
     },
     "accessibilityStates": {
-        "warning": {
-            "heading": "Service disruption"
-        },
         "accessible": {
-            "heading": "Likely accessible",
-            "description": "This station's accessibility features are reported in working order."
+            "tag": "Likely accessible",
+            "description": "This station's accessibility features are reported in working order.",
+            "style": "accessible"
+        },
+        "service-alert": {
+            "tag": "Temporarily inaccessible",
+            "style": "warning"
         },
         "inaccessible": {
-            "heading": "Not accessible",
-            "description": "This station has significant access barriers and is not equipped with alternative entryways."
+            "tag": "Not accessible",
+            "description": "This station has significant access barriers and is not equipped with alternative entryways.",
+            "style": "inaccessible"
         }
     },
     "tagLabels": {

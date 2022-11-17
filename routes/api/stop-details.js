@@ -33,7 +33,10 @@ router.post('/', validator.checkSchema(schema), async function(req, res, next) {
     if (tags.length) { details.tags = tags; }
     
     let alert = await client.hGetAll('alerts:' + id);
-    if (Object.keys(alert).length) { details.alert = alert; }
+    if (Object.keys(alert).length) {
+        details.accessibility = 'service-alert';
+        details.alert = alert;
+    }
     
     const key = id.split('-').slice(0, -1).join('-');
     details.agency = await client.hGetAll('agencies:' + key);

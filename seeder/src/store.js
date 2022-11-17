@@ -13,7 +13,9 @@ const schema = {
         id: { from: 'stop_id' },
         name: { from: 'stop_name' },
         description: { from: 'accessibility_desc', optional: true },
-        accessibility: { from: 'wheelchair_boarding' },
+        accessibility: { from: 'wheelchair_boarding', apply: accessibility =>
+            ([ 'unknown', 'accessible', 'inaccessible' ][accessibility ?? 0])
+        },
         coordinates: { generate: stop => stop.stop_lon + ',' + stop.stop_lat },
         url: { from: 'stop_url', optional: true },
         tags: { from: 'stop_tags', optional: true },
