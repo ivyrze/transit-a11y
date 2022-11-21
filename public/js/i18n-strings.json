@@ -18,17 +18,19 @@
         "accessible": {
             "tag": "Likely accessible",
             "heading": "Usually free of access barriers",
-            "description": "This station's accessibility features are reported in working order.",
+            "description": "This stop is likely accessible and is reported in working order.",
             "style": "accessible"
         },
         "parking": {
             "tag": "Sometimes accessible",
             "heading": "Street parking often blocking curb",
+            "description": "This stop is often affected by street parking which blocks direct access to the curb.",
             "style": "warning"
         },
         "other-sometimes": {
             "tag": "Sometimes accessible",
             "heading": "Other – sometimes accessible",
+            "description": "This stop is only accessible some of the time. Refer to the reviews below for more information.",
             "style": "warning"
         },
         "service-alert": {
@@ -38,61 +40,72 @@
         "construction": {
             "tag": "Temporarily inaccessible",
             "heading": "Construction blocking bus lane or stop",
+            "description": "This stop is temporarily affected by construction which blocks busses or riders from reaching the stop.",
             "style": "warning"
         },
         "obstacles-temporary": {
             "tag": "Temporarily inaccessible",
             "heading": "Unavoidable obstacles",
+            "description": "This stop is temporarily affected by unavoidable obstacles which prevent boarding.",
             "style": "warning"
         },
         "other-temporary": {
             "tag": "Temporarily inaccessible",
             "heading": "Other – temporarily inaccessible",
+            "description": "This stop is temporarily inaccessible. Refer to the reviews below for more information.",
             "style": "warning"
         },
         "limited-maneuverability": {
             "tag": "It's complicated",
             "heading": "Limited maneuverability for some riders",
+            "description": "This stop doesn’t provide enough space to maneuver while using certain types of mobility aids.",
             "style": "warning"
         },
         "poor-conditions": {
             "tag": "It's complicated",
             "heading": "Poor conditions in surrounding areas",
+            "description": "This stop has accessibility barriers in the general area surrounding it which may affect connections with transit or destinations.",
             "style": "warning"
         },
         "other-complicated": {
             "tag": "It's complicated",
             "heading": "Other – it's complicated",
+            "description": "This stop may or may not be accessible depending on your individual circumstances. Refer to the reviews below for more information.",
             "style": "warning"
         },
         "inaccessible": {
             "tag": "Not accessible",
-            "description": "This station has significant access barriers and is not equipped with alternative entryways.",
+            "description": "This stop has significant access barriers and is not equipped with alternative entryways.",
             "style": "inaccessible"
         },
         "missing-landing": {
             "tag": "Not accessible",
             "heading": "Missing landing pad for ramp deployment",
+            "description": "This stop doesn’t have an inlet landing pad for the ramp to deploy onto.",
             "style": "inaccessible"
         },
         "uneven-surface": {
             "tag": "Not accessible",
             "heading": "Uneven surface for alighting or deploying",
+            "description": "This stop has an uneven or unstable surface which makes it unsuitable to safely board, or which holds the ramp from fully touching down.",
             "style": "inaccessible"
         },
         "lacks-curb": {
             "tag": "Not accessible",
             "heading": "Lacks curb to create shallow ramp angle",
+            "description": "This stop doesn’t have a raised curb to aid in creating a suitable ramp angle.",
             "style": "inaccessible"
         },
         "obstacles-permanent": {
             "tag": "Not accessible",
             "heading": "Unavoidable obstacles",
+            "description": "This stop has permanent, unavoidable obstacles which prevent boarding.",
             "style": "inaccessible"
         },
         "other-inaccessible": {
             "tag": "Not accessible",
             "heading": "Other – not accessible",
+            "description": "This stop is not accessible. Refer to the reviews below for more information.",
             "style": "inaccessible"
         },
         "unknown": {
@@ -107,7 +120,11 @@
         "below-grade": "Below-grade",
         "elevator": "Elevator",
         "escalator": "Escalator",
-        "ramp-entrance": "Ramp entrance"
+        "ramp-entrance": "Ramp entrance",
+        "bench": "Bench",
+        "shelter": "Shelter",
+        "display": "Display",
+        "heating": "Heating"
     },
     "reviewsToggleStates": {
         "show": "Show user reviews",
