@@ -64,6 +64,26 @@ export const start = async client => {
     });
 };
 
+const icons = {
+    "accessible": "accessible",
+    "parking": "warning",
+    "other-sometimes": "warning",
+    "service-alert": "warning",
+    "construction": "warning",
+    "obstacles-temporary": "warning",
+    "other-temporary": "warning",
+    "limited-maneuverability": "warning",
+    "poor-conditions": "warning",
+    "other-complicated": "warning",
+    "inaccessible": "inaccessible",
+    "missing-landing": "inaccessible",
+    "uneven-surface": "inaccessible",
+    "lacks-curb": "inaccessible",
+    "obstacles-permanent": "inaccessible",
+    "other-inaccessible": "inaccessible",
+    "unknown": "unknown"
+};
+
 const generate = async client => {
     const layers = [ 'stops', 'routes' ];
     
@@ -74,10 +94,19 @@ const generate = async client => {
         
         // Inject dynamic alert data
         if (layer == 'stops') {
+            let states = {};
+            const stops = await client.sMembers('stops');
             const alerts = await client.sMembers('alerts');
+            
+            await Promise.all(stops.map(async stop => {
+                states[stop] = await client.hGet('stops:' + stop, 'accessibility')
+            }));
+            alerts.forEach(alert => states[alert] = "service-alert");
+            
             geojson.features.forEach(stop => {
-                if (alerts.includes(stop.properties.stop_id)) {
-                    stop.properties.wheelchair_boarding = 3;
+                if (states[stop.properties.stop_id]) {
+                    stop.properties.wheelchair_boarding =
+                        icons[states[stop.properties.stop_id]];
                 }
             });
         }

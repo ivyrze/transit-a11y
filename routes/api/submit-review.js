@@ -142,4 +142,7 @@ const consensus = async (client, id) => {
     if (tags.length) {
         await client.sAdd('stops:' + id + ':tags', tags);
     }
+    
+    // Request a map tile regeneration
+    await client.publish('geometry:updates', 'stops');
 };

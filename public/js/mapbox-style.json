@@ -181,15 +181,7 @@
                     ["zoom"],
                     "",
                     14,
-                    [
-                        "match",
-                        ["get", "wheelchair_boarding"],
-                        [1],
-                        "accessible",
-                        [3],
-                        "warning",
-                        "not-accessible"
-                    ]
+                    ["get", "wheelchair_boarding"]
                 ],
                 "text-font": [
                     "Akzidenz-Grotesk Std Med Regular",
@@ -420,15 +412,7 @@
                     ["zoom"],
                     "",
                     14,
-                    [
-                        "match",
-                        ["get", "wheelchair_boarding"],
-                        [1],
-                        "accessible",
-                        [3],
-                        "warning",
-                        "not-accessible"
-                    ]
+                    ["get", "wheelchair_boarding"]
                 ],
                 "text-font": [
                     "Akzidenz-Grotesk Std Med Regular",
