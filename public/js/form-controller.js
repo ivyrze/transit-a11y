@@ -19,6 +19,7 @@ $("form").submit(function (event) {
             window.location.pathname = '/';
         } else {
             $(".review-form-card").addClass("hidden");
+            $(".review-form-card form")[0].reset();
         }
     }).fail(({ errors, status }) => {
         if (status == 401) {

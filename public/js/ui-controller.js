@@ -41,6 +41,10 @@ $("form#search-container").on('submit', function (event) {
 
 $(".card-close, .form-cancel").click(function () {
     $(this).parents(".sidebar-card").addClass("hidden");
+    
+    if ($(this).is(".form-cancel")) {
+        $(this).parents("form")[0].reset();
+    }
 });
 
 $(".review-drawer-toggle").click(function () {
