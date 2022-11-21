@@ -50,9 +50,9 @@
             "heading": "Other – temporarily inaccessible",
             "style": "warning"
         },
-        "limited-manuverability": {
+        "limited-maneuverability": {
             "tag": "It's complicated",
-            "heading": "Limited manuverability for some riders",
+            "heading": "Limited maneuverability for some riders",
             "style": "warning"
         },
         "poor-conditions": {

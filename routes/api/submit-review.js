@@ -35,7 +35,7 @@ const schema = {
             'construction',
             'obstacles-temporary',
             'other-temporary',
-            'limited-manuverability',
+            'limited-maneuverability',
             'poor-conditions',
             'other-complicated',
             'missing-landing',
