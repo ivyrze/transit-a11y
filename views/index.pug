@@ -10,7 +10,6 @@ block append head
     script(src='/js/mapbox-controller.js', defer)
 
 block content
-    #map-container
     #sidebar-container
         h1.title
             a #{title}
@@ -132,6 +131,7 @@ block content
             h2= 'Something went wrong'
             p
                 | Things aren't working as expected on our end, sorry about that. Try again in a few minutes.
+    #map-container
     
     script.
         var options = !{JSON.stringify(options)};
