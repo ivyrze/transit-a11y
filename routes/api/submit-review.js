@@ -99,4 +99,47 @@ router.post('/', validator.checkSchema(schema), async function(req, res, next) {
     await client.sAdd('users:' + req.session.user + ':reviews', id);
     
     res.json({});
+    
+    // Update the consensus state to account for the new review
+    consensus(client, stop);
 });
+
+const consensus = async (client, id) => {
+    let reviews = await client.hGetAll('stops:' + id + ':reviews');
+    reviews = Object.values(reviews);
+    
+    let tags = await Promise.all(reviews.map(review => {
+        return client.sMembers('reviews:' + review + ':tags');
+    }));
+    
+    reviews = await Promise.all(reviews.map(review => {
+        return client.hGetAll('reviews:' + review);
+    }));
+    tags = tags.flat();
+    
+    // Use reviews with the biggest consensus or most recent timestamp
+    // to determine the overall accessibility state
+    reviews.sort((a, b) => {
+        return (reviews.filter(d => b.accessibility == d.accessibility).length -
+            reviews.filter(c => a.accessibility == c.accessibility).length) ||
+            (new Date(b.timestamp) - new Date(a.timestamp));
+    });
+    
+    const accessibility = reviews[0]?.accessibility ?? 'unknown';
+    
+    // Mark any accessibility features that have over 75% consensus
+    const frequencies = tags.reduce((result, current) => {
+        result[current] = result[current] ? ++result[current] : 1;
+        return result;
+    }, {});
+    
+    tags = tags.filter(tag => (frequencies[tag] / reviews.length) >= 0.75);
+    
+    // Update the stop object with consensus values
+    await client.hSet('stops:' + id, { accessibility });
+    await client.del('stops:' + id + ':tags');
+    
+    if (tags.length) {
+        await client.sAdd('stops:' + id + ':tags', tags);
+    }
+};

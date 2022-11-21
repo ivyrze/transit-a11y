@@ -54,6 +54,12 @@ const processAgency = async config => {
     routes = routes.map(route => transformers.idPrefixer(route, config.id));
     routes = routes.map(route => transformers.colorContinuity(route));
     
+    // Set base data for review-enabled agencies
+    if (config.reviews) {
+        stops = stops.map(stop => (stop.wheelchair_boarding = 0, stop));
+        stops = stops.map(stop => (stop.stop_tags = [], stop));
+    }
+        
     // Merge agency constants into object for storage
     agency.agency_vehicle = config.vehicle;
     agency.agency_reviews = config.reviews;

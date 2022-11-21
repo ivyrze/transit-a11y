@@ -54,11 +54,6 @@
             "stations": false,
             "transformations": [
                 {
-                    "source": "stops.wheelchair_boarding",
-                    "type": "override",
-                    "target": "0"
-                },
-                {
                     "source": "routes.route_color",
                     "type": "override",
                     "target": "#c73c3c"

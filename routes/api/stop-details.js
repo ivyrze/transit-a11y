@@ -53,40 +53,12 @@ router.post('/', validator.checkSchema(schema), async function(req, res, next) {
         let users = Object.keys(reviews);
         reviews = Object.values(reviews);
         
-        tags = await Promise.all(reviews.map(review => {
-            return client.sMembers('reviews:' + review + ':tags');
-        }));
         reviews = await Promise.all(reviews.map(review => {
             return client.hGetAll('reviews:' + review);
         }));
         users = await Promise.all(users.map(user => {
             return client.hGetAll('users:' + user);
         }));
-        
-        // Use reviews with the biggest consensus or most recent timestamp
-        // to determine the overall accessibility state
-        reviews.sort((a, b) => {
-            return (reviews.filter(d => b.accessibility == d.accessibility).length -
-                reviews.filter(c => a.accessibility == c.accessibility).length) ||
-                (new Date(b.timestamp) - new Date(a.timestamp));
-        });
-        
-        if (reviews.length) {
-            details.accessibility = reviews[0].accessibility;
-        }
-        
-        // Mark any accessibility features that have over 75% consensus
-        tags = tags.flat();
-        const frequencies = tags.reduce((result, current) => {
-            result[current] = result[current] ? ++result[current] : 1;
-            return result;
-        }, {});
-        
-        tags = tags.filter(tag => (frequencies[tag] / reviews.length) >= 0.75);
-        
-        if (tags.length) {
-            details.tags = [...new Set(tags.concat(details.tags ?? []))];
-        }
         
         // Add Gravatar and remove unnecessary data
         const gravatarOptions = { size: 100, protocol: 'https', default: 'mp' };
@@ -97,6 +69,11 @@ router.post('/', validator.checkSchema(schema), async function(req, res, next) {
         
         // Merge user data into unified object
         reviews.forEach((review, index) => { review.author = users[index]; });
+        
+        // Sort by review submission date
+        reviews.sort((a, b) => {
+            return new Date(b.timestamp) - new Date(a.timestamp);
+        });
         
         details.reviews = reviews;
     }
