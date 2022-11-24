@@ -81,6 +81,12 @@ export default {
             description: 'Overrides the provided agency-wide link'
         },
         {
+            name: 'removed',
+            type: 'boolean',
+            title: 'Skip importing',
+            description: 'When checked, this stop will be removed from the dataset during import'
+        },
+        {
             name: 'agency',
             title: 'Agency',
             type: 'reference',

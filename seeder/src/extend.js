@@ -26,7 +26,8 @@ export const extend = async (agency, stops, routes, id) => {
                 },
                 unlinked == true => {
                     "linked_with": []
-                }
+                },
+                "stop_removed": removed
             },
             _type == "route" => {
                 "route_id": id,
@@ -54,6 +55,9 @@ export const extend = async (agency, stops, routes, id) => {
             });
         });
     });
+    
+    // Handle skip import flag
+    stops = stops.filter(stop => !stop.stop_removed);
     
     return { agency, stops, routes };
 };
