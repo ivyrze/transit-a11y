@@ -7,7 +7,7 @@ import { clean } from './src/clean.js';
 import { load } from './src/load.js';
 import { extend } from './src/extend.js';
 import { store, defaults, indicies } from './src/store.js';
-import { geojson } from './src/convert.js';
+import { geojson, link } from './src/convert.js';
 
 import * as transformers from './src/transformers/index.js';
 
@@ -64,9 +64,7 @@ const processAgency = async config => {
     agency.agency_vehicle = config.vehicle;
     agency.agency_reviews = config.reviews;
     
-    // Store stops in Redis database
-    await store(client, agency, stops, routes);
-    return { stops, routes };
+    return { agency, stops, routes };
 };
 
 let datasets = [];
@@ -74,8 +72,16 @@ for await (let config of configs.agencies) {
     datasets.push(await processAgency(config));
 }
 
+// Combine nearby stops from different agencies
+datasets = await link(datasets);
+
 // Create indicies
 await Promise.all([ defaults(client, configs), indicies(client) ]);
+
+// Store everything in Redis database
+for await (const dataset of datasets) {
+    await store(client, dataset.agency, dataset.stops, dataset.routes);
+}
 
 // Respect short-circuit command line option
 if (args.includes('--skip-geojson')) {

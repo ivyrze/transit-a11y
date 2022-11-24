@@ -18,7 +18,15 @@ export const extend = async (agency, stops, routes, id) => {
                 "stop_tags": tags,
                 "stop_url": url,
                 "wheelchair_boarding": accessibility,
-                "accessibility_desc": description
+                "accessibility_desc": description,
+                unlinked != true => {
+                    "linked_with": linked[]->{
+                        "linked_id": agency->id + "-" + id
+                    }.linked_id
+                },
+                unlinked == true => {
+                    "linked_with": []
+                }
             },
             _type == "route" => {
                 "route_id": id,
@@ -40,7 +48,7 @@ export const extend = async (agency, stops, routes, id) => {
             delete appendix[type + "_id"];
             
             Object.keys(appendix).forEach(key => {
-                if (appendix[key]?.length) {
+                if (appendix[key] != null) {
                     data[key] = appendix[key];
                 }
             });

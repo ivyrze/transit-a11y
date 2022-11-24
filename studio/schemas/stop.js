@@ -24,6 +24,19 @@ export default {
             description: 'Alternate stop names that could appear in service alerts'
         },
         {
+            name: 'linked',
+            type: 'array',
+            of: [{ type: 'reference', to: { type: 'stop' } }],
+            title: 'Linked stops',
+            description: 'Overrides automatically generated child stop links'
+        },
+        {
+            name: 'unlinked',
+            type: 'boolean',
+            title: 'Unlink stops',
+            description: 'When checked, all child stop links are removed'
+        },
+        {
             name: 'accessibility',
             type: 'string',
             title: 'Accessibility state',

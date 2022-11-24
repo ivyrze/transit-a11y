@@ -38,6 +38,7 @@
   "devDependencies": {
     "@turf/bbox": "^6.5.0",
     "@turf/combine": "^6.5.0",
+    "@turf/distance": "^6.5.0",
     "@turf/helpers": "^6.5.0",
     "connect-livereload": "^0.6.1",
     "gtfs": "^3.6.1",
