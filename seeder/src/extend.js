@@ -36,6 +36,7 @@ export const extend = async (agency, stops, routes, id) => {
         }`
     );
     
+    // Merge appendices into dataset objects
     const dataset = { agency: [ agency ], stop: stops, route: routes };
     Object.keys(dataset).forEach(type => {
         dataset[type].forEach(data => {
@@ -54,6 +55,14 @@ export const extend = async (agency, stops, routes, id) => {
                 }
             });
         });
+    });
+    
+    // Output a warning if there are remaining appendices
+    appendicies.filter(appendix => appendix._type).forEach(appendix => {
+        const type = appendix._type.charAt(0).toUpperCase()
+            + appendix._type.substr(1).toLowerCase();
+        const id = appendix[appendix._type + "_id"];
+        console.warn("Import warning: " + type + " appendix for '" + id + "' not matched.");
     });
     
     // Handle skip import flag
