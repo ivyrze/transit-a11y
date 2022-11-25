@@ -35,7 +35,7 @@ block content
                 aria-label='Search results'
             )
         
-        +card('stop-details', '', 'Rail station')
+        +card('stop-details', true, true)
             ul.stop-tags-container
                 li.stop-accessibility-state
             p.stop-accessibility-info
@@ -54,7 +54,7 @@ block content
             span.source-link='Source: '
                 a(target='_blank')
         
-        +card('review-form', 'Rosa Parks Transit Center', 'Bus stop', false)
+        +card('review-form', true, true, false)
             form(
                 action='/api/submit-review'
                 method='post'
@@ -113,7 +113,7 @@ block content
                     button.button-filled.form-cancel(type='button')= 'Cancel'
                 input(type='hidden' name='stop')
         
-        +card('about', 'About', undefined, false)
+        +card('about', 'About', false, true)
             p
                 |Decades after the passage of the Americans with Disabilities Act, public
                 |transportation still remains largely inaccessible to a population that
