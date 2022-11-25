@@ -1,4 +1,6 @@
 import { SchemaFieldTypes } from 'redis';
+import { consensus } from '../../routes/api/submit-review.js';
+import { matchKeyPattern } from '../../utils.js';
 
 const schema = {
     agencies: {
@@ -33,13 +35,13 @@ const schema = {
     }
 };
 
-export const store = async (client, agency, stops, routes) => {
+export const store = async (client, agencies, stops, routes) => {
     console.log("Storing " + stops.length + " stops into the database...");
     
     const transaction = client.multi();
     
     // Iterate through each model type
-    const dataset = { agencies: [ agency ], stops, routes };
+    const dataset = { agencies, stops, routes };
     for (const type in schema) {
         for (const data of dataset[type]) {
             // Iterate through each schema attribute for every object
@@ -80,7 +82,19 @@ export const store = async (client, agency, stops, routes) => {
     }
     
     await transaction.exec();
+    await reconsensus(client);
+    
     console.log("Storing stop data completed successfully.");
+};
+
+const reconsensus = async client => {
+    // Rebuild review-based accessibility state data
+    let reviewed = await matchKeyPattern(client, "stops:*:reviews");
+    
+    await Promise.all(reviewed.map(key => {
+        const stop = key.replace('stops:', '').replace(':reviews', '');
+        return consensus(client, stop, false);
+    }));
 };
 
 export const defaults = (client, config) => {

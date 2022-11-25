@@ -3,7 +3,7 @@ import { readFile } from 'fs/promises';
 import { createClient } from 'redis';
 import { redisOptions } from '../utils.js';
 
-import { clean } from './src/clean.js';
+import { clean, orphans } from './src/clean.js';
 import { load } from './src/load.js';
 import { extend } from './src/extend.js';
 import { store, defaults, indicies } from './src/store.js';
@@ -14,16 +14,12 @@ import * as transformers from './src/transformers/index.js';
 // Read config file
 dotenv.config();
 const configs = JSON.parse(await readFile('seeder/config.json'));
-const args = process.argv.slice(2);
 
 // Create database connection
 const client = createClient(redisOptions);
 client.on('error', error => console.error(error));
 
 await client.connect();
-
-// Remove existing database data
-await clean(client);
 
 // Import and process GTFS data
 const processAgency = async config => {
@@ -75,30 +71,39 @@ for await (let config of configs.agencies) {
 // Combine nearby stops from different agencies
 datasets = await link(datasets);
 
-// Create indicies
-await Promise.all([ defaults(client, configs), indicies(client) ]);
-
-// Store everything in Redis database
-for await (const dataset of datasets) {
-    await store(client, dataset.agency, dataset.stops, dataset.routes);
-}
-
-// Respect short-circuit command line option
-if (args.includes('--skip-geojson')) {
-    console.log("Skipping GeoJSON export and upload.");
-    await client.quit();
-    process.exit();
-}
-
 // Merge the datasets from each agency into one
-let { stops, routes } = datasets.reduce((result, current) => {
+let { agency: agencies, stops, routes } = datasets.reduce((result, current) => {
     Object.keys(current ?? {}).forEach(key => {
         if (!result[key]) { result[key] = []; }
-        result[key] = result[key].concat(current[key]);
+        Array.isArray(current[key]) ?
+            result[key].push(...current[key]) :
+            result[key].push(current[key]);
     });
     return result;
 }, {});
 datasets = undefined;
+
+// Check for broken references before storing data
+const orphaned = await orphans(client, stops);
+if (orphaned.length) {
+    orphaned.forEach(orphan => {
+        console.error("Import error: Stop '" + orphan + "' is reviewed but wasn't imported.");
+    });
+    
+    console.error("Exiting without change due to fatal error.");
+    
+    await client.quit();
+    process.exit();
+}
+
+// Remove existing database data
+await clean(client);
+
+// Create indicies
+await Promise.all([ defaults(client, configs), indicies(client) ]);
+
+// Store everything in Redis database
+await store(client, agencies, stops, routes);
 
 // Convert to GeoJSON and optionally upload to Mapbox
 await geojson(client, stops, routes);

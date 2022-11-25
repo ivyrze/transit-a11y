@@ -104,7 +104,7 @@ router.post('/', validator.checkSchema(schema), async function(req, res, next) {
     consensus(client, stop);
 });
 
-const consensus = async (client, id) => {
+export const consensus = async (client, id, finished = true) => {
     let reviews = await client.hGetAll('stops:' + id + ':reviews');
     reviews = Object.values(reviews);
     
@@ -143,6 +143,8 @@ const consensus = async (client, id) => {
         await client.sAdd('stops:' + id + ':tags', tags);
     }
     
-    // Request a map tile regeneration
-    await client.publish('geometry:updates', 'stops');
+    if (finished) {
+        // Request a map tile regeneration
+        await client.publish('geometry:updates', 'stops');
+    }
 };

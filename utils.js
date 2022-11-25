@@ -33,13 +33,31 @@ export const colorSort = (a, b) => {
     return (color(a.color).hue() > color(b.color).hue()) ? 1 : -1;
 };
 
-export const cleanKeyPattern = async (client, pattern) => {
+export const matchKeyPattern = async (client, pattern) => {
+    let stream = client.scanIterator({
+        MATCH: pattern,
+        COUNT: 100
+    });
+    
+    let matches = [];
+    for await (const key of stream) {
+        matches.push(key);
+    }
+    
+    return matches;
+};
+
+export const cleanKeyPattern = async (client, pattern, exclusions = []) => {
     let stream = client.scanIterator({
         MATCH: pattern,
         COUNT: 100
     });
 
     for await (const key of stream) {
+        if (exclusions.some(exclusion => key.includes(exclusion))) {
+            continue;
+        }
+        
         client.unlink(key);
     }
 };
