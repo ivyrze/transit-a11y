@@ -43,6 +43,7 @@ app.use(session({
         secure: process.env.NODE_ENV === 'production',
         maxAge: 1000 * 60**2 * 10
     },
+    proxy: process.env.NODE_ENV === 'production',
     secret: crypto.randomBytes(64).toString('hex'),
     saveUninitialized: false,
     resave: false
