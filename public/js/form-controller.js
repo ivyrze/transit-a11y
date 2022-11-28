@@ -29,6 +29,8 @@ $("form").submit(function (event) {
         }
         
         showErrors(errors ?? {});
+    }).always(() => {
+        enabled = true;
     });
 });
 
@@ -44,5 +46,4 @@ const showErrors = errors => {
         element.setCustomValidity(errors[id]);
         element.reportValidity();
     });
-    enabled = true;
 };
