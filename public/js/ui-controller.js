@@ -131,15 +131,6 @@ const openStop = id => {
             }
         }
         
-        if (data.alert && data.alert.url) {
-            $(".stop-alert-link").attr("href", data.alert.url);
-            $(".stop-alert-link.hidden").removeClass("hidden");
-            $(".stop-details-card .source-link").addClass("hidden");
-        } else {
-            $(".stop-alert-link").addClass("hidden");
-            $(".stop-details-card .source-link.hidden").removeClass("hidden");
-        }
-        
         if (data.reviews) {
             $("#review-drawer .review-single").remove();
             
@@ -167,9 +158,16 @@ const openStop = id => {
             $(".stop-details-card .source-link").removeClass("hidden");
         }
         
+        if (data.alert && data.alert.url) {
+            $(".stop-alert-link").attr("href", data.alert.url);
+            $(".stop-alert-link.hidden").removeClass("hidden");
+            $(".stop-details-card .source-link").addClass("hidden");
+        } else {
+            $(".stop-alert-link").addClass("hidden");
+        }
+        
         $(".stop-accessibility-info").text(
-            (state == 'warning') ? data.alert.description :
-                (data.description) ? data.description : state.description
+            data.alert?.description ?? data.description ?? state.description
         );
         $(".stop-details-card h2").text(data.name);
         $(".stop-details-card .subtitle").text(i18n.stopSubheadings[data.agency.vehicle]);
