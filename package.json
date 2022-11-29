@@ -29,6 +29,8 @@
     "helmet": "^6.0.0",
     "http-errors": "^2.0.0",
     "jquery": "^3.6.1",
+    "mongoose": "^6.7.3",
+    "mongoose-geojson-schema": "^2.2.3",
     "morgan": "^1.10.0",
     "nanoid": "^4.0.0",
     "pug": "^3.0.2",

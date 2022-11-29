@@ -1,43 +1,39 @@
 import sanity from '@sanity/client';
-import { sanityOptions, cleanKeyPattern } from '../utils.js';
+import { sanityOptions } from '../utils.js';
+import { Stop } from '../models/stop.js';
 
 import * as cta from './agencies/chicago-cta.js';
 import * as trimet from './agencies/portland-trimet.js';
 
-export const start = (client, interval) => {
-    setInterval(tick, interval, client);
-    setTimeout(tick, 20 * 1000, client);
+export const start = interval => {
+    setInterval(tick, interval);
+    setTimeout(tick, 20 * 1000);
 };
 
-const tick = async client => {
+const tick = async () => {
     console.log("Checking alerts APIs...");
     
     // Call database update after all agency alerts are retrieved
     const agencies = await Promise.all([ cta, trimet ].map(agency => {
-        return agency.status(client, synonyms).catch(error => console.error(error));
+        return agency.status(synonyms).catch(error => console.error(error));
     }));
     
-    update(client, agencies);
+    update(agencies);
 };
 
-const update = async (client, agencies) => {
+const update = async agencies => {
     // Remove failed promise results
     agencies = agencies.filter(agency => agency);
     
     // Remove all existing alerts
-    await clean(client);
+    await clean();
     
     // Import new alerts
-    agencies.forEach(alerts => {
+    agencies.forEach(async alerts => {
         for (const stop in alerts) {
-            client.sAdd('alerts', stop);
-            Object.keys(alerts[stop]).forEach(prop => {
-                client.hSet('alerts:' + stop, prop, alerts[stop][prop]);
-            });
+            await Stop.updateOne({ _id: stop }, { alert: alerts[stop] });
         }
     });
-    
-    await client.publish('geometry:updates', 'stops');
     
     console.log("Stored alerts for " + agencies.length + " agencies.");
 };
@@ -51,9 +47,6 @@ const extend = async () => {
 
 const synonyms = await extend();
 
-const clean = client => {
-    return Promise.all([
-        client.del("alerts"),
-        cleanKeyPattern(client, "alerts:*")
-    ]);
+const clean = () => {
+    return Stop.updateMany({ alert: { $ne: null } }, { alert: null });
 };

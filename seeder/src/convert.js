@@ -2,6 +2,7 @@ import combine from '@turf/combine';
 import * as gtfsUtils from 'gtfs/lib/geojson-utils.js';
 import * as turfUtils from '@turf/helpers';
 import turfDistance from '@turf/distance';
+import { Geometry } from '../../models/geometry.js';
 
 const schema = {
     routes: [
@@ -15,12 +16,12 @@ const schema = {
     ]
 };
 
-export const geojson = async (client, stops, routes) => {
-    stops = stopsGeoJSON(stops);
-    routes = routesGeoJSON(routes);
+export const geojson = async (stops, routes) => {
+    stops = new Geometry({ _id: 'stops', geojson: stopsGeoJSON(stops) });
+    routes = new Geometry({ _id: 'routes', geojson: routesGeoJSON(routes) });
     
-    await client.set('geometry:stops', JSON.stringify(stops));
-    await client.set('geometry:routes', JSON.stringify(routes));
+    await stops.save({ session });
+    await routes.save({ session });
     
     console.log("Converted geometry to GeoJSON successfully.");
 };

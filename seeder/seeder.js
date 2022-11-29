@@ -1,12 +1,11 @@
 import dotenv from 'dotenv';
+import mongoose from 'mongoose';
 import { readFile } from 'fs/promises';
-import { createClient } from 'redis';
-import { redisOptions } from '../utils.js';
 
 import { clean, orphans } from './src/clean.js';
 import { load } from './src/load.js';
 import { extend } from './src/extend.js';
-import { store, defaults, indicies } from './src/store.js';
+import { store } from './src/store.js';
 import { geojson, link } from './src/convert.js';
 
 import * as transformers from './src/transformers/index.js';
@@ -16,10 +15,7 @@ dotenv.config();
 const configs = JSON.parse(await readFile('seeder/config.json'));
 
 // Create database connection
-const client = createClient(redisOptions);
-client.on('error', error => console.error(error));
-
-await client.connect();
+await mongoose.connect(process.env.MONGO_URL);
 
 // Import and process GTFS data
 const processAgency = async config => {
@@ -57,6 +53,7 @@ const processAgency = async config => {
     }
         
     // Merge agency constants into object for storage
+    agency.agency_default = configs.default == config.id;
     agency.agency_vehicle = config.vehicle;
     agency.agency_reviews = config.reviews;
     
@@ -84,29 +81,25 @@ let { agency: agencies, stops, routes } = datasets.reduce((result, current) => {
 datasets = undefined;
 
 // Check for broken references before storing data
-const orphaned = await orphans(client, stops);
 if (orphaned.length) {
+const orphaned = await orphans(stops);
     orphaned.forEach(orphan => {
         console.error("Import error: Stop '" + orphan + "' is reviewed but wasn't imported.");
     });
     
     console.error("Exiting without change due to fatal error.");
     
-    await client.quit();
+    await mongoose.disconnect();
     process.exit();
 }
 
 // Remove existing database data
-await clean(client);
-
-// Create indicies
-await Promise.all([ defaults(client, configs), indicies(client) ]);
+await clean();
 
 // Store everything in Redis database
-await store(client, agencies, stops, routes);
+await store(agencies, stops, routes);
 
 // Convert to GeoJSON and optionally upload to Mapbox
-await geojson(client, stops, routes);
-await client.publish('geometry:updates', '*');
+await geojson(stops, routes);
 
-await client.quit();
+await mongoose.disconnect();

@@ -1,26 +1,24 @@
-import { matchKeyPattern, cleanKeyPattern } from '../../utils.js';
+import { Agency } from '../../models/agency.js';
+import { Stop } from '../../models/stop.js';
+import { Route } from '../../models/route.js';
+import { Geometry } from '../../models/geometry.js';
+import { Review } from '../../models/review.js';
 
-export const clean = async client => {
+export const clean = async () => {
     console.log("Cleaning existing GTFS data...");
     
     await Promise.all([
-        client.del("agencies"),
-        client.del("stops"),
-        client.del("routes"),
-        cleanKeyPattern(client, "agencies:*"),
-        cleanKeyPattern(client, "stops:*", [ ":reviews" ]),
-        cleanKeyPattern(client, "routes:*"),
-        cleanKeyPattern(client, "geometry:*")
+        Agency.deleteMany(),
+        Stop.deleteMany(),
+        Route.deleteMany(),
+        Geometry.deleteMany()
     ]);
     
     console.log("Cleaning completed successfully.");
 };
 
-export const orphans = async (client, stops) => {
-    let reviewed = await matchKeyPattern(client, "stops:*:reviews");
-    reviewed = reviewed.map(key => {
-        return key.replace('stops:', '').replace(':reviews', '');
-    });
+export const orphans = async (stops) => {
+    let reviewed = await Review.find({}).distinct('stop').lean();
     
     return reviewed.filter(key => {
         return !stops.some(stop => key == stop.stop_id);

@@ -1,9 +1,10 @@
 import axios from 'axios';
+import { Stop } from '../../models/stop.js';
 
 const endpoint = 'https://developer.trimet.org/ws/v2/alerts';
 const agencyPrefix = 'trimet';
 
-export const status = async (client, synonyms) => {
+export const status = async synonyms => {
     // Request alerts from agency API
     const response = await axios.get(endpoint, {
         params: { appID: process.env.TRIMET_APP_ID }
@@ -32,10 +33,8 @@ export const status = async (client, synonyms) => {
             stop = stop.agency + '-' + stop.id;
         } else {
             // Lookup stop ID from stop name instead
-            stop = await client.ft.search('idx:stops', name);
-            if (stop.total != 1) { return; }
-            stop = stop.documents[0].id.replace('stops:', '');
-            if (!stop.startsWith(agencyPrefix)) { return; }
+            stop = (await Stop.find({ name }, [ '_id' ]).lean())[0]?._id;
+            if (!stop || !stop.startsWith(agencyPrefix)) { return; }
         }
         
         // Create user-friendly description

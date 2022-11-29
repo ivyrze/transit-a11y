@@ -3,11 +3,9 @@ import express from 'express';
 import session from 'express-session';
 import morgan from 'morgan';
 import helmet from 'helmet';
+import mongoose from 'mongoose';
 import livereload from 'connect-livereload';
 import crypto from 'crypto';
-
-import { createClient } from 'redis';
-import { redisOptions } from './utils.js';
 
 import { router as indexRouter } from './routes/index.js';
 import { router as loginRouter } from './routes/account/login.js';
@@ -78,15 +76,11 @@ app.use(errorMiddleware);
 app.use(notFoundMiddleware);
 
 // Establish database connection
-const client = createClient(redisOptions);
-client.on('error', error => console.error(error));
-
-await client.connect();
-app.locals.client = client;
+await mongoose.connect(process.env.MONGO_URL);
 
 // Start alert polling and tile indexing
-await tiles.start(client);
-alerts.start(client, 10 * 60 * 1000);
+await tiles.start();
+alerts.start(10 * 60 * 1000);
 
 // Start server
 const port = process.env.PORT || 8000;

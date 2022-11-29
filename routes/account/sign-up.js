@@ -1,7 +1,8 @@
-import bcrypt from 'bcryptjs';
 import express from 'express';
 import validator from 'express-validator';
 import httpErrors from 'http-errors';
+import { User } from '../../models/user.js';
+import { Invite } from '../../models/invite.js';
 import { errorFormatter, generateUUID } from '../../utils.js';
 
 export const router = express.Router();
@@ -36,34 +37,27 @@ router.post('/', validator.checkSchema(schema), async function(req, res, next) {
         res.status(new httpErrors.BadRequest().status).json({ errors: errors.mapped() }); return;
     }
     
-    const client = req.app.locals.client;
     const { invite, email, username, password } = validator.matchedData(req);
     
-    // Validate invite code
-    if (!await client.sIsMember('invites', invite)) {
+    // Validate and use one-time invite code
+    if (!await Invite.findOneAndDelete({ invite })) {
         res.json({ errors: { invite: 'Unrecognized invitation code' } }); return;
     }
     
     // Check that email and username aren't already in use
-    if ((await client.ft.search('idx:users', '@username:{' + username + '}')).total) {
+    if (await User.findOne({ username })) {
         res.json({ errors: { username: 'Username is already in use' } }); return;
-    }
-    
-    const escaped = email.replace(/[^\w\d]/gi, "\\$&");
-    if ((await client.ft.search('idx:users', '@email:{' + escaped + '}')).total) {
+    } else if (await User.findOne({ email })) {
         res.json({ errors: { email: 'Email is already in use' } }); return;
     }
     
     // Create user object
     const id = generateUUID();
-    const hash = bcrypt.hashSync(password);
     const created = new Date().toISOString().substring(0, 16) + 'Z';
     
-    await client.sAdd('users', id);
-    await client.hSet('users:' + id, { email, username, password: hash, created });
+    const user = new User({ _id: id, email, username, password, created });
+    await user.save();
     
-    // Remove invite code from available pool
-    await client.sRem('invites', invite);
     
     // Automatically log the user in
     req.session.user = id;

@@ -1,7 +1,9 @@
 import express from 'express';
 import validator from 'express-validator';
 import httpErrors from 'http-errors';
-import { colorSort } from '../../utils.js';
+import { pojoCleanup, colorSort } from '../../utils.js';
+import { Stop } from '../../models/stop.js'
+import { Route } from '../../models/route.js'
 
 export const router = express.Router();
 
@@ -12,11 +14,13 @@ const schema = {
     },
     longitude: {
         in: 'body',
-        isFloat: true
+        isFloat: true,
+        toFloat: true
     },
     latitude: {
         in: 'body',
-        isFloat: true
+        isFloat: true,
+        toFloat: true
     }
 };
 
@@ -27,28 +31,75 @@ router.post('/', validator.checkSchema(schema), async function(req, res, next) {
         next(new httpErrors.BadRequest()); return;
     }
     
-    const client = req.app.locals.client;
     const { query, longitude, latitude } = validator.matchedData(req);
     
-    // Run query, treating special characters as an OR operator
-    const searchable = query.split(/[^\w\d]/g).filter(word => word).join("|");
-    const geofilter = [ longitude, latitude, '100', 'mi' ].join(' ');
+    let results = await Stop.aggregate([
+        {
+            $search: {
+                compound: {
+                    should: [{
+                        autocomplete: {
+                            query,
+                            path: 'name',
+                            fuzzy: {
+                                maxEdits: 2,
+                                prefixLength: 2
+                            },
+                            score: { boost: { value: 2 } }
+                        }
+                    },
+                    {
+                        equals: {
+                            path: 'major',
+                            value: true,
+                            score: { boost: { value: 1 } }
+                        }
+                    }]
+                }
+            }
+        },
+        {
+            $match: {
+                coordinates: {
+                    $geoWithin: {
+                        $centerSphere: [
+                            [ longitude, latitude ],
+                            100 / 3963
+                        ]
+                    }
+                }
+            }
+        },
+        {
+            $limit: 10
+        },
+        {
+            $project: {
+                _id: true,
+                name: true,
+                routes: true
+            }
+        }
+    ]);
     
-    let results = await client.ft.search('idx:stops', searchable + '* ' + ' @coordinates:[' + geofilter + ']');
+    await Stop.populate(results, {
+        path: 'routes',
+        select: [
+            'name',
+            'color',
+            'number'
+        ],
+        options: { lean: true }
+    });
     
-    results = results.documents.map(result => ({
-        id: result.id.replace('stops:', ''),
-        name: result.value.name
-    }));
-    
-    // Add route associations
-    for await (let result of results) {
-        const routes = await client.sMembers('stops:' + result.id + ':routes');
-        result.routes = await Promise.all(routes.map(route => {
-            return client.hGetAll('routes:' + route);
-        }));
+    results = results.map(result => {
+        result.id = result._id;
         result.routes.sort(colorSort);
-    }
+        result.routes;
+        return result;
+    });
+    
+    results = pojoCleanup(results, results, { _id: false });
     
     res.json({ results });
 });

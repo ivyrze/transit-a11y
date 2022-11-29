@@ -3,6 +3,9 @@ import geojsonVt from 'geojson-vt';
 import express from 'express';
 import validator from 'express-validator';
 import httpErrors from 'http-errors';
+import { Stop } from '../../models/stop.js';
+import { Geometry } from '../../models/geometry.js';
+import { Review } from '../../models/review.js';
 
 export const router = express.Router();
 
@@ -49,18 +52,35 @@ router.get('/:z/:x/:y', validator.checkSchema(schema), async function(req, res, 
     }
 });
 
-var indicies;
+var geometries = {};
+var indicies = {};
 
-export const start = async client => {
+export const start = async () => {
     // Initial indexing on startup
-    indicies = await generate(client);
+    await generate();
     
-    // Await update notification from new seeds or alerts
-    const subscriber = client.duplicate();
-    await subscriber.connect();
+    // Monitor updates from new seeds, alerts, or reviews
+    Geometry.watch([{
+        $match: {
+            operationType: 'insert'
+        }
+    }], {
+        fullDocument: 'updateLookup'
+    }).on('change', async updates => {
+        geometries[updates.fullDocument._id] = updates.fullDocument.geojson;
+        await generate();
+    });
     
-    await subscriber.subscribe("geometry:updates", async message => {
-        indicies = await generate(client);
+    Stop.watch([{
+        $match: {
+            operationType: 'update'
+        }
+    }], {
+        fullDocument: 'updateLookup'
+    }).on('change', async updates => {
+        const state = updates.fullDocument.alert ?
+            "service-alert" : updates.fullDocument.accessibility;
+        await generateSingle(updates.fullDocument._id, state);
     });
 };
 
@@ -84,26 +104,25 @@ const icons = {
     "unknown": "unknown"
 };
 
-const generate = async client => {
+const generate = async (invalidate = true) => {
     const layers = [ 'stops', 'routes' ];
     
-    var indicies = {};
     for await (const layer of layers) {
         // Get raw GeoJSON from the database
-        const geojson = JSON.parse(await client.get('geometry:' + layer));
+        if (!geometries[layer]) {
+            geometries[layer] = (await Geometry.findById(layer)).geojson;
+        }
         
         // Inject dynamic alert data
-        if (layer == 'stops') {
+        if (invalidate && layer == 'stops') {
             let states = {};
-            const stops = await client.sMembers('stops');
-            const alerts = await client.sMembers('alerts');
+            const stops = await Stop.find({}, [ 'accessibility', 'alert' ]).lean();
             
-            await Promise.all(stops.map(async stop => {
-                states[stop] = await client.hGet('stops:' + stop, 'accessibility')
-            }));
-            alerts.forEach(alert => states[alert] = "service-alert");
+            stops.forEach(stop => {
+                states[stop._id] = stop.alert ? "service-alert" : stop.accessibility;
+            });
             
-            geojson.features.forEach(stop => {
+            geometries[layer].features.forEach(stop => {
                 if (states[stop.properties.stop_id]) {
                     stop.properties.wheelchair_boarding =
                         icons[states[stop.properties.stop_id]];
@@ -112,8 +131,16 @@ const generate = async client => {
         }
         
         // Index the layer for quick distribution later
-        indicies[layer] = geojsonVt(geojson, { maxZoom: 24 });
+        indicies[layer] = geojsonVt(geometries[layer], { maxZoom: 24 });
     }
+};
+
+const generateSingle = async (id, state) => {
+    geometries.stops.features.forEach(stop => {
+        if (stop.properties.stop_id == id) {
+            stop.properties.wheelchair_boarding = icons[state];
+        }
+    });
     
-    return indicies;
+    await generate(false);
 };
