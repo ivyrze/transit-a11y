@@ -213,8 +213,6 @@ const assembleRouteShape = route => {
     return gtfs.getShapes({ route_id: route });
 };
 
-// Inputs: minX, minY, maxX, maxY
-// Output: South, West, North, East
 const calculateAgencyBounds = routes => {
     let points = [];
     routes.forEach(route => {

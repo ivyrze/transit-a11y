@@ -20,8 +20,8 @@ export const geojson = async (stops, routes) => {
     stops = new Geometry({ _id: 'stops', geojson: stopsGeoJSON(stops) });
     routes = new Geometry({ _id: 'routes', geojson: routesGeoJSON(routes) });
     
-    await stops.save({ session });
-    await routes.save({ session });
+    await stops.save();
+    await routes.save();
     
     console.log("Converted geometry to GeoJSON successfully.");
 };

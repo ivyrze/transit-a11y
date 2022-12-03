@@ -81,8 +81,8 @@ let { agency: agencies, stops, routes } = datasets.reduce((result, current) => {
 datasets = undefined;
 
 // Check for broken references before storing data
-if (orphaned.length) {
 const orphaned = await orphans(stops);
+if (orphaned.length) {
     orphaned.forEach(orphan => {
         console.error("Import error: Stop '" + orphan + "' is reviewed but wasn't imported.");
     });

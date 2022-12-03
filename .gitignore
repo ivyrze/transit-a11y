@@ -1,8 +1,6 @@
 .env
 node_modules
 vendor
-routes.geojsonld
-stops.geojsonld
 public/css
 studio/dist
 seeder/config.json
