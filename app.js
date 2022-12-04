@@ -1,6 +1,7 @@
 import dotenv from 'dotenv';
 import express from 'express';
 import session from 'express-session';
+import mongoStore from 'connect-mongo';
 import morgan from 'morgan';
 import helmet from 'helmet';
 import mongoose from 'mongoose';
@@ -40,6 +41,7 @@ app.use(session({
         maxAge: 1000 * 60**2 * 10
     },
     proxy: process.env.NODE_ENV === 'production',
+    store: mongoStore.create({ mongoUrl: process.env.MONGO_URL }),
     secret: crypto.randomBytes(64).toString('hex'),
     saveUninitialized: false,
     resave: false
