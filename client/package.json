@@ -1,0 +1,65 @@
+{
+  "name": "transit-a11y:client",
+  "version": "1.0",
+  "private": true,
+  "dependencies": {
+    "axios": "^1.2.0",
+    "babel-plugin-transform-jsx-classname-components": "^0.0.3",
+    "babel-plugin-transform-react-pug": "^7.0.1",
+    "customize-cra": "^1.0.0",
+    "eslint-plugin-react-pug": "^0.8.4",
+    "mapbox-gl": "^2.11.0",
+    "react": "^18.2.0",
+    "react-app-rewired": "^2.2.1",
+    "react-dom": "^18.2.0",
+    "react-map-gl": "^7.0.19",
+    "react-router-dom": "^6.4.4",
+    "react-scripts": "5.0.1",
+    "react-timeago": "^7.1.0",
+    "sass": "^1.56.1",
+    "worker-loader": "^3.0.8"
+  },
+  "scripts": {
+    "start": "react-app-rewired start",
+    "build": "react-app-rewired build",
+    "test": "react-app-rewired test",
+    "eject": "react-scripts eject"
+  },
+  "proxy": "http://localhost:3001",
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest",
+      "plugin:react-pug/all"
+    ],
+    "plugins": [
+      "react-pug"
+    ],
+    "rules": {
+      "indent": [
+        "warn",
+        4
+      ],
+      "react-pug/indent": 0,
+      "react-pug/no-interpolation": 0,
+      "react-pug/empty-lines": 0,
+      "react-pug/prop-types": 0
+    }
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all",
+      "not ie 11",
+      "not chrome < 51",
+      "not safari < 10",
+      "not android < 51"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}

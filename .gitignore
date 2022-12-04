@@ -1,7 +1,6 @@
 .env
 node_modules
-vendor
-public/css
+client/build
 studio/dist
 seeder/config.json
 **.zip

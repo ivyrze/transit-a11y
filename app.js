@@ -4,19 +4,17 @@ import session from 'express-session';
 import morgan from 'morgan';
 import helmet from 'helmet';
 import mongoose from 'mongoose';
-import livereload from 'connect-livereload';
+import path from 'path';
 import crypto from 'crypto';
 
-import { router as indexRouter } from './routes/index.js';
 import { router as loginRouter } from './routes/account/login.js';
 import { router as logoutRouter } from './routes/account/logout.js';
 import { router as signUpRouter } from './routes/account/sign-up.js';
 import { router as searchRouter } from './routes/api/search.js';
 import { router as stopDetailsRouter } from './routes/api/stop-details.js';
 import { router as submitReviewRouter } from './routes/api/submit-review.js';
+import { router as mapBoundsRouter } from './routes/api/map-bounds.js';
 import { router as mapTilesRouter } from './routes/api/map-tiles.js';
-
-import { errorMiddleware, notFoundMiddleware } from './routes/error.js';
 
 import * as alerts from './alerts/index.js';
 import * as tiles from './routes/api/map-tiles.js';
@@ -47,33 +45,33 @@ app.use(session({
     resave: false
 }));
 
-if (process.env.NODE_ENV !== 'production') {
-    app.use(livereload());
-}
-
-// Setup view engine
-app.set('views', 'views');
-app.set('view engine', 'pug');
-
-// Setup static assets and caching
-[ 'css', 'fonts', 'img', 'js' ].forEach(dir => {
-    app.use('/' + dir, express.static('public/' + dir,
-        (dir == 'fonts') ? { maxAge: 1000 * 60**2 * 24 * 7 } : {}));
-});
-
 // Setup routes
-app.use('/', indexRouter);
-app.use('/account/login', loginRouter);
-app.use('/account/logout', logoutRouter);
-app.use('/account/sign-up', signUpRouter);
 app.use('/api/search', searchRouter);
 app.use('/api/stop-details', stopDetailsRouter);
 app.use('/api/submit-review', submitReviewRouter);
+app.use('/api/map-bounds', mapBoundsRouter);
 app.use('/api/map-tiles', mapTilesRouter);
+app.use('/api/account/login', loginRouter);
+app.use('/api/account/logout', logoutRouter);
+app.use('/api/account/sign-up', signUpRouter);
 
-// Custom error page
-app.use(errorMiddleware);
-app.use(notFoundMiddleware);
+// Setup production build caching
+app.use(express.static('./client/build/', {
+    maxAge: 1000 * 60**2 * 24 * 14
+}));
+
+app.get('*', (req, res, next) => {
+    if (!req.originalUrl.startsWith('/api')) {
+        res.sendFile(path.resolve('client', 'build', 'index.html'));
+    } else {
+        next();
+    }
+});
+
+// API error handling
+app.use((error, req, res, next) => {
+    res.status(error.status).json({ status: error.status });
+});
 
 // Establish database connection
 await mongoose.connect(process.env.MONGO_URL);
@@ -83,7 +81,7 @@ await tiles.start();
 alerts.start(10 * 60 * 1000);
 
 // Start server
-const port = process.env.PORT || 8000;
+const port = process.env.PORT || 3001;
 app.listen(port, () => {
     console.log(`Listening: http://localhost:${port}`);
 });

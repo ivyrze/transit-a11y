@@ -17,10 +17,6 @@ const schema = {
     }
 };
 
-router.get('/', async function(req, res, next) {
-    res.render('account/login', { title: 'Login' });
-});
-
 router.post('/', validator.checkSchema(schema), async function(req, res, next) {
     // Check incoming parameters
     const errors = validator.validationResult(req).formatWith(errorFormatter);
