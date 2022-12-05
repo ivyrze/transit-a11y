@@ -11,7 +11,8 @@ export const useQuery = props => {
     useEffect(() => {
         const helperRunner = async () => {
             setResponse(await queryHelper({
-                method, url, data, validateStatus
+                method, url, ...(data && data),
+                ...(validateStatus && validateStatus)
             }, setErrorStatus));
         };
         helperRunner();
@@ -20,8 +21,8 @@ export const useQuery = props => {
     return response;
 };
 
-export const queryHelper = async (options, setErrorStatus) => {
-    return await axios(options).catch(error => {
+export const queryHelper = (options, setErrorStatus) => {
+    return axios(options).catch(error => {
         setErrorStatus(error.request.status);
         throw error;
     });
