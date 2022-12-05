@@ -6,7 +6,7 @@ export const ErrorPage = props => {
     let { status } = props;
     
     const title = httpErrors(status).message
-        .replace(/(?<!^)(\b[A-Z])(?![A-Z])/g, letter => letter.toLowerCase());
+        .replace(/\s(?:([A-Z])[a-z])/g, letter => letter.toLowerCase());
     
     const description = (status >= 500) ?
         "Things aren't working as expected on our end, sorry about that. Try again in a few minutes." :
