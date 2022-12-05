@@ -11,16 +11,16 @@ import crypto from 'crypto';
 import { router as loginRouter } from './routes/account/login.js';
 import { router as logoutRouter } from './routes/account/logout.js';
 import { router as signUpRouter } from './routes/account/sign-up.js';
-import { router as searchRouter } from './routes/api/search.js';
-import { router as stopDetailsRouter } from './routes/api/stop-details.js';
-import { router as submitReviewRouter } from './routes/api/submit-review.js';
-import { router as mapBoundsRouter } from './routes/api/map-bounds.js';
-import { router as mapTilesRouter } from './routes/api/map-tiles.js';
+import { router as searchRouter } from './routes/search.js';
+import { router as stopDetailsRouter } from './routes/stop-details.js';
+import { router as submitReviewRouter } from './routes/submit-review.js';
+import { router as mapBoundsRouter } from './routes/map-bounds.js';
+import { router as mapTilesRouter } from './routes/map-tiles.js';
 
 import * as alerts from './alerts/index.js';
-import * as tiles from './routes/api/map-tiles.js';
+import * as tiles from './routes/map-tiles.js';
 
-dotenv.config();
+dotenv.config({ path: '../.env' });
 
 export const app = express();
 

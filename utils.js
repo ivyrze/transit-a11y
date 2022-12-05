@@ -3,6 +3,7 @@ import color from 'color';
 import * as nanoid from 'nanoid';
 
 dotenv.config();
+dotenv.config({ path: '../.env' });
 
 export const sanityOptions = {
     projectId: process.env.SANITY_STUDIO_API_PROJECT_ID,

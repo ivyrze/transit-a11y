@@ -11,8 +11,8 @@ import { geojson, link } from './src/convert.js';
 import * as transformers from './src/transformers/index.js';
 
 // Read config file
-dotenv.config();
-const configs = JSON.parse(await readFile('seeder/config.json'));
+dotenv.config({ path: '../.env' });
+const configs = JSON.parse(await readFile('config.json'));
 
 // Create database connection
 await mongoose.connect(process.env.MONGO_URL);

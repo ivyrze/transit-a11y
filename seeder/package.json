@@ -1,0 +1,27 @@
+{
+  "name": "transit-a11y",
+  "type": "module",
+  "version": "1.0",
+  "private": true,
+  "scripts": {
+    "start": "node seeder.js"
+  },
+  "engines": {
+    "node": "^14.8.0 || ^16.0.0"
+  },
+  "dependencies": {
+    "@sanity/client": "^3.3.6",
+    "@turf/bbox": "^6.5.0",
+    "@turf/combine": "^6.5.0",
+    "@turf/distance": "^6.5.0",
+    "@turf/helpers": "^6.5.0",
+    "axios": "^1.1.3",
+    "dotenv": "^16.0.1",
+    "gtfs": "^3.6.1",
+    "mongoose": "^6.7.3",
+    "mongoose-geojson-schema": "^2.2.3",
+    "node-stream-zip": "^1.15.0",
+    "progress": "^2.0.3",
+    "temp": "^0.9.4"
+  }
+}

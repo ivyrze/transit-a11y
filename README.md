@@ -17,7 +17,7 @@ Setup your environment variables by referencing `.env.example` or the [wiki docu
 ```
 npm install
 cp seeder/config.example.json seeder/config.json
-node seeder/seeder.js
+npm run start --prefix seeder
 ```
 
 ## Development
@@ -25,5 +25,6 @@ node seeder/seeder.js
 You can run the Express server locally with:
 
 ```
+npm install --prefix client
 npm run develop
 ```

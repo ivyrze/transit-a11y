@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import { AlertSchema } from './alert.js';
-import { pojoCleanup } from '../utils.js';
+import { pojoCleanup } from '../../utils.js';
 
 const StopSchema = new mongoose.Schema({
     _id: String,

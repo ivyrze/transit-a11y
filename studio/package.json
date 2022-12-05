@@ -3,7 +3,7 @@
   "private": true,
   "version": "1.0",
   "scripts": {
-    "start": "sanity start",
+    "start": "dotenv -e ../.env sanity start",
     "build": "sanity build"
   },
   "keywords": [
@@ -23,5 +23,7 @@
     "react-dom": "^17.0",
     "styled-components": "^5.2.0"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "dotenv-cli": "^6.0.0"
+  }
 }

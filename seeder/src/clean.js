@@ -1,8 +1,8 @@
-import { Agency } from '../../models/agency.js';
-import { Stop } from '../../models/stop.js';
-import { Route } from '../../models/route.js';
-import { Geometry } from '../../models/geometry.js';
-import { Review } from '../../models/review.js';
+import { Agency } from '../../app/models/agency.js';
+import { Stop } from '../../app/models/stop.js';
+import { Route } from '../../app/models/route.js';
+import { Geometry } from '../../app/models/geometry.js';
+import { Review } from '../../app/models/review.js';
 
 export const clean = async () => {
     console.log("Cleaning existing GTFS data...");

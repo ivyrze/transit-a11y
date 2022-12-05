@@ -1,5 +1,5 @@
 import sanity from '@sanity/client';
-import { sanityOptions } from '../utils.js';
+import { sanityOptions } from '../../utils.js';
 import { Stop } from '../models/stop.js';
 
 import * as cta from './agencies/chicago-cta.js';

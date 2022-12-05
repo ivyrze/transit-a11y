@@ -1,8 +1,8 @@
 import express from 'express';
 import validator from 'express-validator';
 import httpErrors from 'http-errors';
-import { Review } from '../../models/review.js';
-import { Stop } from '../../models/stop.js';
+import { Review } from '../models/review.js';
+import { Stop } from '../models/stop.js';
 import { errorFormatter, generateUUID } from '../../utils.js';
 
 export const router = express.Router();

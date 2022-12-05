@@ -3,7 +3,7 @@ import validator from 'express-validator';
 import httpErrors from 'http-errors';
 import { User } from '../../models/user.js';
 import { Invite } from '../../models/invite.js';
-import { errorFormatter, generateUUID } from '../../utils.js';
+import { errorFormatter, generateUUID } from '../../../utils.js';
 
 export const router = express.Router();
 

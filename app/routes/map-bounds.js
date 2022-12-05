@@ -1,6 +1,6 @@
 import express from 'express';
 import httpErrors from 'http-errors';
-import { Agency } from '../../models/agency.js';
+import { Agency } from '../models/agency.js';
 
 export const router = express.Router();
 

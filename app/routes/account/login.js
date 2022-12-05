@@ -2,7 +2,7 @@ import express from 'express';
 import validator from 'express-validator';
 import httpErrors from 'http-errors';
 import { User } from '../../models/user.js';
-import { errorFormatter } from '../../utils.js';
+import { errorFormatter } from '../../../utils.js';
 
 export const router = express.Router();
 

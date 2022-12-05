@@ -1,5 +1,5 @@
 {
-  "name": "transit-a11y:client",
+  "name": "transit-a11y",
   "version": "1.0",
   "private": true,
   "dependencies": {
