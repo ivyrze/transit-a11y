@@ -26,7 +26,7 @@ export const IndexPage = () => {
     const { setErrorStatus } = useErrorStatus();
     const [ stopDetails, setStopDetails ] = useState({});
     const [ flyCoords, setFlyCoords ] = useState();
-    const cameraCoords = useRef(); // make sure to test search without moving
+    const cameraCoords = useRef();
     
     const handleCameraUpdate = event => cameraCoords.current = event.viewState;
     

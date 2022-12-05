@@ -21,6 +21,16 @@ export const Map = props => {
     })?.data.bounds;
     
     useEffect(() => {
+        if (!bounds) { return; }
+        onCameraUpdate({
+            viewState: {
+                longitude: (bounds[0] + bounds[2]) / 2,
+                latitude: (bounds[1] + bounds[3]) / 2
+            }
+        });
+    }, [ bounds, onCameraUpdate ]);
+    
+    useEffect(() => {
         let padding = {};
         if (window.innerWidth > 768) {
             padding.left = 400;
