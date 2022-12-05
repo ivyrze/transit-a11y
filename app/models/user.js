@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
 import gravatar from 'gravatar';
+import { pojoCleanup } from '../../utils.js';
 
 const UserSchema = new mongoose.Schema({
     _id: String,
@@ -10,12 +11,21 @@ const UserSchema = new mongoose.Schema({
     created: String
 }, {
     id: false,
-    versionKey: false
+    versionKey: false,
+    toObject: {
+        transform: pojoCleanup
+    }
 });
 
 UserSchema.virtual('avatar').get(function () {
-    const options = { size: 100, protocol: 'https', default: 'mp' };
+    const options = { size: 200, protocol: 'https', default: 'mp' };
     return gravatar.url(this.email, options);
+});
+
+UserSchema.virtual('reviews', {
+    ref: 'Review',
+    localField: '_id',
+    foreignField: 'author'
 });
 
 UserSchema.pre('save', async function () {

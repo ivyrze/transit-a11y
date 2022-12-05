@@ -1,22 +1,18 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import useDeepCompareEffect from 'use-deep-compare-effect'
 import axios from 'axios';
 import { useErrorStatus } from './error';
 
 export const useQuery = props => {
-    const { method, url, data, validateStatus } = props;
-    
     const [ response, setResponse ] = useState();
     const { setErrorStatus } = useErrorStatus();
     
-    useEffect(() => {
+    useDeepCompareEffect(() => {
         const helperRunner = async () => {
-            setResponse(await queryHelper({
-                method, url, ...(data && data),
-                ...(validateStatus && validateStatus)
-            }, setErrorStatus));
+            setResponse(await queryHelper(props, setErrorStatus));
         };
         helperRunner();
-    }, [ method, url, data, validateStatus, setErrorStatus ]);
+    }, [ props, setErrorStatus ]);
     
     return response;
 };

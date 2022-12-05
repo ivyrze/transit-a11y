@@ -1,5 +1,6 @@
 import React from 'react';
 import TimeAgo from 'react-timeago';
+import { Link } from 'react-router-dom';
 import { Icon } from './icon';
 import i18n from '../i18n-strings.json';
 
@@ -11,11 +12,16 @@ export const Review = props => {
     return pug`
         article.review-single
             .review-header
-                img.profile-picture(
-                    src=review.author.avatar
-                    alt="Profile picture"
-                )
-                span.review-author= review.author.username
+                if review.author
+                    img.profile-picture(
+                        src=review.author.avatar
+                        alt="Profile picture"
+                    )
+                    Link(
+                        to="/profile/" + review.author.username
+                    ).review-author= review.author.username
+                else if review.stop
+                    span.review-stop= review.stop.name
                 TimeAgo.review-timestamp(
                     date=review.timestamp
                     title=""

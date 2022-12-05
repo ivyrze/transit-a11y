@@ -6,6 +6,7 @@ body {
     line-height: 1.6;
     color: #454545;
     margin: 0;
+    padding: 50px 30px;
     
     @include dark {
         color: #ccc;
@@ -96,8 +97,9 @@ fieldset,
     margin-top: 15px;
 }
 
-.hidden {
-    display: none !important;
+.subtitle {
+    letter-spacing: 0.25px;
+    opacity: 0.5;
 }
 
 .link-external {
@@ -395,7 +397,8 @@ h1.title {
     justify-content: space-between;
 }
 
-.card-close {
+.card-close,
+.page-close {
     position: relative;
     top: 0;
     right: 0;
@@ -425,6 +428,17 @@ h1.title {
     }
 }
 
+a.page-close {
+    color: inherit;
+    float: right;
+    text-align: center;
+    border: none;
+    
+    .icon {
+        vertical-align: -0.5rem;
+    }
+}
+
 .sidebar-card {
     padding: 22px 14px 28px;
     overflow-y: auto;
@@ -439,11 +453,6 @@ h1.title {
         font-weight: weight('medium');
         letter-spacing: -0.5px;
         margin-block: 0;
-    }
-    
-    .subtitle {
-        letter-spacing: 0.25px;
-        opacity: 0.5;
     }
 }
 
@@ -532,7 +541,9 @@ h1.title {
     margin-bottom: 8px;
     font-size: 16px;
     
-    .review-author {
+    .review-author,
+    .review-stop {
+        color: inherit;
         font-weight: weight('medium');
     }
     
@@ -642,6 +653,37 @@ h1.title {
     overflow: hidden;
 }
 
+.user-profile {
+    h1 {
+        margin-block: 5px;
+    }
+    
+    .profile-picture {
+        width: 100px;
+    }
+    
+    .review-container {
+        border: none;
+    }
+    
+    .review-single {
+        margin-top: 22px;
+    }
+    
+    .review-single + .review-single {
+        border-top: 1px solid #dcdcdc;
+        padding-top: 20px;
+        
+        @include dark {
+            border-top-color: #3d3d3d;
+        }
+    }
+    
+    .review-header {
+        margin-bottom: 10px;
+    }
+}
+
 .feature-option-container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
@@ -695,16 +737,18 @@ h1.title {
 }
 
 .form-fullscreen,
+.error-fullscreen,
+.page-fullscreen {
+    max-width: 510px;
+    margin-inline: auto;
+}
+
+.form-fullscreen,
 .error-fullscreen {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    margin-block: 50px;
-    padding-inline: 25px;
     min-height: calc(100vh - 100px);
-    max-width: 510px;
-    margin-inline: auto;
-    
     & > h1 {
         margin-block: 0;
         letter-spacing: -1px;

@@ -8,14 +8,15 @@ import mongoose from 'mongoose';
 import path from 'path';
 import crypto from 'crypto';
 
-import { router as loginRouter } from './routes/account/login.js';
-import { router as logoutRouter } from './routes/account/logout.js';
-import { router as signUpRouter } from './routes/account/sign-up.js';
 import { router as searchRouter } from './routes/search.js';
 import { router as stopDetailsRouter } from './routes/stop-details.js';
 import { router as submitReviewRouter } from './routes/submit-review.js';
 import { router as mapBoundsRouter } from './routes/map-bounds.js';
 import { router as mapTilesRouter } from './routes/map-tiles.js';
+import { router as profileRouter } from './routes/profile.js';
+import { router as loginRouter } from './routes/account/login.js';
+import { router as logoutRouter } from './routes/account/logout.js';
+import { router as signUpRouter } from './routes/account/sign-up.js';
 
 import * as alerts from './alerts/index.js';
 import * as tiles from './routes/map-tiles.js';
@@ -53,6 +54,7 @@ app.use('/api/stop-details', stopDetailsRouter);
 app.use('/api/submit-review', submitReviewRouter);
 app.use('/api/map-bounds', mapBoundsRouter);
 app.use('/api/map-tiles', mapTilesRouter);
+app.use('/api/profile', profileRouter);
 app.use('/api/account/login', loginRouter);
 app.use('/api/account/logout', logoutRouter);
 app.use('/api/account/sign-up', signUpRouter);

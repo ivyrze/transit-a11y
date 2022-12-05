@@ -3,6 +3,7 @@ import { Route, Routes } from 'react-router-dom';
 import { ThemeProvider } from './hooks/theme';
 import { ErrorHandler } from './hooks/error';
 import { IndexPage } from './pages/index';
+import { ProfilePage } from './pages/profile';
 import { LoginPage } from './pages/login';
 import { LogoutPage } from './pages/logout';
 import { SignUpPage } from './pages/sign-up';
@@ -15,6 +16,7 @@ export const App = () => {
                 Routes
                     Route(path="/" element=${pug`IndexPage`})
                     Route(path="/agency/:agency" element=${pug`IndexPage`})
+                    Route(path="/profile/:username" element=${pug`ProfilePage`})
                     Route(path="/account/login" element=${pug`LoginPage`})
                     Route(path="/account/logout" element=${pug`LogoutPage`})
                     Route(path="/account/sign-up" element=${pug`SignUpPage`})
