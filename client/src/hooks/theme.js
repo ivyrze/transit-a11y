@@ -6,14 +6,16 @@ export const ThemeProvider = ({ children }) => {
     const [ theme, setTheme ] = useState();
     
     useEffect(() => {
+        const prefersQuery = window.matchMedia('(prefers-color-scheme: dark)');
+        
         const updateTheme = () => {
-            const isDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-            setTheme(isDark ? "dark-mode" : "light-mode");
+            setTheme(prefersQuery.matches ? "dark-mode" : "light-mode");
         };
         updateTheme();
         
-        window.matchMedia('(prefers-color-scheme: dark)')
-            .addEventListener('change', updateTheme);
+        prefersQuery.addEventListener('change', updateTheme);
+        
+        return () => prefersQuery.removeEventListener('change', updateTheme);
     }, [ setTheme ]);
     
     const contextPayload = useMemo(
