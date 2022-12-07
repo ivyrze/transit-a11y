@@ -1,11 +1,16 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../hooks/auth';
 import { FormWrapper } from '../components/form-wrapper';
 
 export const LoginPage = () => {
     const navigate = useNavigate();
+    const { setAuth } = useAuth();
     
-    const handleFormResponse = () => navigate('/');
+    const handleFormResponse = response => {
+        navigate('/');
+        setAuth(response);
+    };
     
     return pug`
         .form-fullscreen

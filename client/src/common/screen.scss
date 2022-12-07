@@ -177,6 +177,95 @@ fieldset,
     }
 }
 
+.button-rounded {
+    line-height: 1;
+    width: 1.6em;
+    aspect-ratio: 1 / 1;
+    border-radius: 50%;
+    padding: 3px 0 0;
+    
+    &.card-close,
+    &.page-close {
+        font-size: 24px;
+    }
+    
+    &.card-close {
+        margin-right: -2px;
+    }
+    
+    &.page-close {
+        margin-right: -6px;
+    }
+}
+
+.button-rounded,
+.menu-popup button {
+    transition: background-color 0.2s ease;
+    
+    &:hover {
+        background-color: #f3f3f3;
+        
+        @include dark {
+            background-color: #212121;
+        }
+    }
+    
+    &:active {
+        background-color: #e4e4e4;
+        
+        @include dark {
+            background-color: #2e2e2e;
+        }
+    }
+}
+
+a.button-rounded {
+    color: inherit;
+    float: right;
+    text-align: center;
+    border: none;
+    
+    .icon {
+        vertical-align: -0.5rem;
+    }
+}
+
+.menu-container {
+    position: relative;
+    
+    .menu-toggle {
+        color: #8b8b8b;
+        vertical-align: -3px;
+    }
+    
+    .menu-popup {
+        position: absolute;
+        right: 0;
+        background: #f9f9f9;
+        border-radius: 10px;
+        box-shadow: 0 4px 18px rgb(0 0 0 / 15%);
+        padding: 7px 0;
+        margin: 5px 0;
+        z-index: 1;
+        
+        @include dark {
+            background: #242424;
+        }
+        
+        button {
+            width: 100%;
+            padding: 5px 15px;
+            white-space: nowrap;
+            text-align: left;
+            
+            & > .icon {
+                vertical-align: -2px;
+                margin-right: 6px;
+            }
+        }
+    }
+}
+
 #map-container {
     position: fixed;
     inset: 0;
@@ -395,48 +484,6 @@ h1.title {
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
-}
-
-.card-close,
-.page-close {
-    position: relative;
-    top: 0;
-    right: 0;
-    font-size: 24px;
-    line-height: 1;
-    width: 1.6em;
-    aspect-ratio: 1 / 1;
-    border-radius: 50%;
-    padding: 3px 0 0;
-    margin-right: -2px;
-    transition: background-color 0.2s ease;
-    
-    &:hover {
-        background-color: #f3f3f3;
-        
-        @include dark {
-            background-color: #212121;
-        }
-    }
-    
-    &:active {
-        background-color: #e4e4e4;
-        
-        @include dark {
-            background-color: #2e2e2e;
-        }
-    }
-}
-
-a.page-close {
-    color: inherit;
-    float: right;
-    text-align: center;
-    border: none;
-    
-    .icon {
-        vertical-align: -0.5rem;
-    }
 }
 
 .sidebar-card {

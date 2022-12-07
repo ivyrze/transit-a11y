@@ -19,9 +19,12 @@ const ReviewSchema = new mongoose.Schema({
     versionKey: false
 });
 
-ReviewSchema.post('save', async function (review) {
+const ConsensusTrigger = async function (review) {
     await review.populate('stop');
     await review.stop.consensus();
-});
+};
+
+ReviewSchema.post('save', ConsensusTrigger);
+ReviewSchema.post('deleteOne', { document: true }, ConsensusTrigger);
 
 export const Review = mongoose.model('Review', ReviewSchema);

@@ -3,6 +3,7 @@ import validator from 'express-validator';
 import httpErrors from 'http-errors';
 import { User } from '../models/user.js';
 import { Review } from '../models/review.js';
+import { pojoCleanup } from '../../utils.js';
 
 export const router = express.Router();
 
@@ -27,6 +28,7 @@ router.post('/', validator.checkSchema(schema), async function(req, res, next) {
         'email',
         'reviews'
     ]).populate({ path: 'reviews', select: [
+        '_id',
         'accessibility',
         'tags',
         'timestamp',
@@ -42,15 +44,18 @@ router.post('/', validator.checkSchema(schema), async function(req, res, next) {
     
     // Convert from database objects and remove unnecessary fields
     details = details.toObject({
-        virtuals: [ 'reviews', 'avatar' ],
-        _id: false
+        virtuals: [ 'reviews', 'avatar' ]
     });
     
     delete details.email;
     details.reviews = details.reviews.map(review => {
+        review.id = review._id;
+        delete review._id;
         delete review.author;
         return review;
     });
+    
+    details = pojoCleanup(details, details, { _id: false });
     
     // Sort by review submission date
     details.reviews.sort((a, b) => {

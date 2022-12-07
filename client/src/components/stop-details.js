@@ -23,7 +23,7 @@ export const StopDetails = props => {
     return pug`
         .card-header
             h2= details.name
-            button.card-close(
+            button.button-rounded.card-close(
                 aria-label="Close"
                 onClick=closeCard
             )
@@ -53,7 +53,11 @@ export const StopDetails = props => {
                 if !details.reviews.length || expanded
                     #review-drawer
                         each review, index in details.reviews
-                            Review(review=review, key=index)
+                            Review(
+                                review=review
+                                key=index
+                                showOptions=false
+                            )
                         button.review-contribute(
                             onClick=switchToReviewForm
                         )

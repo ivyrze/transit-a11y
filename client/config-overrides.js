@@ -3,7 +3,7 @@ const { override, addBabelPlugin, addWebpackModuleRule } = require('customize-cr
 module.exports = override(
     addBabelPlugin('babel-plugin-transform-react-pug'),
     addBabelPlugin([ 'babel-plugin-transform-jsx-classname-components', {
-        objects: [ 'React', 'ThemeContext', 'ErrorStatusContext' ]
+        objects: [ 'React', 'ThemeContext', 'ErrorStatusContext', 'AuthContext' ]
     } ]),
     addWebpackModuleRule({
         test: /\bmapbox-gl-csp-worker.js\b/i,

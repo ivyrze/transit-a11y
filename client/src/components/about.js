@@ -11,7 +11,7 @@ export const About = props => {
     return pug`
         .card-header
             h2 About
-            button.card-close(
+            button.button-rounded.card-close(
                 aria-label="Close"
                 onClick=closeCard
             )

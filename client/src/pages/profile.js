@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useQuery } from '../hooks/query';
+import { useAuth } from '../hooks/auth';
 import { Review } from '../components/review';
 import { Icon } from '../components/icon';
 
@@ -13,11 +14,13 @@ export const ProfilePage = props => {
         data: { username }
     })?.data;
     
+    const { auth } = useAuth();
+    
     if (!details) { return null; }
     
     return pug`
         .page-fullscreen
-            Link(to="/").page-close(
+            Link(to="/").button-rounded.page-close(
                 aria-label="Close"
             )
                 Icon(name= "close")
@@ -32,6 +35,10 @@ export const ProfilePage = props => {
                     | ${(details.reviews.length === 1) ? 'review' : 'reviews'}
                 .review-container
                     each review, index in details.reviews
-                        Review(review=review, key=index)
+                        Review(
+                            review=review
+                            key=index
+                            showOptions=(auth.username==username)
+                        )
     `;
 };

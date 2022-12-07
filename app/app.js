@@ -11,9 +11,11 @@ import crypto from 'crypto';
 import { router as searchRouter } from './routes/search.js';
 import { router as stopDetailsRouter } from './routes/stop-details.js';
 import { router as submitReviewRouter } from './routes/submit-review.js';
+import { router as deleteReviewRouter } from './routes/delete-review.js';
 import { router as mapBoundsRouter } from './routes/map-bounds.js';
 import { router as mapTilesRouter } from './routes/map-tiles.js';
 import { router as profileRouter } from './routes/profile.js';
+import { router as checkAuthRouter } from './routes/check-auth.js';
 import { router as loginRouter } from './routes/account/login.js';
 import { router as logoutRouter } from './routes/account/logout.js';
 import { router as signUpRouter } from './routes/account/sign-up.js';
@@ -42,7 +44,10 @@ app.use(session({
         maxAge: 1000 * 60**2 * 10
     },
     proxy: process.env.NODE_ENV === 'production',
-    store: mongoStore.create({ mongoUrl: process.env.MONGO_URL }),
+    store: mongoStore.create({
+        mongoUrl: process.env.MONGO_URL,
+        touchAfter: 1000 * 60 * 30
+    }),
     secret: crypto.randomBytes(64).toString('hex'),
     saveUninitialized: false,
     resave: false
@@ -51,9 +56,11 @@ app.use(session({
 // Setup routes
 app.use('/api/search', searchRouter);
 app.use('/api/stop-details', stopDetailsRouter);
+app.use('/api/delete-review', deleteReviewRouter);
 app.use('/api/submit-review', submitReviewRouter);
 app.use('/api/map-bounds', mapBoundsRouter);
 app.use('/api/map-tiles', mapTilesRouter);
+app.use('/api/check-auth', checkAuthRouter);
 app.use('/api/profile', profileRouter);
 app.use('/api/account/login', loginRouter);
 app.use('/api/account/logout', logoutRouter);
