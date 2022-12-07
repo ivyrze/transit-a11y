@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../hooks/auth';
 import { Review } from './review';
 import { Icon } from './icon';
 import i18n from '../i18n-strings.json';
@@ -7,12 +9,20 @@ export const StopDetails = props => {
     const { details, changeCardPresentation } = props;
     
     const [ expanded, setExpanded ] = useState(false);
+    const { auth } = useAuth();
+    const navigate = useNavigate();
     
     if (!details.name) { return null; }
     
-    const switchToReviewForm = () => changeCardPresentation({
-        action: 'open', card: 'reviewForm'
-    });
+    const switchToReviewForm = () => {
+        if (Object.keys(auth).length) {
+            changeCardPresentation({
+                action: 'open', card: 'reviewForm'
+            });
+        } else {
+            navigate('/account/login');
+        }
+    };
     
     const closeCard = () => changeCardPresentation({
         action: 'close', card: 'stopDetails'
