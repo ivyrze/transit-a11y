@@ -4,14 +4,16 @@ const ReviewSchema = new mongoose.Schema({
     _id: String,
     stop: {
         type: String,
-        ref: 'Stop'
+        ref: 'Stop',
+        index: true
     },
     accessibility: String,
     tags: [String],
     timestamp: String,
     author: {
         type: String,
-        ref: 'User'
+        ref: 'User',
+        index: true
     },
     comments: String
 }, {

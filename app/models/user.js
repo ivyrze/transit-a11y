@@ -6,7 +6,10 @@ import { pojoCleanup } from '../../utils.js';
 const UserSchema = new mongoose.Schema({
     _id: String,
     email: String,
-    username: String,
+    username: {
+        type: String,
+        index: true
+    },
     password: String,
     created: String
 }, {
