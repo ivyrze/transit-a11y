@@ -23,6 +23,8 @@ import { router as signUpRouter } from './routes/account/sign-up.js';
 import * as alerts from './alerts/index.js';
 import * as tiles from './routes/map-tiles.js';
 
+import { attachCleanupHandler } from '../utils.js';
+
 dotenv.config({ path: '../.env' });
 
 export const app = express();
@@ -86,6 +88,7 @@ app.use((error, req, res, next) => {
 
 // Establish database connection
 await mongoose.connect(process.env.MONGO_URL);
+attachCleanupHandler(() => mongoose.disconnect());
 
 // Start alert polling and tile indexing
 await tiles.start();
