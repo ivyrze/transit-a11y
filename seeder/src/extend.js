@@ -31,10 +31,29 @@ export const extend = async (agency, stops, routes, id) => {
             },
             _type == "route" => {
                 "route_id": id,
-                "route_long_name": name
+                "route_long_name": name,
+                "route_shapes": shapes
             }
         }`
     );
+    
+    // Convert shape GeoJSON temporarily into shape object format
+    appendicies.forEach(appendix => {
+        if (appendix.route_shapes == null) { return; }
+        
+        let shapes = [];
+        appendix.route_shapes.forEach((shape, index) => {
+            JSON.parse(shape).geometry.coordinates.forEach(coords => {
+                shapes.push({
+                    shape_id: index,
+                    shape_pt_lon: coords[0],
+                    shape_pt_lat: coords[1]
+                });
+            });
+        });
+        
+        appendix.route_shapes = shapes;
+    });
     
     // Merge appendices into dataset objects
     const dataset = { agency: [ agency ], stop: stops, route: routes };

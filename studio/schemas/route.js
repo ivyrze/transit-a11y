@@ -17,9 +17,16 @@ export default {
             description: 'Overrides the provided route name'
         },
         {
+            name: 'shapes',
+            type: 'array',
+            of: [{ type: 'string' }],
+            title: 'Shapes',
+            description: 'Include a shape in GeoJSON feature format for each unique trip routing'
+        },
+        {
             name: 'agency',
-            title: 'Agency',
             type: 'reference',
+            title: 'Agency',
             to: [{ type: 'agency' }],
             validation: rule => rule.required()
         }
