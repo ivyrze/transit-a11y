@@ -1,7 +1,7 @@
 {
   "name": "transit-a11y",
   "type": "module",
-  "version": "1.0",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "start": "node app/app.js",

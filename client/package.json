@@ -1,6 +1,6 @@
 {
   "name": "transit-a11y",
-  "version": "1.0",
+  "version": "1.0.0",
   "private": true,
   "dependencies": {
     "babel-plugin-transform-jsx-classname-components": "^0.0.3",

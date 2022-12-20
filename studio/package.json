@@ -1,29 +1,29 @@
 {
   "name": "transit-a11y",
   "private": true,
-  "version": "1.0",
+  "version": "1.0.0",
   "scripts": {
     "start": "dotenv -e ../.env sanity start",
-    "build": "sanity build"
+    "develop": "dotenv -e ../.env sanity dev",
+    "build": "dotenv -e ../.env sanity build",
+    "deploy": "dotenv -e ../.env sanity deploy"
   },
   "keywords": [
     "sanity"
   ],
   "dependencies": {
-    "@sanity/base": "^2.31.1",
-    "@sanity/core": "^2.31.1",
-    "@sanity/default-layout": "^2.31.1",
-    "@sanity/default-login": "^2.31.1",
-    "@sanity/desk-tool": "^2.31.1",
-    "@sanity/eslint-config-studio": "^2.0.0",
-    "@sanity/vision": "^2.31.1",
-    "eslint": "^8.6.0",
-    "prop-types": "^15.7",
-    "react": "^17.0",
-    "react-dom": "^17.0",
+    "@sanity/vision": "^3.0.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-is": "^18.2.0",
+    "sanity": "^3.0.0",
     "styled-components": "^5.2.0"
   },
   "devDependencies": {
-    "dotenv-cli": "^6.0.0"
+    "@sanity/eslint-config-studio": "^2.0.1",
+    "dotenv-cli": "^6.0.0",
+    "eslint": "^8.6.0",
+    "prettier": "^2.8.1",
+    "typescript": "^4.0.0"
   }
 }

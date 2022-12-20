@@ -1,6 +1,4 @@
-import S from "@sanity/desk-tool/structure-builder";
-
-export default () =>
+export default S =>
     S.list()
         .title("Documents")
         .items([

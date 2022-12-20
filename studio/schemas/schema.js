@@ -1,23 +1,9 @@
-// First, we must import the schema creator
-import createSchema from 'part:@sanity/base/schema-creator'
+import agency from './agency';
+import route from './route';
+import stop from './stop';
 
-// Then import schema types from any plugins that might expose them
-import schemaTypes from 'all:part:@sanity/base/schema-type'
-
-// Import our custom schema types
-import agency from './agency'
-import stop from './stop'
-import route from './route'
-
-// Then we give our schema to the builder and provide the result to Sanity
-export default createSchema({
-    // We name our schema
-    name: 'default',
-    // Then proceed to concatenate our document type
-    // to the ones provided by any plugins that are installed
-    types: schemaTypes.concat([
-        agency,
-        stop,
-        route
-    ]),
-})
+export default [
+    agency,
+    route,
+    stop
+];
