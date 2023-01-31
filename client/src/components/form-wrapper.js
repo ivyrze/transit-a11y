@@ -67,7 +67,7 @@ export const FormWrapper = props => {
     };
     
     return pug`
-        form#test(
+        form(
             className=hasSubmitted ? "form-submitted" : ""
             onSubmit=handleSubmit
             ...passthroughProps
