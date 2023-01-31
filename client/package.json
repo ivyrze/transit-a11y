@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "dependencies": {
+    "@vue/preload-webpack-plugin": "^2.0.0",
     "babel-plugin-transform-jsx-classname-components": "^0.0.3",
     "babel-plugin-transform-react-pug": "^7.0.1",
     "customize-cra": "^1.0.0",
