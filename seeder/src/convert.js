@@ -116,6 +116,11 @@ export const link = datasets => {
 
 const collapseStops = (stops, parent) => {
     stops[parent].linked_with.forEach(child => {
+        if (!stops[child]) {
+            console.warn("Import warning: Weak linked stop reference in '" + parent + "' to child '" + child + "'.");
+            return;
+        }
+        
         if (stops[child].linked_with?.length) {
             stops = collapseStops(stops, child);
         }
