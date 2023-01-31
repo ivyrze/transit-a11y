@@ -97,8 +97,8 @@ export const Map = props => {
                     type="vector"
                     tiles=['/api/map-tiles/{z}/{x}/{y}']
                     promoteId={'stops':'stop_id','routes':'route_id'}
-                    minZoom=8
-                    maxZoom=22
+                    minzoom=8
+                    maxzoom=16
                 )
                     each layer in styles[theme]
                         Layer(key=layer.id, ...layer)

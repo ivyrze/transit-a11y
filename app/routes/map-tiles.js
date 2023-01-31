@@ -43,7 +43,7 @@ router.get('/:z/:x/:y', validator.checkSchema(schema), async function(req, res, 
     });
     
     if (!Object.values(tiles).includes(null)) {
-        const buffer = vtPbf.fromGeojsonVt(tiles, { version: 2 });
+        const buffer = vtPbf.fromGeojsonVt(tiles, { version: 2, maxZoom: 16 });
         
         res.write(buffer, 'binary');
         res.end(null, 'binary');
@@ -131,7 +131,7 @@ const generate = async (invalidate = true) => {
         }
         
         // Index the layer for quick distribution later
-        indicies[layer] = geojsonVt(geometries[layer], { maxZoom: 24 });
+        indicies[layer] = geojsonVt(geometries[layer], { maxZoom: 16 });
     }
 };
 
