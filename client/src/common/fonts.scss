@@ -78,7 +78,10 @@ $font-faces: (
         'heating': '\e012',
         'chevron': '\e013',
         'ellipsis': '\e014',
-        'trash': '\e015'
+        'trash': '\e015',
+        'user': '\e016',
+        'login': '\e017',
+        'menu': '\e018'
     );
     
     @each $name, $glyph in $icons {

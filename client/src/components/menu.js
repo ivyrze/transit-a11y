@@ -1,7 +1,10 @@
-import React, { Children, isValidElement, cloneElement, useState, useRef, useEffect } from 'react';
+import React, { Children, Fragment, isValidElement, cloneElement, useState, useRef, useEffect } from 'react';
 import { Icon } from './icon';
 
-export const Menu = ({ children }) => {
+export const Menu = props => {
+    const { children } = props;
+    const iconName = props.iconName ?? "ellipsis";
+    
     const [ popupOpen, setPopupOpen ] = useState(false);
     
     const toggleButton = useRef();
@@ -11,15 +14,13 @@ export const Menu = ({ children }) => {
         return Children.map(children, (child, index) => {
             if (!isValidElement(child)) {
                 return child;
+            } else if (child.type === Fragment) {
+                return recurseChildren(child.props.children);
             }
             
-            let injections = {};
+            let injections = { role: "menuitem" };
             if (index === 0) {
                 injections.ref = first => first?.focus();
-            }
-            
-            if (child.type === "button") {
-                injections.role = "menuitem";
             }
             
             return cloneElement(child, injections);
@@ -46,7 +47,7 @@ export const Menu = ({ children }) => {
                 aria-haspopup="true"
                 onClick=togglePopup
             )
-                Icon(name= "ellipsis")
+                Icon(name= iconName)
             if popupOpen
                 .menu-popup(role="menu")
                     | ${recurseChildren(children)}

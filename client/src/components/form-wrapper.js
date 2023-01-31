@@ -1,4 +1,4 @@
-import React, { Children, cloneElement, isValidElement, useState } from 'react';
+import React, { Children, Fragment, cloneElement, isValidElement, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useErrorStatus } from '../hooks/error';
 import { queryHelper } from '../hooks/query';
@@ -48,6 +48,8 @@ export const FormWrapper = props => {
         return Children.map(children, child => {
             if (!isValidElement(child)) {
                 return child;
+            } else if (child.type === Fragment) {
+                return recurseChildren(child.props.children);
             }
             
             let injections = {};

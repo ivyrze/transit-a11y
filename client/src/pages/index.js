@@ -1,11 +1,15 @@
 import React, { useState, useRef, useReducer } from 'react';
+import { Link } from 'react-router-dom';
 import { Search } from '../components/search';
 import { CardWrapper } from '../components/card-wrapper';
 import { About } from '../components/about';
 import { StopDetails } from '../components/stop-details';
 import { ReviewForm } from '../components/review-form';
 import { Map } from '../components/map';
+import { Menu } from '../components/menu';
+import { Icon } from '../components/icon';
 import { useErrorStatus } from '../hooks/error';
+import { useAuth } from '../hooks/auth';
 import { queryHelper } from '../hooks/query';
 
 import 'mapbox-gl/dist/mapbox-gl.css';
@@ -23,6 +27,7 @@ export const IndexPage = () => {
             about: false, stopDetails: false, reviewForm: false
         });
     
+    const { auth } = useAuth();
     const { setErrorStatus } = useErrorStatus();
     const [ stopDetails, setStopDetails ] = useState({});
     const [ flyCoords, setFlyCoords ] = useState();
@@ -53,6 +58,19 @@ export const IndexPage = () => {
         #sidebar-container
             h1.title
                 a(onClick=openAboutCard)= title
+            #main-menu
+                Menu(iconName="menu")
+                    if auth && auth.username
+                        Link(to="/profile/" + auth.username)
+                            Icon(name= "user")
+                            | View profile
+                        Link(to="/account/logout")
+                            Icon(name= "login")
+                            | Logout
+                    else
+                        Link(to="/account/login")
+                            Icon(name= "login")
+                            | Login
             Search(
                 openStop=openStop
                 cameraCoords=cameraCoords

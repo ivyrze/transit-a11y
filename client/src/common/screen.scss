@@ -199,7 +199,8 @@ fieldset,
 }
 
 .button-rounded,
-.menu-popup button {
+.menu-popup button,
+.menu-popup a {
     transition: background-color 0.2s ease;
     
     &:hover {
@@ -252,7 +253,8 @@ a.button-rounded {
             background: #242424;
         }
         
-        button {
+        button,
+        a {
             width: 100%;
             padding: 5px 15px;
             white-space: nowrap;
@@ -260,7 +262,39 @@ a.button-rounded {
             
             & > .icon {
                 vertical-align: -2px;
-                margin-right: 6px;
+                margin-right: 8px;
+            }
+        }
+        
+        a {
+            display: block;
+            color: inherit;
+            border-bottom: none;
+        }
+    }
+}
+
+#main-menu {
+    position: fixed;
+    top: 50px;
+    right: 30px;
+    z-index: 1;
+    
+    .menu-container {
+        .menu-toggle {
+            font-size: 24px;
+            color: #5a5a5a;
+            
+            @include dark {
+                color: #b6b6b6;
+            }
+        }
+        
+        .menu-popup {
+            background: #fff;
+            
+            @include dark {
+                background: #111;
             }
         }
     }

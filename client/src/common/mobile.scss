@@ -3,7 +3,7 @@
 }
 
 h1.title {
-    font-size: 28px;
+    font-size: 26px;
 }
 
 .user-profile {
@@ -13,5 +13,16 @@ h1.title {
     
     .menu-container {
         margin-left: auto;
+    }
+}
+
+#main-menu {
+    top: 41px;
+    right: 24px;
+    
+    .menu-container {
+        .menu-toggle {
+            font-size: 20px;
+        }
     }
 }
