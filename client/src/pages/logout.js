@@ -1,4 +1,6 @@
 import React, { useEffect} from 'react';
+import { Link } from 'react-router-dom';
+import { Icon } from '../components/icon';
 import { useQuery } from '../hooks/query';
 import { useAuth } from '../hooks/auth';
 
@@ -13,6 +15,12 @@ export const LogoutPage = () => {
     useEffect(() => setAuth({}), [ setAuth ]);
     
     return pug`
-        p Logged out
+        .notice-fullscreen
+            Icon(name= "login")
+            h1 Logged out
+            p
+                |You've successfully been logged out. Would you like
+                |to #[Link(to="/") return home]
+                |or #[Link(to="/account/login") log back in]?
     `;
 };

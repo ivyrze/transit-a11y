@@ -13,7 +13,7 @@ export const ErrorPage = props => {
         "Sorry things aren't working as expected! Try heading back to the homepage.";
     
     return pug`
-        .error-fullscreen
+        .notice-fullscreen
             Icon(name= "error")
             h1= title
             p= description

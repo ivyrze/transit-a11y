@@ -809,14 +809,14 @@ h1.title {
 }
 
 .form-fullscreen,
-.error-fullscreen,
+.notice-fullscreen,
 .page-fullscreen {
     max-width: 510px;
     margin-inline: auto;
 }
 
 .form-fullscreen,
-.error-fullscreen {
+.notice-fullscreen {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -827,17 +827,17 @@ h1.title {
     }
 }
 
-.error-fullscreen {
+.notice-fullscreen {
     text-align: center;
-}
-
-.icon-error {
-    display: block;
-    font-size: 42px;
-    color: #232323;
-    margin-top: 8px;
     
-    @include dark {
-        color: #f4f4f4;
+    & > .icon {
+        display: block;
+        font-size: 42px;
+        color: #232323;
+        margin-top: 8px;
+        
+        @include dark {
+            color: #f4f4f4;
+        }
     }
 }
