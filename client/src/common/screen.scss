@@ -71,7 +71,8 @@ legend {
     margin-bottom: 6px;
 }
 
-a {
+a,
+button.button-link {
     color: #4b5f9f;
     text-decoration: none;
     border-bottom: 1px solid transparent;
@@ -85,6 +86,10 @@ a {
     @include dark {
         color: #7786b6;
     }
+}
+
+button.button-link {
+    padding: 0;
 }
 
 legend,
@@ -354,14 +359,8 @@ h1.title {
         text-shadow: 0 0 35px #070707;
     }
     
-    & > a {
+    & > button {
         color: inherit;
-        cursor: pointer;
-        padding-bottom: 4px;
-        
-        @include dark {
-            color: inherit;
-        }
     }
 }
 

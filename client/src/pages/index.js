@@ -57,7 +57,7 @@ export const IndexPage = () => {
     return pug`
         #sidebar-container
             h1.title
-                a(onClick=openAboutCard)= title
+                button.button-link(onClick=openAboutCard)= title
             #main-menu
                 Menu(iconName="menu")
                     if auth && auth.username
