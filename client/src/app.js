@@ -17,6 +17,7 @@ export const App = () => {
                 AuthProvider
                     Routes
                         Route(path="/" element=${pug`IndexPage`})
+                        Route(path="/stop/:stop" element=${pug`IndexPage`})
                         Route(path="/agency/:agency" element=${pug`IndexPage`})
                         Route(path="/profile/:username" element=${pug`ProfilePage`})
                         Route(path="/account/login" element=${pug`LoginPage`})

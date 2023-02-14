@@ -1,5 +1,5 @@
-import React, { useState, useRef, useReducer } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useRef, useReducer, useCallback, useEffect } from 'react';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import { Search } from '../components/search';
 import { CardWrapper } from '../components/card-wrapper';
 import { About } from '../components/about';
@@ -16,6 +16,9 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 
 export const IndexPage = () => {
     const title = 'is the metro accessible?';
+    
+    const navigate = useNavigate();
+    const { stop } = useParams();
     
     const [ openedCards, changeCardPresentation ] =
         useReducer((state, { action, card }) => {
@@ -37,7 +40,7 @@ export const IndexPage = () => {
     
     const openAboutCard = () => changeCardPresentation({ action: 'open', card: 'about' });
     
-    const openStop = async id => {
+    const openStop = useCallback(async id => {
         if (!id) { setStopDetails({}); return; }
         
         const response = await queryHelper({
@@ -52,7 +55,19 @@ export const IndexPage = () => {
             response.data.coordinates.latitude
         ]);
         changeCardPresentation({ action: 'open', card: 'stopDetails' });
-    };
+        navigate('/stop/' + id);
+    }, [ setErrorStatus, navigate ]);
+    
+    useEffect(() => {
+        if (stop) {
+            if (stop !== stopDetails.id) {
+                openStop(stop);
+            } else if (!openedCards.stopDetails) {
+                navigate('/');
+            }
+        }
+    }, [ navigate, stop, stopDetails, openedCards, openStop ])
+    
     
     return pug`
         #sidebar-container
