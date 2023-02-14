@@ -34,6 +34,7 @@ router.post('/', validator.checkSchema(schema), async function(req, res, next) {
         'timestamp',
         'comments'
     ], populate: { path: 'stop', select: [
+        '_id',
         'name'
     ] } });
     
@@ -50,7 +51,9 @@ router.post('/', validator.checkSchema(schema), async function(req, res, next) {
     delete details.email;
     details.reviews = details.reviews.map(review => {
         review.id = review._id;
+        review.stop.id = review.stop._id;
         delete review._id;
+        delete review.stop._id;
         delete review.author;
         return review;
     });

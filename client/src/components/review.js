@@ -38,7 +38,9 @@ export const Review = props => {
                         to="/profile/" + review.author.username
                     ).review-author= review.author.username
                 else if review.stop
-                    span.review-stop= review.stop.name
+                    Link(
+                        to="/stop/" + review.stop.id
+                    ).review-stop= review.stop.name
                 TimeAgo.review-timestamp(
                     date=review.timestamp
                     title=""
