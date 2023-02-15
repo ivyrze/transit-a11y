@@ -43,16 +43,19 @@ router.post('/', validator.checkSchema(schema), async function(req, res, next) {
         'email'
     ] } });
     
+    // Make sure that the stop exists
+    if (!details) {
+        next(new httpErrors.NotFound()); return;
+    }
+    
     const key = details.getAgencyKey();
     details = details.toObject({
         virtuals: [ 'reviews', 'avatar' ],
         _id: false
     });
     
-    if (Object.keys(details).length) {
-        let [ longitude, latitude ] = details.coordinates;
-        details.coordinates = { longitude, latitude };
-    }
+    let [ longitude, latitude ] = details.coordinates;
+    details.coordinates = { longitude, latitude };
     
     if (details.alert) {
         details.accessibility = 'service-alert';
@@ -65,6 +68,10 @@ router.post('/', validator.checkSchema(schema), async function(req, res, next) {
         'vehicle',
         'reviews'
     ]).lean();
+    
+    if (!details.agency) {
+        next(new httpErrors.NotFound()); return;
+    }
     
     // Use stop-specific URL and fallback to agency-wide URL
     if (details.url) {
@@ -87,19 +94,6 @@ router.post('/', validator.checkSchema(schema), async function(req, res, next) {
         delete details.reviews;
     }
     delete details.agency.reviews;
-    
-    // Check outgoing data
-    if (!details ||
-        !details.name ||
-        !details.accessibility ||
-        !details.coordinates ||
-        !details.coordinates.latitude ||
-        !details.coordinates.longitude ||
-        !details.agency ||
-        !details.agency.name ||
-        !details.agency.url) {
-        next(new httpErrors.NotFound()); return;
-    }
     
     res.json(details);
 });
