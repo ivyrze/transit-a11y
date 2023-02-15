@@ -59,6 +59,7 @@ StopSchema.method({
         }, {});
         
         tags = tags.filter(tag => (frequencies[tag] / reviews.length) >= 0.75);
+        tags = [ ...new Set(tags) ];
         
         // Update the stop object with consensus values
         await this.updateOne({ accessibility, tags });
