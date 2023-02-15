@@ -1,10 +1,6 @@
-import React, { useState, useRef, useReducer, useCallback, useEffect } from 'react';
-import { Link, useParams, useNavigate } from 'react-router-dom';
+import React, { useState, useRef, useEffect } from 'react';
+import { Link, Outlet, useParams, useNavigate } from 'react-router-dom';
 import { Search } from '../components/search';
-import { CardWrapper } from '../components/card-wrapper';
-import { About } from '../components/about';
-import { StopDetails } from '../components/stop-details';
-import { ReviewForm } from '../components/review-form';
 import { Map } from '../components/map';
 import { Menu } from '../components/menu';
 import { Icon } from '../components/icon';
@@ -20,54 +16,34 @@ export const IndexPage = () => {
     const navigate = useNavigate();
     const { stop } = useParams();
     
-    const [ openedCards, changeCardPresentation ] =
-        useReducer((state, { action, card }) => {
-            for (const key in state) {
-                state[key] = (action === 'open' && key === card);
-            }
-            return { ...state };
-        }, {
-            about: false, stopDetails: false, reviewForm: false
-        });
-    
     const { auth } = useAuth();
     const { setErrorStatus } = useErrorStatus();
     const [ stopDetails, setStopDetails ] = useState({});
     const [ flyCoords, setFlyCoords ] = useState();
     const cameraCoords = useRef();
     
+    useEffect(() => {
+        if (!stop) { setStopDetails({}); return; }
+        
+        const updateStopDetails = async () => {
+            const response = await queryHelper({
+                method: 'post',
+                url: '/api/stop-details',
+                data: { id: stop }
+            }, setErrorStatus);
+            setStopDetails({ id: stop, ...response.data });
+            setFlyCoords([
+                response.data.coordinates.longitude,
+                response.data.coordinates.latitude
+            ]);
+        };
+        updateStopDetails();
+    }, [ stop, setErrorStatus ]);
+    
+    
     const handleCameraUpdate = event => cameraCoords.current = event.viewState;
     
-    const openAboutCard = () => changeCardPresentation({ action: 'open', card: 'about' });
-    
-    const openStop = useCallback(async id => {
-        if (!id) { setStopDetails({}); return; }
-        
-        const response = await queryHelper({
-            method: 'post',
-            url: '/api/stop-details',
-            data: { id }
-        }, setErrorStatus);
-        
-        setStopDetails({ id, ...response.data });
-        setFlyCoords([
-            response.data.coordinates.longitude,
-            response.data.coordinates.latitude
-        ]);
-        changeCardPresentation({ action: 'open', card: 'stopDetails' });
-        navigate('/stop/' + id);
-    }, [ setErrorStatus, navigate ]);
-    
-    useEffect(() => {
-        if (stop) {
-            if (stop !== stopDetails.id) {
-                openStop(stop);
-            } else if (!openedCards.stopDetails) {
-                navigate('/');
-            }
-        }
-    }, [ navigate, stop, stopDetails, openedCards, openStop ])
-    
+    const openAboutCard = () => navigate('/about');
     
     return pug`
         #sidebar-container
@@ -87,35 +63,12 @@ export const IndexPage = () => {
                             Icon(name= "login")
                             | Login
             Search(
-                openStop=openStop
                 cameraCoords=cameraCoords
             )
-            CardWrapper(
-                styleName="about"
-                isOpen=openedCards.about
-                changeCardPresentation=changeCardPresentation
-            )
-                About
-            CardWrapper(
-                styleName="stop-details"
-                isOpen=openedCards.stopDetails
-                changeCardPresentation=changeCardPresentation
-            )
-                StopDetails(
-                    details=stopDetails
-                )
-            CardWrapper(
-                styleName="review-form"
-                isOpen=openedCards.reviewForm
-                changeCardPresentation=changeCardPresentation
-            )
-                ReviewForm(
-                    details=stopDetails
-                )
+            Outlet(context={ details: stopDetails })
         Map(
             flyCoords=flyCoords
             onCameraUpdate=handleCameraUpdate
-            openStop=openStop
         )
     `;
 };

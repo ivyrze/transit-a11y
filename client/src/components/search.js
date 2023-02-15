@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { SearchResults } from './search-results';
 import { Icon } from './icon';
 import { useErrorStatus } from '../hooks/error';
 import { queryHelper } from '../hooks/query';
 
 export const Search = props => {
-    const { openStop, cameraCoords } = props;
+    const { cameraCoords } = props;
     
     const [ results, setResults ] = useState([]);
+    const navigate = useNavigate();
     const { setErrorStatus } = useErrorStatus();
     
     const handleInput = async event => {
@@ -31,7 +33,7 @@ export const Search = props => {
     };
     
     const openStopAndClear = id => {
-        openStop(id);
+        navigate('/stop/' + id);
         setResults([]);
     };
     

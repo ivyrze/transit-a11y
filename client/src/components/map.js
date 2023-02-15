@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import MapboxGL from 'mapbox-gl/dist/mapbox-gl';
 import MapboxWorker from 'mapbox-gl/dist/mapbox-gl-csp-worker';
 import Mapbox, { Source, Layer } from 'react-map-gl';
@@ -8,8 +8,9 @@ import { useQuery } from '../hooks/query';
 import styles from '../mapbox-style.json';
 
 export const Map = props => {
-    const { flyCoords, onCameraUpdate, openStop } = props;
+    const { flyCoords, onCameraUpdate } = props;
     const { theme } = useTheme();
+    const navigate = useNavigate();
     const { agency } = useParams();
     
     const map = useRef();
@@ -49,7 +50,7 @@ export const Map = props => {
     
     const handleClick = event => {
         if (event.features.length) {
-            openStop(event.features[0].id);
+            navigate('/stop/' + event.features[0].id);
         }
     };
     
