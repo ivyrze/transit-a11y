@@ -20,6 +20,7 @@ export const IndexPage = () => {
     const { setErrorStatus } = useErrorStatus();
     const [ stopDetails, setStopDetails ] = useState({});
     const [ flyCoords, setFlyCoords ] = useState();
+    const map = useRef();
     const cameraCoords = useRef();
     
     useEffect(() => {
@@ -40,8 +41,8 @@ export const IndexPage = () => {
         updateStopDetails();
     }, [ stop, setErrorStatus ]);
     
-    
     const handleCameraUpdate = event => cameraCoords.current = event.viewState;
+    const handleGeolocationTrigger = () => map.current?.triggerGeolocation();
     
     const openAboutCard = () => navigate('/about');
     
@@ -64,9 +65,11 @@ export const IndexPage = () => {
                             | Login
             Search(
                 cameraCoords=cameraCoords
+                onGeolocationTriggered=handleGeolocationTrigger
             )
             Outlet(context={ details: stopDetails })
         Map(
+            ref=map
             flyCoords=flyCoords
             onCameraUpdate=handleCameraUpdate
         )

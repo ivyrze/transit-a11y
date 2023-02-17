@@ -1,25 +1,30 @@
-import React, { useRef, useEffect } from 'react';
+import React, { forwardRef, useRef, useImperativeHandle, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import MapboxGL from 'mapbox-gl/dist/mapbox-gl';
 import MapboxWorker from 'mapbox-gl/dist/mapbox-gl-csp-worker';
-import Mapbox, { Source, Layer } from 'react-map-gl';
+import Mapbox, { Source, Layer, GeolocateControl } from 'react-map-gl';
 import { useTheme } from '../hooks/theme';
 import { useQuery } from '../hooks/query';
 import styles from '../mapbox-style.json';
 
-export const Map = props => {
+export const Map = forwardRef((props, ref) => {
     const { flyCoords, onCameraUpdate } = props;
     const { theme } = useTheme();
     const navigate = useNavigate();
     const { agency } = useParams();
     
     const map = useRef();
+    const geolocateControl = useRef();
     
     const bounds = useQuery({
         method: 'post',
         url: '/api/map-bounds',
         ...(agency && { data: { agency } })
     })?.data.bounds;
+    
+    useImperativeHandle(ref, () => ({
+        triggerGeolocation: () => geolocateControl.current?.trigger()
+    }));
     
     useEffect(() => {
         if (!bounds) { return; }
@@ -93,6 +98,12 @@ export const Map = props => {
                 onMouseLeave=handleMouseLeave
                 interactiveLayerIds=interactiveLayers
             )
+                GeolocateControl(
+                    ref=geolocateControl
+                    trackUserLocation=true
+                    showUserHeading=true
+                    style={ display: 'none' }
+                )
                 Source(
                     id="internal-api"
                     type="vector"
@@ -104,4 +115,4 @@ export const Map = props => {
                     each layer in styles[theme]
                         Layer(key=layer.id, ...layer)
     `;
-};
+});
