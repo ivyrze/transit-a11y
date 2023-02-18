@@ -10,7 +10,8 @@ export const ReviewForm = () => {
     
     if (!details.name) { return null; }
     
-    const closeCard = () => navigate('/stop/' + details.id);
+    const showStopCard = () => navigate('/stop/' + details.id);
+    const closeCard = () => navigate('/');
     
     const handleFormResponse = response => closeCard();
     
@@ -65,7 +66,7 @@ export const ReviewForm = () => {
                     textarea(name="comments" placeholder="Provide additional details about this stop’s accessibility that may be useful to other riders." rows="3")
                 fieldset.button-set
                     button.button-filled.button-primary(type="submit") Submit
-                    button.button-filled.form-cancel(type="button" onClick=closeCard) Cancel
+                    button.button-filled.form-cancel(type="button" onClick=showStopCard) Cancel
                 input(type="hidden" name="stop" value=details.id)
     `;
 }
