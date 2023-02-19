@@ -9,7 +9,7 @@ export const StopDetails = () => {
     const { details } = useOutletContext();
     
     const [ expanded, setExpanded ] = useState(false);
-    const { auth } = useAuth();
+    const { auth, setAuthRedirect } = useAuth();
     const navigate = useNavigate();
     
     if (!details.name) { return null; }
@@ -19,6 +19,7 @@ export const StopDetails = () => {
             navigate('/review/' + details.id);
         } else {
             navigate('/account/login');
+            setAuthRedirect('/review/' + details.id);
         }
     };
     

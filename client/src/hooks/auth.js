@@ -5,6 +5,7 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
     const [ auth, setAuth ] = useState();
+    const [ authRedirect, setAuthRedirect ] = useState(false);
     
     useEffect(() => {
         const updateAuth = async () => {
@@ -18,7 +19,8 @@ export const AuthProvider = ({ children }) => {
     }, [ setAuth ]);
     
     const contextPayload = useMemo(
-        () => ({ auth, setAuth }), [ auth, setAuth ]
+        () => ({ auth, setAuth, authRedirect, setAuthRedirect }),
+        [ auth, setAuth, authRedirect, setAuthRedirect ]
     );
     
     return pug`

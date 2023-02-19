@@ -1,6 +1,7 @@
 import React, { Children, Fragment, cloneElement, isValidElement, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useErrorStatus } from '../hooks/error';
+import { useAuth } from '../hooks/auth';
 import { queryHelper } from '../hooks/query';
 
 export const FormWrapper = props => {
@@ -9,6 +10,7 @@ export const FormWrapper = props => {
     const [ hasSubmitted, setSubmitted ] = useState(false);
     const [ errors, setErrors ] = useState({});
     const { setErrorStatus } = useErrorStatus();
+    const { setAuthRedirect } = useAuth();
     const navigate = useNavigate();
     
     const handleSubmit = async event => {
@@ -23,6 +25,7 @@ export const FormWrapper = props => {
         
         if (response.status === 401) {
             navigate("/account/login");
+            setAuthRedirect(-1);
         } else if (response.status < 400 && !response.data.errors) {
             if (onResponse) {
                 onResponse(response.data);

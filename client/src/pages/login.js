@@ -5,11 +5,12 @@ import { FormWrapper } from '../components/form-wrapper';
 
 export const LoginPage = () => {
     const navigate = useNavigate();
-    const { setAuth } = useAuth();
+    const { authRedirect, setAuth, setAuthRedirect } = useAuth();
     
     const handleFormResponse = response => {
-        navigate('/');
+        navigate(authRedirect ?? '/');
         setAuth(response);
+        setAuthRedirect(false);
     };
     
     return pug`
