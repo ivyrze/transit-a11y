@@ -357,10 +357,12 @@ h1.title {
     line-height: 1.25;
     margin: 15px 0;
     text-transform: lowercase;
-    text-shadow: 0 0 35px #f3f3f3;
+    background-image: radial-gradient(closest-side, rgba(252, 252, 252, 0.75), transparent);
+    margin: calc(-75px + 15px) -150px;
+    padding: 75px 150px;
     
     @include dark {
-        text-shadow: 0 0 35px #070707;
+        background-image: radial-gradient(closest-side, rgba(36, 36, 36, 0.6), transparent);
     }
     
     & > button {
