@@ -10,7 +10,7 @@ export const LoginPage = () => {
     const handleFormResponse = response => {
         navigate(authRedirect ?? '/');
         setAuth(response);
-        setAuthRedirect(false);
+        setAuthRedirect();
     };
     
     return pug`

@@ -5,7 +5,7 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
     const [ auth, setAuth ] = useState();
-    const [ authRedirect, setAuthRedirect ] = useState(false);
+    const [ authRedirect, setAuthRedirect ] = useState();
     
     useEffect(() => {
         const updateAuth = async () => {
