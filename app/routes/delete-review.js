@@ -1,10 +1,11 @@
 import express from 'express';
 import validator from 'express-validator';
+import promiseRouter from 'express-promise-router';
 import httpErrors from 'http-errors';
 import { Review } from '../models/review.js';
 import { errorFormatter } from '../../utils.js';
 
-export const router = express.Router();
+export const router = promiseRouter();
 
 const schema = {
     id: {
@@ -12,7 +13,7 @@ const schema = {
     }
 };
 
-router.post('/', validator.checkSchema(schema), async function(req, res, next) {
+router.post('/', validator.checkSchema(schema), async (req, res, next) => {
     // Check incoming parameters
     const errors = validator.validationResult(req).formatWith(errorFormatter);
     if (!errors.isEmpty()) {

@@ -2,12 +2,13 @@ import vtPbf from 'vt-pbf';
 import geojsonVt from 'geojson-vt';
 import express from 'express';
 import validator from 'express-validator';
+import promiseRouter from 'express-promise-router';
 import httpErrors from 'http-errors';
 import { Stop } from '../models/stop.js';
 import { Geometry } from '../models/geometry.js';
 import { Review } from '../models/review.js';
 
-export const router = express.Router();
+export const router = promiseRouter();
 
 const schema = {
     z: {
@@ -27,7 +28,7 @@ const schema = {
     }
 };
 
-router.get('/:z/:x/:y', validator.checkSchema(schema), async function(req, res, next) {
+router.get('/:z/:x/:y', validator.checkSchema(schema), async (req, res, next) => {
     // Check incoming parameters
     const errors = validator.validationResult(req);
     if (!errors.isEmpty()) {

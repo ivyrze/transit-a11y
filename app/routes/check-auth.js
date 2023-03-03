@@ -1,10 +1,11 @@
 import express from 'express';
+import promiseRouter from 'express-promise-router';
 import httpErrors from 'http-errors';
 import { User } from '../models/user.js';
 
-export const router = express.Router();
+export const router = promiseRouter();
 
-router.get('/', async function(req, res, next) {
+router.get('/', async (req, res, next) => {
     if (!req.session.user) {
         res.json({}); return;
     }

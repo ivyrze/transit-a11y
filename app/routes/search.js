@@ -1,11 +1,12 @@
 import express from 'express';
 import validator from 'express-validator';
+import promiseRouter from 'express-promise-router';
 import httpErrors from 'http-errors';
 import { pojoCleanup, colorSort } from '../../utils.js';
 import { Stop } from '../models/stop.js'
 import { Route } from '../models/route.js'
 
-export const router = express.Router();
+export const router = promiseRouter();
 
 const schema = {
     query: {
@@ -24,7 +25,7 @@ const schema = {
     }
 };
 
-router.post('/', validator.checkSchema(schema), async function(req, res, next) {
+router.post('/', validator.checkSchema(schema), async (req, res, next) => {
     // Check incoming parameters
     const errors = validator.validationResult(req);
     if (!errors.isEmpty()) {

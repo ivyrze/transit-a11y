@@ -1,8 +1,9 @@
 import express from 'express';
+import promiseRouter from 'express-promise-router';
 
-export const router = express.Router();
+export const router = promiseRouter();
 
-router.get('/', async function(req, res, next) {
+router.get('/', async (req, res, next) => {
     req.session.destroy(error => {
         res.send();
     });

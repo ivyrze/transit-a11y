@@ -12,12 +12,15 @@ export const sanityOptions = {
     useCdn: false
 };
 
-export const attachCleanupHandler = func => {
-    [ 'uncaughtException', 'uncaughtPromise' ].forEach(event => {
-        process.on(event, async error => { console.error(error); await func(); });
-    });
+export const attachExitHandler = func => {
     [ 'SIGINT', 'SIGTERM', 'SIGQUIT' ].forEach(event => {
         process.on(event, async () => { await func(); process.exit(); });
+    });
+};
+
+export const attachExceptionHandler = func => {
+    [ 'uncaughtException', 'uncaughtPromise' ].forEach(event => {
+        process.on(event, async error => { console.error(error); await func(); });
     });
 };
 

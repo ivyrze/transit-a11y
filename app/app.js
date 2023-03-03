@@ -1,6 +1,7 @@
 import dotenv from 'dotenv';
 import express from 'express';
 import session from 'express-session';
+import promiseRouter from 'express-promise-router';
 import mongoStore from 'connect-mongo';
 import morgan from 'morgan';
 import helmet from 'helmet';
@@ -23,7 +24,7 @@ import { router as signUpRouter } from './routes/account/sign-up.js';
 import * as alerts from './alerts/index.js';
 import * as tiles from './routes/map-tiles.js';
 
-import { attachCleanupHandler } from '../utils.js';
+import { attachExitHandler } from '../utils.js';
 
 dotenv.config({ path: '../.env' });
 
@@ -56,24 +57,27 @@ app.use(session({
 }));
 
 // Setup routes
-app.use('/api/search', searchRouter);
-app.use('/api/stop-details', stopDetailsRouter);
-app.use('/api/delete-review', deleteReviewRouter);
-app.use('/api/submit-review', submitReviewRouter);
-app.use('/api/map-bounds', mapBoundsRouter);
-app.use('/api/map-tiles', mapTilesRouter);
-app.use('/api/check-auth', checkAuthRouter);
-app.use('/api/profile', profileRouter);
-app.use('/api/account/login', loginRouter);
-app.use('/api/account/logout', logoutRouter);
-app.use('/api/account/sign-up', signUpRouter);
+const router = promiseRouter();
+app.use(router);
+
+router.use('/api/search', searchRouter);
+router.use('/api/stop-details', stopDetailsRouter);
+router.use('/api/delete-review', deleteReviewRouter);
+router.use('/api/submit-review', submitReviewRouter);
+router.use('/api/map-bounds', mapBoundsRouter);
+router.use('/api/map-tiles', mapTilesRouter);
+router.use('/api/check-auth', checkAuthRouter);
+router.use('/api/profile', profileRouter);
+router.use('/api/account/login', loginRouter);
+router.use('/api/account/logout', logoutRouter);
+router.use('/api/account/sign-up', signUpRouter);
 
 // Setup production build caching
-app.use(express.static('./client/build/', {
+router.use(express.static('./client/build/', {
     maxAge: 1000 * 60**2 * 24 * 14
 }));
 
-app.get('*', (req, res, next) => {
+router.get('*', (req, res, next) => {
     if (!req.originalUrl.startsWith('/api')) {
         res.sendFile(path.resolve('client', 'build', 'index.html'));
     } else {
@@ -82,13 +86,19 @@ app.get('*', (req, res, next) => {
 });
 
 // API error handling
-app.use((error, req, res, next) => {
+router.use((error, req, res, next) => {
+    if (!error.status) {
+        // Unexpected error not thrown by input checking
+        throw error;
+        error.status = 500;
+    }
+    
     res.status(error.status).json({ status: error.status });
 });
 
 // Establish database connection
 await mongoose.connect(process.env.MONGO_URL);
-attachCleanupHandler(() => mongoose.disconnect());
+attachExitHandler(() => mongoose.disconnect());
 
 // Start alert polling and tile indexing
 await tiles.start();

@@ -1,10 +1,11 @@
 import express from 'express';
+import promiseRouter from 'express-promise-router';
 import httpErrors from 'http-errors';
 import { Agency } from '../models/agency.js';
 
-export const router = express.Router();
+export const router = promiseRouter();
 
-router.post('/', async function(req, res, next) {
+router.post('/', async (req, res, next) => {
     // Get bounding box of requested or default agency
     const query = req.body.agency ?
         { _id: req.body.agency } :
