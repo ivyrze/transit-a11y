@@ -4,11 +4,10 @@ import { readFile } from 'fs/promises';
 
 import { clean, orphans } from './src/clean.js';
 import { load } from './src/load.js';
+import { transform, transformSanitize, transformDefault } from './src/transform.js';
 import { extend } from './src/extend.js';
 import { store } from './src/store.js';
 import { geojson, link } from './src/convert.js';
-
-import * as transformers from './src/transformers/index.js';
 
 import { attachExitHandler, attachExceptionHandler } from '../utils.js';
 
@@ -30,25 +29,24 @@ const processAgency = async config => {
         const [ dataset, source ] = transformation.source.split('.');
         
         if (dataset == 'stops') {
-            stops = stops.map(stop => transformers[transformation.type](stop, transformation, source));
-        } else if (dataset == 'routes') {
-            routes = routes.map(route => transformers[transformation.type](route, transformation, source));
-        } else {
-            throw 'Unrecognized transformation source provided';
+            stops = stops.map(stop => transform(stop, transformation));
+        }
+        
+        if (dataset == 'routes' || source == 'stop_id') {
+            routes = routes.map(route => transform(route, transformation));
         }
     });
     
     // Remove disallowed characters
-    stops = stops.map(stop => transformers.idSanitizer(stop));
-    routes = routes.map(route => transformers.idSanitizer(route));
+    stops = stops.map(stop => transformSanitize(stop));
+    routes = routes.map(route => transformSanitize(route));
     
     // Supplement with Sanity CMS data
     ({ agency, stops, routes } = await extend(agency, stops, routes, config.id));
     
     // General transformations
-    stops = stops.map(stop => transformers.idPrefixer(stop, config.id));
-    routes = routes.map(route => transformers.idPrefixer(route, config.id));
-    routes = routes.map(route => transformers.colorContinuity(route));
+    stops = stops.map(stop => transformDefault(stop, { id: config.id }));
+    routes = routes.map(route => transformDefault(route, { id: config.id }));
     
     // Set base data for review-enabled agencies
     if (config.reviews) {
