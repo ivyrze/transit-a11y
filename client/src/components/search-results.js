@@ -1,4 +1,5 @@
 import React from 'react';
+import { RouteIcon } from './route-icon';
 
 export const SearchResults = props => {
     const { results, openStop } = props;
@@ -11,17 +12,10 @@ export const SearchResults = props => {
                     onClick=() => openStop(result.id)
                 )= result.name
                     each route, index in result.routes
-                        if route.color.startsWith("#")
-                            span.route-icon(
-                                aria-label=route.name
-                                style={backgroundColor: route.color}
-                                key=index
-                            )= route.number
-                        else
-                            span.route-icon(
-                                aria-label=route.name
-                                className="route-" + route.color
-                                key=index
-                            )= route.number
+                        RouteIcon(
+                            key=index
+                            number=route.number
+                            color=route.color
+                        )
     `;
 }

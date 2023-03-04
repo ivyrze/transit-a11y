@@ -11,9 +11,11 @@
   },
   "dependencies": {
     "@turf/bbox": "^6.5.0",
+    "@turf/bearing": "^6.5.0",
     "@turf/combine": "^6.5.0",
     "@turf/distance": "^6.5.0",
     "@turf/helpers": "^6.5.0",
+    "diff": "^5.1.0",
     "gtfs": "^3.6.1",
     "node-stream-zip": "^1.15.0",
     "progress": "^2.0.3",

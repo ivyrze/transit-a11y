@@ -7,10 +7,6 @@ const StopSchema = new mongoose.Schema({
     name: String,
     description: String,
     coordinates: [Number],
-    routes: [{
-        type: String,
-        ref: 'Route'
-    }],
     major: Boolean,
     accessibility: String,
     alert: AlertSchema,

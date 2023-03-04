@@ -11,6 +11,7 @@ import crypto from 'crypto';
 
 import { router as searchRouter } from './routes/search.js';
 import { router as stopDetailsRouter } from './routes/stop-details.js';
+import { router as routeDetailsRouter } from './routes/route-details.js';
 import { router as submitReviewRouter } from './routes/submit-review.js';
 import { router as deleteReviewRouter } from './routes/delete-review.js';
 import { router as mapBoundsRouter } from './routes/map-bounds.js';
@@ -62,6 +63,7 @@ app.use(router);
 
 router.use('/api/search', searchRouter);
 router.use('/api/stop-details', stopDetailsRouter);
+router.use('/api/route-details', routeDetailsRouter);
 router.use('/api/delete-review', deleteReviewRouter);
 router.use('/api/submit-review', submitReviewRouter);
 router.use('/api/map-bounds', mapBoundsRouter);

@@ -1,4 +1,4 @@
-import React, { forwardRef, useRef, useImperativeHandle, useEffect } from 'react';
+import React, { forwardRef, useRef, useState, useImperativeHandle, useEffect, useCallback } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import MapboxGL from 'mapbox-gl/dist/mapbox-gl';
 import MapboxWorker from 'mapbox-gl/dist/mapbox-gl-csp-worker';
@@ -8,12 +8,13 @@ import { useQuery } from '../hooks/query';
 import styles from '../mapbox-style.json';
 
 export const Map = forwardRef((props, ref) => {
-    const { flyCoords, onCameraUpdate } = props;
+    const { flyCoords, onCameraUpdate, onRouteListUpdate, shouldQueryRoutes } = props;
     const { theme } = useTheme();
     const navigate = useNavigate();
     const { agency } = useParams();
     
     const map = useRef();
+    const [ loaded, setLoaded ] = useState(false);
     const geolocateControl = useRef();
     
     const bounds = useQuery({
@@ -26,6 +27,24 @@ export const Map = forwardRef((props, ref) => {
         triggerGeolocation: () => geolocateControl.current?.trigger()
     }));
     
+    const queryRenderedRoutes = useCallback(() => {
+        if (!shouldQueryRoutes) { return; }
+        
+        const query = map.current.queryRenderedFeatures({
+            layers: [ "route-primary" ]
+        });
+        
+        // De-duplicate and sort route matches
+        let routes = {};
+        query.forEach(route => routes[route.id] = route.properties);
+        
+        routes = Object.values(routes).sort((a, b) => {
+            return a.route_short_name.localeCompare(b.route_short_name, undefined, { numeric: true });
+        });
+        
+        onRouteListUpdate(routes);
+    }, [ shouldQueryRoutes, onRouteListUpdate ]);
+    
     useEffect(() => {
         if (!bounds) { return; }
         onCameraUpdate({
@@ -35,6 +54,11 @@ export const Map = forwardRef((props, ref) => {
             }
         });
     }, [ bounds, onCameraUpdate ]);
+    
+    useEffect(() => {
+        if (!loaded) { return; }
+        queryRenderedRoutes();
+    }, [ loaded, queryRenderedRoutes ]);
     
     useEffect(() => {
         let padding = {};
@@ -52,6 +76,13 @@ export const Map = forwardRef((props, ref) => {
     }, [ flyCoords ]);
     
     const interactiveLayers = [ "stops-icon", "stops-label" ];
+    
+    const handleLoad = () => setLoaded(true);
+        
+    const handleMove = event => {
+        onCameraUpdate(event);
+        queryRenderedRoutes();
+    };
     
     const handleClick = event => {
         if (event.features.length) {
@@ -92,7 +123,8 @@ export const Map = forwardRef((props, ref) => {
                 bounds=bounds
                 fitBoundsOptions={ padding: 72 }
                 transformRequest=prefixHostname
-                onMove=onCameraUpdate
+                onLoad=handleLoad
+                onMove=handleMove
                 onClick=handleClick
                 onMouseEnter=handleMouseEnter
                 onMouseLeave=handleMouseLeave

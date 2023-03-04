@@ -24,7 +24,6 @@ const schema = {
         coordinates: { generate: stop => [ stop.stop_lon, stop.stop_lat ] },
         url: { from: 'stop_url', optional: true },
         tags: { from: 'stop_tags', optional: true },
-        routes: { from: 'routes', apply: routes => routes.map(route => route.route_id) },
         major: { from: 'is_major', optional: true }
     },
     routes: {
@@ -35,7 +34,8 @@ const schema = {
         number: { generate: route =>
             (route.route_short_name ?? route.route_long_name).match(/\w(?!.*\d)|\d+/)[0]
         },
-        color: { from: 'route_color' }
+        color: { from: 'route_color' },
+        directions: { from: 'route_directions' }
     }
 };
 

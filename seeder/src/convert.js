@@ -6,6 +6,9 @@ import { Geometry } from '../../app/models/geometry.js';
 
 const schema = {
     routes: [
+        'route_id',
+        'route_short_name',
+        'route_long_name',
         'route_color'
     ],
     stops: [
@@ -82,9 +85,10 @@ export const link = datasets => {
     }
     
     // Temporarily use key-value organization
-    let stops = {};
+    let stops = {}, routes = {};
     datasets.forEach(dataset => {
         dataset.stops.forEach(stop => stops[stop.stop_id] = stop);
+        dataset.routes.forEach(route => routes[route.route_id] = route);
     });
     
     // Merge into stop objects alongside appendix data
@@ -97,7 +101,7 @@ export const link = datasets => {
     // Collapse children stops into parents recursively
     for (const stop in stops) {
         if (stops[stop].linked_with) {
-            stops = collapseStops(stops, stop);
+            [ stops, routes ] = collapseStops(stops, routes, stop);
         }
     }
     
@@ -107,6 +111,9 @@ export const link = datasets => {
         dataset.stops = Object.values(stops).filter(stop => {
             return stop.stop_id.startsWith(prefix + '-');
         });
+        dataset.routes = Object.values(routes).filter(route => {
+            return route.route_id.startsWith(prefix + '-');
+        });
         
         return dataset;
     });
@@ -114,7 +121,7 @@ export const link = datasets => {
     return datasets;
 };
 
-const collapseStops = (stops, parent) => {
+const collapseStops = (stops, routes, parent) => {
     stops[parent].linked_with.forEach(child => {
         if (!stops[child]) {
             console.warn("Import warning: Weak linked stop reference in '" + parent + "' to child '" + child + "'.");
@@ -122,11 +129,10 @@ const collapseStops = (stops, parent) => {
         }
         
         if (stops[child].linked_with?.length) {
-            stops = collapseStops(stops, child);
+            [ stops, routes ] = collapseStops(stops, routes, child);
         }
         
-        stops[parent].routes.push(...stops[child].routes);
-        stops[parent].routes = [ ...new Set(stops[parent].routes) ];
+        routes = updateStopReference(routes, child, parent);
         
         // Remove child stops to prevent storage
         delete stops[child];
@@ -135,7 +141,26 @@ const collapseStops = (stops, parent) => {
     // Prevent recursion over a child more than once
     delete stops[parent].linked_with;
     
-    return stops;
+    return [ stops, routes ];
+};
+
+const updateStopReference = (routes, from, to) => {
+    for (let route in routes) {
+        routes[route].route_directions = routes[route].route_directions.map(direction => {
+            direction.segments = direction.segments.map(segment => {
+                return segment.map(branch => branch.map(stop => {
+                    if (stop == from) {
+                        return to;
+                    }
+                    
+                    return stop;
+                }));
+            });
+            return direction;
+        });
+    }
+    
+    return routes;
 };
 
 const findNearest = (setA, setB) => {

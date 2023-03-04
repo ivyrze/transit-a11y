@@ -6,6 +6,8 @@ import progress from 'progress';
 import { default as temp } from 'temp';
 import * as turfUtils from '@turf/helpers';
 import turfBounds from '@turf/bbox';
+import turfBearing from '@turf/bearing';
+import { diffArrays } from 'diff';
 
 const vehicles = {
     "streetcar": 0,
@@ -42,11 +44,22 @@ export const load = async config => {
         routes = routes.filter(route => route.agency_id.toLowerCase() == config.id);
     }
     
-    // Link stops to the routes that serve them
-    stops = await associateStopsRoutes(stops, vehicles[config.vehicle], config.stations);
+    // Find each route's unique trips/stop sequence per direction
+    for await (let route of routes) {
+        route.route_directions = await associateRouteDirections(route);
+    }
     
     // Remove stops that are served by irrelevant vehicle types
-    stops = stops.filter(stop => stop.routes.length);
+    const served = new Set(routes.map(route => route.route_directions).flat(3));
+    
+    stops = stops.filter(stop => served.has(stop.stop_id));
+    
+    // Convert routes into branching format
+    routes = routes.map(route => {
+        route.route_directions = calculateRouteBranches(route.route_directions);
+        route.route_directions = calculateDirectionHeadings(route.route_directions, stops);
+        return route;
+    });
     
     // Determine whether each stop is more or less important
     if (config.vehicle == "bus") {
@@ -153,36 +166,102 @@ const loadPartialDataset = async (vehicle, stations) => {
     return Promise.all([ agencies, stops, routes ]);
 };
 
-const associateStopsRoutes = async (stops, vehicle, stations) => {
-    let loader = new progress('Processing [:bar] :percent :etas remaining ',
-        { width: 50, total: stops.length });
+const associateRouteDirections = async route => {
+    let trips = await gtfs.getTrips({ route_id: route.route_id }, [ 'trip_id', 'direction_id' ]);
     
-    for await (let stop of stops) {
-        stop.routes = await associateStopRoutes(stop.stop_id, vehicle, stations);
-        loader.tick();
+    // Get stop sequence for each trip
+    for await (let trip of trips) {
+        const stops = await gtfs.getStoptimes({ trip_id: trip.trip_id }, [ 'stop_id' ], [[ 'stop_sequence', 'ASC' ]]);
+        trip.stops = stops.map(stop => stop.stop_id);
     }
     
-    return stops;
-};
-
-const associateStopRoutes = async (stop, vehicle, stations) => {
-    let childStops = (!stations) ? [ { stop_id: stop } ] :
-        await gtfs.getStops({ parent_station: stop });
-    
-    const matches = await Promise.all(childStops.map(childStop =>
-        gtfs.getRoutes(
-            { stop_id: childStop.stop_id, route_type: vehicle },
-            [ 'route_id', 'route_short_name', 'route_long_name', 'route_color' ]
-        )
-    ));
-    
-    // De-duplicate route-stop matches
-    let routes = {};
-    matches.flat().forEach(match => {
-        routes[match.route_id] = match;
+    // Group trips by direction id
+    let directions = [];
+    trips.forEach(trip => {
+        directions[trip.direction_id] ??= [];
+        
+        const identicalTripExists = directions[trip.direction_id].some(existing => {
+            return existing.length == trip.stops.length
+                && existing.every(stop => trip.stops.includes(stop));
+        });
+        
+        if (!identicalTripExists) {
+            directions[trip.direction_id].push(trip.stops);
+        }
     });
     
-    return Object.values(routes);
+    for (const direction in directions) {
+        if (directions[direction].length > 2) {
+            console.warn("Import warning: Route '" + route.route_id + "' direction " + direction + " has more than one trip deviation.");
+        }
+    }
+    
+    return directions;
+};
+
+const calculateRouteBranches = directions => {
+    return directions.map(trips => {
+        if (trips.length == 1) {
+            // This route-direction doesn't have any deviations
+            return [[ trips[0] ]];
+        }
+        
+        const diff = diffArrays(trips[0], trips[1]);
+        
+        let output = [], segment = [];
+        diff.forEach(branch => {
+            if (branch.added || branch.removed) {
+                // For diverging route sections, create a branch set
+                segment.push(branch.value);
+            } else {
+                // Concat branch set before adding following common section
+                if (segment.length) {
+                    output.push(segment);
+                    segment = [];
+                }
+                
+                output.push([ branch.value ]);
+            }
+        });
+        
+        if (segment.length) {
+            // Route ends at separate destinations - append final branch set
+            output.push(segment);
+        }
+        
+        return output;
+    });
+};
+
+const calculateDirectionHeadings = (directions, stops) => {
+    directions = directions.map(segments => {
+        const lastBranch = segments[segments.length - 1][0];
+        const lastStop = stops.find(stop => stop.stop_id == lastBranch[lastBranch.length - 1]);
+        const firstStop = stops.find(stop => stop.stop_id == segments[0][0][0]);
+        
+        const direction = Math.round(turfBearing(
+            [ firstStop.stop_lon, firstStop.stop_lat ],
+            [ lastStop.stop_lon, lastStop.stop_lat ]
+        ) / 90);
+        
+        const heading = (direction == -2) ? 'south' :
+            (direction == -1) ? 'west' :
+            (direction == 0) ? 'north' :
+            (direction == 1) ? 'east' : 
+            (direction == 2) ? 'south' : false;
+        
+        return { heading, segments };
+    });
+    
+    directions.sort((a, b) => {
+        const sortOrder = [
+            'north', 'east', 'south', 'west'
+        ];
+        
+        return sortOrder.indexOf(a.heading) - sortOrder.indexOf(b.heading);
+    });
+    
+    return directions;
 };
 
 const assignStopMajority = async stops => {

@@ -14,6 +14,21 @@
         "trolleybus": "Bus stop",
         "monorail": "Rail station"
     },
+    "routeSubheadings": {
+        "streetcar": "Streetcar route",
+        "light-rail": "Light rail route",
+        "tram": "Tram route",
+        "subway": "Subway route",
+        "metro": "Rail route",
+        "rail": "Rail route",
+        "bus": "Bus route",
+        "ferry": "Ferry route",
+        "cable-tram": "Tram route",
+        "aerial-lift": "Aerial lift route",
+        "funicular": "Funicular route",
+        "trolleybus": "Bus route",
+        "monorail": "Rail route"
+    },
     "accessibilityStates": {
         "accessible": {
             "tag": "Likely accessible",
@@ -129,5 +144,11 @@
     "reviewsToggleStates": {
         "show": "Show user reviews",
         "hide": "Hide user reviews"
+    },
+    "directionHeadings": {
+        "north": "Northbound",
+        "east": "Eastbound",
+        "south": "Southbound",
+        "west": "Westbound"
     }
 }

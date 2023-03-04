@@ -85,7 +85,20 @@ export const extend = async (agency, stops, routes, id) => {
     });
     
     // Handle skip import flag
+    const skipped = stops.filter(stop => stop.stop_removed).map(stop => stop.stop_id);
     stops = stops.filter(stop => !stop.stop_removed);
+    
+    routes = routes.map(route => {
+        route.route_directions = route.route_directions.map(direction => {
+            direction.segments = direction.segments.map(segment => {
+                return segment.map(branch => branch.filter(stop => {
+                    return !skipped.includes(stop);
+                }));
+            });
+            return direction;
+        });
+        return route;
+    });
     
     return { agency, stops, routes };
 };

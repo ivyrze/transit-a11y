@@ -77,28 +77,48 @@ router.post('/', validator.checkSchema(schema), async (req, res, next) => {
         {
             $project: {
                 _id: true,
-                name: true,
-                routes: true
+                name: true
             }
         }
     ]);
     
-    await Stop.populate(results, {
-        path: 'routes',
-        select: [
-            'name',
-            'color',
-            'number'
-        ],
-        options: { lean: true }
+    let routes = await Route.find({
+        'directions.segments': {
+            '$elemMatch': {
+                '$elemMatch': {
+                    '$elemMatch': {
+                        '$in': results.map(result => result._id)
+                    }
+                }
+            }
+        }
+    }, [
+        'number',
+        'color',
+        'directions'
+    ]).lean();
+    
+    routes = routes.map(route => {
+        route.directions = route.directions.map(direction => direction.segments).flat(3);
+        return route;
     });
     
     results = results.map(result => {
         result.id = result._id;
+        
+        result.routes = routes.filter(route => route.directions.includes(result.id));
         result.routes.sort(colorSort);
-        result.routes;
+        
         return result;
     });
+    
+    results = results.map(result => {
+        result.routes = result.routes.map(route => {
+            delete route.directions;
+            return route;
+        });
+        return result;
+    })
     
     results = pojoCleanup(results, results, { _id: false });
     

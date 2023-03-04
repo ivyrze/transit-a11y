@@ -229,14 +229,60 @@ fieldset,
     }
 }
 
+a.button-filled {
+    display: block;
+}
+
+a.button-filled,
 a.button-rounded {
     color: inherit;
-    float: right;
     text-align: center;
     border: none;
+}
+
+a.button-rounded {
+    float: right;
     
     .icon {
         vertical-align: -0.5rem;
+    }
+}
+
+.tab-group {
+    display: grid;
+    grid-auto-flow: column;
+    gap: 5px;
+    font-size: 16px;
+    background: #eee;
+    padding: 5px 6px;
+    margin: 20px 0;
+    border-radius: 21px;
+    overflow: hidden;
+    
+    @include dark {
+        background: #1b1b1b;
+    }
+    
+    button {
+        font-weight: weight('medium');
+        height: 2em;
+        border-radius: 1em;
+        opacity: 0.85;
+        transition: opacity 0.3s ease, background 0.2s ease;
+        
+        &:hover,
+        &.active {
+            opacity: 1;
+        }
+        
+        &.active {
+            background: #fff;
+            box-shadow: 0 1px 30px rgba(0, 0, 0, 0.1);
+            
+            @include dark {
+                background: #343434;
+            }
+        }
     }
 }
 
@@ -279,6 +325,18 @@ a.button-rounded {
             display: block;
             color: inherit;
             border-bottom: none;
+        }
+        
+        .menu-group + .menu-group::before {
+            content: '';
+            display: block;
+            width: calc(100% - 30px);
+            margin: 6px auto;
+            border-bottom: 1px solid #d0d0d0;
+            
+            @include dark {
+                border-color: #424242;
+            }
         }
     }
 }
@@ -483,25 +541,27 @@ h1.title {
 
 .search-result {
     & > .route-icon {
-        display: inline-block;
-        line-height: 1rem;
-        border-radius: 0.5rem;
-        color: #fff;
         font-size: 12px;
-        font-weight: weight('medium');
-        text-align: center;
         vertical-align: 1px;
-        letter-spacing: 0;
         padding: 0 5px;
-        margin-left: 8px;
-        
-        @include dark {
-            color: #050505;
-        }
     }
 }
 
 .route-icon {
+    display: inline-block;
+    color: #fff;
+    font-weight: weight('medium');
+    text-align: center;
+    line-height: 1.5;
+    border-radius: 0.75em;
+    letter-spacing: 0;
+    padding: 0 8px;
+    margin-left: 8px;
+    
+    @include dark {
+        color: #050505;
+    }
+    
     & + & {
         margin-left: 6px;
     }
@@ -521,6 +581,14 @@ h1.title {
         &.route-#{$name} {
             background-color: $color;
         }
+        
+        &.route-#{$name}.inverted {
+            color: $color;
+        }
+    }
+    
+    &.inverted {
+        background-color: #fff;
     }
 }
 
@@ -544,6 +612,13 @@ h1.title {
         font-weight: weight('medium');
         letter-spacing: -0.5px;
         margin-block: 0;
+        
+        &.alt-header {
+            font-size: 14px;
+            letter-spacing: 1px;
+            padding-top: 8px;
+            text-transform: uppercase;
+        }
     }
 }
 
@@ -815,6 +890,130 @@ h1.title {
         
         & > .icon {
             display: block;
+        }
+    }
+}
+
+.route-list {
+    margin-top: 12px;
+    
+    .button-filled {
+        color: #fff;
+        font-size: 20px;
+        font-weight: weight('medium');
+        text-align: left;
+        margin-top: 10px;
+        padding-inline: 10px;
+        opacity: 0.95;
+        transition: opacity 0.3s ease;
+        
+        &:hover,
+        &:active {
+            opacity: 1;
+        }
+        
+        .route-icon {
+            font-size: 16px;
+            vertical-align: 1px;
+        }
+        
+        .icon {
+            font-size: 18px;
+            display: inline-block;
+            transform: rotate(-90deg);
+            float: right;
+        }
+    }
+    
+    p {
+        margin: 0;
+    }
+}
+
+.route-details-card {
+    .route-icon {
+        font-size: 18px;
+        vertical-align: 2px;
+        margin-left: 10px;
+    }
+}
+
+.stop-list-tree {
+    border-left: 2px solid #b3b3b3;
+    margin: 0 15px;
+    padding: 6px 0;
+    list-style: none;
+    line-height: 2;
+    white-space: nowrap;
+    
+    .stop-icon {
+        margin-left: calc(-10px - 2px / 2);
+        vertical-align: -3px;
+    }
+    
+    a {
+        color: inherit;
+        margin-left: 15px;
+    }
+    
+    .branch-set {
+        margin-left: calc(30px - 2px);
+        margin-block: 18px;
+        border-left: 2px solid #b3b3b3;
+        position: relative;
+        
+        .branch-base {
+            margin-left: -30px;
+            
+            a {
+                margin-left: calc(30px + 15px);
+            }
+        }
+        
+        &::before,
+        &::after {
+            content: '';
+            display: block;
+            width: 28px;
+            height: 11px;
+            position: absolute;
+            left: -30px;
+            border: 2px solid #b3b3b3;
+        }
+        
+        &::before {
+            top: -11px;
+            border-top-right-radius: 8px;
+            border-bottom: none;
+            border-left: none;
+        }
+        
+        &::after {
+            bottom: -11px;
+            border-bottom-right-radius: 8px;
+            border-top: none;
+            border-left: none;
+        }
+    }
+}
+
+.stop-icon {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    background-repeat: no-repeat;
+    
+    $states: (
+        'accessible', 'warning', 'inaccessible', 'unknown'
+    );
+    
+    @each $name in $states {
+        &.state-#{$name} {
+            background-image: url('../../public/img/map-' + $name + '-dark.svg');
+            
+            @include dark {
+                background-image: url('../../public/img/map-' + $name + '-light.svg');
+            }
         }
     }
 }

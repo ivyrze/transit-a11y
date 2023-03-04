@@ -7,6 +7,8 @@ import { IndexPage } from './pages/index';
 import { About } from './components/about';
 import { StopDetails } from './components/stop-details';
 import { ReviewForm } from './components/review-form';
+import { RouteList } from './components/route-list';
+import { RouteDetails } from './components/route-details';
 import { ProfilePage } from './pages/profile';
 import { LoginPage } from './pages/login';
 import { LogoutPage } from './pages/logout';
@@ -23,6 +25,8 @@ export const App = () => {
                             Route(path="/about" element=${pug`About`})
                             Route(path="/stop/:stop" element=${pug`StopDetails`})
                             Route(path="/review/:stop" element=${pug`ReviewForm`})
+                            Route(path="/routes" element=${pug`RouteList`})
+                            Route(path="/route/:route" element=${pug`RouteDetails`})
                         Route(path="/agency/:agency" element=${pug`IndexPage`})
                         Route(path="/profile/:username" element=${pug`ProfilePage`})
                         Route(path="/account/login" element=${pug`LoginPage`})

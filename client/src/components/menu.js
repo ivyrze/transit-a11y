@@ -18,9 +18,19 @@ export const Menu = props => {
                 return recurseChildren(child.props.children);
             }
             
-            let injections = { role: "menuitem" };
-            if (index === 0) {
-                injections.ref = first => first?.focus();
+            let injections = {};
+            if (child.type === "div" && child.props?.className === "menu-group") {
+                injections.role = "group";
+                
+                if (child.props?.children) {
+                    injections.children = recurseChildren(child.props.children);
+                }
+            } else {
+                injections.role = "menuitem";
+                
+                if (index === 0) {
+                    injections.ref = first => first?.focus();
+                }
             }
             
             return cloneElement(child, injections);
