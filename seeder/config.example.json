@@ -92,6 +92,11 @@
                 {
                     "source": "stops.stop_name",
                     "type": "remove",
+                    "target": "MAX Stn"
+                },
+                {
+                    "source": "stops.stop_name",
+                    "type": "remove",
                     "target": "MAX Station"
                 },
                 {

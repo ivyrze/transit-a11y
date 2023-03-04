@@ -46,7 +46,7 @@ export const load = async config => {
     
     // Find each route's unique trips/stop sequence per direction
     for await (let route of routes) {
-        route.route_directions = await associateRouteDirections(route);
+        route.route_directions = await associateRouteDirections(route, config.stations);
     }
     
     // Remove stops that are served by irrelevant vehicle types
@@ -160,19 +160,26 @@ const readArchive = async archive => {
 const loadPartialDataset = async (vehicle, stations) => {
     // Show only rail stations and routes
     const agencies = gtfs.getAgencies({}, [ 'agency_id', 'agency_name', 'agency_url' ]);
-    const stops = gtfs.getStops({ location_type: (stations) ? 1 : [ 0, null ] });
+    const stops = gtfs.getStops({ location_type: (stations) ? [ 1, 0, null ] : [ 0, null ] });
     const routes = gtfs.getRoutes({ route_type: vehicle });
     
     return Promise.all([ agencies, stops, routes ]);
 };
 
-const associateRouteDirections = async route => {
+const associateRouteDirections = async (route, stations) => {
     let trips = await gtfs.getTrips({ route_id: route.route_id }, [ 'trip_id', 'direction_id' ]);
     
     // Get stop sequence for each trip
     for await (let trip of trips) {
-        const stops = await gtfs.getStoptimes({ trip_id: trip.trip_id }, [ 'stop_id' ], [[ 'stop_sequence', 'ASC' ]]);
-        trip.stops = stops.map(stop => stop.stop_id);
+        let stops = await gtfs.getStoptimes({ trip_id: trip.trip_id }, [ 'stop_id' ], [[ 'stop_sequence', 'ASC' ]]);
+        stops = stops.map(stop => stop.stop_id);
+        
+        if (stations) {
+            stops = await gtfs.getStops({ stop_id: stops }, [ 'stop_id', 'parent_station' ]);
+            stops = stops.map(stop => stop.parent_station ?? stop.stop_id);
+        }
+        
+        trip.stops = stops;
     }
     
     // Group trips by direction id
