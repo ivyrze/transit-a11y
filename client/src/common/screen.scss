@@ -31,6 +31,7 @@ button:disabled {
 input,
 select,
 textarea {
+    display: block;
     width: 100%;
     padding: 10px;
     border: 2px solid #999;
@@ -103,7 +104,7 @@ label {
 
 fieldset,
 .form-infield + .form-infield {
-    margin-top: 15px;
+    margin-top: 12px;
 }
 
 .subtitle {
@@ -126,6 +127,7 @@ fieldset,
 .button-set {
     display: flex;
     gap: 10px;
+    margin-top: 26px;
 }
     
 .button-filled {
@@ -393,6 +395,25 @@ a.button-rounded {
         a.mapboxgl-ctrl-logo {
             opacity: 0.5;
         }
+    }
+}
+
+.image-gallery {
+    --pswp-bg: #fff;
+    --pswp-icon-color: #111;
+    --pswp-icon-color-secondary: #fff;
+    --pswp-icon-stroke-color: #fff;
+    
+    @include dark {
+        --pswp-bg: #000;
+        --pswp-icon-color: #eee;
+        --pswp-icon-color-secondary: #000;
+        --pswp-icon-stroke-color: #000;
+    }
+    
+    img {
+        border-radius: 8px;
+        overflow: hidden;
     }
 }
 
@@ -763,6 +784,12 @@ h1.title {
     & + .review-contribute {
         margin-top: 16px;
     }
+    
+    .attachment-list {
+        margin-top: 16px;
+        padding-bottom: 12px;
+        box-sizing: content-box;
+    }
 }
 
 .review-drawer-toggle {
@@ -810,6 +837,19 @@ h1.title {
         font-size: 16px;
         vertical-align: middle;
         margin-right: 8px;
+    }
+}
+
+.attachment-list {
+    display: flex;
+    gap: 10px;
+    height: 125px;
+    overflow-x: auto;
+    
+    img {
+        cursor: pointer;
+        border-radius: 5px;
+        overflow: hidden;
     }
 }
 

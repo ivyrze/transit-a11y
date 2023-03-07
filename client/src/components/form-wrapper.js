@@ -17,7 +17,20 @@ export const FormWrapper = props => {
         event.preventDefault();
         
         const { action, method } = event.target;
-        const data = new URLSearchParams(new FormData(event.target));
+        let data = new FormData(event.target);
+        
+        let hasFile = false;
+        for (const elem of event.target.querySelectorAll('input[type="file"]')) {
+            if (elem.files.length) {
+                hasFile = true;
+            } else {
+                data.delete(elem.name);
+            }
+        }
+        
+        if (!hasFile) {
+            data = new URLSearchParams(data);
+        }
         
         const response = await queryHelper({
             url: action, method, data, validateStatus: status => status <= 401

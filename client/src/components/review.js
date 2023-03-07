@@ -3,6 +3,7 @@ import TimeAgo from 'react-timeago';
 import { Link } from 'react-router-dom';
 import { Icon } from './icon';
 import { Menu } from './menu';
+import { AttachmentViewer } from './attachment-viewer';
 import { useErrorStatus } from '../hooks/error';
 import { queryHelper } from '../hooks/query';
 import i18n from '../i18n-strings.json';
@@ -57,5 +58,7 @@ export const Review = props => {
                 = state.heading
             if review.comments
                 p= review.comments
+            if review.attachments
+                AttachmentViewer(attachments=review.attachments)
     `;
 };

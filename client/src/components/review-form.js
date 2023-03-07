@@ -64,6 +64,9 @@ export const ReviewForm = () => {
                 fieldset
                     legend Any additional comments?
                     textarea(name="comments" placeholder="Provide additional details about this stop’s accessibility that may be useful to other riders." rows="3")
+                fieldset
+                    legend Do you have any photos to include?
+                    input(type="file" name="attachments" accept="image/jpeg" multiple)
                 fieldset.button-set
                     button.button-filled.button-primary(type="submit") Submit
                     button.button-filled.form-cancel(type="button" onClick=showStopCard) Cancel

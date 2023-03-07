@@ -37,6 +37,7 @@ router.post('/', validator.checkSchema(schema), async (req, res, next) => {
         'accessibility',
         'timestamp',
         'author',
+        'attachments',
         'comments'
     ], populate: { path: 'author', select: [
         'username',
@@ -50,7 +51,7 @@ router.post('/', validator.checkSchema(schema), async (req, res, next) => {
     
     const key = details.getAgencyKey();
     details = details.toObject({
-        virtuals: [ 'reviews', 'avatar' ],
+        virtuals: [ 'reviews', 'avatar', 'filename' ],
         _id: false
     });
     
@@ -80,9 +81,18 @@ router.post('/', validator.checkSchema(schema), async (req, res, next) => {
     }
     
     if (details.agency.reviews === true) {
-        // Cleanup from Gravatar virtual
+        // Cleanup from Gravatar and attachment virtuals
         details.reviews = details.reviews.map(review => {
             delete review.author.email;
+            if (review.attachments?.length) {
+                review.attachments = review.attachments.map(attachment => ({
+                    filename: attachment.filename,
+                    sizes: attachment.sizes
+                }));
+            } else {
+                delete review.attachments;
+            }
+            
             return review;
         });
         

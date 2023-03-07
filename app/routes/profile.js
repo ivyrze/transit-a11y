@@ -33,6 +33,7 @@ router.post('/', validator.checkSchema(schema), async (req, res, next) => {
         'accessibility',
         'tags',
         'timestamp',
+        'attachments',
         'comments'
     ], populate: { path: 'stop', select: [
         '_id',
@@ -46,7 +47,7 @@ router.post('/', validator.checkSchema(schema), async (req, res, next) => {
     
     // Convert from database objects and remove unnecessary fields
     details = details.toObject({
-        virtuals: [ 'reviews', 'avatar' ]
+        virtuals: [ 'reviews', 'avatar', 'filename' ]
     });
     
     delete details.email;
@@ -56,6 +57,16 @@ router.post('/', validator.checkSchema(schema), async (req, res, next) => {
         delete review._id;
         delete review.stop._id;
         delete review.author;
+        
+        if (review.attachments?.length) {
+            review.attachments = review.attachments.map(attachment => ({
+                filename: attachment.filename,
+                sizes: attachment.sizes
+            }));
+        } else {
+            delete review.attachments;
+        }
+        
         return review;
     });
     

@@ -27,10 +27,7 @@ router.post('/', validator.checkSchema(schema), async (req, res, next) => {
     const { id } = validator.matchedData(req);
     
     // Do the deletion, if its matches the logged in user
-    const review = await Review.findById(id, [
-        'author',
-        'stop'
-    ]);
+    const review = await Review.findById(id);
     
     if (review.author != req.session.user) {
         next(new httpErrors.Unauthorized()); return;

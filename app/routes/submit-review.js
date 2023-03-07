@@ -2,6 +2,9 @@ import express from 'express';
 import validator from 'express-validator';
 import promiseRouter from 'express-promise-router';
 import httpErrors from 'http-errors';
+import multer from 'multer';
+import sharp from 'sharp';
+import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 import { Review } from '../models/review.js';
 import { Stop } from '../models/stop.js';
 import { errorFormatter, generateUUID } from '../../utils.js';
@@ -55,11 +58,34 @@ const schema = {
     }
 };
 
-router.post('/', validator.checkSchema(schema), async (req, res, next) => {
+const upload = multer({
+    storage: multer.memoryStorage()
+});
+const client = new S3Client();
+
+const proxies = [
+    {
+        quality: 'original'
+    },
+    {
+        quality: 'small',
+        height: 250
+    },
+    {
+        quality: 'large',
+        height: 2000
+    }
+]
+
+router.post('/', upload.array('attachments', 3), validator.checkSchema(schema), async (req, res, next) => {
     // Check incoming parameters
     const errors = validator.validationResult(req).formatWith(errorFormatter);
     if (!errors.isEmpty()) {
         res.status(new httpErrors.BadRequest().status).json({ errors: errors.mapped() }); return;
+    }
+    
+    if (req.files?.some(file => file.mimetype != "image/jpeg")) {
+        res.status(new httpErrors.BadRequest().status).json({ errors: { attachments: 'Images must be .jpg files' }}); return;
     }
     
     if (!req.session.user) {
@@ -76,6 +102,50 @@ router.post('/', validator.checkSchema(schema), async (req, res, next) => {
     // User has already made a review for this stop
     await Review.findOneAndDelete({ stop, author: req.session.user });
     
+    // Handle review attachments
+    const attachments = await Promise.all((req.files ?? []).map(async file => {
+        const id = generateUUID();
+        const sizes = await Promise.all(proxies.map(async proxy => {
+            // Create resized proxy file, factoring in EXIF rotation
+            let image = (proxy.quality != 'original') ?
+                await sharp(file.buffer)
+                    .rotate()
+                    .resize({
+                        height: proxy.height,
+                        fit: 'inside'
+                    })
+                    .toBuffer({
+                        quality: 85,
+                        progressive: true,
+                        resolveWithObject: false
+                    }) :
+                file.buffer;
+            
+            // Upload proxy file
+            const command = new PutObjectCommand({
+                Key: proxy.quality + '/' + id + '.' + file.mimetype.split('/')[1],
+                Bucket: process.env.AWS_BUCKET_NAME,
+                Body: image
+            });
+            await client.send(command);
+            
+            // Prepare database object
+            const metadata = await sharp(image).metadata();
+            
+            return {
+                quality: proxy.quality,
+                width: metadata.width,
+                height: metadata.height
+            };
+        }));
+        
+        return {
+            _id: id,
+            type: file.mimetype,
+            sizes
+        };
+    }));
+    
     // Create review object
     const id = generateUUID();
     const timestamp = new Date().toISOString().substring(0, 16) + 'Z';
@@ -87,6 +157,7 @@ router.post('/', validator.checkSchema(schema), async (req, res, next) => {
         ...(features && { tags: Object.keys(features) }),
         timestamp,
         author: req.session.user,
+        ...(attachments && { attachments }),
         ...(comments && { comments })
     });
     await review.save();

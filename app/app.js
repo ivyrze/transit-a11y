@@ -9,6 +9,7 @@ import mongoose from 'mongoose';
 import path from 'path';
 import crypto from 'crypto';
 
+import { router as attachmentRouter } from './routes/attachment.js';
 import { router as searchRouter } from './routes/search.js';
 import { router as stopDetailsRouter } from './routes/stop-details.js';
 import { router as routeDetailsRouter } from './routes/route-details.js';
@@ -61,6 +62,7 @@ app.use(session({
 const router = promiseRouter();
 app.use(router);
 
+router.use('/api/attachment', attachmentRouter);
 router.use('/api/search', searchRouter);
 router.use('/api/stop-details', stopDetailsRouter);
 router.use('/api/route-details', routeDetailsRouter);
