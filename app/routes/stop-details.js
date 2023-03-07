@@ -35,7 +35,6 @@ router.post('/', validator.checkSchema(schema), async (req, res, next) => {
         'url'
     ]).populate({ path: 'reviews', select: [
         'accessibility',
-        'tags',
         'timestamp',
         'author',
         'comments'
