@@ -7,7 +7,8 @@ import { queryHelper } from '../hooks/query';
 export const FormWrapper = props => {
     const { onResponse, children, ...passthroughProps } = props;
     
-    const [ hasSubmitted, setSubmitted ] = useState(false);
+    const [ isPending, setIsPending ] = useState(false);
+    const [ showValidation, setShowValidation ] = useState(false);
     const [ errors, setErrors ] = useState({});
     const { setErrorStatus } = useErrorStatus();
     const { setAuthRedirect } = useAuth();
@@ -15,6 +16,15 @@ export const FormWrapper = props => {
     
     const handleSubmit = async event => {
         event.preventDefault();
+        
+        if (!event.target.checkValidity()) {
+            setShowValidation(true);
+            event.target.reportValidity();
+            return;
+        }
+        
+        if (isPending) { return; }
+        setIsPending(true);
         
         const { action, method } = event.target;
         let data = new FormData(event.target);
@@ -45,7 +55,8 @@ export const FormWrapper = props => {
             }
         }
         
-        setSubmitted(true);
+        setIsPending(false);
+        setShowValidation(true);
         setErrors(response.data.errors ?? {});
     };
     
@@ -78,14 +89,19 @@ export const FormWrapper = props => {
                 injections.onInput = clearInputError;
             }
             
+            if (isPending && [ 'button', 'input', 'textarea', 'select' ].includes(child.type)) {
+                injections.disabled = 'disabled';
+            }
+            
             return injections ? cloneElement(child, injections) : child;
         });
     };
     
     return pug`
         form(
-            className=hasSubmitted ? "form-submitted" : ""
+            className=showValidation ? "form-validate " : ""
             onSubmit=handleSubmit
+            noValidate
             ...passthroughProps
         )
             | ${recurseChildren(children)}

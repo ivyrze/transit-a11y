@@ -24,10 +24,6 @@ button {
     }
 }
 
-button:disabled {
-    cursor: not-allowed;
-}
-
 input,
 select,
 textarea {
@@ -42,7 +38,7 @@ textarea {
         border-color: #515151;
     }
     
-    &:hover {
+    &:not(:disabled):hover {
         border-color: #000;
         
         @include dark {
@@ -50,9 +46,18 @@ textarea {
         }
     }
     
-    form.form-submitted &:invalid {
+    form.form-validate &:invalid {
         border-color: #c25252;
         outline-color: #c25252;
+    }
+}
+
+button,
+input,
+select,
+textarea {
+    &:disabled {
+        cursor: not-allowed;
     }
 }
 
@@ -145,7 +150,7 @@ fieldset,
         background-color: #222;
     }
     
-    &:hover {
+    &:not(:disabled):hover {
         background-color: #e4e4e4;
         
         @include dark {
@@ -153,7 +158,7 @@ fieldset,
         }
     }
     
-    &:active {
+    &:not(:disabled):active {
         background-color: #e0e0e0;
         
         @include dark {
@@ -171,7 +176,7 @@ fieldset,
         background-color: #444;
     }
     
-    &:hover {
+    &:not(:disabled):hover {
         background-color: #191919;
         
         @include dark {
@@ -179,7 +184,7 @@ fieldset,
         }
     }
     
-    &:active {
+    &:not(:disabled):active {
         background-color: #232323;
         
         @include dark {
@@ -915,6 +920,10 @@ h1.title {
         
         &:checked + label {
             color: #ebebeb;
+        }
+        
+        &:disabled + label {
+            cursor: not-allowed;
         }
     }
     
