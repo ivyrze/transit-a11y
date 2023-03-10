@@ -17,7 +17,7 @@ export const ErrorHandler = ({ children }) => {
     return pug`
         ErrorStatusContext.Provider(value=contextPayload)
             if errorStatus
-                ErrorPage(status=errorStatus)
+                ErrorPage(...errorStatus)
             else
                 | ${children}
     `;

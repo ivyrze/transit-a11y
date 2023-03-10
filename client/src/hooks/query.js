@@ -19,7 +19,10 @@ export const useQuery = props => {
 
 export const queryHelper = (options, setErrorStatus) => {
     return axios(options).catch(error => {
-        setErrorStatus(error.request.status);
+        setErrorStatus({
+            status: error.request.status,
+            message: error.request.statusText
+        });
         throw error;
     });
 };

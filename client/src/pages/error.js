@@ -1,12 +1,10 @@
 import React from 'react';
-import httpErrors from 'http-errors';
 import { Icon } from '../components/icon';
 
 export const ErrorPage = props => {
-    let { status } = props;
+    let { status, message } = props;
     
-    const title = httpErrors(status).message
-        .replace(/\s(?:([A-Z])[a-z])/g, letter => letter.toLowerCase());
+    message = message.replace(/\s(?:([A-Z])[a-z])/g, letter => letter.toLowerCase());
     
     const description = (status >= 500) ?
         "Things aren't working as expected on our end, sorry about that. Try again in a few minutes." :
@@ -15,7 +13,7 @@ export const ErrorPage = props => {
     return pug`
         .notice-fullscreen
             Icon(name= "error")
-            h1= title
+            h1= message
             p= description
     `;
 };

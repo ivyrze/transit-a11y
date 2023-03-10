@@ -32,6 +32,6 @@ export const App = () => {
                         Route(path="/account/login" element=${pug`LoginPage`})
                         Route(path="/account/logout" element=${pug`LogoutPage`})
                         Route(path="/account/sign-up" element=${pug`SignUpPage`})
-                        Route(path="*" element=${pug`ErrorPage(status=404)`})
+                        Route(path="*" element=${pug`ErrorPage(status=404, message="Not Found")`})
     `;
 };
