@@ -7,7 +7,7 @@ module.exports = override(
         objects: [ 'React', 'ThemeContext', 'ErrorStatusContext', 'AuthContext' ]
     } ]),
     addWebpackPlugin(new PreloadWebpackPlugin({
-        fileBlacklist: [ /\.map/, /(?<!regular)-italic/ ]
+        fileBlacklist: [ /\.map/, /\.svg/, /(?<!regular)-italic/ ]
     })),
     addWebpackModuleRule({
         test: /\bmapbox-gl-csp-worker.js\b/i,
