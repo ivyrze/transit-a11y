@@ -43,12 +43,21 @@ app.use(helmet.referrerPolicy());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+if (process.env.NODE_ENV === 'production') {
+    app.enable('trust proxy');
+    app.use((req, res, next) => {
+        if (!req.secure) {
+            return res.redirect('https://' + req.hostname + req.url);
+        }
+        next();
+    });
+}
+
 app.use(session({
     cookie: {
         secure: process.env.NODE_ENV === 'production',
         maxAge: 1000 * 60**2 * 10
     },
-    proxy: process.env.NODE_ENV === 'production',
     store: mongoStore.create({
         mongoUrl: process.env.MONGO_URL,
         touchAfter: 1000 * 60 * 30
