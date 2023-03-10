@@ -35,6 +35,7 @@ const schema = {
     accessibility: {
         in: 'body',
         isIn: { options: [[
+            'unknown',
             'accessible',
             'parking',
             'other-sometimes',

@@ -42,6 +42,8 @@ export const ReviewForm = () => {
                 fieldset
                     legend What's the accessibility state at this stop?
                     select(name="accessibility")
+                        optgroup(label="Unknown state")
+                            option(value="unknown") Unknown accessibility state
                         optgroup(label="Likely accessible")
                             option(value="accessible") Usually free of access barriers
                         optgroup(label="Sometimes accessible")

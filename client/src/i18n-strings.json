@@ -30,6 +30,12 @@
         "monorail": "Rail route"
     },
     "accessibilityStates": {
+        "unknown": {
+            "tag": "Unknown state",
+            "heading": "Unknown accessibility state",
+            "description": "There isn't any accessibility data available about this stop. Consider adding your own review below.",
+            "style": "unknown"
+        },
         "accessible": {
             "tag": "Likely accessible",
             "heading": "Usually free of access barriers",
@@ -122,11 +128,6 @@
             "heading": "Other – not accessible",
             "description": "This stop is not accessible. Refer to the reviews below for more information.",
             "style": "inaccessible"
-        },
-        "unknown": {
-            "tag": "Unknown state",
-            "description": "There isn't any accessibility data available about this stop. Consider adding your own review below.",
-            "style": "unknown"
         }
     },
     "tagLabels": {

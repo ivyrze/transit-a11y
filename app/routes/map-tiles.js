@@ -86,6 +86,7 @@ export const start = async () => {
 };
 
 const icons = {
+    "unknown": "unknown",
     "accessible": "accessible",
     "parking": "warning",
     "other-sometimes": "warning",
@@ -101,8 +102,7 @@ const icons = {
     "uneven-surface": "inaccessible",
     "lacks-curb": "inaccessible",
     "obstacles-permanent": "inaccessible",
-    "other-inaccessible": "inaccessible",
-    "unknown": "unknown"
+    "other-inaccessible": "inaccessible"
 };
 
 const generate = async (invalidate = true) => {

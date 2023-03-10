@@ -37,6 +37,7 @@ StopSchema.method({
         
         let reviews = this.reviews.map(review => review.toObject());
         let tags = reviews.map(review => review.tags).flat();
+        reviews = reviews.filter(review => review.accessibility != 'unknown');
         
         // Use reviews with the biggest consensus or most recent timestamp
         // to determine the overall accessibility state
