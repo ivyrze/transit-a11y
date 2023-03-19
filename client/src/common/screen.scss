@@ -307,7 +307,7 @@ a.button-rounded {
         background: #f9f9f9;
         border-radius: 10px;
         box-shadow: 0 4px 18px rgb(0 0 0 / 15%);
-        padding: 7px 0;
+        padding: 6px;
         margin: 5px 0;
         z-index: 1;
         
@@ -318,7 +318,8 @@ a.button-rounded {
         button,
         a {
             width: 100%;
-            padding: 5px 15px;
+            padding: 6px 12px;
+            border-radius: 7px;
             white-space: nowrap;
             text-align: left;
             
@@ -337,7 +338,7 @@ a.button-rounded {
         .menu-group + .menu-group::before {
             content: '';
             display: block;
-            width: calc(100% - 30px);
+            width: calc(100% - 20px);
             margin: 6px auto;
             border-bottom: 1px solid #d0d0d0;
             
