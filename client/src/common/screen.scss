@@ -1060,10 +1060,10 @@ h1.title {
     
     @each $name in $states {
         &.state-#{$name} {
-            background-image: url('../../public/img/map-' + $name + '-dark.svg');
+            background-image: url('/img/map-' + $name + '-dark.svg');
             
             @include dark {
-                background-image: url('../../public/img/map-' + $name + '-light.svg');
+                background-image: url('/img/map-' + $name + '-light.svg');
             }
         }
     }

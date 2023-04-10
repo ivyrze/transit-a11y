@@ -1,7 +1,6 @@
 import React, { forwardRef, useRef, useState, useImperativeHandle, useEffect, useCallback } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import MapboxGL from 'mapbox-gl/dist/mapbox-gl';
-import MapboxWorker from 'mapbox-gl/dist/mapbox-gl-csp-worker';
 import Mapbox, { Source, Layer, GeolocateControl } from 'react-map-gl';
 import { useTheme } from '../hooks/theme';
 import { useQuery } from '../hooks/query';
@@ -104,12 +103,10 @@ export const Map = forwardRef((props, ref) => {
         }
     };
     
-    MapboxGL.workerClass = MapboxWorker;
-    
-    const accessToken = process.env.REACT_APP_MAPBOX_PUBLIC_ACCESS_TOKEN;
+    const accessToken = import.meta.env.VITE_MAPBOX_PUBLIC_ACCESS_TOKEN;
     const mapStyle = theme === "light-mode" ?
-        process.env.REACT_APP_MAPBOX_LIGHT_STYLE_URL :
-        process.env.REACT_APP_MAPBOX_DARK_STYLE_URL;
+        import.meta.env.VITE_MAPBOX_LIGHT_STYLE_URL :
+        import.meta.env.VITE_MAPBOX_DARK_STYLE_URL;
         
     if (!theme || !bounds) { return null; }
     

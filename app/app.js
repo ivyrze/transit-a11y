@@ -86,13 +86,13 @@ router.use('/api/account/logout', logoutRouter);
 router.use('/api/account/sign-up', signUpRouter);
 
 // Setup production build caching
-router.use(express.static('./client/build/', {
+router.use(express.static('./client/dist/', {
     maxAge: 1000 * 60**2 * 24 * 14
 }));
 
 router.get('*', (req, res, next) => {
     if (!req.originalUrl.startsWith('/api')) {
-        res.sendFile(path.resolve('client', 'build', 'index.html'));
+        res.sendFile(path.resolve('client', 'dist', 'index.html'));
     } else {
         next();
     }

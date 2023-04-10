@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "start": "node app/app.js",
-    "develop": "concurrently -r \"npm run start --prefix client\" \"nodemon app/app.js --watch app\"",
+    "develop": "concurrently -r \"npm run develop --prefix client\" \"nodemon app/app.js --watch app\"",
     "prebuild": "npm install --prefix client",
     "build": "npm run build --prefix client"
   },

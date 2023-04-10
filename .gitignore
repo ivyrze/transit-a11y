@@ -1,6 +1,6 @@
 .env
 node_modules
-client/build
+client/dist
 studio/dist
 seeder/config.json
 **.zip
