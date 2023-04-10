@@ -20,7 +20,8 @@ export const ProfilePage = props => {
     
     return pug`
         .page-fullscreen
-            Link(to="/").button-rounded.page-close(
+            Link.button-rounded.page-close(
+                to="/"
                 aria-label="Close"
             )
                 Icon(name= "close")
