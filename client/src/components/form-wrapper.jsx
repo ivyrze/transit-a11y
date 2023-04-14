@@ -5,7 +5,7 @@ import { useAuth } from '../hooks/auth';
 import { queryHelper } from '../hooks/query';
 
 export const FormWrapper = props => {
-    const { onResponse, children, ...passthroughProps } = props;
+    const { onSubmit, onResponse, initialValues, children, ...passthroughProps } = props;
     
     const [ isPending, setIsPending ] = useState(false);
     const [ showValidation, setShowValidation ] = useState(false);
@@ -28,6 +28,9 @@ export const FormWrapper = props => {
         
         const { action, method } = event.target;
         let data = new FormData(event.target);
+        if (onSubmit) {
+            onSubmit(data);
+        }
         
         let hasFile = false;
         for (const elem of event.target.querySelectorAll('input[type="file"]')) {
@@ -79,6 +82,10 @@ export const FormWrapper = props => {
                 return recurseChildren(child.props.children);
             }
             
+            if (typeof child.type === "function") {
+                child = child.type(child.props);
+            }
+            
             let injections = {};
             if (child.props?.children) {
                 injections.children = recurseChildren(child.props.children);
@@ -87,6 +94,10 @@ export const FormWrapper = props => {
             if ([ 'input', 'textarea', 'select' ].includes(child.type)) {
                 injections.ref = setInputError;
                 injections.onInput = clearInputError;
+            }
+            
+            if (initialValues && initialValues[child.props?.name]) {
+                injections.defaultValue = initialValues[child.props.name];
             }
             
             if (isPending && [ 'button', 'input', 'textarea', 'select' ].includes(child.type)) {

@@ -83,7 +83,8 @@ $font-faces: (
         'login': '\e017',
         'menu': '\e018',
         'location': '\e019',
-        'route': '\e01a'
+        'route': '\e01a',
+        'pencil': '\e01b'
     );
     
     @each $name, $glyph in $icons {
