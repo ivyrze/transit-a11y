@@ -88,20 +88,20 @@ export const start = async () => {
 const icons = {
     "unknown": "unknown",
     "accessible": "accessible",
-    "parking": "warning",
-    "other-sometimes": "warning",
     "service-alert": "warning",
     "construction": "warning",
-    "obstacles-temporary": "warning",
     "other-temporary": "warning",
+    "parking": "warning",
     "limited-maneuverability": "warning",
     "poor-conditions": "warning",
     "other-complicated": "warning",
     "inaccessible": "inaccessible",
     "missing-landing": "inaccessible",
+    "insufficient-dimensions": "inaccessible",
+    "insufficient-curb": "inaccessible",
     "uneven-surface": "inaccessible",
-    "lacks-curb": "inaccessible",
-    "obstacles-permanent": "inaccessible",
+    "missing-paths": "inaccessible",
+    "obstacles": "inaccessible",
     "other-inaccessible": "inaccessible"
 };
 

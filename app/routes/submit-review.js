@@ -37,18 +37,18 @@ const schema = {
         isIn: { options: [[
             'unknown',
             'accessible',
-            'parking',
-            'other-sometimes',
             'construction',
-            'obstacles-temporary',
             'other-temporary',
+            'parking',
             'limited-maneuverability',
             'poor-conditions',
             'other-complicated',
             'missing-landing',
+            'insufficient-dimensions',
+            'insufficient-curb',
             'uneven-surface',
-            'lacks-curb',
-            'obstacles-permanent',
+            'missing-paths',
+            'obstacles',
             'other-inaccessible'
         ]] }
     },

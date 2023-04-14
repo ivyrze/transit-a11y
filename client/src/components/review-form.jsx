@@ -46,22 +46,21 @@ export const ReviewForm = () => {
                             option(value="unknown") Unknown accessibility state
                         optgroup(label="Likely accessible")
                             option(value="accessible") Usually free of access barriers
-                        optgroup(label="Sometimes accessible")
-                            option(value="parking") Street parking often blocking curb
-                            option(value="other-sometimes") Other – specify below
                         optgroup(label="Temporarily inaccessible")
                             option(value="construction") Construction blocking bus lane or stop
-                            option(value="obstacles-temporary") Unavoidable obstacles
                             option(value="other-temporary") Other – specify below
                         optgroup(label="It's complicated")
+                            option(value="parking") Street parking often blocking curb
                             option(value="limited-maneuverability") Limited maneuverability for some riders
                             option(value="poor-conditions") Poor conditions in surrounding areas
                             option(value="other-complicated") Other – specify below
                         optgroup(label="Not accessible")
                             option(value="missing-landing") Missing landing pad for ramp deployment
+                            option(value="insufficient-dimensions") Insufficient landing pad dimensions
+                            option(value="insufficient-curb") Insufficient curb height to create shallow ramp angle
                             option(value="uneven-surface") Uneven surface for alighting or deploying
-                            option(value="lacks-curb") Lacks curb to create shallow ramp angle
-                            option(value="obstacles-permanent") Unavoidable obstacles
+                            option(value="missing-paths") Missing pathways to any surrounding areas
+                            option(value="obstacles") Unavoidable obstacles
                             option(value="other-inaccessible") Other – specify below
                 fieldset
                     legend Any additional comments?
