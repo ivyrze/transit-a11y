@@ -1,5 +1,9 @@
 @use 'sass:list';
 
+html {
+    color-scheme: light dark;
+}
+
 body {
     font-family: 'Akzidenz Grotesk', 'Helvetica Neue', sans-serif;
     font-size: 18px;
