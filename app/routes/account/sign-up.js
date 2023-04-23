@@ -52,7 +52,7 @@ router.post('/', validator.checkSchema(schema), async (req, res, next) => {
     const id = generateUUID();
     const created = new Date().toISOString().substring(0, 16) + 'Z';
     
-    const user = new User({ _id: id, email, username, password, created });
+    const user = new User({ _id: id, email, username, password, created, admin: false });
     await user.save();
     
     

@@ -38,5 +38,5 @@ router.post('/', validator.checkSchema(schema), async (req, res, next) => {
     req.session.user = user._id;
     req.session.save();
     
-    res.json({ username });
+    res.json({ username, admin: user.admin });
 });

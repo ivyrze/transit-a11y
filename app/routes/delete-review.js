@@ -3,6 +3,7 @@ import validator from 'express-validator';
 import promiseRouter from 'express-promise-router';
 import httpErrors from 'http-errors';
 import { Review } from '../models/review.js';
+import { User } from '../models/user.js';
 import { errorFormatter } from '../../utils.js';
 
 export const router = promiseRouter();
@@ -26,11 +27,18 @@ router.post('/', validator.checkSchema(schema), async (req, res, next) => {
     
     const { id } = validator.matchedData(req);
     
-    // Do the deletion, if its matches the logged in user
+    // Verify that the review exists
     const review = await Review.findById(id);
+    if (!review) {
+        next(new httpErrors.NotFound()); return;
+    }
     
+    // Allow reviews to be deleted by their author or by admins
     if (review.author != req.session.user) {
-        next(new httpErrors.Unauthorized()); return;
+        const { admin } = await User.findById(req.session.user, [ 'admin' ]).lean();
+        if (!admin) {
+            next(new httpErrors.Unauthorized()); return;
+        }
     }
     
     await review.deleteOne();

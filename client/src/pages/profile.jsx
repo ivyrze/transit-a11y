@@ -39,7 +39,7 @@ export const ProfilePage = props => {
                         Review(
                             review=review
                             key=index
-                            showOptions=(auth.username==username)
+                            showOptions=(auth.username == username || auth.admin)
                         )
     `;
 };

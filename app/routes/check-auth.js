@@ -11,12 +11,13 @@ router.get('/', async (req, res, next) => {
     }
     
     const user = await User.findById(req.session.user, [
-        'username'
+        'username',
+        'admin'
     ]);
     
     if (!user) {
         next(new httpErrors.InternalServerError()); return;
     }
     
-    res.json({ username: user.username });
+    res.json({ username: user.username, admin: user.admin });
 });

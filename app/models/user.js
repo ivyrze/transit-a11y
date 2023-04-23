@@ -11,7 +11,8 @@ const UserSchema = new mongoose.Schema({
         index: true
     },
     password: String,
-    created: String
+    created: String,
+    admin: Boolean
 }, {
     id: false,
     versionKey: false,

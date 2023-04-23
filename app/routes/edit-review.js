@@ -3,6 +3,7 @@ import validator from 'express-validator';
 import promiseRouter from 'express-promise-router';
 import httpErrors from 'http-errors';
 import { Review } from '../models/review.js';
+import { User } from '../models/user.js';
 import { errorFormatter } from '../../utils.js';
 
 export const router = promiseRouter();
@@ -45,6 +46,10 @@ router.post('/', validator.checkSchema(schema), async (req, res, next) => {
         res.status(new httpErrors.BadRequest().status).json({ errors: errors.mapped() }); return;
     }
     
+    if (!req.session.user) {
+        next(new httpErrors.Unauthorized()); return;
+    }
+    
     const { id, accessibility, comments } = validator.matchedData(req);
     
     // Verify that the review exists
@@ -53,9 +58,12 @@ router.post('/', validator.checkSchema(schema), async (req, res, next) => {
         next(new httpErrors.NotFound()); return;
     }
     
-    // Verify editing permissions
-    if (!req.session.user || review.author !== req.session.user) {
-        next(new httpErrors.Unauthorized()); return;
+    // Allow reviews to be edited by their author or by admins
+    if (review.author != req.session.user) {
+        const { admin } = await User.findById(req.session.user, [ 'admin' ]).lean();
+        if (!admin) {
+            next(new httpErrors.Unauthorized()); return;
+        }
     }
     
     // Apply requested changes
