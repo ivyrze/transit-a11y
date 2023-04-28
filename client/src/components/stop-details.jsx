@@ -60,10 +60,10 @@ export const StopDetails = () => {
                             Icon(name= "chevron")
                     if !details.reviews.length || expanded
                         #review-drawer
-                            each review, index in details.reviews
+                            each review in details.reviews
                                 Review(
                                     review=review
-                                    key=index
+                                    key=review.id
                                     showOptions=false
                                 )
                             button.review-contribute(

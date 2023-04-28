@@ -5,6 +5,7 @@ import httpErrors from 'http-errors';
 import { Stop } from '../models/stop.js';
 import { Agency } from '../models/agency.js';
 import { Review } from '../models/review.js';
+import { pojoCleanup } from '../../utils.js';
 
 export const router = promiseRouter();
 
@@ -34,6 +35,7 @@ router.post('/', validator.checkSchema(schema), async (req, res, next) => {
         'tags',
         'url'
     ]).populate({ path: 'reviews', select: [
+        '_id',
         'accessibility',
         'timestamp',
         'author',
@@ -51,9 +53,16 @@ router.post('/', validator.checkSchema(schema), async (req, res, next) => {
     
     const key = details.getAgencyKey();
     details = details.toObject({
-        virtuals: [ 'reviews', 'avatar', 'filename' ],
-        _id: false
+        virtuals: [ 'reviews', 'avatar', 'filename' ]
     });
+    
+    details.reviews = details.reviews.map(review => {
+        review.id = review._id;
+        delete review._id;
+        return review;
+    });
+    
+    details = pojoCleanup(details, details, { _id: false });
     
     let [ longitude, latitude ] = details.coordinates;
     details.coordinates = { longitude, latitude };

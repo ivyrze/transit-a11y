@@ -35,10 +35,10 @@ export const ProfilePage = props => {
                     | ${details.reviews.length}
                     | ${(details.reviews.length === 1) ? 'review' : 'reviews'}
                 .review-container
-                    each review, index in details.reviews
+                    each review in details.reviews
                         Review(
                             review=review
-                            key=index
+                            key=review.id
                             showOptions=(auth.username == username || auth.admin)
                             allowEditing=auth.admin
                         )
