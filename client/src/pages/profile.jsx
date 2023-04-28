@@ -40,6 +40,7 @@ export const ProfilePage = props => {
                             review=review
                             key=index
                             showOptions=(auth.username == username || auth.admin)
+                            allowEditing=auth.admin
                         )
     `;
 };

@@ -11,7 +11,7 @@ import { queryHelper } from '../hooks/query';
 import i18n from '../i18n-strings.json';
 
 export const Review = props => {
-    const { review, showOptions } = props;
+    const { review, showOptions, allowEditing } = props;
     
     const [ details, setDetails ] = useState(review);
     const [ editing, setEditing ] = useState(false);
@@ -65,9 +65,10 @@ export const Review = props => {
                 )
                 if showOptions
                     Menu
-                        button(onClick=startEditing)
-                            Icon(name= "pencil")
-                            | Edit
+                        if allowEditing
+                            button(onClick=startEditing)
+                                Icon(name= "pencil")
+                                | Edit
                         button(onClick=handleDelete)
                             Icon(name= "trash")
                             | Delete
