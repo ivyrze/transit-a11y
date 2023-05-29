@@ -181,8 +181,9 @@
                     ["zoom"],
                     "",
                     14,
-                    ["get", "wheelchair_boarding"]
+                    ["concat", ["get", "wheelchair_boarding"], "-dark"]
                 ],
+                "icon-size": 0.4,
                 "text-font": [
                     "Akzidenz-Grotesk Std Med Regular",
                     "Arial Unicode MS Regular"
@@ -412,8 +413,9 @@
                     ["zoom"],
                     "",
                     14,
-                    ["get", "wheelchair_boarding"]
+                    ["concat", ["get", "wheelchair_boarding"], "-light"]
                 ],
+                "icon-size": 0.4,
                 "text-font": [
                     "Akzidenz-Grotesk Std Med Regular",
                     "Arial Unicode MS Regular"

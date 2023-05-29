@@ -1,7 +1,8 @@
-import React, { forwardRef, useRef, useState, useImperativeHandle, useEffect, useCallback } from 'react';
+import React, { forwardRef, useRef, useState, useImperativeHandle, useEffect, useMemo, useCallback } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import MapboxGL from 'mapbox-gl/dist/mapbox-gl';
 import Mapbox, { Source, Layer, GeolocateControl } from 'react-map-gl';
+import { MapImage } from './map-image';
 import { useTheme } from '../hooks/theme';
 import { useQuery } from '../hooks/query';
 import styles from '../mapbox-style.json';
@@ -76,6 +77,25 @@ export const Map = forwardRef((props, ref) => {
     
     const interactiveLayers = [ "stops-icon", "stops-label" ];
     
+    const mapImages = useMemo(() => {
+        const icons = import.meta.glob('../assets/map-*.png', {
+            as: 'url', eager: true
+        });
+        
+        return Object.keys(icons).map(icon => {
+            const filename = icon.split('-').slice(1).join('-');
+            const name = filename.replace(".png", "");
+            
+            return pug`
+                MapImage(
+                    key=name
+                    name=name
+                    src=icons[icon]
+                )
+            `;
+        });
+    }, []);
+    
     const handleLoad = () => setLoaded(true);
         
     const handleMove = event => {
@@ -143,5 +163,6 @@ export const Map = forwardRef((props, ref) => {
                 )
                     each layer in styles[theme]
                         Layer(key=layer.id, ...layer)
+                | ${mapImages}
     `;
 });
