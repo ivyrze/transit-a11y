@@ -32,6 +32,7 @@ export const extend = async (agency, stops, routes, id) => {
             _type == "route" => {
                 "route_id": id,
                 "route_long_name": name,
+                "route_color": color.hex,
                 "route_shapes": shapes
             }
         }`

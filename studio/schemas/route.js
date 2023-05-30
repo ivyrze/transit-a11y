@@ -17,6 +17,12 @@ export default {
             description: 'Overrides the provided route name'
         },
         {
+            name: 'color',
+            type: 'color',
+            title: 'Color',
+            description: 'Overrides the provided route color'
+        },
+        {
             name: 'shapes',
             type: 'array',
             of: [{ type: 'string' }],

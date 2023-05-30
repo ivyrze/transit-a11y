@@ -38,13 +38,6 @@
             "url": "https://www.detroitmi.gov/Portals/0/docs/deptoftransportation/pdfs/ddot_gtfs.zip",
             "vehicle": "bus",
             "stations": false,
-            "transformations": [
-                {
-                    "source": "routes.route_color",
-                    "type": "override",
-                    "target": "#00494a"
-                }
-            ],
             "reviews": true
         },
         {
@@ -53,11 +46,6 @@
             "vehicle": "bus",
             "stations": false,
             "transformations": [
-                {
-                    "source": "routes.route_color",
-                    "type": "override",
-                    "target": "#c73c3c"
-                },
                 {
                     "source": "routes.route_long_name",
                     "type": "recapitalize"
