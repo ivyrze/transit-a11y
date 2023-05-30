@@ -162,7 +162,11 @@ export const Map = forwardRef((props, ref) => {
                     maxzoom=16
                 )
                     each layer in styles[theme]
-                        Layer(key=layer.id, ...layer)
+                        Layer(
+                            key=layer.id
+                            beforeId="settlement-minor-label"
+                            ...layer
+                        )
                 | ${mapImages}
     `;
 });
