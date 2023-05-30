@@ -10,36 +10,16 @@
             "paint": {
                 "line-width": [
                     "interpolate",
-                    ["linear"],
+                    ["exponential", 2],
                     ["zoom"],
-                    11,
-                    6,
-                    16,
-                    30,
+                    8,
+                    4,
+                    20,
+                    210,
                     22,
-                    86
+                    430
                 ],
-                "line-color": [
-                    "match",
-                    ["get", "route_color"],
-                    ["red"],
-                    "hsl(0, 88%, 75%)",
-                    ["orange"],
-                    "hsl(33, 94%, 69%)",
-                    ["yellow"],
-                    "hsl(50, 93%, 73%)",
-                    ["green"],
-                    "hsl(89, 76%, 65%)",
-                    ["blue"],
-                    "hsl(226, 100%, 77%)",
-                    ["purple"],
-                    "hsl(275, 81%, 76%)",
-                    ["pink"],
-                    "hsl(331, 75%, 75%)",
-                    ["brown"],
-                    "hsl(23, 39%, 69%)",
-                    ["get", "route_color"]
-                ],
+                "line-color": "hsl(0, 0%, 82%)",
                 "line-opacity": [
                     "interpolate",
                     ["linear"],
@@ -61,36 +41,16 @@
             "paint": {
                 "line-width": [
                     "interpolate",
-                    ["linear"],
+                    ["exponential", 2],
                     ["zoom"],
-                    11,
+                    8,
                     4,
-                    16,
-                    16,
+                    20,
+                    120,
                     22,
-                    62
+                    280
                 ],
-                "line-color": [
-                    "match",
-                    ["get", "route_color"],
-                    ["red"],
-                    "hsl(0, 88%, 75%)",
-                    ["orange"],
-                    "hsl(33, 94%, 69%)",
-                    ["yellow"],
-                    "hsl(50, 93%, 73%)",
-                    ["green"],
-                    "hsl(89, 76%, 65%)",
-                    ["blue"],
-                    "hsl(226, 100%, 77%)",
-                    ["purple"],
-                    "hsl(275, 81%, 76%)",
-                    ["pink"],
-                    "hsl(331, 75%, 75%)",
-                    ["brown"],
-                    "hsl(23, 39%, 69%)",
-                    ["get", "route_color"]
-                ],
+                "line-color": "hsl(0, 0%, 82%)",
                 "line-opacity": [
                     "interpolate",
                     ["linear"],
@@ -108,17 +68,18 @@
             "source": "internal-api",
             "source-layer": "stops",
             "minzoom": 8,
-            "maxzoom": 14.5,
             "paint": {
                 "circle-translate": [0, 0],
                 "circle-radius": [
                     "interpolate",
                     ["linear"],
                     ["zoom"],
-                    11.5,
+                    9,
+                    2,
+                    12,
                     3,
-                    13,
-                    4
+                    20,
+                    12
                 ],
                 "circle-opacity": [
                     "interpolate",
@@ -126,11 +87,11 @@
                     ["zoom"],
                     8,
                     ["case", ["==", ["get", "is_major"], false], 0, 0],
-                    9,
+                    8.5,
                     ["case", ["==", ["get", "is_major"], false], 0, 1],
-                    13,
+                    12,
                     ["case", ["==", ["get", "is_major"], false], 0, 1],
-                    13.5,
+                    12.5,
                     ["case", ["==", ["get", "is_major"], false], 1, 1]
                 ],
                 "circle-stroke-width": [
@@ -138,9 +99,9 @@
                     ["linear"],
                     ["zoom"],
                     11,
-                    1,
-                    14,
-                    3
+                    0.5,
+                    20,
+                    2
                 ],
                 "circle-stroke-opacity": [
                     "interpolate",
@@ -150,21 +111,33 @@
                     ["case", ["==", ["get", "is_major"], false], 0, 0],
                     9,
                     ["case", ["==", ["get", "is_major"], false], 0, 1],
-                    13,
+                    12,
                     ["case", ["==", ["get", "is_major"], false], 0, 1],
-                    13.5,
+                    12.5,
                     ["case", ["==", ["get", "is_major"], false], 1, 1]
                 ],
                 "circle-color": [
-                    "interpolate",
-                    ["linear"],
-                    ["zoom"],
-                    11,
-                    "hsl(0, 0%, 85%)",
-                    14,
-                    "hsl(0, 0%, 25%)"
+                    "match",
+                    ["get", "wheelchair_boarding"],
+                    ["inaccessible"],
+                    "#ff7d7d",
+                    ["warning"],
+                    "#ffd57c",
+                    ["accessible"],
+                    "#85a2ff",
+                    "#b1b1b1"
                 ],
-                "circle-stroke-color": "#222222"
+                "circle-stroke-color": [
+                    "match",
+                    ["get", "wheelchair_boarding"],
+                    ["inaccessible"],
+                    "#811616",
+                    ["warning"],
+                    "#6d4c07",
+                    ["accessible"],
+                    "#1a358f",
+                    "#464646"
+                ]
             }
         },
         {
@@ -181,9 +154,17 @@
                     ["zoom"],
                     "",
                     14,
-                    ["concat", ["get", "wheelchair_boarding"], "-dark"]
+                    ["concat", ["get", "wheelchair_boarding"], "-light"]
                 ],
-                "icon-size": 0.4,
+                "icon-size": [
+                    "interpolate",
+                    ["linear"],
+                    ["zoom"],
+                    14,
+                    0.3,
+                    20,
+                    0.5
+                ],
                 "text-font": [
                     "Akzidenz-Grotesk Std Med Regular",
                     "Arial Unicode MS Regular"
@@ -194,10 +175,10 @@
                     "interpolate",
                     ["linear"],
                     ["zoom"],
-                    11,
-                    ["literal", [0, -0.35]],
-                    16,
-                    ["literal", [0, -0.85]]
+                    9,
+                    ["literal", [0, -0.10]],
+                    20,
+                    ["literal", [0, -1.20]]
                 ],
                 "icon-optional": true,
                 "text-anchor": "bottom",
@@ -242,36 +223,16 @@
             "paint": {
                 "line-width": [
                     "interpolate",
-                    ["linear"],
+                    ["exponential", 2],
                     ["zoom"],
-                    11,
-                    6,
-                    16,
-                    30,
+                    8,
+                    4,
+                    20,
+                    210,
                     22,
-                    86
+                    430
                 ],
-                "line-color": [
-                    "match",
-                    ["get", "route_color"],
-                    ["red"],
-                    "hsl(0, 60%, 54%)",
-                    ["orange"],
-                    "hsl(33, 84%, 56%)",
-                    ["yellow"],
-                    "hsl(50, 81%, 53%)",
-                    ["green"],
-                    "hsl(89, 57%, 48%)",
-                    ["blue"],
-                    "hsl(226, 62%, 60%)",
-                    ["purple"],
-                    "hsl(275, 46%, 54%)",
-                    ["pink"],
-                    "hsl(331, 57%, 60%)",
-                    ["brown"],
-                    "hsl(23, 48%, 39%)",
-                    ["get", "route_color"]
-                ],
+                "line-color": "hsl(0, 0%, 6%)",
                 "line-opacity": [
                     "interpolate",
                     ["linear"],
@@ -293,36 +254,16 @@
             "paint": {
                 "line-width": [
                     "interpolate",
-                    ["linear"],
+                    ["exponential", 2],
                     ["zoom"],
-                    11,
+                    8,
                     4,
-                    16,
-                    16,
+                    20,
+                    120,
                     22,
-                    62
+                    280
                 ],
-                "line-color": [
-                    "match",
-                    ["get", "route_color"],
-                    ["red"],
-                    "hsl(0, 60%, 54%)",
-                    ["orange"],
-                    "hsl(33, 84%, 56%)",
-                    ["yellow"],
-                    "hsl(50, 81%, 53%)",
-                    ["green"],
-                    "hsl(89, 57%, 48%)",
-                    ["blue"],
-                    "hsl(226, 62%, 60%)",
-                    ["purple"],
-                    "hsl(275, 46%, 54%)",
-                    ["pink"],
-                    "hsl(331, 57%, 60%)",
-                    ["brown"],
-                    "hsl(23, 48%, 39%)",
-                    ["get", "route_color"]
-                ],
+                "line-color": "hsl(0, 0%, 6%)",
                 "line-opacity": [
                     "interpolate",
                     ["linear"],
@@ -340,17 +281,18 @@
             "source": "internal-api",
             "source-layer": "stops",
             "minzoom": 8,
-            "maxzoom": 14.5,
             "paint": {
                 "circle-translate": [0, 0],
                 "circle-radius": [
                     "interpolate",
                     ["linear"],
                     ["zoom"],
-                    11.5,
+                    9,
+                    2,
+                    12,
                     3,
-                    13,
-                    4
+                    20,
+                    12
                 ],
                 "circle-opacity": [
                     "interpolate",
@@ -358,11 +300,11 @@
                     ["zoom"],
                     8,
                     ["case", ["==", ["get", "is_major"], false], 0, 0],
-                    9,
+                    8.5,
                     ["case", ["==", ["get", "is_major"], false], 0, 1],
-                    13,
+                    12,
                     ["case", ["==", ["get", "is_major"], false], 0, 1],
-                    13.5,
+                    12.5,
                     ["case", ["==", ["get", "is_major"], false], 1, 1]
                 ],
                 "circle-stroke-width": [
@@ -370,9 +312,9 @@
                     ["linear"],
                     ["zoom"],
                     11,
-                    1,
-                    14,
-                    3
+                    0.5,
+                    20,
+                    2
                 ],
                 "circle-stroke-opacity": [
                     "interpolate",
@@ -382,21 +324,33 @@
                     ["case", ["==", ["get", "is_major"], false], 0, 0],
                     9,
                     ["case", ["==", ["get", "is_major"], false], 0, 1],
-                    13,
+                    12,
                     ["case", ["==", ["get", "is_major"], false], 0, 1],
-                    13.5,
+                    12.5,
                     ["case", ["==", ["get", "is_major"], false], 1, 1]
                 ],
                 "circle-color": [
-                    "interpolate",
-                    ["linear"],
-                    ["zoom"],
-                    11,
-                    "hsl(0, 0%, 65%)",
-                    14,
-                    "hsl(0, 0%, 95%)"
+                    "match",
+                    ["get", "wheelchair_boarding"],
+                    ["inaccessible"],
+                    "#361717",
+                    ["warning"],
+                    "#372a15",
+                    ["accessible"],
+                    "#242e4f",
+                    "#222222"
                 ],
-                "circle-stroke-color": "#3a3a3a"
+                "circle-stroke-color": [
+                    "match",
+                    ["get", "wheelchair_boarding"],
+                    ["inaccessible"],
+                    "#fdacac",
+                    ["warning"],
+                    "#f2c789",
+                    ["accessible"],
+                    "#b2c2ff",
+                    "#c1c1c1"
+                ]
             }
         },
         {
@@ -413,9 +367,17 @@
                     ["zoom"],
                     "",
                     14,
-                    ["concat", ["get", "wheelchair_boarding"], "-light"]
+                    ["concat", ["get", "wheelchair_boarding"], "-dark"]
                 ],
-                "icon-size": 0.4,
+                "icon-size": [
+                    "interpolate",
+                    ["linear"],
+                    ["zoom"],
+                    14,
+                    0.3,
+                    20,
+                    0.5
+                ],
                 "text-font": [
                     "Akzidenz-Grotesk Std Med Regular",
                     "Arial Unicode MS Regular"
@@ -426,10 +388,10 @@
                     "interpolate",
                     ["linear"],
                     ["zoom"],
-                    11,
-                    ["literal", [0, -0.35]],
-                    16,
-                    ["literal", [0, -0.85]]
+                    9,
+                    ["literal", [0, -0.10]],
+                    20,
+                    ["literal", [0, -1.20]]
                 ],
                 "icon-optional": true,
                 "text-anchor": "bottom",

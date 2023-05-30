@@ -8,8 +8,7 @@ const schema = {
     routes: [
         'route_id',
         'route_short_name',
-        'route_long_name',
-        'route_color'
+        'route_long_name'
     ],
     stops: [
         'stop_id',
