@@ -24,9 +24,8 @@ export const RouteDetails = props => {
     const renderBranch = branch => pug`
         for stop, index in branch
             li(key=stop.id + "-" + index)
-                span.stop-icon(
-                    className="state-" + i18n.accessibilityStates[stop.accessibility].style
-                )
+                span.stop-icon
+                    Icon(name=i18n.accessibilityStates[stop.accessibility].style alt=true)
                 Link(to="/stop/" + stop.id)= stop.name
     `;
     

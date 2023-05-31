@@ -87,8 +87,21 @@ $font-faces: (
         'pencil': '\e01b'
     );
     
+    $icons-alt: (
+        'accessible': '\e005',
+        'warning': '\e01c',
+        'inaccessible': '\e001',
+        'unknown': '\e008'
+    );
+    
     @each $name, $glyph in $icons {
         &.icon-#{$name}::before {
+            content: $glyph;
+        }
+    }
+    
+    @each $name, $glyph in $icons-alt {
+        &.icon-#{$name}.icon-alt::before {
             content: $glyph;
         }
     }

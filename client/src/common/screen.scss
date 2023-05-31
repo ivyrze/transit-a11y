@@ -1002,8 +1002,7 @@ h1.title {
     white-space: nowrap;
     
     .stop-icon {
-        margin-left: calc(-10px - 2px / 2);
-        vertical-align: -3px;
+        margin-left: calc(-9px - 2px / 2);
     }
     
     a {
@@ -1053,22 +1052,32 @@ h1.title {
 }
 
 .stop-icon {
-    width: 20px;
-    height: 20px;
-    display: inline-block;
-    background-repeat: no-repeat;
+    width: 18px;
+    aspect-ratio: 1;
+    border-radius: 5px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+    padding-top: 2px;
+    background: #161616;
+    color: #ebebeb;
     
-    $states: (
-        'accessible', 'warning', 'inaccessible', 'unknown'
-    );
+    @include dark {
+        background: #f2f2f2;
+        color: #161616;
+    }
     
-    @each $name in $states {
-        &.state-#{$name} {
-            background-image: url('/img/map-' + $name + '-dark.svg');
-            
-            @include dark {
-                background-image: url('/img/map-' + $name + '-light.svg');
-            }
+    & > .icon {
+        display: inline-block;
+        line-height: 1;
+        
+        &.icon-accessible {
+            scale: 0.90;
+        }
+        
+        &.icon-inaccessible {
+            scale: 1.15;
         }
     }
 }
