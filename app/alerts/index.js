@@ -1,4 +1,4 @@
-import sanity from '@sanity/client';
+import { createClient } from '@sanity/client';
 import { sanityOptions } from '../../utils.js';
 import { Stop } from '../models/stop.js';
 
@@ -41,7 +41,7 @@ const update = async agencies => {
 const extend = async () => {
     console.log("Caching Sanity Studio stop synonyms...");
     
-    const client = sanity(sanityOptions);
+    const client = createClient(sanityOptions);
     return await client.fetch('*[_type=="stop" && synonyms != null]{"agency": agency->id, id, synonyms}');
 };
 

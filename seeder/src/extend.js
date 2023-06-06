@@ -1,8 +1,8 @@
-import sanity from '@sanity/client';
+import { createClient } from '@sanity/client';
 import { sanityOptions } from '../../utils.js';
 
 export const extend = async (agency, stops, routes, id) => {
-    const client = sanity(sanityOptions);
+    const client = createClient(sanityOptions);
     
     const appendicies = await client.fetch(
         `*[(_type == "agency" && id == "` + id + `")
