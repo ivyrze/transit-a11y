@@ -47,10 +47,6 @@
             "stations": false,
             "transformations": [
                 {
-                    "source": "routes.route_long_name",
-                    "type": "recapitalize"
-                },
-                {
                     "source": "stops.stop_name",
                     "type": "recapitalize"
                 },
