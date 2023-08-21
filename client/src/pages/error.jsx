@@ -10,10 +10,11 @@ export const ErrorPage = props => {
         "Things aren't working as expected on our end, sorry about that. Try again in a few minutes." :
         "Sorry things aren't working as expected! Try heading back to the homepage.";
     
-    return pug`
-        .notice-fullscreen
-            Icon(name= "error")
-            h1= message
-            p= description
-    `;
+    return (
+        <div className="notice-fullscreen">
+            <Icon name="error" />
+            <h1>{ message }</h1>
+            <p>{ description }</p>
+        </div>
+    );
 };

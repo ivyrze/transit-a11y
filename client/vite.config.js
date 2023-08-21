@@ -12,14 +12,5 @@ export default defineConfig({
             }
         }
     },
-    plugins: [ react({
-        babel: {
-            plugins: [
-                'transform-react-pug',
-                [ 'transform-jsx-classname-components', {
-                    objects: [ 'React', 'ThemeContext', 'ErrorStatusContext', 'AuthContext' ]
-                } ]
-            ]
-        }
-    }) ],
+    plugins: [ react() ],
 })

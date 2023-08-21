@@ -15,20 +15,25 @@ export const ReviewForm = () => {
     
     const handleFormResponse = response => closeCard();
     
-    return pug`
-        .sidebar-card.review-card
-            .card-header
-                h2= details.name
-            span.subtitle= i18n.stopSubheadings[details.agency.vehicle]
-            FormWrapper(
+    return (
+        <div className="sidebar-card review-card">
+            <div className="card-header">
+                <h2>{ details.name }</h2>
+            </div>
+            <span className="subtitle">
+                { i18n.stopSubheadings[details.agency.vehicle] }
+            </span>
+            <FormWrapper
                 action="/api/submit-review"
                 method="post"
                 autoComplete="off"
-                onResponse=handleFormResponse
-            )
-                ReviewFields(
-                    stopId=details.id
-                    onCancel=showStopCard
-                )
-    `;
+                onResponse={ handleFormResponse }
+            >
+                <ReviewFields
+                    stopId={ details.id }
+                    onCancel={ showStopCard }
+                />
+            </FormWrapper>
+        </div>
+    );
 }

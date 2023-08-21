@@ -5,10 +5,10 @@ export const Icon = props => {
     
     const altClass = alt ? " icon-alt" : "";
     
-    return pug`
-        span(
-            className="icon icon-" + name + altClass
+    return (
+        <span
+            className={ "icon icon-" + name + altClass }
             aria-hidden="true"
-        )
-    `;
+        />
+    );
 };

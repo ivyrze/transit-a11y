@@ -17,34 +17,34 @@ export const AttachmentViewer = props => {
         return sizes;
     });
     
-    const children = images.map(image => {
-        return props => {
-            return pug`img(
-                src=image.small.url
-                ref=props.ref
-                onClick=props.open
-            )`;
-        };
-    });
-    
-    return pug`
-        Gallery(options={
+    return (
+        <Gallery options={{
             mainClass: 'image-gallery',
             bgOpacity: 1,
             arrowPrev: false,
             arrowNext: false,
             padding: { top: 40, right: 15, bottom: 40, left: 15 },
             wheelToZoom: true
-        })
-            .attachment-list
-                for child, index in children
-                    Item(
-                        key=index
-                        children=child
-                        original=images[index].large.url
-                        thumbnail=images[index].small.url
-                        width=images[index].large.width
-                        height=images[index].large.height
-                    )
-    `;
+        }} >
+            <div className="attachment-list">
+                { images.map((image, index) => (
+                    <Item
+                        key={ index }
+                        original={ image.large.url }
+                        thumbnail={ image.small.url }
+                        width={ image.large.width }
+                        height={ image.large.height }
+                    >
+                        { props => (
+                            <img
+                                src={ image.small.url }
+                                ref={ props.ref }
+                                onClick={ props.open }
+                            />
+                        ) }
+                    </Item>
+                )) }
+            </div>
+        </Gallery>
+    );
 };

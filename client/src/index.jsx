@@ -7,9 +7,9 @@ import './common/style.scss';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-    pug`
-        React.StrictMode
-            BrowserRouter
-                App
-    `
+    <React.StrictMode>
+        <BrowserRouter>
+            <App />
+        </BrowserRouter>
+    </React.StrictMode>
 );

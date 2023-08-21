@@ -108,13 +108,14 @@ export const FormWrapper = props => {
         });
     };
     
-    return pug`
-        form(
-            className=showValidation ? "form-validate " : ""
-            onSubmit=handleSubmit
+    return (
+        <form
+            className={ showValidation ? "form-validate " : "" }
+            onSubmit={ handleSubmit }
             noValidate
-            ...passthroughProps
-        )
-            | ${recurseChildren(children)}
-    `;
+            { ...passthroughProps }
+        >
+            { recurseChildren(children) }
+        </form>
+    );
 };

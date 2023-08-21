@@ -22,10 +22,11 @@ export const ThemeProvider = ({ children }) => {
         () => ({ theme, setTheme }), [ theme, setTheme ]
     );
     
-    return pug`
-        ThemeContext.Provider(value=contextPayload)
-            | ${children}
-    `;
+    return (
+        <ThemeContext.Provider value={ contextPayload }>
+            { children }
+        </ThemeContext.Provider>
+    );
 };
 
 export const useTheme = () => useContext(ThemeContext);

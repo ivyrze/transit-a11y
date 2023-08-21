@@ -51,48 +51,50 @@ export const Search = props => {
         setResults([]);
     };
     
-    return pug`
-        form#search-container(
+    return (
+        <form id="search-container"
             action="/api/search"
             method="post"
             role="search"
             autoComplete="off"
             autoCorrect="off"
             spellCheck="false"
-            onSubmit=handleSubmit
-        )
-            input(
+            onSubmit={ handleSubmit }
+        >
+            <input
                 type="search"
                 name="search"
                 placeholder="Search by station..."
                 aria-autocomplete="list"
-                onInput=handleInput
-            )
-            .search-actions
-                if results.length
-                    button.search-submit(
-                        aria-label="Submit search"
-                    )
-                        Icon(name= "search")
-                else
-                    button.search-submit(
-                        aria-label="Submit search"
-                        disabled
-                    )
-                        Icon(name= "search")
-                if geolocationEnabled
-                    button(
+                onInput={ handleInput }
+            />
+            <div className="search-actions">
+                <button
+                    className="search-submit"
+                    aria-label="Submit search"
+                    { ...!results.length && { disabled: 'disabled' }}
+                >
+                    <Icon name="search" />
+                </button>
+                { geolocationEnabled && (
+                    <button
                         type="button"
-                        onClick=onGeolocationTriggered
+                        onClick={ onGeolocationTriggered }
                         aria-label="Show current location"
-                    )
-                        Icon(name= "location")
-            ul#search-results-container(
+                    >
+                        <Icon name="location" />
+                    </button>
+                ) }
+            </div>
+            <ul
+                id="search-results-container"
                 aria-label="Search results"
-            )
-                SearchResults(
-                    results=results
-                    openStop=openStopAndClear
-                )
-    `;
+            >
+                <SearchResults
+                    results={ results }
+                    openStop={ openStopAndClear }
+                />
+            </ul>
+        </form>
+    );
 };

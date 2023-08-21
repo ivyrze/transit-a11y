@@ -49,17 +49,21 @@ export const Menu = props => {
         return () => document.body.removeEventListener("click", checkOutsideClick);
     }, [ setPopupOpen, toggleButton ]);
         
-    return pug`
-        .menu-container
-            button.button-rounded.menu-toggle(
-                ref=toggleButton
-                aria-expanded=popupOpen
+    return (
+        <div className="menu-container">
+            <button className="button-rounded menu-toggle"
+                ref={ toggleButton }
+                aria-expanded={ popupOpen }
                 aria-haspopup="true"
-                onClick=togglePopup
-            )
-                Icon(name= iconName)
-            if popupOpen
-                .menu-popup(role="menu")
-                    | ${recurseChildren(children)}
-    `;
+                onClick={ togglePopup }
+            >
+                <Icon name={ iconName } />
+            </button>
+            { popupOpen && (
+                <div className="menu-popup" role="menu">
+                    { recurseChildren(children) }
+                </div>
+            ) }
+        </div>
+    );
 };

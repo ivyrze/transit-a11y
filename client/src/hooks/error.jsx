@@ -14,13 +14,13 @@ export const ErrorHandler = ({ children }) => {
         () => ({ setErrorStatus }), [ setErrorStatus ]
     );
     
-    return pug`
-        ErrorStatusContext.Provider(value=contextPayload)
-            if errorStatus
-                ErrorPage(...errorStatus)
-            else
-                | ${children}
-    `;
+    return (
+        <ErrorStatusContext.Provider value={ contextPayload }>
+            { errorStatus ? (
+                <ErrorPage { ...errorStatus } />
+            ) : children }
+        </ErrorStatusContext.Provider>
+    );
 };
 
 export const useErrorStatus = () => useContext(ErrorStatusContext);

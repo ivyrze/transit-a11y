@@ -86,13 +86,13 @@ export const Map = forwardRef((props, ref) => {
             const filename = icon.split('-').slice(1).join('-');
             const name = filename.replace(".png", "");
             
-            return pug`
-                MapImage(
-                    key=name
-                    name=name
-                    src=icons[icon]
-                )
-            `;
+            return (
+                <MapImage
+                    key={ name }
+                    name={ name }
+                    src={ icons[icon] }
+                />
+            );
         });
     }, []);
     
@@ -130,43 +130,47 @@ export const Map = forwardRef((props, ref) => {
         
     if (!theme || !bounds) { return null; }
     
-    return pug`
-        #map-container
-            Mapbox(
-                ref=map
-                mapLib=MapboxGL
-                mapboxAccessToken=accessToken
-                mapStyle=mapStyle
-                bounds=bounds
-                fitBoundsOptions={ padding: 72 }
-                transformRequest=prefixHostname
-                onLoad=handleLoad
-                onMove=handleMove
-                onClick=handleClick
-                onMouseEnter=handleMouseEnter
-                onMouseLeave=handleMouseLeave
-                interactiveLayerIds=interactiveLayers
-            )
-                GeolocateControl(
-                    ref=geolocateControl
-                    trackUserLocation=true
-                    showUserHeading=true
-                    style={ display: 'none' }
-                )
-                Source(
+    return (
+        <div id="map-container">
+            <Mapbox
+                ref={ map }
+                mapLib={ MapboxGL }
+                mapboxAccessToken={ accessToken }
+                mapStyle={ mapStyle }
+                bounds={ bounds }
+                fitBoundsOptions={{ padding: 72 }}
+                transformRequest={ prefixHostname }
+                onLoad={ handleLoad }
+                onMove={ handleMove }
+                onClick={ handleClick }
+                onMouseEnter={ handleMouseEnter }
+                onMouseLeave={ handleMouseLeave }
+                interactiveLayerIds={ interactiveLayers }
+            >
+                <GeolocateControl
+                    ref={ geolocateControl }
+                    trackUserLocation={ true }
+                    showUserHeading={ true }
+                    style={{ display: 'none' }}
+                />
+                <Source
                     id="internal-api"
                     type="vector"
-                    tiles=['/api/map-tiles/{z}/{x}/{y}']
-                    promoteId={'stops':'stop_id','routes':'route_id'}
-                    minzoom=8
-                    maxzoom=16
-                )
-                    each layer in styles[theme]
-                        Layer(
-                            key=layer.id
+                    tiles={[ '/api/map-tiles/{z}/{x}/{y}' ]}
+                    promoteId={{ 'stops':'stop_id','routes':'route_id' }}
+                    minzoom={ 8 }
+                    maxzoom={ 16 }
+                >
+                    { styles[theme].map(layer => (
+                        <Layer
+                            key={ layer.id }
                             beforeId="settlement-minor-label"
-                            ...layer
-                        )
-                | ${mapImages}
-    `;
+                            { ...layer }
+                        / >
+                    )) }
+                </Source>
+                { mapImages }
+            </Mapbox>
+        </div>
+    );
 });

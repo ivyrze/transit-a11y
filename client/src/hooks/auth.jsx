@@ -23,10 +23,11 @@ export const AuthProvider = ({ children }) => {
         [ auth, setAuth, authRedirect, setAuthRedirect ]
     );
     
-    return pug`
-        AuthContext.Provider(value=contextPayload)
-            | ${children}
-    `;
+    return (
+        <AuthContext.Provider value={ contextPayload }>
+            { children }
+        </AuthContext.Provider>
+    );
 };
 
 export const useAuth = () => useContext(AuthContext);

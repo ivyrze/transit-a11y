@@ -49,39 +49,56 @@ export const IndexPage = () => {
     
     const openAboutCard = () => navigate('/about');
     
-    return pug`
-        #sidebar-container
-            h1.title
-                button.button-link(onClick=openAboutCard)= title
-            #main-menu
-                Menu(iconName="menu")
-                    .menu-group
-                        Link(to="/routes")
-                            Icon(name= "route")
-                            | Show nearby routes
-                    .menu-group
-                        if auth && auth.username
-                            Link(to="/profile/" + auth.username)
-                                Icon(name= "user")
-                                | View profile
-                            Link(to="/account/logout")
-                                Icon(name= "login")
-                                | Logout
-                        else
-                            Link(to="/account/login")
-                                Icon(name= "login")
-                                | Login
-            Search(
-                cameraCoords=cameraCoords
-                onGeolocationTriggered=handleGeolocationTrigger
-            )
-            Outlet(context={ details: stopDetails, routes: renderedRoutes })
-        Map(
-            ref=map
-            flyCoords=flyCoords
-            onCameraUpdate=handleCameraUpdate
-            onRouteListUpdate=handleRouteListUpdate
-            shouldQueryRoutes=shouldQueryRoutes
-        )
-    `;
-};
+    return (
+        <>
+            <div id="sidebar-container">
+                <h1 className="title">
+                    <button className="button-link" onClick={ openAboutCard }>
+                        { title }
+                    </button>
+                </h1>
+                <div id="main-menu">
+                    <Menu iconName="menu">
+                        <div className="menu-group">
+                            <Link to="/routes">
+                                <Icon name="route" />
+                                Show nearby routes
+                            </Link>
+                        </div>
+                        <div className="menu-group">
+                            { auth && auth.username ? (
+                                <>
+                                    <Link to={ "/profile/" + auth.username }>
+                                        <Icon name="user" />
+                                        View profile
+                                    </Link>
+                                    <Link to="/account/logout">
+                                        <Icon name="login" />
+                                        Logout
+                                    </Link>
+                                </>
+                            ) : (
+                                <Link to="/account/login">
+                                    <Icon name="login" />
+                                    Login
+                                </Link>
+                            ) }
+                        </div>
+                    </Menu>
+                </div>
+                <Search
+                    cameraCoords={ cameraCoords }
+                    onGeolocationTriggered={ handleGeolocationTrigger }
+                />
+                <Outlet context={{ details: stopDetails, routes: renderedRoutes }} />
+            </div>
+            <Map
+                ref={ map }
+                flyCoords={ flyCoords }
+                onCameraUpdate={ handleCameraUpdate }
+                onRouteListUpdate={ handleRouteListUpdate }
+                shouldQueryRoutes={ shouldQueryRoutes }
+            />
+        </>
+    );
+{ }; }

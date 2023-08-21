@@ -21,56 +21,75 @@ export const RouteDetails = props => {
     
     if (!details) { return; }
     
-    const renderBranch = branch => pug`
-        for stop, index in branch
-            li(key=stop.id + "-" + index)
-                span.stop-icon
-                    Icon(name=i18n.accessibilityStates[stop.accessibility].style alt=true)
-                Link(to="/stop/" + stop.id)= stop.name
-    `;
+    const renderBranch = branch => branch.map((stop, index) => (
+        <li key={ stop.id + "-" + index }>
+            <span className="stop-icon">
+                <Icon name={ i18n.accessibilityStates[stop.accessibility].style } alt={ true } />
+            </span>
+            <Link to={ "/stop/" + stop.id }>{ stop.name }</Link>
+        </li>
+    ));
     
-    return pug`
-        .sidebar-card.route-details-card
-            .card-header
-                h2= details.name
-                    RouteIcon(
-                        number=details.number
-                        color=details.color
-                    )
-                button.button-rounded.card-close(
+    return (
+        <div className="sidebar-card route-details-card">
+            <div className="card-header">
+                <h2>
+                    { details.name }
+                    <RouteIcon
+                        number={ details.number }
+                        color={ details.color }
+                    />
+                </h2>
+                <button
+                    className="button-rounded card-close"
                     aria-label="Close"
-                    onClick=closeCard
-                )
-                    Icon(name= "close")
-            span.subtitle= i18n.routeSubheadings[details.agency.vehicle]
-            .tab-group(role="tablist")
-                for direction, directionIndex in details.directions
-                    if currentDirection == directionIndex
-                        button.active(
-                            key=directionIndex
+                    onClick={ closeCard }
+                >
+                    <Icon name="close" />
+                </button>
+            </div>
+            <span className="subtitle">
+                { i18n.routeSubheadings[details.agency.vehicle] }
+            </span>
+            <div className="tab-group" role="tablist">
+                { details.directions.map((direction, directionIndex) => {
+                    return currentDirection == directionIndex ? (
+                        <button
+                            className="active"
+                            key={ directionIndex }
                             role="tab"
                             aria-selected="true"
-                            onClick=() => setCurrentDirection(directionIndex)
-                        )= i18n.directionHeadings[direction.heading]
-                    else
-                        button(
-                            key=directionIndex
+                            onClick={ () => setCurrentDirection(directionIndex) }
+                        >
+                            { i18n.directionHeadings[direction.heading] }
+                        </button>
+                    ) : (
+                        <button
+                            key={ directionIndex }
                             role="tab"
                             aria-selected="false"
-                            onClick=() => setCurrentDirection(directionIndex)
-                        )= i18n.directionHeadings[direction.heading]
-            ul.stop-list-tree
-                for segment, segmentIndex in details.directions[currentDirection].segments
-                    if segment.length > 1
-                        .branch-set(key=segmentIndex)
-                            for branch, branchIndex in segment
-                                if branchIndex == 0
-                                    .branch-base(key=branchIndex)
-                                        | #{renderBranch(branch)}
-                                else
-                                    .branch-deviation(key=branchIndex)
-                                        | #{renderBranch(branch)}
-                    else 
-                        | #{renderBranch(segment[0])}
-    `;
+                            onClick={ () => setCurrentDirection(directionIndex) }
+                        >
+                            { i18n.directionHeadings[direction.heading] }
+                        </button>
+                    );
+                }) }
+            </div>
+            <ul className="stop-list-tree">
+                { details.directions[currentDirection].segments.map((segment, segmentIndex) => {
+                    return (segment.length > 1) ? (
+                        <div className="branch-set" key={ segmentIndex }>
+                            { segment.map((branch, branchIndex) => (
+                                <div className={ branchIndex == 0 ? "branch-base" : "branch-deviation" } key={ branchIndex }>
+                                    { renderBranch(branch) }
+                                </div>
+                            )) }
+                        </div>
+                    ) : (
+                        renderBranch(segment[0])
+                    );
+                }) }
+            </ul>
+        </div>
+    );
 }

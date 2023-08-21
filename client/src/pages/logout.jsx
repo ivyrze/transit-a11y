@@ -14,13 +14,11 @@ export const LogoutPage = () => {
     
     useEffect(() => setAuth({}), [ setAuth ]);
     
-    return pug`
-        .notice-fullscreen
-            Icon(name= "login")
-            h1 Logged out
-            p
-                |You've successfully been logged out. Would you like
-                |to #[Link(to="/") return home]
-                |or #[Link(to="/account/login") log back in]?
-    `;
+    return (
+        <div className="notice-fullscreen">
+            <Icon name="login" />
+            <h1>Logged out</h1>
+            <p>You've successfully been logged out. Would you like to <Link to="/">return home</Link> or <Link to="/account/login">log back in</Link>?</p>
+        </div>
+    );
 };

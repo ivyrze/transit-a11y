@@ -44,57 +44,79 @@ export const Review = props => {
     let initialValues = structuredClone(details);
     delete initialValues.id;
     
-    return pug`
-        article.review-single
-            .review-header
-                if details.author
-                    img.profile-picture(
-                        src=details.author.avatar
-                        alt="Profile picture"
-                    )
-                    Link(
-                        to="/profile/" + details.author.username
-                    ).review-author= details.author.username
-                else if details.stop
-                    Link(
-                        to="/stop/" + details.stop.id
-                    ).review-stop= details.stop.name
-                TimeAgo.review-timestamp(
-                    date=details.timestamp
+    return (
+        <article className="review-single">
+            <div className="review-header">
+                { details.author ? (
+                    <>
+                        <img className="profile-picture"
+                            src={ details.author.avatar }
+                            alt="Profile picture"
+                        />
+                        <Link
+                            to={ "/profile/" + details.author.username }
+                            className="review-author"
+                        >
+                            { details.author.username }
+                        </Link>
+                    </>
+                ) : (
+                    <Link
+                        to={ "/stop/" + details.stop.id }
+                        className="review-stop"
+                    >
+                        { details.stop.name }
+                    </Link>
+                ) }
+                <TimeAgo
+                    className="review-timestamp"
+                    date={ details.timestamp }
                     title=""
-                )
-                if showOptions
-                    Menu
-                        if allowEditing
-                            button(onClick=startEditing)
-                                Icon(name= "pencil")
-                                | Edit
-                        button(onClick=handleDelete)
-                            Icon(name= "trash")
-                            | Delete
-            unless editing
-                .review-accessibility-state(
-                    className="state-" + state.style
-                )
-                    Icon(name= state.style)
-                    = state.heading
-                if details.comments
-                    p= details.comments
-                if details.attachments
-                    AttachmentViewer(attachments=details.attachments)
-            else
-                FormWrapper(
+                />
+                { showOptions && (
+                    <Menu>
+                        { allowEditing && (
+                            <button onClick={ startEditing }>
+                                <Icon name= "pencil" />
+                                Edit
+                            </button>
+                        ) }
+                        <button onClick={ handleDelete }>
+                            <Icon name="trash" />
+                            Delete
+                        </button>
+                    </Menu>
+                ) }
+            </div>
+            { !editing ? (
+                <>
+                    <div className={ "review-accessibility-state state-" + state.style }>
+                        <Icon name={ state.style } />
+                        { state.heading }
+                    </div>
+                    { details.comments && (
+                        <p>{ details.comments }</p>
+                    ) }
+                    { details.attachments && (
+                        <AttachmentViewer attachments={ details.attachments } />
+                    ) }
+                </>
+            ) : (
+                <FormWrapper
                     action="/api/edit-review"
                     method="post"
                     autoComplete="off"
-                    initialValues=initialValues
-                    onSubmit=handleFormSubmit
-                    onResponse=stopEditing
-                )
-                    ReviewFields(
-                        reviewId=details.id
-                        compactView=true
-                        onCancel=stopEditing
-                    )
-    `;
+                    initialValues={ initialValues }
+                    onSubmit={ handleFormSubmit }
+                    onResponse={ stopEditing }
+                >
+                    <ReviewFields
+                        reviewId={ details.id }
+                        compactView={ true }
+                        onCancel={ stopEditing }
+                    />
+                </FormWrapper>
+            ) }
+        </article>
+    );
 };

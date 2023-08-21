@@ -16,22 +16,27 @@ import { SignUpPage } from './pages/sign-up';
 import { ErrorPage } from './pages/error';
 
 export const App = () => {
-    return pug`
-        ThemeProvider
-            ErrorHandler
-                AuthProvider
-                    Routes
-                        Route(path="/" element=${pug`IndexPage`})
-                            Route(path="/about" element=${pug`About`})
-                            Route(path="/stop/:stop" element=${pug`StopDetails`})
-                            Route(path="/review/:stop" element=${pug`ReviewForm`})
-                            Route(path="/routes" element=${pug`RouteList`})
-                            Route(path="/route/:route" element=${pug`RouteDetails`})
-                        Route(path="/agency/:agency" element=${pug`IndexPage`})
-                        Route(path="/profile/:username" element=${pug`ProfilePage`})
-                        Route(path="/account/login" element=${pug`LoginPage`})
-                        Route(path="/account/logout" element=${pug`LogoutPage`})
-                        Route(path="/account/sign-up" element=${pug`SignUpPage`})
-                        Route(path="*" element=${pug`ErrorPage(status=404, message="Not Found")`})
-    `;
+    return (
+        <ThemeProvider>
+            <ErrorHandler>
+                <AuthProvider>
+                    <Routes>
+                        <Route path="/" element={ <IndexPage /> }>
+                            <Route path="/about" element={ <About /> } />
+                            <Route path="/stop/:stop" element={ <StopDetails /> } />
+                            <Route path="/review/:stop" element={ <ReviewForm /> } />
+                            <Route path="/routes" element={ <RouteList /> } />
+                            <Route path="/route/:route" element={ <RouteDetails /> } />
+                        </Route>
+                        <Route path="/agency/:agency" element={ <IndexPage /> } />
+                        <Route path="/profile/:username" element={ <ProfilePage /> } />
+                        <Route path="/account/login" element={ <LoginPage /> } />
+                        <Route path="/account/logout" element={ <LogoutPage /> } />
+                        <Route path="/account/sign-up" element={ <SignUpPage /> } />
+                        <Route path="*" element={ <ErrorPage status={ 404 } message="Not Found" /> } />
+                    </Routes>
+                </AuthProvider>
+            </ErrorHandler>
+        </ThemeProvider>
+    );
 };

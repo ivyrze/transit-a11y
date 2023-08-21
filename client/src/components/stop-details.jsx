@@ -27,63 +27,84 @@ export const StopDetails = () => {
     
     const state = i18n.accessibilityStates[details.accessibility];
     
-    return pug`
-        .sidebar-card.stop-details-card
-            .card-header
-                h2= details.name
-                button.button-rounded.card-close(
+    return (
+        <div className="sidebar-card stop-details-card">
+            <div className="card-header">
+                <h2>{ details.name }</h2>
+                <button
+                    className="button-rounded card-close"
                     aria-label="Close"
-                    onClick=closeCard
-                )
-                    Icon(name= "close")
-            span.subtitle= i18n.stopSubheadings[details.agency.vehicle]
-            ul.stop-tags-container
-                li.stop-accessibility-state(
-                    className="state-" + state.style
-                )
-                    Icon(name= state.style)
-                    = state.tag
-                each tag in details.tags
-                    li.stop-tag(key=tag)
-                        Icon(name= tag)
-                        = i18n.tagLabels[tag]
-            p.stop-accessibility-info
-                | ${details.alert?.description ?? details.description ?? state.description}
-            if details.reviews
-                .review-container
-                    if details.reviews.length
-                        button.review-drawer-toggle(
-                            aria-expanded=expanded
+                    onClick={ closeCard }
+                >
+                    <Icon name="close" />
+                </button>
+            </div>
+            <span className="subtitle">
+                { i18n.stopSubheadings[details.agency.vehicle] }
+            </span>
+            <ul className="stop-tags-container">
+                <li className={ "stop-accessibility-state state-" + state.style }>
+                    <Icon name={ state.style } />
+                    { state.tag }
+                </li>
+                { details.tags.map(tag => (
+                    <li className="stop-tag" key={ tag }>
+                        <Icon name={ tag } />
+                        { i18n.tagLabels[tag] }
+                    </li>
+                )) }
+            </ul>
+            <p className="stop-accessibility-info">
+                { details.alert?.description ?? details.description ?? state.description }
+            </p>
+            { details.reviews && (
+                <div className="review-container">
+                    { details.reviews.length > 0 && (
+                        <button
+                            className="review-drawer-toggle"
+                            aria-expanded={ expanded }
                             aria-controls="review-drawer"
-                            onClick=() => setExpanded(!expanded)
-                        )= i18n.reviewsToggleStates[expanded ? 'hide' : 'show']
-                            Icon(name= "chevron")
-                    if !details.reviews.length || expanded
-                        #review-drawer
-                            each review in details.reviews
-                                Review(
-                                    review=review
-                                    key=review.id
-                                    showOptions=false
-                                )
-                            button.review-contribute(
-                                onClick=switchToReviewForm
-                            )
-                                Icon(name= "add")
-                                | Contribute a review
-            if details.alert
-                a.stop-alert-link.link-external(
-                    href=details.alert.url
+                            onClick={ () => setExpanded(!expanded) }
+                        >
+                            { i18n.reviewsToggleStates[expanded ? 'hide' : 'show'] }
+                            <Icon name="chevron" />
+                        </button>
+                    ) }
+                    { (!details.reviews.length || expanded) && (
+                        <div id="review-drawer">
+                            { details.reviews.map(review => (
+                                <Review
+                                    review={ review }
+                                    key={ review.id }
+                                    showOptions={ false }
+                                />
+                            )) }
+                            <button
+                                className="review-contribute"
+                                onClick={ switchToReviewForm }
+                            >
+                                <Icon name="add" />
+                                Contribute a review
+                            </button>
+                        </div>
+                    ) }
+                </div>
+            ) }
+            { details.alert && (
+                <a
+                    className="stop-alert-link link-external"
+                    href={ details.alert.url }
                     target="_blank"
-                )
-                    | View service alert details
-                    Icon(name= "link")
-            if !details.alert && !details.reviews
-                span.source-link
-                    | Source: 
-                    a(
-                        target="_blank"
-                        href=details.agency.url
-                    )= details.agency.name
-    `;
+                >
+                    View service alert details
+                    <Icon name="link" />
+                </a>
+            ) }
+            { (!details.alert && !details.reviews) && (
+                <span className="source-link">
+                    Source: <a target="_blank" href={ details.agency.url }>{ details.agency.name }</a>
+                </span>
+            ) }
+        </div>
+    );
 };
