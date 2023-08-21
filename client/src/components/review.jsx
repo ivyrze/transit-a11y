@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import TimeAgo from 'react-timeago';
+import { MenuItem } from '@ariakit/react';
+import { Menu } from './menu';
 import { Link } from 'react-router-dom';
 import { Icon } from './icon';
-import { Menu } from './menu';
 import { FormWrapper } from './form-wrapper';
 import { ReviewFields } from './review-fields';
 import { AttachmentViewer } from './attachment-viewer';
@@ -76,15 +77,19 @@ export const Review = props => {
                 { showOptions && (
                     <Menu>
                         { allowEditing && (
-                            <button onClick={ startEditing }>
-                                <Icon name= "pencil" />
-                                Edit
-                            </button>
+                            <MenuItem render={
+                                <button onClick={ startEditing }>
+                                    <Icon name= "pencil" />
+                                    Edit
+                                </button>
+                            } />
                         ) }
-                        <button onClick={ handleDelete }>
-                            <Icon name="trash" />
-                            Delete
-                        </button>
+                        <MenuItem render={
+                            <button onClick={ handleDelete }>
+                                <Icon name="trash" />
+                                Delete
+                            </button>
+                        } />
                     </Menu>
                 ) }
             </div>

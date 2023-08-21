@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "dependencies": {
+    "@ariakit/react": "^0.2.16",
     "@vitejs/plugin-react": "^4.0.0",
     "mapbox-gl": "^2.15.0",
     "photoswipe": "^5.3.7",

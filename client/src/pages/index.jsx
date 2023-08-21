@@ -1,8 +1,9 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { Link, Outlet, useParams, useNavigate, useMatch } from 'react-router-dom';
+import { MenuGroup, MenuItem } from '@ariakit/react';
+import { Menu } from '../components/menu';
 import { Search } from '../components/search';
 import { Map } from '../components/map';
-import { Menu } from '../components/menu';
 import { Icon } from '../components/icon';
 import { useErrorStatus } from '../hooks/error';
 import { useAuth } from '../hooks/auth';
@@ -59,31 +60,39 @@ export const IndexPage = () => {
                 </h1>
                 <div id="main-menu">
                     <Menu iconName="menu">
-                        <div className="menu-group">
-                            <Link to="/routes">
-                                <Icon name="route" />
-                                Show nearby routes
-                            </Link>
-                        </div>
-                        <div className="menu-group">
+                        <MenuGroup className="menu-group">
+                            <MenuItem render={
+                                <Link to="/routes">
+                                    <Icon name="route" />
+                                    Show nearby routes
+                                </Link>
+                            } />
+                        </MenuGroup>
+                        <MenuGroup className="menu-group">
                             { auth && auth.username ? (
                                 <>
-                                    <Link to={ "/profile/" + auth.username }>
-                                        <Icon name="user" />
-                                        View profile
-                                    </Link>
-                                    <Link to="/account/logout">
-                                        <Icon name="login" />
-                                        Logout
-                                    </Link>
+                                    <MenuItem render={
+                                        <Link to={ "/profile/" + auth.username }>
+                                            <Icon name="user" />
+                                            View profile
+                                        </Link>
+                                    } />
+                                    <MenuItem render={
+                                        <Link to="/account/logout">
+                                            <Icon name="login" />
+                                            Logout
+                                        </Link>
+                                    } />
                                 </>
                             ) : (
-                                <Link to="/account/login">
-                                    <Icon name="login" />
-                                    Login
-                                </Link>
+                                <MenuItem render={
+                                    <Link to="/account/login">
+                                        <Icon name="login" />
+                                        Login
+                                    </Link>
+                                } />
                             ) }
-                        </div>
+                        </MenuGroup>
                     </Menu>
                 </div>
                 <Search

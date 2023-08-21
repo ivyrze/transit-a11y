@@ -223,7 +223,8 @@ fieldset,
 .menu-popup a {
     transition: background-color 0.2s ease;
     
-    &:hover {
+    &:hover,
+    &[data-focus-visible] {
         background-color: rgba(0, 0, 0, 0.05);
         
         @include dark {
@@ -282,11 +283,11 @@ a.button-rounded {
         transition: opacity 0.3s ease, background 0.2s ease;
         
         &:hover,
-        &.active {
+        &[data-active-item] {
             opacity: 1;
         }
         
-        &.active {
+        &[data-active-item] {
             background: #fff;
             box-shadow: 0 1px 30px rgba(0, 0, 0, 0.1);
             
@@ -298,16 +299,12 @@ a.button-rounded {
 }
 
 .menu-container {
-    position: relative;
-    
     .menu-toggle {
         color: #8b8b8b;
         vertical-align: -3px;
     }
     
     .menu-popup {
-        position: absolute;
-        right: 0;
         background: #f9f9f9;
         border-radius: 10px;
         box-shadow: 0 4px 18px rgb(0 0 0 / 15%);
@@ -321,6 +318,7 @@ a.button-rounded {
         
         button,
         a {
+            display: block;
             width: 100%;
             padding: 6px 12px;
             border-radius: 7px;

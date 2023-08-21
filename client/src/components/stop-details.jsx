@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, useOutletContext } from 'react-router-dom';
+import { Disclosure, DisclosureContent, useDisclosureStore } from '@ariakit/react';
 import { useAuth } from '../hooks/auth';
 import { Review } from './review';
 import { Icon } from './icon';
@@ -8,7 +9,8 @@ import i18n from '../i18n-strings.json';
 export const StopDetails = () => {
     const { details } = useOutletContext();
     
-    const [ expanded, setExpanded ] = useState(false);
+    const disclosureStore = useDisclosureStore();
+    const disclosureState = disclosureStore.useState();
     const { auth, setAuthRedirect } = useAuth();
     const navigate = useNavigate();
     
@@ -26,6 +28,16 @@ export const StopDetails = () => {
     const closeCard = () => navigate('/');
     
     const state = i18n.accessibilityStates[details.accessibility];
+    
+    const ContributeButton = () => (
+        <button
+            className="review-contribute"
+            onClick={ switchToReviewForm }
+        >
+            <Icon name="add" />
+            Contribute a review
+        </button>
+    );
     
     return (
         <div className="sidebar-card stop-details-card">
@@ -59,34 +71,28 @@ export const StopDetails = () => {
             </p>
             { details.reviews && (
                 <div className="review-container">
-                    { details.reviews.length > 0 && (
-                        <button
-                            className="review-drawer-toggle"
-                            aria-expanded={ expanded }
-                            aria-controls="review-drawer"
-                            onClick={ () => setExpanded(!expanded) }
-                        >
-                            { i18n.reviewsToggleStates[expanded ? 'hide' : 'show'] }
-                            <Icon name="chevron" />
-                        </button>
-                    ) }
-                    { (!details.reviews.length || expanded) && (
-                        <div id="review-drawer">
-                            { details.reviews.map(review => (
-                                <Review
-                                    review={ review }
-                                    key={ review.id }
-                                    showOptions={ false }
-                                />
-                            )) }
-                            <button
-                                className="review-contribute"
-                                onClick={ switchToReviewForm }
+                    { details.reviews.length > 0 ? (
+                        <>
+                            <Disclosure
+                                className="review-drawer-toggle"
+                                store={ disclosureStore }
                             >
-                                <Icon name="add" />
-                                Contribute a review
-                            </button>
-                        </div>
+                                { i18n.reviewsToggleStates[disclosureState.open ? 'hide' : 'show'] }
+                                <Icon name="chevron" />
+                            </Disclosure>
+                            <DisclosureContent store={ disclosureStore }>
+                                { details.reviews.map(review => (
+                                    <Review
+                                        review={ review }
+                                        key={ review.id }
+                                        showOptions={ false }
+                                    />
+                                )) }
+                                <ContributeButton />
+                            </DisclosureContent>
+                        </>
+                    ) : (
+                        <ContributeButton />
                     ) }
                 </div>
             ) }
