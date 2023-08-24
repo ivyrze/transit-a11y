@@ -10,6 +10,7 @@ import { AccessibilityState } from './accessibility-state';
 import { AttachmentViewer } from './attachment-viewer';
 import { useErrorStatus } from '../hooks/error';
 import { queryHelper } from '../hooks/query';
+import { getStatePriority } from '../../../common/a11y-states';
 import i18n from '../i18n-strings.json';
 
 export const Review = props => {
@@ -40,6 +41,10 @@ export const Review = props => {
                     data.getAll(key) : data.get(key)
             ]
         ));
+        
+        newDetails?.accessibility.sort((a, b) => {
+            return getStatePriority(a) - getStatePriority(b);
+        });
         
         setDetails({ ...details, ...newDetails });
         stopEditing();

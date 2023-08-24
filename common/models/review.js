@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import { AttachmentSchema } from './attachment.js';
+import { getStatePriority } from '../a11y-states.js';
 
 const ReviewSchema = new mongoose.Schema({
     _id: String,
@@ -23,6 +24,14 @@ const ReviewSchema = new mongoose.Schema({
     versionKey: false
 });
 
+const PriorityTrigger = async function (review) {
+    const accessibility = this.accessibility.sort((a, b) => {
+        return getStatePriority(a) - getStatePriority(b);
+    });
+    
+    await this.updateOne({ accessibility });
+};
+
 const ConsensusTrigger = async function (review) {
     await review.populate('stop');
     await review.stop.consensus();
@@ -36,6 +45,7 @@ const CleanupTrigger = function (review) {
         Promise.resolve();
 };
 
+ReviewSchema.post('save', PriorityTrigger);
 ReviewSchema.post('save', ConsensusTrigger);
 ReviewSchema.post('deleteOne', { document: true }, ConsensusTrigger);
 ReviewSchema.post('deleteOne', { document: true }, CleanupTrigger);
