@@ -66,7 +66,7 @@ export const ReviewFields = props => {
                                 .map(state => state[0]);
                             
                             return (
-                                <SelectGroup className="menu-group">
+                                <SelectGroup className="menu-group" key={ group }>
                                     <SelectGroupLabel className="menu-group-label">
                                         <AccessibilityState
                                             state={ groupItems[0] }
@@ -76,6 +76,7 @@ export const ReviewFields = props => {
                                     </SelectGroupLabel>
                                     { groupItems.map(state => (
                                         <SelectItem
+                                            key={ state }
                                             value={ state }
                                             className="menu-item"
                                         >

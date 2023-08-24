@@ -42,9 +42,10 @@ export const Review = props => {
             ]
         ));
         
-        newDetails?.accessibility.sort((a, b) => {
+        newDetails.accessibility?.sort((a, b) => {
             return getStatePriority(a) - getStatePriority(b);
         });
+        newDetails.accessibility ??= [ 'unknown' ];
         
         setDetails({ ...details, ...newDetails });
         stopEditing();
