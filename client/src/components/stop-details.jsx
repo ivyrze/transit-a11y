@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import { Disclosure, DisclosureContent, useDisclosureStore } from '@ariakit/react';
 import { useAuth } from '../hooks/auth';
-import { AccessibilityState, findAccessibilityStrings } from './accessibility-state';
+import { AccessibilityState } from './accessibility-state';
 import { Review } from './review';
 import { Icon } from './icon';
 import i18n from '../i18n-strings.json';
@@ -70,7 +70,7 @@ export const StopDetails = () => {
             </ul>
             <p className="stop-accessibility-info">
                 { details.alert?.description ?? details.description ??
-                    findAccessibilityStrings(details.accessibility).description }
+                    i18n.accessibilityStates[details.accessibility].description }
             </p>
             { details.reviews && (
                 <div className="review-container">

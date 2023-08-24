@@ -1,6 +1,6 @@
 import { createClient } from '@sanity/client';
-import { sanityOptions } from '../../utils.js';
-import { Stop } from '../models/stop.js';
+import { sanityOptions } from '../../common/utils.js';
+import { Stop } from '../../common/models/stop.js';
 
 import * as cta from './agencies/chicago-cta.js';
 import * as trimet from './agencies/portland-trimet.js';

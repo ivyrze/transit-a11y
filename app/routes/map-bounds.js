@@ -1,7 +1,7 @@
 import express from 'express';
 import promiseRouter from 'express-promise-router';
 import httpErrors from 'http-errors';
-import { Agency } from '../models/agency.js';
+import { Agency } from '../../common/models/agency.js';
 
 export const router = promiseRouter();
 

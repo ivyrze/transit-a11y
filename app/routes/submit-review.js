@@ -5,9 +5,10 @@ import httpErrors from 'http-errors';
 import multer from 'multer';
 import sharp from 'sharp';
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
-import { Review } from '../models/review.js';
-import { Stop } from '../models/stop.js';
-import { errorFormatter, generateUUID } from '../../utils.js';
+import { Review } from '../../common/models/review.js';
+import { Stop } from '../../common/models/stop.js';
+import { accessibilityStates } from '../../common/a11y-states.js';
+import { errorFormatter, generateUUID } from '../../common/utils.js';
 
 export const router = promiseRouter();
 
@@ -41,23 +42,10 @@ const schema = {
     },
     'accessibility.*': {
         in: 'body',
-        isIn: { options: [[
-            'unknown',
-            'accessible',
-            'construction',
-            'other-temporary',
-            'parking',
-            'limited-maneuverability',
-            'poor-conditions',
-            'other-complicated',
-            'missing-landing',
-            'insufficient-dimensions',
-            'insufficient-curb',
-            'uneven-surface',
-            'missing-paths',
-            'obstacles',
-            'other-inaccessible'
-        ]] }
+        isIn: { options: [
+            [ ...accessibilityStates.keys() ]
+                .filter(state => !state.unreviewable)
+        ] }
     },
     comments: {
         in: 'body',

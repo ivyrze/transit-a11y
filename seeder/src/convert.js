@@ -2,7 +2,7 @@ import combine from '@turf/combine';
 import * as gtfsUtils from 'gtfs/lib/geojson-utils.js';
 import * as turfUtils from '@turf/helpers';
 import turfDistance from '@turf/distance';
-import { Geometry } from '../../app/models/geometry.js';
+import { Geometry } from '../../common/models/geometry.js';
 
 const schema = {
     routes: [

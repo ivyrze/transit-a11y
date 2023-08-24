@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
 import gravatar from 'gravatar';
-import { pojoCleanup } from '../../utils.js';
+import { pojoCleanup } from '../../common/utils.js';
 
 const UserSchema = new mongoose.Schema({
     _id: String,

@@ -9,7 +9,7 @@ import { extend } from './src/extend.js';
 import { store } from './src/store.js';
 import { geojson, link } from './src/convert.js';
 
-import { attachExitHandler, attachExceptionHandler } from '../utils.js';
+import { attachExitHandler, attachExceptionHandler } from '../common/utils.js';
 
 // Read config file
 dotenv.config({ path: '../.env' });

@@ -1,7 +1,7 @@
 import express from 'express';
 import promiseRouter from 'express-promise-router';
 import httpErrors from 'http-errors';
-import { User } from '../models/user.js';
+import { User } from '../../common/models/user.js';
 
 export const router = promiseRouter();
 

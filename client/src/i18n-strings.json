@@ -29,136 +29,78 @@
         "trolleybus": "Bus route",
         "monorail": "Rail route"
     },
-    "accessibilityGroups": [
-        {
-            "name": "unknown",
-            "style": "unknown",
-            "heading": "Unknown state"
-        },
-        {
-            "name": "accessible",
-            "style": "accessible",
-            "heading": "Likely accessible"
-        },
-        {
-            "name": "temporary-inaccessible",
-            "style": "warning",
-            "heading": "Temporarily inaccessible"
-        },
-        {
-            "name": "complicated",
-            "style": "warning",
-            "heading": "It's complicated"
-        },
-        {
-            "name": "inaccessible",
-            "style": "inaccessible",
-            "heading": "Not accessible"
-        }
-    ],
-    "accessibilityStates": [
-        {
-            "name": "unknown",
+    "accessibilityGroups": {
+        "unknown": "Unknown state",
+        "accessible": "Likely accessible",
+        "temporary-inaccessible": "Temporarily inaccessible",
+        "complicated": "It's complicated",
+        "inaccessible": "Not accessible"
+    },
+    "accessibilityStates": {
+        "unknown": {
             "heading": "Unknown accessibility state",
-            "description": "There isn't any accessibility data available about this stop. Consider adding your own review below.",
-            "group": "unknown"
+            "description": "There isn't any accessibility data available about this stop. Consider adding your own review below."
         },
-        {
-            "name": "accessible",
+        "accessible": {
             "heading": "Usually free of access barriers",
-            "description": "This stop is likely accessible and is reported in working order.",
-            "group": "accessible"
+            "description": "This stop is likely accessible and is reported in working order."
         },
-        {
-            "name": "service-alert",
-            "group": "temporary-inaccessible",
-            "unreviewable": true
-        },
-        {
-            "name": "construction",
+        "construction": {
             "heading": "Construction blocking bus lane or stop",
-            "description": "This stop is temporarily affected by construction which blocks busses or riders from reaching the stop.",
-            "group": "temporary-inaccessible"
+            "description": "This stop is temporarily affected by construction which blocks busses or riders from reaching the stop."
         },
-        {
-            "name": "other-temporary",
+        "other-temporary": {
             "heading": "Other – temporarily inaccessible",
-            "description": "This stop is temporarily inaccessible. Refer to the reviews below for more information.",
-            "group": "temporary-inaccessible"
+            "description": "This stop is temporarily inaccessible. Refer to the reviews below for more information."
         },
-        {
-            "name": "parking",
+        "parking": {
             "heading": "Street parking often blocking curb",
-            "description": "This stop is often affected by street parking which blocks direct access to the curb.",
-            "group": "complicated"
+            "description": "This stop is often affected by street parking which blocks direct access to the curb."
         },
-        {
-            "name": "limited-maneuverability",
+        "limited-maneuverability": {
             "heading": "Limited maneuverability for some riders",
-            "description": "This stop doesn’t provide enough space or level concrete to maneuver while using certain types of mobility aids.",
-            "group": "complicated"
+            "description": "This stop doesn’t provide enough space or level concrete to maneuver while using certain types of mobility aids."
         },
-        {
-            "name": "poor-conditions",
+        "poor-conditions": {
             "heading": "Poor conditions in surrounding areas",
-            "description": "This stop has accessibility barriers in the general area surrounding it which may affect connections with transit or destinations.",
-            "group": "complicated"
+            "description": "This stop has accessibility barriers in the general area surrounding it which may affect connections with transit or destinations."
         },
-        {
-            "name": "other-complicated",
+        "other-complicated": {
             "heading": "Other – it's complicated",
-            "description": "This stop may or may not be accessible depending on your individual circumstances. Refer to the reviews below for more information.",
-            "group": "complicated"
+            "description": "This stop may or may not be accessible depending on your individual circumstances. Refer to the reviews below for more information."
         },
-        {
-            "name": "inaccessible",
-            "description": "This stop has significant access barriers and is not equipped with alternative entryways.",
-            "group": "inaccessible",
-            "unreviewable": true
+        "inaccessible": {
+            "description": "This stop has significant access barriers and is not equipped with alternative entryways."
         },
-        {
-            "name": "missing-landing",
+        "missing-landing": {
             "heading": "Missing landing pad for ramp deployment",
-            "description": "This stop doesn’t have an inlet landing pad for the ramp to deploy onto.",
-            "group": "inaccessible"
+            "description": "This stop doesn’t have an inlet landing pad for the ramp to deploy onto."
         },
-        {
-            "name": "insufficient-dimensions",
+        "insufficient-dimensions": {
             "heading": "Insufficient landing pad dimensions",
-            "description": "This stop doesn’t have a landing pad large enough to accommodate many types of mobility aids.",
-            "group": "inaccessible"
+            "description": "This stop doesn’t have a landing pad large enough to accommodate many types of mobility aids."
         },
-        {
-            "name": "insufficient-curb",
+        "insufficient-curb": {
             "heading": "Insufficient curb height to create shallow ramp angle",
-            "description": "This stop doesn’t have a raised curb to aid in creating a suitable ramp angle.",
-            "group": "inaccessible"
+            "description": "This stop doesn’t have a raised curb to aid in creating a suitable ramp angle."
         },
-        {
-            "name": "uneven-surface",
+        "uneven-surface": {
             "heading": "Uneven surface for alighting or deploying",
-            "description": "This stop has an uneven or unstable surface which makes it unsuitable to safely board, or which holds the ramp from fully touching down.",
-            "group": "inaccessible"
+            "description": "This stop has an uneven or unstable surface which makes it unsuitable to safely board, or which holds the ramp from fully touching down."
         },
-        {
-            "name": "missing-paths",
+        "missing-paths": {
             "heading": "Missing pathways to any surrounding areas",
-            "description": "This stop is missing accessible pathways, such as sidewalks, to any possible nearby destinations.",
-            "group": "inaccessible"
+            "description": "This stop is missing accessible pathways, such as sidewalks, to any possible nearby destinations."
         },
-        {
-            "name": "obstacles",
+        "obstacles": {
             "heading": "Unavoidable obstacles",
-            "description": "This stop has permanent, unavoidable obstacles which prevent boarding.",
-            "group": "inaccessible"
+            "description": "This stop has permanent, unavoidable obstacles which prevent boarding."
         },
-        {
-            "name": "other-inaccessible",
+        "other-inaccessible": {
             "heading": "Other – not accessible",
-            "description": "This stop is not accessible. Refer to the reviews below for more information.",
-            "group": "inaccessible"
+            "description": "This stop is not accessible. Refer to the reviews below for more information."
         }
-    ],
+    },
     "tagLabels": {
         "at-grade": "At-grade",
         "above-grade": "Above-grade",

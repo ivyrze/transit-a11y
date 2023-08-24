@@ -2,9 +2,9 @@ import express from 'express';
 import validator from 'express-validator';
 import promiseRouter from 'express-promise-router';
 import httpErrors from 'http-errors';
-import { Route } from '../models/route.js';
-import { Stop } from '../models/stop.js';
-import { Agency } from '../models/agency.js';
+import { Route } from '../../common/models/route.js';
+import { Stop } from '../../common/models/stop.js';
+import { Agency } from '../../common/models/agency.js';
 
 export const router = promiseRouter();
 

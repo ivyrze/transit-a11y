@@ -2,9 +2,9 @@ import express from 'express';
 import validator from 'express-validator';
 import promiseRouter from 'express-promise-router';
 import httpErrors from 'http-errors';
-import { User } from '../models/user.js';
-import { Review } from '../models/review.js';
-import { pojoCleanup } from '../../utils.js';
+import { User } from '../../common/models/user.js';
+import { Review } from '../../common/models/review.js';
+import { pojoCleanup } from '../../common/utils.js';
 
 export const router = promiseRouter();
 

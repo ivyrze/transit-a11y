@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { pojoCleanup } from '../../utils.js';
+import { pojoCleanup } from '../../common/utils.js';
 
 const RouteSchema = new mongoose.Schema({
     _id: String,

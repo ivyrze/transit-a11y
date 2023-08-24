@@ -1,5 +1,5 @@
 import { createClient } from '@sanity/client';
-import { sanityOptions } from '../../utils.js';
+import { sanityOptions } from '../../common/utils.js';
 
 export const extend = async (agency, stops, routes, id) => {
     const client = createClient(sanityOptions);

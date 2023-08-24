@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import { AlertSchema } from './alert.js';
-import { pojoCleanup } from '../../utils.js';
-import i18n from '../../client/src/i18n-strings.json' assert { type: "json" };
+import { pojoCleanup } from '../../common/utils.js';
+import { getStatePriority } from '../a11y-states.js';
 
 const StopSchema = new mongoose.Schema({
     _id: String,
@@ -46,8 +46,8 @@ StopSchema.method({
         states.sort((a, b) => {
             return (states.filter(d => b == d).length -
                 states.filter(c => a == c).length) ||
-                (i18n.accessibilityStates.findIndex(d => d.name === b) -
-                i18n.accessibilityStates.findIndex(c => c.name === a));
+                (getStatePriority(a) -
+                getStatePriority(b));
         });
         
         const accessibility = states[0] ?? 'unknown';

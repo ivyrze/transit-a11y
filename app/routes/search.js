@@ -2,9 +2,9 @@ import express from 'express';
 import validator from 'express-validator';
 import promiseRouter from 'express-promise-router';
 import httpErrors from 'http-errors';
-import { pojoCleanup, colorSort } from '../../utils.js';
-import { Stop } from '../models/stop.js'
-import { Route } from '../models/route.js'
+import { pojoCleanup, colorSort } from '../../common/utils.js';
+import { Stop } from '../../common/models/stop.js'
+import { Route } from '../../common/models/route.js'
 
 export const router = promiseRouter();
 

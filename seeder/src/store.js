@@ -1,8 +1,8 @@
 import mongoose from 'mongoose';
-import { Agency } from '../../app/models/agency.js';
-import { Stop } from '../../app/models/stop.js';
-import { Route } from '../../app/models/route.js';
-import { Review } from '../../app/models/review.js';
+import { Agency } from '../../common/models/agency.js';
+import { Stop } from '../../common/models/stop.js';
+import { Route } from '../../common/models/route.js';
+import { Review } from '../../common/models/review.js';
 
 const schema = {
     agencies: {

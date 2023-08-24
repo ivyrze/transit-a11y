@@ -3,6 +3,7 @@ import { Select, SelectArrow, SelectPopover, SelectGroup, SelectGroupLabel, Sele
 import { Icon } from './icon';
 import i18n from '../i18n-strings.json';
 import { AccessibilityState } from './accessibility-state';
+import { accessibilityGroups, accessibilityStates } from '../../../common/a11y-states';
 
 export const ReviewFields = props => {
     const { reviewId, stopId, compactView, onCancel } = props;
@@ -56,29 +57,30 @@ export const ReviewFields = props => {
                     fitViewport={ true }
                     sameWidth
                 >
-                    { i18n.accessibilityGroups
-                        .filter(group => group.name !== 'unknown')
+                    { [ ...accessibilityGroups.keys() ]
+                        .filter(group => group !== 'unknown')
                         .map(group => {
-                            const groupItems = i18n.accessibilityStates
-                                .filter(state => state.group === group.name)
-                                .filter(state => !state.unreviewable);
-                                
+                            const groupItems = [ ...accessibilityStates ]
+                                .filter(state => state[1].group === group)
+                                .filter(state => !state[1].unreviewable)
+                                .map(state => state[0]);
+                            
                             return (
                                 <SelectGroup className="menu-group">
                                     <SelectGroupLabel className="menu-group-label">
                                         <AccessibilityState
-                                            state={ groupItems[0].name }
+                                            state={ groupItems[0] }
                                             showHeading="group"
                                             showIcon={ false }
                                         />
                                     </SelectGroupLabel>
                                     { groupItems.map(state => (
                                         <SelectItem
-                                            value={ state.name }
+                                            value={ state }
                                             className="menu-item"
                                         >
                                             <AccessibilityState
-                                                state={ state.name }
+                                                state={ state }
                                                 showIcon={ false }
                                             />
                                             <SelectItemCheck className="icon icon-check" />

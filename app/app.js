@@ -27,7 +27,7 @@ import { router as signUpRouter } from './routes/account/sign-up.js';
 import * as alerts from './alerts/index.js';
 import * as tiles from './routes/map-tiles.js';
 
-import { attachExitHandler } from '../utils.js';
+import { attachExitHandler } from '../common/utils.js';
 
 dotenv.config({ path: '../.env' });
 

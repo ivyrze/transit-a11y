@@ -2,9 +2,10 @@ import express from 'express';
 import validator from 'express-validator';
 import promiseRouter from 'express-promise-router';
 import httpErrors from 'http-errors';
-import { Review } from '../models/review.js';
-import { User } from '../models/user.js';
-import { errorFormatter } from '../../utils.js';
+import { Review } from '../../common/models/review.js';
+import { User } from '../../common/models/user.js';
+import { accessibilityStates } from '../../common/a11y-states.js';
+import { errorFormatter } from '../../common/utils.js';
 
 export const router = promiseRouter();
 
@@ -21,23 +22,10 @@ const schema = {
     },
     'accessibility.*': {
         in: 'body',
-        isIn: { options: [[
-            'unknown',
-            'accessible',
-            'construction',
-            'other-temporary',
-            'parking',
-            'limited-maneuverability',
-            'poor-conditions',
-            'other-complicated',
-            'missing-landing',
-            'insufficient-dimensions',
-            'insufficient-curb',
-            'uneven-surface',
-            'missing-paths',
-            'obstacles',
-            'other-inaccessible'
-        ]] }
+        isIn: { options: [
+            [ ...accessibilityStates.keys() ]
+                .filter(state => !state.unreviewable)
+        ] }
     },
     comments: {
         in: 'body',

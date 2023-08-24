@@ -1,36 +1,31 @@
 import { Icon } from './icon';
 import i18n from '../i18n-strings.json';
+import { accessibilityStates, accessibilityGroups } from '../../../common/a11y-states';
 
 export const AccessibilityState = props => {
     const { state, className, showHeading = true, showIcon = true } = props;
     
-    const stateStrings = findAccessibilityStrings(state);
-    const stateGroupStrings = findAccessibilityGroupStrings(state);
+    const stateProps = accessibilityStates.get(state);
+    const stateGroupProps = accessibilityGroups.get(stateProps.group);
+    
+    const stateStrings = i18n.accessibilityStates[state];
+    const stateGroupStrings = i18n.accessibilityGroups[stateProps.group];
     
     return (
         <div { ...className && { className:
-            className + " state-" + stateGroupStrings.style
+            className + " state-" + stateGroupProps.style
         } }>
             { showIcon && (
                 <Icon
-                    name={ stateGroupStrings.style }
+                    name={ stateGroupProps.style }
                     { ...showIcon === 'alt' && { alt: true } }
                 />
             ) }
             { showHeading && (
                 showHeading === 'group' ?
-                stateGroupStrings.heading :
+                stateGroupStrings :
                 stateStrings.heading
             ) }
         </div>
     );
-};
-
-export const findAccessibilityStrings = name => {
-    return i18n.accessibilityStates.find(state => state.name === name);
-};
-
-export const findAccessibilityGroupStrings = name => {
-    const groupName = findAccessibilityStrings(name).group;
-    return i18n.accessibilityGroups.find(group => group.name === groupName);
 };

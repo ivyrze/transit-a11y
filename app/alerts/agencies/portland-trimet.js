@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Stop } from '../../models/stop.js';
+import { Stop } from '../../../common/models/stop.js';
 
 const endpoint = 'https://developer.trimet.org/ws/v2/alerts';
 const agencyPrefix = 'trimet';

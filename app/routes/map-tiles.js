@@ -4,9 +4,10 @@ import express from 'express';
 import validator from 'express-validator';
 import promiseRouter from 'express-promise-router';
 import httpErrors from 'http-errors';
-import { Stop } from '../models/stop.js';
-import { Geometry } from '../models/geometry.js';
-import { Review } from '../models/review.js';
+import { Stop } from '../../common/models/stop.js';
+import { Geometry } from '../../common/models/geometry.js';
+import { Review } from '../../common/models/review.js';
+import { getStateGroup } from '../../common/a11y-states.js';
 
 export const router = promiseRouter();
 
@@ -85,26 +86,6 @@ export const start = async () => {
     });
 };
 
-const icons = {
-    "unknown": "unknown",
-    "accessible": "accessible",
-    "service-alert": "warning",
-    "construction": "warning",
-    "other-temporary": "warning",
-    "parking": "warning",
-    "limited-maneuverability": "warning",
-    "poor-conditions": "warning",
-    "other-complicated": "warning",
-    "inaccessible": "inaccessible",
-    "missing-landing": "inaccessible",
-    "insufficient-dimensions": "inaccessible",
-    "insufficient-curb": "inaccessible",
-    "uneven-surface": "inaccessible",
-    "missing-paths": "inaccessible",
-    "obstacles": "inaccessible",
-    "other-inaccessible": "inaccessible"
-};
-
 const generate = async (invalidate = true) => {
     const layers = [ 'stops', 'routes' ];
     
@@ -126,7 +107,7 @@ const generate = async (invalidate = true) => {
             geometries[layer].features.forEach(stop => {
                 if (states[stop.properties.stop_id]) {
                     stop.properties.wheelchair_boarding =
-                        icons[states[stop.properties.stop_id]];
+                        getStateGroup(states[stop.properties.stop_id]).style;
                 }
             });
         }
@@ -139,7 +120,7 @@ const generate = async (invalidate = true) => {
 const generateSingle = async (id, state) => {
     geometries.stops.features.forEach(stop => {
         if (stop.properties.stop_id == id) {
-            stop.properties.wheelchair_boarding = icons[state];
+            stop.properties.wheelchair_boarding = getStateGroup(state).style;
         }
     });
     
