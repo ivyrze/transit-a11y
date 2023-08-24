@@ -30,12 +30,14 @@ button {
 
 input,
 select,
-textarea {
+textarea,
+.multi-select {
     display: block;
     width: 100%;
     padding: 10px;
     border: 2px solid #999;
     border-radius: 8px;
+    text-align: left;
     transition: 0.3s border-color ease;
     
     @include dark {
@@ -59,9 +61,23 @@ textarea {
 button,
 input,
 select,
-textarea {
+textarea,
+.multi-select {
     &:disabled {
         cursor: not-allowed;
+    }
+}
+
+.multi-select {
+    display: flex;
+    align-items: center;
+    
+    & > .icon {
+        margin-left: auto;
+    }
+    
+    &[aria-expanded="true"] > .icon {
+        transform: rotate(180deg);
     }
 }
 
@@ -219,8 +235,7 @@ fieldset,
 }
 
 .button-rounded,
-.menu-popup button,
-.menu-popup a {
+.menu-popup .menu-item {
     transition: background-color 0.2s ease;
     
     &:hover,
@@ -232,7 +247,8 @@ fieldset,
         }
     }
     
-    &:active {
+    &:active,
+    &[aria-selected="true"] {
         background-color: rgba(0, 0, 0, 0.08);
         
         @include dark {
@@ -298,56 +314,66 @@ a.button-rounded {
     }
 }
 
-.menu-container {
-    .menu-toggle {
-        color: #8b8b8b;
-        vertical-align: -3px;
+.menu-toggle {
+    color: #8b8b8b;
+    vertical-align: -3px;
+}
+
+.menu-popup {
+    background: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 18px rgb(0 0 0 / 15%);
+    padding: 6px;
+    margin: 5px 0;
+    z-index: 1;
+    max-height: var(--popover-available-height);
+    overflow-y: scroll;
+    
+    @include dark {
+        background: #242424;
     }
     
-    .menu-popup {
-        background: #f9f9f9;
-        border-radius: 10px;
-        box-shadow: 0 4px 18px rgb(0 0 0 / 15%);
-        padding: 6px;
-        margin: 5px 0;
-        z-index: 1;
+    .menu-item,
+    .menu-group-label {
+        width: 100%;
+        padding: 6px 12px;
+    }
+    
+    .menu-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin: 2px 0;
+        border-radius: 7px;
+        text-align: left;
+        cursor: pointer;
+        
+        & > .icon.icon-check {
+            margin-left: auto;
+        }
+    }
+    
+    a.menu-item {
+        color: inherit;
+        border-bottom: none;
+    }
+    
+    .menu-group + .menu-group::before {
+        content: '';
+        display: block;
+        width: calc(100% - 20px);
+        margin: 6px auto;
+        border-bottom: 1px solid #d0d0d0;
         
         @include dark {
-            background: #242424;
+            border-color: #424242;
         }
-        
-        button,
-        a {
-            display: block;
-            width: 100%;
-            padding: 6px 12px;
-            border-radius: 7px;
-            white-space: nowrap;
-            text-align: left;
-            
-            & > .icon {
-                vertical-align: -2px;
-                margin-right: 8px;
-            }
-        }
-        
-        a {
-            display: block;
-            color: inherit;
-            border-bottom: none;
-        }
-        
-        .menu-group + .menu-group::before {
-            content: '';
-            display: block;
-            width: calc(100% - 20px);
-            margin: 6px auto;
-            border-bottom: 1px solid #d0d0d0;
-            
-            @include dark {
-                border-color: #424242;
-            }
-        }
+    }
+    
+    .menu-group-label {
+        font-size: 16px;
+        font-weight: weight('regular');
+        opacity: 0.85;
     }
 }
 
@@ -357,22 +383,20 @@ a.button-rounded {
     right: 30px;
     z-index: 1;
     
-    .menu-container {
-        .menu-toggle {
-            font-size: 24px;
-            color: #5a5a5a;
-            
-            @include dark {
-                color: #b6b6b6;
-            }
-        }
+    .menu-toggle {
+        font-size: 24px;
+        color: #5a5a5a;
         
-        .menu-popup {
-            background: #fff;
-            
-            @include dark {
-                background: #111;
-            }
+        @include dark {
+            color: #b6b6b6;
+        }
+    }
+    
+    .menu-popup {
+        background: #fff;
+        
+        @include dark {
+            background: #111;
         }
     }
 }

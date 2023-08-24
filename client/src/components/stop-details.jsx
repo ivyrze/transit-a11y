@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import { Disclosure, DisclosureContent, useDisclosureStore } from '@ariakit/react';
 import { useAuth } from '../hooks/auth';
+import { AccessibilityState, findAccessibilityStrings } from './accessibility-state';
 import { Review } from './review';
 import { Icon } from './icon';
 import i18n from '../i18n-strings.json';
@@ -26,8 +27,6 @@ export const StopDetails = () => {
     };
     
     const closeCard = () => navigate('/');
-    
-    const state = i18n.accessibilityStates[details.accessibility];
     
     const ContributeButton = () => (
         <button
@@ -55,9 +54,12 @@ export const StopDetails = () => {
                 { i18n.stopSubheadings[details.agency.vehicle] }
             </span>
             <ul className="stop-tags-container">
-                <li className={ "stop-accessibility-state state-" + state.style }>
-                    <Icon name={ state.style } />
-                    { state.tag }
+                <li>
+                    <AccessibilityState
+                        className="stop-accessibility-state"
+                        state={ details.accessibility }
+                        showHeading="group"
+                    />
                 </li>
                 { details.tags.map(tag => (
                     <li className="stop-tag" key={ tag }>
@@ -67,7 +69,8 @@ export const StopDetails = () => {
                 )) }
             </ul>
             <p className="stop-accessibility-info">
-                { details.alert?.description ?? details.description ?? state.description }
+                { details.alert?.description ?? details.description ??
+                    findAccessibilityStrings(details.accessibility).description }
             </p>
             { details.reviews && (
                 <div className="review-container">

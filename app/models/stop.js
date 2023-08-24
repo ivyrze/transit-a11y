@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import { AlertSchema } from './alert.js';
 import { pojoCleanup } from '../../utils.js';
+import i18n from '../../client/src/i18n-strings.json' assert { type: "json" };
 
 const StopSchema = new mongoose.Schema({
     _id: String,
@@ -37,17 +38,19 @@ StopSchema.method({
         
         let reviews = this.reviews.map(review => review.toObject());
         let tags = reviews.map(review => review.tags).flat();
-        reviews = reviews.filter(review => review.accessibility != 'unknown');
+        let states = reviews.map(review => review.accessibility)
+            .flat().filter(state => state != 'unknown');
         
-        // Use reviews with the biggest consensus or most recent timestamp
-        // to determine the overall accessibility state
-        reviews.sort((a, b) => {
-            return (reviews.filter(d => b.accessibility == d.accessibility).length -
-                reviews.filter(c => a.accessibility == c.accessibility).length) ||
-                (new Date(b.timestamp) - new Date(a.timestamp));
+        // Use state with the biggest consensus or most recent timestamp
+        // to determine the overall accessibility
+        states.sort((a, b) => {
+            return (states.filter(d => b == d).length -
+                states.filter(c => a == c).length) ||
+                (i18n.accessibilityStates.findIndex(d => d.name === b) -
+                i18n.accessibilityStates.findIndex(c => c.name === a));
         });
         
-        const accessibility = reviews[0]?.accessibility ?? 'unknown';
+        const accessibility = states[0] ?? 'unknown';
         
         // Mark any accessibility features that have over 75% consensus
         const frequencies = tags.reduce((result, current) => {

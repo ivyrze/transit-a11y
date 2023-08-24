@@ -14,6 +14,13 @@ const schema = {
     },
     accessibility: {
         in: 'body',
+        toArray: true,
+        customSanitizer: { options: value => {
+            return value.length ? value : [ 'unknown' ]
+        } }
+    },
+    'accessibility.*': {
+        in: 'body',
         isIn: { options: [[
             'unknown',
             'accessible',

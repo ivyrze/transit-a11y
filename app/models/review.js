@@ -8,7 +8,7 @@ const ReviewSchema = new mongoose.Schema({
         ref: 'Stop',
         index: true
     },
-    accessibility: String,
+    accessibility: [String],
     tags: [String],
     timestamp: String,
     author: {

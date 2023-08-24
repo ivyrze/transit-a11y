@@ -62,7 +62,10 @@ export const IndexPage = () => {
                     <Menu iconName="menu">
                         <MenuGroup className="menu-group">
                             <MenuItem render={
-                                <Link to="/routes">
+                                <Link
+                                    to="/routes"
+                                    className="menu-item"
+                                >
                                     <Icon name="route" />
                                     Show nearby routes
                                 </Link>
@@ -72,13 +75,19 @@ export const IndexPage = () => {
                             { auth && auth.username ? (
                                 <>
                                     <MenuItem render={
-                                        <Link to={ "/profile/" + auth.username }>
+                                        <Link
+                                            to={ "/profile/" + auth.username }
+                                            className="menu-item"
+                                        >
                                             <Icon name="user" />
                                             View profile
                                         </Link>
                                     } />
                                     <MenuItem render={
-                                        <Link to="/account/logout">
+                                        <Link
+                                            to="/account/logout"
+                                            className="menu-item"
+                                        >
                                             <Icon name="login" />
                                             Logout
                                         </Link>
@@ -86,7 +95,10 @@ export const IndexPage = () => {
                                 </>
                             ) : (
                                 <MenuItem render={
-                                    <Link to="/account/login">
+                                    <Link
+                                        to="/account/login"
+                                        className="menu-item"
+                                    >
                                         <Icon name="login" />
                                         Login
                                     </Link>

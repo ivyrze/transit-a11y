@@ -2,6 +2,14 @@
     padding: 25px 25px 40px;
 }
 
+.sidebar-card {
+    @supports selector(:has(*)) {
+        &:has(.multi-select[aria-expanded="true"]) {
+            overflow-y: hidden;
+        }
+    }
+}
+
 h1.title {
     font-size: 26px;
 }
@@ -10,19 +18,13 @@ h1.title {
     .review-timestamp {
         display: none;
     }
-    
-    .menu-container {
-        margin-left: auto;
-    }
 }
 
 #main-menu {
     top: 41px;
     right: 24px;
     
-    .menu-container {
-        .menu-toggle {
-            font-size: 20px;
-        }
+    .menu-toggle {
+        font-size: 20px;
     }
 }

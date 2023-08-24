@@ -9,7 +9,7 @@ export const Menu = props => {
     const menuStore = useMenuStore();
     
     return (
-        <div className="menu-container">
+        <>
             <MenuButton
                 className="button-rounded menu-toggle"
                 store={ menuStore }
@@ -22,6 +22,6 @@ export const Menu = props => {
             >
                 { children }
             </MenuParent>
-        </div>
+        </>
     );
 };

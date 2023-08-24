@@ -1,9 +1,24 @@
 import React from 'react';
+import { Select, SelectArrow, SelectPopover, SelectGroup, SelectGroupLabel, SelectItem, SelectItemCheck, useSelectStore } from '@ariakit/react';
 import { Icon } from './icon';
 import i18n from '../i18n-strings.json';
+import { AccessibilityState } from './accessibility-state';
 
 export const ReviewFields = props => {
     const { reviewId, stopId, compactView, onCancel } = props;
+    
+    const selectStore = useSelectStore({ defaultValue: [] });
+    const selectValue = selectStore.useState("value");
+    
+    const renderSelectLabel = value => {
+        if (value.length == 0) {
+            return "Unknown accessibility state";
+        } else if (value.length == 1) {
+            return <AccessibilityState state={ value[0] } showIcon={ false } />
+        } else {
+            return value.length + " states selected";
+        }
+    };
     
     return (
         <>
@@ -31,33 +46,49 @@ export const ReviewFields = props => {
                 { !compactView && (
                     <legend>What's the accessibility state at this stop?</legend>
                 ) }
-                <select name="accessibility">
-                    <optgroup label="Unknown state">
-                        <option value="unknown">Unknown accessibility state</option>
-                    </optgroup>
-                    <optgroup label="Likely accessible">
-                        <option value="accessible">Usually free of access barriers</option>
-                    </optgroup>
-                    <optgroup label="Temporarily inaccessible">
-                        <option value="construction">Construction blocking bus lane or stop</option>
-                        <option value="other-temporary">Other – specify below</option>
-                    </optgroup>
-                    <optgroup label="It's complicated">
-                        <option value="parking">Street parking often blocking curb</option>
-                        <option value="limited-maneuverability">Limited maneuverability for some riders</option>
-                        <option value="poor-conditions">Poor conditions in surrounding areas</option>
-                        <option value="other-complicated">Other – specify below</option>
-                    </optgroup>
-                    <optgroup label="Not accessible">
-                        <option value="missing-landing">Missing landing pad for ramp deployment</option>
-                        <option value="insufficient-dimensions">Insufficient landing pad dimensions</option>
-                        <option value="insufficient-curb">Insufficient curb height to create shallow ramp angle</option>
-                        <option value="uneven-surface">Uneven surface for alighting or deploying</option>
-                        <option value="missing-paths">Missing pathways to any surrounding areas</option>
-                        <option value="obstacles">Unavoidable obstacles</option>
-                        <option value="other-inaccessible">Other – specify below</option>
-                    </optgroup>
-                </select>
+                <Select name="accessibility" store={ selectStore } className="multi-select">
+                    { renderSelectLabel(selectValue) }
+                    <SelectArrow className="icon" />
+                </Select>
+                <SelectPopover
+                    store={ selectStore }
+                    className="menu-popup"
+                    fitViewport={ true }
+                    sameWidth
+                >
+                    { i18n.accessibilityGroups
+                        .filter(group => group.name !== 'unknown')
+                        .map(group => {
+                            const groupItems = i18n.accessibilityStates
+                                .filter(state => state.group === group.name)
+                                .filter(state => !state.unreviewable);
+                                
+                            return (
+                                <SelectGroup className="menu-group">
+                                    <SelectGroupLabel className="menu-group-label">
+                                        <AccessibilityState
+                                            state={ groupItems[0].name }
+                                            showHeading="group"
+                                            showIcon={ false }
+                                        />
+                                    </SelectGroupLabel>
+                                    { groupItems.map(state => (
+                                        <SelectItem
+                                            value={ state.name }
+                                            className="menu-item"
+                                        >
+                                            <AccessibilityState
+                                                state={ state.name }
+                                                showIcon={ false }
+                                            />
+                                            <SelectItemCheck className="icon icon-check" />
+                                        </SelectItem>
+                                    )) }
+                                </SelectGroup>
+                            );
+                        })
+                    }
+                </SelectPopover>
             </fieldset>
             <fieldset>
                 { !compactView && (

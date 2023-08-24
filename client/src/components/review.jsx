@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import { Icon } from './icon';
 import { FormWrapper } from './form-wrapper';
 import { ReviewFields } from './review-fields';
+import { AccessibilityState } from './accessibility-state';
 import { AttachmentViewer } from './attachment-viewer';
 import { useErrorStatus } from '../hooks/error';
 import { queryHelper } from '../hooks/query';
@@ -18,8 +19,6 @@ export const Review = props => {
     const [ editing, setEditing ] = useState(false);
     const [ deleted, setDeleted ] = useState(false);
     const { setErrorStatus } = useErrorStatus();
-    
-    const state = i18n.accessibilityStates[details.accessibility];
     
     const handleDelete = async () => {
         await queryHelper({
@@ -34,9 +33,15 @@ export const Review = props => {
     const stopEditing = () => setEditing(false);
     
     const handleFormSubmit = data => {
-        let tempDetails = structuredClone(details);
-        data.forEach((value, key) => tempDetails[key] = value);
-        setDetails(tempDetails);
+        const newDetails = Object.fromEntries(
+            Array.from(data.keys())
+            .map(key => [
+                key, key === 'accessibility' ? 
+                    data.getAll(key) : data.get(key)
+            ]
+        ));
+        
+        setDetails({ ...details, ...newDetails });
         stopEditing();
     };
     
@@ -78,14 +83,20 @@ export const Review = props => {
                     <Menu>
                         { allowEditing && (
                             <MenuItem render={
-                                <button onClick={ startEditing }>
+                                <button
+                                    onClick={ startEditing }
+                                    className="menu-item"
+                                >
                                     <Icon name= "pencil" />
                                     Edit
                                 </button>
                             } />
                         ) }
                         <MenuItem render={
-                            <button onClick={ handleDelete }>
+                            <button
+                                onClick={ handleDelete }
+                                className="menu-item"
+                            >
                                 <Icon name="trash" />
                                 Delete
                             </button>
@@ -95,10 +106,13 @@ export const Review = props => {
             </div>
             { !editing ? (
                 <>
-                    <div className={ "review-accessibility-state state-" + state.style }>
-                        <Icon name={ state.style } />
-                        { state.heading }
-                    </div>
+                    { details.accessibility.map(accessibility => (
+                        <AccessibilityState
+                            className="review-accessibility-state"
+                            state={ accessibility }
+                            key={ accessibility }
+                        />
+                    )) }
                     { details.comments && (
                         <p>{ details.comments }</p>
                     ) }

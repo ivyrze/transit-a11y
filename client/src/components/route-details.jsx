@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { Tab, TabList, TabPanel, useTabStore } from '@ariakit/react';
 import { useQuery } from '../hooks/query';
+import { AccessibilityState } from './accessibility-state';
 import { RouteIcon } from './route-icon';
 import { Icon } from './icon';
 import i18n from '../i18n-strings.json';
@@ -24,9 +25,12 @@ export const RouteDetails = props => {
     
     const renderBranch = branch => branch.map((stop, index) => (
         <li key={ stop.id + "-" + index }>
-            <span className="stop-icon">
-                <Icon name={ i18n.accessibilityStates[stop.accessibility].style } alt={ true } />
-            </span>
+            <AccessibilityState
+                className="stop-icon"
+                state={ stop.accessibility }
+                showHeading={ false }
+                showIcon="alt"
+            />
             <Link to={ "/stop/" + stop.id }>{ stop.name }</Link>
         </li>
     ));
