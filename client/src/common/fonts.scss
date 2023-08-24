@@ -46,7 +46,7 @@ $font-faces: (
             src: url('/fonts/' + $prefix + '-' + $slug + '.woff2') format('woff2');
             font-weight: map-get($variant, 'weight');
             font-style: map-get($variant, 'style');
-            font-display: swap;
+            font-display: block;
         }
     }
 }
