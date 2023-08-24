@@ -95,6 +95,12 @@ export const accessibilityStates = new Map([
         }
     ],
     [
+        "no-sign",
+        {
+            "group": "inaccessible"
+        }
+    ],
+    [
         "missing-landing",
         {
             "group": "inaccessible"

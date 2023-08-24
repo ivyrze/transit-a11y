@@ -72,6 +72,10 @@
         "inaccessible": {
             "description": "This stop has significant access barriers and is not equipped with alternative entryways."
         },
+        "no-sign": {
+            "heading": "Missing bus stop sign and infrastructure",
+            "description": "This stop doesn't have a sign or any other obvious indication that a bus should stop at this location."
+        },
         "missing-landing": {
             "heading": "Missing landing pad for ramp deployment",
             "description": "This stop doesn’t have an inlet landing pad for the ramp to deploy onto."
