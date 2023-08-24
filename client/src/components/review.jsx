@@ -53,8 +53,8 @@ export const Review = props => {
     
     if (deleted) { return null; }
     
-    let initialValues = structuredClone(details);
-    delete initialValues.id;
+    let defaultValues = structuredClone(details);
+    delete defaultValues.id;
     
     return (
         <article className="review-single">
@@ -131,7 +131,7 @@ export const Review = props => {
                     action="/api/edit-review"
                     method="post"
                     autoComplete="off"
-                    initialValues={ initialValues }
+                    defaultValues={ defaultValues }
                     onSubmit={ handleFormSubmit }
                     onResponse={ stopEditing }
                 >

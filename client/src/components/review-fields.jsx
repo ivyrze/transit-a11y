@@ -1,25 +1,14 @@
 import React from 'react';
-import { Select, SelectArrow, SelectPopover, SelectGroup, SelectGroupLabel, SelectItem, SelectItemCheck, useSelectStore } from '@ariakit/react';
+import { FormInput, FormLabel, FormSubmit } from '@ariakit/react';
+import { AccessibilitySelect } from './accessibility-select';
+import { useFormContext } from './form-wrapper';
 import { Icon } from './icon';
 import i18n from '../i18n-strings.json';
-import { AccessibilityState } from './accessibility-state';
-import { accessibilityGroups, accessibilityStates } from '../../../common/a11y-states';
 
 export const ReviewFields = props => {
     const { reviewId, stopId, compactView, onCancel } = props;
     
-    const selectStore = useSelectStore({ defaultValue: [] });
-    const selectValue = selectStore.useState("value");
-    
-    const renderSelectLabel = value => {
-        if (value.length == 0) {
-            return "Unknown accessibility state";
-        } else if (value.length == 1) {
-            return <AccessibilityState state={ value[0] } showIcon={ false } />
-        } else {
-            return value.length + " states selected";
-        }
-    };
+    const formStore = useFormContext();
     
     return (
         <>
@@ -29,15 +18,14 @@ export const ReviewFields = props => {
                     <ul className="feature-option-container">
                         { [ 'bench', 'shelter', 'display', 'heating' ].map(feature => (
                             <li className="feature-option" key={ feature }>
-                                <input
-                                    id={ "feature-" + feature }
+                                <FormInput
                                     type="checkbox"
                                     name={ "features[" + feature + "]" }
                                 />
-                                <label htmlFor={ "feature-" + feature }>
+                                <FormLabel name={ "features[" + feature + "]" }>
                                     <Icon name={ feature } />
                                     { i18n.tagLabels[feature] }
-                                </label>
+                                </FormLabel>
                             </li>
                         )) }
                     </ul>
@@ -47,75 +35,42 @@ export const ReviewFields = props => {
                 { !compactView && (
                     <legend>What's the accessibility state at this stop?</legend>
                 ) }
-                <Select name="accessibility" store={ selectStore } className="multi-select">
-                    { renderSelectLabel(selectValue) }
-                    <SelectArrow className="icon" />
-                </Select>
-                <SelectPopover
-                    store={ selectStore }
-                    className="menu-popup"
-                    fitViewport={ true }
-                    sameWidth
-                >
-                    { [ ...accessibilityGroups.keys() ]
-                        .filter(group => group !== 'unknown')
-                        .map(group => {
-                            const groupItems = [ ...accessibilityStates ]
-                                .filter(state => state[1].group === group)
-                                .filter(state => !state[1].unreviewable)
-                                .map(state => state[0]);
-                            
-                            return (
-                                <SelectGroup className="menu-group" key={ group }>
-                                    <SelectGroupLabel className="menu-group-label">
-                                        <AccessibilityState
-                                            state={ groupItems[0] }
-                                            showHeading="group"
-                                            showIcon={ false }
-                                        />
-                                    </SelectGroupLabel>
-                                    { groupItems.map(state => (
-                                        <SelectItem
-                                            key={ state }
-                                            value={ state }
-                                            className="menu-item"
-                                        >
-                                            <AccessibilityState
-                                                state={ state }
-                                                showIcon={ false }
-                                            />
-                                            <SelectItemCheck className="icon icon-check" />
-                                        </SelectItem>
-                                    )) }
-                                </SelectGroup>
-                            );
-                        })
+                <FormInput
+                    name="accessibility"
+                    render={
+                        <AccessibilitySelect
+                            setValue={ value => formStore.setValue("accessibility", value) }
+                            onTouch={ () => formStore.setFieldTouched("accessibility", true) }
+                        />
                     }
-                </SelectPopover>
+                />
             </fieldset>
             <fieldset>
                 { !compactView && (
                     <legend>Any additional comments?</legend>
                 ) }
-                <textarea
+                <FormInput
                     name="comments"
-                    placeholder="Provide additional details about this stop’s accessibility that may be useful to other riders."
-                    rows="3"
+                    render={
+                        <textarea
+                            placeholder="Provide additional details about this stop’s accessibility that may be useful to other riders."
+                            rows="3"
+                        />
+                    }
                 />
             </fieldset>
             { !compactView && (
                 <fieldset>
                     <legend>Do you have any photos to include?</legend>
-                    <input type="file" name="attachments" accept="image/jpeg" multiple />
+                    <FormInput type="file" name="attachments" accept="image/jpeg" multiple />
                 </fieldset>
             ) }
             <fieldset className="button-set">
-                <button
+                <FormSubmit
                     className="button-filled button-primary"
-                    type="submit"
                 >
                     Submit
-                </button>
+                </FormSubmit>
                 <button
                     className="button-filled form-cancel"
                     type="button"
@@ -125,10 +80,10 @@ export const ReviewFields = props => {
                 </button>
             </fieldset>
             { reviewId && (
-                <input type="hidden" name="id" value={ reviewId } />
+                <FormInput type="hidden" name="id" value={ reviewId } />
             ) }
             { stopId && (
-                <input type="hidden" name="stop" value={ stopId } />
+                <FormInput type="hidden" name="stop" value={ stopId } />
             ) }
         </>
     );

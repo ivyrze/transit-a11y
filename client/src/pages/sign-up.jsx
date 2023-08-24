@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FormWrapper } from '../components/form-wrapper';
+import { FormLabel, FormInput, FormError, FormSubmit } from '@ariakit/react';
 
 export const SignUpPage = () => {
     const navigate = useNavigate();
@@ -17,31 +18,41 @@ export const SignUpPage = () => {
                 autoCorrect="off"
                 spellCheck="false"
                 onResponse={ handleFormResponse }
+                defaultValues={{
+                    invite: '',
+                    email: '',
+                    username: '',
+                    password: ''
+                }}
             >
                 <p>At this time, community reviews are in private beta. If you"ve been given an invite code, enter it below to get started.</p>
                 <fieldset>
                     <div className="form-infield">
-                        <label htmlFor="invite">Invitation code</label>
-                        <input id="invite" type="text" name="invite" required />
+                        <FormLabel name="invite">Invitation code</FormLabel>
+                        <FormInput name="invite" type="text" required />
+                        <FormError name="invite" />
                     </div>
                 </fieldset>
                 <fieldset>
                     <legend>Account credentials</legend>
                     <div className="form-infield">
-                        <label htmlFor="email">Your email address</label>
-                        <input id="email" type="email" name="email" required />
+                        <FormLabel name="email">Your email address</FormLabel>
+                        <FormInput name="email" type="email" required />
+                        <FormError name="email" />
                     </div>
                     <div className="form-infield">
-                        <label htmlFor="username">Create a username</label>
-                        <input id="username" type="text" name="username" required />
+                        <FormLabel name="username">Create a username</FormLabel>
+                        <FormInput name="username" type="text" required />
+                        <FormError name="username" />
                     </div>
                     <div className="form-infield">
-                        <label htmlFor="password">Create a password</label>
-                        <input id="password" type="password" name="password" minLength="10" required />
+                        <FormLabel name="password">Create a password</FormLabel>
+                        <FormInput name="password" type="password" minLength="10" required />
+                        <FormError name="password" />
                     </div>
                 </fieldset>
                 <fieldset className="button-set">
-                    <button className="button-filled button-primary" type="submit">Submit</button>
+                    <FormSubmit className="button-filled button-primary">Submit</FormSubmit>
                 </fieldset>
             </FormWrapper>
         </div>

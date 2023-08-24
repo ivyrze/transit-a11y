@@ -2,6 +2,7 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/auth';
 import { FormWrapper } from '../components/form-wrapper';
+import { FormLabel, FormInput, FormError, FormSubmit } from '@ariakit/react';
 
 export const LoginPage = () => {
     const navigate = useNavigate();
@@ -23,19 +24,25 @@ export const LoginPage = () => {
                 autoCorrect="off"
                 spellCheck="false"
                 onResponse={ handleFormResponse }
+                defaultValues={{
+                    username: '',
+                    password: ''
+                }}
             >
                 <fieldset>
                     <div className="form-infield">
-                        <label htmlFor="username">Username</label>
-                        <input id="username" type="text" name="username" required />
+                        <FormLabel name="username">Username</FormLabel>
+                        <FormInput name="username" type="text" required />
+                        <FormError name="username" />
                     </div>
                     <div className="form-infield">
-                        <label htmlFor="password">Password</label>
-                        <input id="password" type="password" name="password" required />
+                        <FormLabel name="password">Password</FormLabel>
+                        <FormInput name="password" type="password" required />
+                        <FormError name="password" />
                     </div>
                 </fieldset>
                 <fieldset>
-                    <button className="button-filled button-primary" type="submit">Submit</button>
+                    <FormSubmit className="button-filled button-primary">Submit</FormSubmit>
                 </fieldset>
                 <p>Don't have an account? <Link to="/account/sign-up">Sign up with an invite code</Link>.</p>
             </FormWrapper>

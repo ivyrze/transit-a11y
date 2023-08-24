@@ -52,7 +52,7 @@ textarea,
         }
     }
     
-    form.form-validate &:invalid {
+    form &[aria-invalid="true"] {
         border-color: #c25252;
         outline-color: #c25252;
     }

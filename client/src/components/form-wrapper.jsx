@@ -1,39 +1,30 @@
-import React, { Children, Fragment, cloneElement, isValidElement, useState } from 'react';
+import React, { createContext, useContext, useRef } from 'react';
+import { Form, useFormStore } from '@ariakit/react';
 import { useNavigate } from 'react-router-dom';
 import { useErrorStatus } from '../hooks/error';
 import { useAuth } from '../hooks/auth';
 import { queryHelper } from '../hooks/query';
 
+const FormContext = createContext();
+
 export const FormWrapper = props => {
-    const { onSubmit, onResponse, initialValues, children, ...passthroughProps } = props;
+    const { action, method, onSubmit, onResponse, defaultValues, children, ...passthroughProps } = props;
     
-    const [ isPending, setIsPending ] = useState(false);
-    const [ showValidation, setShowValidation ] = useState(false);
-    const [ errors, setErrors ] = useState({});
+    const formStore = useFormStore({ defaultValues });
+    const formRef = useRef();
+    
     const { setErrorStatus } = useErrorStatus();
     const { setAuthRedirect } = useAuth();
     const navigate = useNavigate();
     
-    const handleSubmit = async event => {
-        event.preventDefault();
-        
-        if (!event.target.checkValidity()) {
-            setShowValidation(true);
-            event.target.reportValidity();
-            return;
-        }
-        
-        if (isPending) { return; }
-        setIsPending(true);
-        
-        const { action, method } = event.target;
-        let data = new FormData(event.target);
+    formStore.useSubmit(async () => {
+        let data = new FormData(formRef.current);
         if (onSubmit) {
             onSubmit(data);
         }
         
         let hasFile = false;
-        for (const elem of event.target.querySelectorAll('input[type="file"]')) {
+        for (const elem of formRef.current.querySelectorAll('input[type="file"]')) {
             if (elem.files.length) {
                 hasFile = true;
             } else {
@@ -58,64 +49,22 @@ export const FormWrapper = props => {
             }
         }
         
-        setIsPending(false);
-        setShowValidation(true);
-        setErrors(response.data.errors ?? {});
-    };
-    
-    const setInputError = ref => {
-        if (ref?.name && errors[ref.name]) {
-            ref.setCustomValidity(errors[ref.name]);
-            ref.reportValidity();
+        if (response.data?.errors) {
+            formStore.setErrors(response.data.errors);
         }
-    };
-    
-    const clearInputError = event => {
-        event.target.setCustomValidity('');
-    };
-    
-    const recurseChildren = children => {
-        return Children.map(children, child => {
-            if (!isValidElement(child)) {
-                return child;
-            } else if (child.type === Fragment) {
-                return recurseChildren(child.props.children);
-            }
-            
-            if (typeof child.type === "function") {
-                child = child.type(child.props);
-            }
-            
-            let injections = {};
-            if (child.props?.children) {
-                injections.children = recurseChildren(child.props.children);
-            }
-            
-            if ([ 'input', 'textarea', 'select' ].includes(child.type)) {
-                injections.ref = setInputError;
-                injections.onInput = clearInputError;
-            }
-            
-            if (initialValues && initialValues[child.props?.name]) {
-                injections.defaultValue = initialValues[child.props.name];
-            }
-            
-            if (isPending && [ 'button', 'input', 'textarea', 'select' ].includes(child.type)) {
-                injections.disabled = 'disabled';
-            }
-            
-            return injections ? cloneElement(child, injections) : child;
-        });
-    };
+    });
     
     return (
-        <form
-            className={ showValidation ? "form-validate " : "" }
-            onSubmit={ handleSubmit }
-            noValidate
-            { ...passthroughProps }
-        >
-            { recurseChildren(children) }
-        </form>
+        <FormContext.Provider value={ formStore }>
+            <Form
+                store={ formStore }
+                ref={ formRef }
+                { ...passthroughProps }
+            >
+                { children }
+            </Form>
+        </FormContext.Provider>
     );
 };
+
+export const useFormContext = () => useContext(FormContext);
