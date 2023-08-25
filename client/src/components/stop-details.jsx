@@ -111,7 +111,7 @@ export const StopDetails = () => {
             ) }
             { (!details.alert && !details.reviews) && (
                 <span className="source-link">
-                    Source: <a target="_blank" href={ details.agency.url }>{ details.agency.name }</a>
+                    Source: <a target="_blank" href={ details.agency.url } rel="noreferrer" className="link-minimal">{ details.agency.name }</a>
                 </span>
             ) }
         </div>

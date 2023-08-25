@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { Link, Outlet, useParams, useNavigate, useMatch } from 'react-router-dom';
+import { Link, Outlet, useParams, useMatch } from 'react-router-dom';
 import { MenuGroup, MenuItem } from '@ariakit/react';
 import { Menu } from '../components/menu';
 import { Search } from '../components/search';
@@ -14,7 +14,6 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 export const IndexPage = () => {
     const title = 'is the metro accessible?';
     
-    const navigate = useNavigate();
     const { stop } = useParams();
     
     const { auth } = useAuth();
@@ -48,15 +47,13 @@ export const IndexPage = () => {
     const handleRouteListUpdate = useCallback(routes => setRenderedRoutes(routes), []);
     const handleGeolocationTrigger = useCallback(() => map.current?.triggerGeolocation(), []);
     
-    const openAboutCard = () => navigate('/about');
-    
     return (
         <>
             <div id="sidebar-container">
                 <h1 className="title">
-                    <button className="button-link" onClick={ openAboutCard }>
+                    <Link to="/about" className="link-minimal">
                         { title }
-                    </button>
+                    </Link>
                 </h1>
                 <div id="main-menu">
                     <Menu iconName="menu">

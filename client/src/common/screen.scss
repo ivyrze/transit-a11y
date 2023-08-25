@@ -101,25 +101,31 @@ legend {
     margin-bottom: 6px;
 }
 
-a,
-button.button-link {
-    color: #4b5f9f;
+a {
+    color: inherit;
     text-decoration: none;
-    border-bottom: 1px solid transparent;
-    transition: border-color 0.3s ease;
+    text-underline-offset: 0.3em;
+    text-decoration-thickness: 1px;
+}
+
+.link-minimal {
+    text-decoration-line: underline;
+    text-decoration-color: transparent;
+    transition: text-decoration-color 0.3s ease;
     
     &:hover,
     &:active {
-        border-bottom-color: currentcolor;
+        text-decoration-color: currentcolor;
     }
+}
+
+.link-regular {
+    color: #4b5f9f;
+    text-decoration-line: underline;
     
     @include dark {
         color: #7786b6;
     }
-}
-
-button.button-link {
-    padding: 0;
 }
 
 legend,
@@ -138,7 +144,6 @@ fieldset,
 }
 
 .link-external {
-    color: inherit;
     font-size: 0.75em;
     font-weight: weight('medium');
     text-transform: uppercase;
@@ -159,6 +164,12 @@ fieldset,
     width: 100%;
     border-radius: 8px;
     padding: 7px;
+}
+
+.button-filled,
+.button-rounded {
+    display: block;
+    text-align: center;
 }
 
 .button-filled,
@@ -257,17 +268,6 @@ fieldset,
     }
 }
 
-a.button-filled {
-    display: block;
-}
-
-a.button-filled,
-a.button-rounded {
-    color: inherit;
-    text-align: center;
-    border: none;
-}
-
 a.button-rounded {
     float: right;
     
@@ -353,11 +353,6 @@ a.button-rounded {
         }
     }
     
-    a.menu-item {
-        color: inherit;
-        border-bottom: none;
-    }
-    
     .menu-group + .menu-group::before {
         content: '';
         display: block;
@@ -408,10 +403,6 @@ a.button-rounded {
     height: 100vh;
     
     @include dark {
-        a {
-            border-bottom: none;
-        }
-        
         .mapboxgl-ctrl.mapboxgl-ctrl-attrib {
             background-color: rgba(0, 0, 0, 0.2);
         }
@@ -474,10 +465,6 @@ h1.title {
     
     @include dark {
         background-image: radial-gradient(closest-side, rgba(36, 36, 36, 0.6), transparent);
-    }
-    
-    & > button {
-        color: inherit;
     }
 }
 
@@ -686,10 +673,6 @@ h1.title {
         font-size: 16px;
         font-weight: weight('light');
         opacity: 0.4;
-        
-        & > a {
-            color: inherit;
-        }
     }
 }
 
@@ -762,7 +745,6 @@ h1.title {
     
     .review-author,
     .review-stop {
-        color: inherit;
         font-weight: weight('medium');
     }
     
@@ -1028,7 +1010,6 @@ h1.title {
     }
     
     a {
-        color: inherit;
         margin-left: 15px;
     }
     

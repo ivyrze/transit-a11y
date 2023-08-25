@@ -31,7 +31,7 @@ export const RouteDetails = props => {
                 showHeading={ false }
                 showIcon="alt"
             />
-            <Link to={ "/stop/" + stop.id }>{ stop.name }</Link>
+            <Link to={ "/stop/" + stop.id } className="link-minimal">{ stop.name }</Link>
         </li>
     ));
     

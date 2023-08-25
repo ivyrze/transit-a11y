@@ -67,7 +67,7 @@ export const Review = props => {
                         />
                         <Link
                             to={ "/profile/" + details.author.username }
-                            className="review-author"
+                            className="review-author link-minimal"
                         >
                             { details.author.username }
                         </Link>
@@ -75,7 +75,7 @@ export const Review = props => {
                 ) : (
                     <Link
                         to={ "/stop/" + details.stop.id }
-                        className="review-stop"
+                        className="review-stop link-minimal"
                     >
                         { details.stop.name }
                     </Link>
