@@ -18,6 +18,8 @@ export const ProfilePage = props => {
     
     if (!details) { return null; }
     
+    const reviewCount = `${new Intl.NumberFormat().format(details.reviews.length)} review${details.reviews.length > 1 ? 's' : ''}`;
+    
     return (
         <div className="page-fullscreen">
             <Link
@@ -35,8 +37,7 @@ export const ProfilePage = props => {
                 />
                 <h1>{ username }</h1>
                 <div className="subtitle">
-                    { details.reviews.length }
-                    { (details.reviews.length === 1) ? ' review' : ' reviews' }
+                    { reviewCount }
                 </div>
                 <div className="review-container">
                     { details.reviews.map(review => (
