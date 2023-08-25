@@ -28,3 +28,7 @@ h1.title {
         font-size: 20px;
     }
 }
+
+.feature-option-container {
+    grid-template-columns: repeat(2, 1fr);
+}
