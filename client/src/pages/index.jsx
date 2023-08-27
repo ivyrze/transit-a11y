@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { Link, Outlet, useParams, useMatch } from 'react-router-dom';
-import { MenuGroup, MenuItem } from '@ariakit/react';
+import { MenuGroup, MenuGroupLabel, MenuItem } from '@ariakit/react';
 import { Menu } from '../components/menu';
 import { Search } from '../components/search';
 import { Map } from '../components/map';
@@ -51,13 +51,35 @@ export const IndexPage = () => {
         <>
             <div id="sidebar-container">
                 <h1 className="title">
-                    <Link to="/about" className="link-minimal">
-                        { title }
-                    </Link>
+                    { title }
                 </h1>
                 <div id="main-menu">
                     <Menu iconName="menu">
                         <MenuGroup className="menu-group">
+                            <MenuGroupLabel className="menu-group-label">About</MenuGroupLabel>
+                            <MenuItem render={
+                                <Link
+                                    to="/about"
+                                    className="menu-item"
+                                >
+                                    <Icon name="book" />
+                                    About the project
+                                </Link>
+                            } />
+                            <MenuItem render={
+                                <a
+                                    href="https://ko-fi.com/ivyrze"
+                                    target="_blank"
+                                    rel="noopener"
+                                    className="menu-item"
+                                >
+                                    <Icon name="donation" />
+                                    Support us on Ko-fi
+                                </a>
+                            } />
+                        </MenuGroup>
+                        <MenuGroup className="menu-group">
+                            <MenuGroupLabel className="menu-group-label">View</MenuGroupLabel>
                             <MenuItem render={
                                 <Link
                                     to="/routes"
@@ -69,6 +91,7 @@ export const IndexPage = () => {
                             } />
                         </MenuGroup>
                         <MenuGroup className="menu-group">
+                            <MenuGroupLabel className="menu-group-label">User</MenuGroupLabel>
                             { auth && auth.username ? (
                                 <>
                                     <MenuItem render={
