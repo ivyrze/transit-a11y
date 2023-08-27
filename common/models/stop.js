@@ -38,19 +38,33 @@ StopSchema.method({
         
         let reviews = this.reviews.map(review => review.toObject());
         let tags = reviews.map(review => review.tags).flat();
-        let states = reviews.map(review => review.accessibility)
-            .flat().filter(state => state != 'unknown');
         
         // Use state with the biggest consensus or most recent timestamp
         // to determine the overall accessibility
+        let states = reviews.reduce((result, current) => {
+            current.accessibility.forEach(state => {
+                result[state] ??= {
+                    count: 0,
+                    priority: getStatePriority(state)
+                };
+                result[state].count++;
+                result[state].timestamp = Math.max(
+                    new Date(result[state]?.timestamp ?? 0),
+                    new Date(current.timestamp)
+                );
+            });
+            
+            return result;
+        }, {});
+        
+        states = Object.entries(states);
         states.sort((a, b) => {
-            return (states.filter(d => b == d).length -
-                states.filter(c => a == c).length) ||
-                (getStatePriority(a) -
-                getStatePriority(b));
+            return (b[1].count - a[1].count) ||
+                (b[1].timestamp - a[1].timestamp) ||
+                (a[1].priority - b[1].priority);
         });
         
-        const accessibility = states[0] ?? 'unknown';
+        const accessibility = states[0]?.[0] ?? 'unknown';
         
         // Mark any accessibility features that have over 75% consensus
         const frequencies = tags.reduce((result, current) => {
