@@ -11,6 +11,12 @@ export const router = promiseRouter();
 const schema = {
     username: {
         in: 'body'
+    },
+    page: {
+        in: 'body',
+        isInt: { options: {
+            min: 1
+        } }
     }
 };
 
@@ -21,7 +27,9 @@ router.post('/', validator.checkSchema(schema), async (req, res, next) => {
         next(new httpErrors.BadRequest()); return;
     }
     
-    const { username } = validator.matchedData(req);
+    const { username, page } = validator.matchedData(req);
+    
+    const reviewsPerPage = 25;
     
     // Run query and parse output
     let details = await User.findOne({ username }, [
@@ -35,7 +43,11 @@ router.post('/', validator.checkSchema(schema), async (req, res, next) => {
         'timestamp',
         'attachments',
         'comments'
-    ], populate: { path: 'stop', select: [
+    ],
+    skip: (page - 1) * reviewsPerPage,
+    limit: reviewsPerPage,
+    options: { sort: { timestamp: -1 } },
+    populate: { path: 'stop', select: [
         '_id',
         'name'
     ] } });
@@ -70,12 +82,10 @@ router.post('/', validator.checkSchema(schema), async (req, res, next) => {
         return review;
     });
     
-    details = pojoCleanup(details, details, { _id: false });
+    // Add in total number of user's reviews
+    details.count = await Review.countDocuments({ author: details._id });
     
-    // Sort by review submission date
-    details.reviews.sort((a, b) => {
-        return new Date(b.timestamp) - new Date(a.timestamp);
-    });
+    details = pojoCleanup(details, details, { _id: false });
     
     // Check outgoing data
     if (!details) {

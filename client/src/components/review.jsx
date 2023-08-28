@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { forwardRef, useState } from 'react';
 import TimeAgo from 'react-timeago';
 import { MenuItem } from '@ariakit/react';
 import { Menu } from '@components/menu';
@@ -13,7 +13,7 @@ import { queryHelper } from '@hooks/query';
 import { getStatePriority } from '@common/a11y-states';
 import i18n from '@common/i18n-strings.json';
 
-export const Review = props => {
+export const Review = forwardRef((props, ref) => {
     const { review, showOptions, allowEditing } = props;
     
     const [ details, setDetails ] = useState(review);
@@ -76,6 +76,7 @@ export const Review = props => {
                     <Link
                         to={ "/stop/" + details.stop.id }
                         className="review-stop link-minimal"
+                        ref={ ref }
                     >
                         { details.stop.name }
                     </Link>
@@ -144,4 +145,4 @@ export const Review = props => {
             ) }
         </article>
     );
-};
+});

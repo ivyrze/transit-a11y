@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { useQuery } from '@hooks/query';
+import { useInfiniteQuery } from '@hooks/query';
 import { useAuth } from '@hooks/auth';
 import { Review } from '@components/review';
 import { Icon } from '@components/icon';
@@ -8,17 +8,29 @@ import { Icon } from '@components/icon';
 export const ProfilePage = props => {
     const { username } = useParams();
     
-    const { data: details } = useQuery({
+    const { data, size, setSize } = useInfiniteQuery(page => ({
         method: 'post',
         url: '/api/profile',
-        data: { username }
-    });
+        data: { username, page: page + 1 }
+    }));
+    
+    const details = data?.[data?.length - 1];
+    const reviews = data?.map(page => page.reviews).flat();
     
     const { auth } = useAuth();
     
-    if (!details) { return null; }
+    const [ focusedIndex, setFocusedIndex ] = useState(-1);
     
-    const reviewCount = `${new Intl.NumberFormat().format(details.reviews.length)} review${details.reviews.length > 1 ? 's' : ''}`;
+    if (!details || !reviews) { return null; }
+    
+    const incrementPage = () => {
+        setFocusedIndex(reviews.length);
+        setSize(size + 1);
+    };
+    
+    const reviewCount = `${new Intl.NumberFormat().format(details.count)} review${details.count > 1 ? 's' : ''}`;
+    
+    const moreReviewsAvailable = details.count > reviews.length;
     
     return (
         <div className="page-fullscreen">
@@ -40,8 +52,9 @@ export const ProfilePage = props => {
                     { reviewCount }
                 </div>
                 <div className="review-container">
-                    { details.reviews.map(review => (
+                    { reviews.map((review, index) => (
                         <Review
+                            ref={ index === focusedIndex ? i => i?.focus() : undefined }
                             review={ review }
                             key={ review.id }
                             showOptions={ (auth.username == username || auth.admin) }
@@ -49,6 +62,14 @@ export const ProfilePage = props => {
                         />
                     )) }
                 </div>
+                { moreReviewsAvailable && (
+                    <button
+                        onClick={ incrementPage }
+                        className="button-filled"
+                    >
+                        Show more
+                    </button>
+                ) }
             </div>
         </div>
     );
