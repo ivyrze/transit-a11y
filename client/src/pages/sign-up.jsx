@@ -25,7 +25,7 @@ export const SignUpPage = () => {
                     password: ''
                 }}
             >
-                <p>At this time, community reviews are in private beta. If you"ve been given an invite code, enter it below to get started.</p>
+                <p>At this time, community reviews are in private beta. If you've been given an invite code, enter it below to get started.</p>
                 <fieldset>
                     <div className="form-infield">
                         <FormLabel name="invite">Invitation code</FormLabel>
