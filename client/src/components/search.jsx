@@ -2,16 +2,31 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { SearchResults } from './search-results';
 import { Icon } from './icon';
-import { useErrorStatus } from '../hooks/error';
-import { queryHelper } from '../hooks/query';
+import { useImmutableQuery } from '../hooks/query';
 
 export const Search = props => {
     const { cameraCoords, onGeolocationTriggered } = props;
     
-    const [ results, setResults ] = useState([]);
+    const [ searchText, setSearchText ] = useState('');
     const [ geolocationEnabled, setGeolocationEnabled ] = useState(false);
     const navigate = useNavigate();
-    const { setErrorStatus } = useErrorStatus();
+    
+    const shouldQuery = searchText.length >= 2 && cameraCoords.current;
+    
+    const { data } = useImmutableQuery(shouldQuery ? {
+        method: 'post',
+        url: '/api/search',
+        data: {
+            query: searchText,
+        }
+    } : null, {
+        keepPreviousData: true,
+        dataNoRevalidate: {
+            longitude: cameraCoords.current?.longitude,
+            latitude: cameraCoords.current?.latitude
+        }
+    });
+    const results = data?.results;
     
     useEffect(() => {
         const checkGeolocationPermissions = async () => {
@@ -26,20 +41,7 @@ export const Search = props => {
         checkGeolocationPermissions();
     }, []);
     
-    const handleInput = async event => {
-        if (event.target.value.length < 2) { setResults([]); return; }
-        
-        const response = await queryHelper({
-            method: 'post',
-            url: '/api/search',
-            data: {
-                query: event.target.value,
-                longitude: cameraCoords.current.longitude,
-                latitude: cameraCoords.current.latitude
-            }
-        }, setErrorStatus);
-        setResults(response.data.results);
-    };
+    const handleInput = event => setSearchText(event.target.value);
     
     const handleSubmit = event => {
         event.preventDefault();
@@ -48,7 +50,7 @@ export const Search = props => {
     
     const openStopAndClear = id => {
         navigate('/stop/' + id);
-        setResults([]);
+        setSearchText('');
     };
     
     return (
@@ -66,13 +68,14 @@ export const Search = props => {
                 name="search"
                 placeholder="Search by station..."
                 aria-autocomplete="list"
+                value={ searchText }
                 onInput={ handleInput }
             />
             <div className="search-actions">
                 <button
                     className="search-submit"
                     aria-label="Submit search"
-                    { ...!results.length && { disabled: 'disabled' }}
+                    { ...!results?.length && { disabled: 'disabled' }}
                 >
                     <Icon name="search" />
                 </button>
@@ -91,7 +94,7 @@ export const Search = props => {
                 aria-label="Search results"
             >
                 <SearchResults
-                    results={ results }
+                    results={ shouldQuery ? results : [] }
                     openStop={ openStopAndClear }
                 />
             </ul>

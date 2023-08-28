@@ -8,11 +8,11 @@ import { Icon } from '../components/icon';
 export const ProfilePage = props => {
     const { username } = useParams();
     
-    const details = useQuery({
+    const { data: details } = useQuery({
         method: 'post',
         url: '/api/profile',
         data: { username }
-    })?.data;
+    });
     
     const { auth } = useAuth();
     

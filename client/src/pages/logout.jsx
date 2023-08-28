@@ -1,18 +1,22 @@
-import React, { useEffect} from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Icon } from '../components/icon';
-import { useQuery } from '../hooks/query';
+import { useImmutableQuery } from '../hooks/query';
 import { useAuth } from '../hooks/auth';
 
 export const LogoutPage = () => {
-    const { setAuth } = useAuth();
+    const { mutateAuth } = useAuth();
     
-    useQuery({
+    useImmutableQuery({
         method: 'get',
         url: '/api/account/logout'
+    }, {
+        revalidateOnMount: true
     });
     
-    useEffect(() => setAuth({}), [ setAuth ]);
+    useEffect(() => {
+        mutateAuth({});
+    }, []);
     
     return (
         <div className="notice-fullscreen">

@@ -6,11 +6,11 @@ import { FormLabel, FormInput, FormError, FormSubmit } from '@ariakit/react';
 
 export const LoginPage = () => {
     const navigate = useNavigate();
-    const { authRedirect, setAuth, setAuthRedirect } = useAuth();
+    const { authRedirect, mutateAuth, setAuthRedirect } = useAuth();
     
     const handleFormResponse = response => {
         navigate(authRedirect ?? '/');
-        setAuth(response);
+        mutateAuth(response);
         setAuthRedirect();
     };
     

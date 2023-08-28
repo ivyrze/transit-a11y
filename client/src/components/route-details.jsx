@@ -15,11 +15,11 @@ export const RouteDetails = props => {
     
     const closeCard = () => navigate('/');
     
-    const details = useQuery({
+    const { data: details } = useQuery({
         method: 'post',
         url: '/api/route-details',
         data: { id: route }
-    })?.data;
+    });
     
     if (!details) { return; }
     

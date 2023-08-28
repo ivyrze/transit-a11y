@@ -4,7 +4,7 @@ import { RouteIcon } from './route-icon';
 export const SearchResults = props => {
     const { results, openStop } = props;
     
-    return results.map(result => (
+    return results?.map(result => (
         <li key={ result.id }>
             <button
                 className="search-result"

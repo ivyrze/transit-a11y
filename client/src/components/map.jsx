@@ -4,7 +4,7 @@ import MapboxGL from 'mapbox-gl/dist/mapbox-gl';
 import Mapbox, { Source, Layer, GeolocateControl } from 'react-map-gl';
 import { MapImage } from './map-image';
 import { useTheme } from '../hooks/theme';
-import { useQuery } from '../hooks/query';
+import { useImmutableQuery } from '../hooks/query';
 import styles from '../mapbox-style.json';
 
 export const Map = forwardRef((props, ref) => {
@@ -17,11 +17,13 @@ export const Map = forwardRef((props, ref) => {
     const [ loaded, setLoaded ] = useState(false);
     const geolocateControl = useRef();
     
-    const bounds = useQuery({
+    const { data } = useImmutableQuery({
         method: 'post',
         url: '/api/map-bounds',
         ...(agency && { data: { agency } })
-    })?.data.bounds;
+    });
+    
+    const bounds = data?.bounds;
     
     useImperativeHandle(ref, () => ({
         triggerGeolocation: () => geolocateControl.current?.trigger()

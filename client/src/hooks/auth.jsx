@@ -1,26 +1,22 @@
-import React, { createContext, useState, useEffect, useMemo, useContext } from 'react';
-import { queryHelper } from './query';
+import React, { createContext, useState, useMemo, useContext } from 'react';
+import { useQuery } from './query';
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-    const [ auth, setAuth ] = useState();
+    const { data: auth, mutate: mutateAuth } = useQuery({
+        method: 'get',
+        url: '/api/check-auth'
+    }, {
+        refreshInterval: 30**2 * 1000,
+        revalidateOnFocus: false
+    });
+    
     const [ authRedirect, setAuthRedirect ] = useState();
     
-    useEffect(() => {
-        const updateAuth = async () => {
-            const response = await queryHelper({
-                method: 'get',
-                url: '/api/check-auth'
-            });
-            setAuth(response.data);
-        };
-        updateAuth();
-    }, [ setAuth ]);
-    
     const contextPayload = useMemo(
-        () => ({ auth, setAuth, authRedirect, setAuthRedirect }),
-        [ auth, setAuth, authRedirect, setAuthRedirect ]
+        () => ({ auth, mutateAuth, authRedirect, setAuthRedirect }),
+        [ auth, mutateAuth, authRedirect, setAuthRedirect ]
     );
     
     return (
