@@ -3,15 +3,18 @@ import { useNavigate } from 'react-router-dom';
 import { SearchResults } from '@components/search-results';
 import { Icon } from '@components/icon';
 import { useImmutableQuery } from '@hooks/query';
+import { useMapStore } from '@hooks/store';
 
 export const Search = props => {
-    const { cameraCoords, onGeolocationTriggered } = props;
+    const { onGeolocationTriggered } = props;
     
     const [ searchText, setSearchText ] = useState('');
     const [ geolocationEnabled, setGeolocationEnabled ] = useState(false);
     const navigate = useNavigate();
     
-    const shouldQuery = searchText.length >= 2 && cameraCoords.current;
+    const cameraCoords = useMapStore.getState().cameraCoords?.viewState;
+    
+    const shouldQuery = searchText.length >= 2 && cameraCoords;
     
     const { data } = useImmutableQuery(shouldQuery ? {
         method: 'post',
@@ -22,8 +25,8 @@ export const Search = props => {
     } : null, {
         keepPreviousData: true,
         dataNoRevalidate: {
-            longitude: cameraCoords.current?.longitude,
-            latitude: cameraCoords.current?.latitude
+            longitude: cameraCoords?.longitude,
+            latitude: cameraCoords?.latitude
         }
     });
     const results = data?.results;

@@ -1,12 +1,23 @@
-import React from 'react';
-import { Link, useOutletContext, useNavigate } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useMapStore } from '@hooks/store';
 import { RouteIcon } from '@components/route-icon';
 import { Icon } from '@components/icon';
 
 export const RouteList = () => {
-    const { routes } = useOutletContext();
-    
     const navigate = useNavigate();
+    const [
+        setShouldQueryRoutes,
+        routes
+    ] = useMapStore(state => [
+        state.setShouldQueryRoutes,
+        state.routeList
+    ]);
+    
+    useEffect(() => {
+        setShouldQueryRoutes(true);
+        return () => setShouldQueryRoutes(false);
+    }, []);
     
     const closeCard = () => navigate('/');
     

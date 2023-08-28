@@ -1,16 +1,24 @@
 import React from 'react';
-import { useNavigate, useOutletContext } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
+import { useImmutableQuery } from '@hooks/query';
 import { FormWrapper } from '@components/form-wrapper';
 import { ReviewFields } from '@components/review-fields';
 import i18n from '@common/i18n-strings.json';
 
 export const ReviewForm = () => {
-    const { details } = useOutletContext();
+    const { stop } = useParams();
+    
+    const { data: details } = useImmutableQuery({
+        method: 'post',
+        url: '/api/stop-details',
+        data: { id: stop }
+    });
+    
     const navigate = useNavigate();
     
-    if (!details.name) { return null; }
+    if (!details?.name) { return null; }
     
-    const showStopCard = () => navigate('/stop/' + details.id);
+    const showStopCard = () => navigate('/stop/' + stop);
     const closeCard = () => navigate('/');
     
     const handleFormResponse = response => closeCard();
@@ -30,7 +38,7 @@ export const ReviewForm = () => {
                 onResponse={ handleFormResponse }
             >
                 <ReviewFields
-                    stopId={ details.id }
+                    stopId={ stop }
                     onCancel={ showStopCard }
                 />
             </FormWrapper>

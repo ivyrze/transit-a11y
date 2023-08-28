@@ -1,22 +1,41 @@
-import React, { useState } from 'react';
-import { useNavigate, useOutletContext } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import { MenuItem, Disclosure, DisclosureContent, useDisclosureStore } from '@ariakit/react';
 import { Menu } from '@components/menu';
+import { useQuery } from '@hooks/query';
 import { useAuth } from '@hooks/auth';
+import { useMapStore } from '@hooks/store';
 import { AccessibilityState } from '@components/accessibility-state';
 import { Review } from '@components/review';
 import { Icon } from '@components/icon';
 import i18n from '@common/i18n-strings.json';
 
 export const StopDetails = () => {
-    const { details } = useOutletContext();
+    const { stop } = useParams();
+    
+    const { data: details } = useQuery({
+        method: 'post',
+        url: '/api/stop-details',
+        data: { id: stop }
+    });
     
     const disclosureStore = useDisclosureStore();
     const disclosureState = disclosureStore.useState();
     const { auth, setAuthRedirect } = useAuth();
     const navigate = useNavigate();
     
-    if (!details.name) { return null; }
+    const flyTo = useMapStore(state => state.flyTo);
+    
+    useEffect(() => {
+        if (!details?.coordinates) { return; }
+        
+        flyTo([
+            details.coordinates.longitude,
+            details.coordinates.latitude
+        ]);
+    }, [ details?.coordinates, flyTo ]);
+    
+    if (!details?.name) { return null; }
     
     const gsvURL = 'https://www.google.com/maps/@?' +
         new URLSearchParams({
@@ -30,10 +49,10 @@ export const StopDetails = () => {
         
     const switchToReviewForm = () => {
         if (Object.keys(auth).length) {
-            navigate('/review/' + details.id);
+            navigate('/review/' + stop);
         } else {
             navigate('/account/login');
-            setAuthRedirect('/review/' + details.id);
+            setAuthRedirect('/review/' + stop);
         }
     };
     

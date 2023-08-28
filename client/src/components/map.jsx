@@ -3,12 +3,28 @@ import { useNavigate, useParams } from 'react-router-dom';
 import MapboxGL from 'mapbox-gl/dist/mapbox-gl';
 import Mapbox, { Source, Layer, GeolocateControl } from 'react-map-gl';
 import { MapImage } from '@components/map-image';
+import { useMapStore } from '@hooks/store';
 import { useTheme } from '@hooks/theme';
 import { useImmutableQuery } from '@hooks/query';
 import styles from '@common/mapbox-style.json';
 
 export const Map = forwardRef((props, ref) => {
-    const { flyCoords, onCameraUpdate, onRouteListUpdate, shouldQueryRoutes } = props;
+    const { onRouteListUpdate } = props;
+    
+    const [
+        startupAgency,
+        flyCoords,
+        setCameraCoords,
+        shouldQueryRoutes,
+        setRouteList
+    ] = useMapStore(state => [
+        state.startupAgency,
+        state.flyCoords,
+        state.setCameraCoords,
+        state.shouldQueryRoutes,
+        state.setRouteList
+    ]);
+    
     const { theme } = useTheme();
     const navigate = useNavigate();
     const { agency } = useParams();
@@ -20,7 +36,7 @@ export const Map = forwardRef((props, ref) => {
     const { data } = useImmutableQuery({
         method: 'post',
         url: '/api/map-bounds',
-        ...(agency && { data: { agency } })
+        ...(startupAgency && { data: { agency: startupAgency } })
     });
     
     const bounds = data?.bounds;
@@ -44,18 +60,18 @@ export const Map = forwardRef((props, ref) => {
             return a.route_short_name.localeCompare(b.route_short_name, undefined, { numeric: true });
         });
         
-        onRouteListUpdate(routes);
-    }, [ shouldQueryRoutes, onRouteListUpdate ]);
+        setRouteList(routes);
+    }, [ shouldQueryRoutes, setRouteList ]);
     
     useEffect(() => {
         if (!bounds) { return; }
-        onCameraUpdate({
+        setCameraCoords({
             viewState: {
                 longitude: (bounds[0] + bounds[2]) / 2,
                 latitude: (bounds[1] + bounds[3]) / 2
             }
         });
-    }, [ bounds, onCameraUpdate ]);
+    }, [ bounds, setCameraCoords ]);
     
     useEffect(() => {
         if (!loaded) { return; }
@@ -101,7 +117,7 @@ export const Map = forwardRef((props, ref) => {
     const handleLoad = () => setLoaded(true);
         
     const handleMove = event => {
-        onCameraUpdate(event);
+        setCameraCoords(event);
         queryRenderedRoutes();
     };
     
