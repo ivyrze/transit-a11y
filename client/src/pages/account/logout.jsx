@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Icon } from '../components/icon';
-import { useImmutableQuery } from '../hooks/query';
-import { useAuth } from '../hooks/auth';
+import { Icon } from '@components/icon';
+import { useImmutableQuery } from '@hooks/query';
+import { useAuth } from '@hooks/auth';
 
 export const LogoutPage = () => {
     const { mutateAuth } = useAuth();
@@ -26,3 +26,5 @@ export const LogoutPage = () => {
         </div>
     );
 };
+
+export default LogoutPage;

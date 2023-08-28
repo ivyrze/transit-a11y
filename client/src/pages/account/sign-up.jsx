@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FormWrapper } from '../components/form-wrapper';
+import { FormWrapper } from '@components/form-wrapper';
 import { FormLabel, FormInput, FormError, FormSubmit } from '@ariakit/react';
 
 export const SignUpPage = () => {
@@ -57,4 +57,6 @@ export const SignUpPage = () => {
             </FormWrapper>
         </div>
     );
-}
+};
+
+export default SignUpPage;

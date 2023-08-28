@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@ariakit/react": "^0.2.16",
+    "@generouted/react-router": "^1.15.7",
     "@vitejs/plugin-react": "^4.0.0",
     "mapbox-gl": "^2.15.0",
     "photoswipe": "^5.3.7",
@@ -16,7 +17,8 @@
     "react-timeago": "^7.1.0",
     "sass": "^1.62.1",
     "swr": "^2.2.2",
-    "vite": "^4.3.9"
+    "vite": "^4.3.9",
+    "vite-jsconfig-paths": "^2.0.1"
   },
   "scripts": {
     "start": "vite preview",

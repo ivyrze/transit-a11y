@@ -1,7 +1,7 @@
 import axios from 'axios';
 import useSWR from 'swr';
 import useSWRImmutable from 'swr/immutable';
-import { useErrorStatus } from './error';
+import { useErrorStatus } from '@hooks/error';
 
 export const useQuery = (key, options) => useBaseQuery(useSWR, key, options);
 export const useImmutableQuery = (key, options) => useBaseQuery(useSWRImmutable, key, options);

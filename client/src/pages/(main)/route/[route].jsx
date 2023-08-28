@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { Tab, TabList, TabPanel, useTabStore } from '@ariakit/react';
-import { useQuery } from '../hooks/query';
-import { AccessibilityState } from './accessibility-state';
-import { RouteIcon } from './route-icon';
-import { Icon } from './icon';
-import i18n from '../i18n-strings.json';
+import { useQuery } from '@hooks/query';
+import { AccessibilityState } from '@components/accessibility-state';
+import { RouteIcon } from '@components/route-icon';
+import { Icon } from '@components/icon';
+import i18n from '@common/i18n-strings.json';
 
 export const RouteDetails = props => {
     const { route } = useParams();
@@ -84,4 +84,6 @@ export const RouteDetails = props => {
             )) }
         </div>
     );
-}
+};
+
+export default RouteDetails;

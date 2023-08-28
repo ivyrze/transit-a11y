@@ -2,10 +2,10 @@ import React, { forwardRef, useRef, useState, useImperativeHandle, useEffect, us
 import { useNavigate, useParams } from 'react-router-dom';
 import MapboxGL from 'mapbox-gl/dist/mapbox-gl';
 import Mapbox, { Source, Layer, GeolocateControl } from 'react-map-gl';
-import { MapImage } from './map-image';
-import { useTheme } from '../hooks/theme';
-import { useImmutableQuery } from '../hooks/query';
-import styles from '../mapbox-style.json';
+import { MapImage } from '@components/map-image';
+import { useTheme } from '@hooks/theme';
+import { useImmutableQuery } from '@hooks/query';
+import styles from '@common/mapbox-style.json';
 
 export const Map = forwardRef((props, ref) => {
     const { flyCoords, onCameraUpdate, onRouteListUpdate, shouldQueryRoutes } = props;

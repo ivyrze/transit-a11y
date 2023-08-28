@@ -1,13 +1,13 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { Link, Outlet, useParams, useMatch } from 'react-router-dom';
 import { MenuGroup, MenuGroupLabel, MenuItem } from '@ariakit/react';
-import { Menu } from '../components/menu';
-import { Search } from '../components/search';
-import { Map } from '../components/map';
-import { Icon } from '../components/icon';
-import { useErrorStatus } from '../hooks/error';
-import { useAuth } from '../hooks/auth';
-import { queryHelper } from '../hooks/query';
+import { Menu } from '@components/menu';
+import { Search } from '@components/search';
+import { Map } from '@components/map';
+import { Icon } from '@components/icon';
+import { useErrorStatus } from '@hooks/error';
+import { useAuth } from '@hooks/auth';
+import { queryHelper } from '@hooks/query';
 
 import 'mapbox-gl/dist/mapbox-gl.css';
 
@@ -142,4 +142,6 @@ export const IndexPage = () => {
             />
         </>
     );
-{ }; }
+};
+
+export default IndexPage;

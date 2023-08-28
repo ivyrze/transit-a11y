@@ -1,5 +1,7 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import generouted from '@generouted/react-router/plugin'
+import jsconfigPaths from 'vite-jsconfig-paths';
 
 export default defineConfig({
     server: {
@@ -12,5 +14,5 @@ export default defineConfig({
             }
         }
     },
-    plugins: [ react() ],
+    plugins: [ jsconfigPaths(), react(), generouted() ],
 })

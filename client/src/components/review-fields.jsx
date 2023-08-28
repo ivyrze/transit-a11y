@@ -1,9 +1,9 @@
 import React from 'react';
 import { FormInput, FormLabel, FormSubmit } from '@ariakit/react';
-import { AccessibilitySelect } from './accessibility-select';
-import { useFormContext } from './form-wrapper';
-import { Icon } from './icon';
-import i18n from '../i18n-strings.json';
+import { AccessibilitySelect } from '@components/accessibility-select';
+import { useFormContext } from '@components/form-wrapper';
+import { Icon } from '@components/icon';
+import i18n from '@common/i18n-strings.json';
 
 export const ReviewFields = props => {
     const { reviewId, stopId, compactView, onCancel } = props;

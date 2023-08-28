@@ -1,8 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Icon } from './icon';
+import { Icon } from '@components/icon';
 
-export const About = () => {
+export const AboutPage = () => {
     const navigate = useNavigate();
     
     const closeCard = () => navigate('/');
@@ -24,3 +24,5 @@ export const About = () => {
         </div>
     );
 };
+
+export default AboutPage;

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { SearchResults } from './search-results';
-import { Icon } from './icon';
-import { useImmutableQuery } from '../hooks/query';
+import { SearchResults } from '@components/search-results';
+import { Icon } from '@components/icon';
+import { useImmutableQuery } from '@hooks/query';
 
 export const Search = props => {
     const { cameraCoords, onGeolocationTriggered } = props;

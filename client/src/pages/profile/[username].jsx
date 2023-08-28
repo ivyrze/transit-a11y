@@ -1,9 +1,9 @@
 import React from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { useQuery } from '../hooks/query';
-import { useAuth } from '../hooks/auth';
-import { Review } from '../components/review';
-import { Icon } from '../components/icon';
+import { useQuery } from '@hooks/query';
+import { useAuth } from '@hooks/auth';
+import { Review } from '@components/review';
+import { Icon } from '@components/icon';
 
 export const ProfilePage = props => {
     const { username } = useParams();
@@ -53,3 +53,5 @@ export const ProfilePage = props => {
         </div>
     );
 };
+
+export default ProfilePage;

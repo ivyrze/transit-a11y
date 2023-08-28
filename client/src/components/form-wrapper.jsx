@@ -1,9 +1,9 @@
 import React, { createContext, useContext, useRef } from 'react';
 import { Form, useFormStore } from '@ariakit/react';
 import { useNavigate } from 'react-router-dom';
-import { useErrorStatus } from '../hooks/error';
-import { useAuth } from '../hooks/auth';
-import { queryHelper } from '../hooks/query';
+import { useErrorStatus } from '@hooks/error';
+import { useAuth } from '@hooks/auth';
+import { queryHelper } from '@hooks/query';
 
 const FormContext = createContext();
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { RouteIcon } from './route-icon';
+import { RouteIcon } from '@components/route-icon';
 
 export const SearchResults = props => {
     const { results, openStop } = props;

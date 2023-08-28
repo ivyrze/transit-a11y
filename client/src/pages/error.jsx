@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon } from '../components/icon';
+import { Icon } from '@components/icon';
 
 export const ErrorPage = props => {
     let { status, message } = props;
@@ -18,3 +18,5 @@ export const ErrorPage = props => {
         </div>
     );
 };
+
+export default ErrorPage;

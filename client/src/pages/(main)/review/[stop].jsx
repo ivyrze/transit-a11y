@@ -1,8 +1,8 @@
 import React from 'react';
 import { useNavigate, useOutletContext } from 'react-router-dom';
-import { FormWrapper } from './form-wrapper';
-import { ReviewFields } from './review-fields';
-import i18n from '../i18n-strings.json';
+import { FormWrapper } from '@components/form-wrapper';
+import { ReviewFields } from '@components/review-fields';
+import i18n from '@common/i18n-strings.json';
 
 export const ReviewForm = () => {
     const { details } = useOutletContext();
@@ -36,4 +36,6 @@ export const ReviewForm = () => {
             </FormWrapper>
         </div>
     );
-}
+};
+
+export default ReviewForm;

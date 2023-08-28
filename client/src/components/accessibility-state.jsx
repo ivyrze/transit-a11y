@@ -1,6 +1,6 @@
-import { Icon } from './icon';
-import i18n from '../i18n-strings.json';
-import { accessibilityStates, accessibilityGroups } from '../../../common/a11y-states';
+import { Icon } from '@components/icon';
+import i18n from '@common/i18n-strings.json';
+import { accessibilityStates, accessibilityGroups } from '@common/a11y-states';
 
 export const AccessibilityState = props => {
     const { state, className, showHeading = true, showIcon = true } = props;

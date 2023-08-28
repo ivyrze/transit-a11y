@@ -1,5 +1,5 @@
 import React, { createContext, useState, useMemo, useContext } from 'react';
-import { useQuery } from './query';
+import { useQuery } from '@hooks/query';
 
 const AuthContext = createContext();
 

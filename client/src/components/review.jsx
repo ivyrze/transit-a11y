@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
 import TimeAgo from 'react-timeago';
 import { MenuItem } from '@ariakit/react';
-import { Menu } from './menu';
+import { Menu } from '@components/menu';
 import { Link } from 'react-router-dom';
-import { Icon } from './icon';
-import { FormWrapper } from './form-wrapper';
-import { ReviewFields } from './review-fields';
-import { AccessibilityState } from './accessibility-state';
-import { AttachmentViewer } from './attachment-viewer';
-import { useErrorStatus } from '../hooks/error';
-import { queryHelper } from '../hooks/query';
-import { getStatePriority } from '../../../common/a11y-states';
-import i18n from '../i18n-strings.json';
+import { Icon } from '@components/icon';
+import { FormWrapper } from '@components/form-wrapper';
+import { ReviewFields } from '@components/review-fields';
+import { AccessibilityState } from '@components/accessibility-state';
+import { AttachmentViewer } from '@components/attachment-viewer';
+import { useErrorStatus } from '@hooks/error';
+import { queryHelper } from '@hooks/query';
+import { getStatePriority } from '@common/a11y-states';
+import i18n from '@common/i18n-strings.json';
 
 export const Review = props => {
     const { review, showOptions, allowEditing } = props;

@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import { MenuItem, Disclosure, DisclosureContent, useDisclosureStore } from '@ariakit/react';
-import { Menu } from './menu';
-import { useAuth } from '../hooks/auth';
-import { AccessibilityState } from './accessibility-state';
-import { Review } from './review';
-import { Icon } from './icon';
-import i18n from '../i18n-strings.json';
+import { Menu } from '@components/menu';
+import { useAuth } from '@hooks/auth';
+import { AccessibilityState } from '@components/accessibility-state';
+import { Review } from '@components/review';
+import { Icon } from '@components/icon';
+import i18n from '@common/i18n-strings.json';
 
 export const StopDetails = () => {
     const { details } = useOutletContext();
@@ -143,3 +143,5 @@ export const StopDetails = () => {
         </div>
     );
 };
+
+export default StopDetails;

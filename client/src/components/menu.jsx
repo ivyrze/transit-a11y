@@ -1,6 +1,6 @@
 import React from 'react';
 import { Menu as MenuParent, MenuButton, useMenuStore } from '@ariakit/react';
-import { Icon } from './icon';
+import { Icon } from '@components/icon';
 
 export const Menu = props => {
     const { children } = props;

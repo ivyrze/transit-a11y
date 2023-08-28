@@ -1,7 +1,7 @@
 import React, { forwardRef } from 'react';
-import { AccessibilityState } from './accessibility-state';
+import { AccessibilityState } from '@components/accessibility-state';
 import { Select, SelectArrow, SelectPopover, SelectGroup, SelectGroupLabel, SelectItem, SelectItemCheck, useSelectStore } from '@ariakit/react';
-import { accessibilityGroups, accessibilityStates } from '../../../common/a11y-states';
+import { accessibilityGroups, accessibilityStates } from '@common/a11y-states';
 
 export const AccessibilitySelect = forwardRef(({
     value, setValue, defaultValue = [], onTouch, ...props

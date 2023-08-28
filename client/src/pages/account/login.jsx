@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../hooks/auth';
-import { FormWrapper } from '../components/form-wrapper';
+import { useAuth } from '@hooks/auth';
+import { FormWrapper } from '@components/form-wrapper';
 import { FormLabel, FormInput, FormError, FormSubmit } from '@ariakit/react';
 
 export const LoginPage = () => {
@@ -48,4 +48,6 @@ export const LoginPage = () => {
             </FormWrapper>
         </div>
     );
-}
+};
+
+export default LoginPage;

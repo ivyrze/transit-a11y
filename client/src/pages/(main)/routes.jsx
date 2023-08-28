@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useOutletContext, useNavigate } from 'react-router-dom';
-import { RouteIcon } from './route-icon';
-import { Icon } from './icon';
+import { RouteIcon } from '@components/route-icon';
+import { Icon } from '@components/icon';
 
 export const RouteList = () => {
     const { routes } = useOutletContext();
@@ -46,4 +46,6 @@ export const RouteList = () => {
             </div>
         </div>
     );
-}
+};
+
+export default RouteList;
