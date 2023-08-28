@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, useOutletContext } from 'react-router-dom';
-import { Disclosure, DisclosureContent, useDisclosureStore } from '@ariakit/react';
+import { MenuItem, Disclosure, DisclosureContent, useDisclosureStore } from '@ariakit/react';
+import { Menu } from './menu';
 import { useAuth } from '../hooks/auth';
 import { AccessibilityState } from './accessibility-state';
 import { Review } from './review';
@@ -17,6 +18,16 @@ export const StopDetails = () => {
     
     if (!details.name) { return null; }
     
+    const gsvURL = 'https://www.google.com/maps/@?' +
+        new URLSearchParams({
+            api: 1,
+            map_action: 'pano',
+            viewpoint: [
+                details.coordinates.latitude,
+                details.coordinates.longitude
+            ].join(',')
+        });
+        
     const switchToReviewForm = () => {
         if (Object.keys(auth).length) {
             navigate('/review/' + details.id);
@@ -42,13 +53,28 @@ export const StopDetails = () => {
         <div className="sidebar-card stop-details-card">
             <div className="card-header">
                 <h2>{ details.name }</h2>
-                <button
-                    className="button-rounded card-close"
-                    aria-label="Close"
-                    onClick={ closeCard }
-                >
-                    <Icon name="close" />
-                </button>
+                <div className="card-actions">
+                    <Menu>
+                        <MenuItem render={
+                            <a
+                                href={ gsvURL }
+                                target="_blank"
+                                rel="noreferrer"
+                                className="menu-item"
+                            >
+                                Open in Google Street View
+                                <Icon name="link" />
+                            </a>
+                        } />
+                    </Menu>
+                    <button
+                        className="button-rounded card-close"
+                        aria-label="Close"
+                        onClick={ closeCard }
+                    >
+                        <Icon name="close" />
+                    </button>
+                </div>
             </div>
             <span className="subtitle">
                 { i18n.stopSubheadings[details.agency.vehicle] }

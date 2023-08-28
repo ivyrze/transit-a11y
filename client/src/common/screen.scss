@@ -232,7 +232,8 @@ fieldset,
     padding: 3px 0 0;
     
     &.card-close,
-    &.page-close {
+    &.page-close,
+    .card-actions & {
         font-size: 24px;
     }
     
@@ -312,11 +313,6 @@ a.button-rounded {
             }
         }
     }
-}
-
-.menu-toggle {
-    color: #8b8b8b;
-    vertical-align: -3px;
 }
 
 .menu-popup {
@@ -636,6 +632,11 @@ h1.title {
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
+    
+    .card-actions {
+        display: flex;
+        gap: 3px;
+    }
 }
 
 .sidebar-card {
@@ -805,6 +806,11 @@ h1.title {
         padding-bottom: 12px;
         box-sizing: content-box;
     }
+    
+    .menu-toggle {
+        color: #8b8b8b;
+        vertical-align: -3px;
+    }
 }
 
 .review-drawer-toggle {
@@ -885,6 +891,7 @@ h1.title {
     
     .review-container {
         border: none;
+        margin-bottom: 30px;
     }
     
     .review-single {
