@@ -1,7 +1,5 @@
 {
-  "name": "transit-a11y",
-  "private": true,
-  "version": "1.0.0",
+  "type": "module",
   "scripts": {
     "start": "dotenv -e ../.env sanity start",
     "develop": "dotenv -e ../.env sanity dev",

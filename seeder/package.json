@@ -1,8 +1,5 @@
 {
-  "name": "transit-a11y",
   "type": "module",
-  "version": "1.0",
-  "private": true,
   "scripts": {
     "start": "node seeder.js"
   },
@@ -15,8 +12,11 @@
     "@turf/combine": "^6.5.0",
     "@turf/distance": "^6.5.0",
     "@turf/helpers": "^6.5.0",
+    "axios": "^1.5.0",
     "diff": "^5.1.0",
+    "dotenv": "^16.3.1",
     "gtfs": "^3.6.1",
+    "mongoose": "^7.4.5",
     "node-stream-zip": "^1.15.0",
     "progress": "^2.0.3",
     "temp": "^0.9.4"

@@ -1,11 +1,9 @@
 {
-  "name": "transit-a11y",
-  "version": "1.0.0",
-  "private": true,
   "dependencies": {
     "@ariakit/react": "^0.2.16",
     "@generouted/react-router": "^1.15.7",
     "@vitejs/plugin-react": "^4.0.0",
+    "axios": "^1.5.0",
     "mapbox-gl": "^2.15.0",
     "photoswipe": "^5.3.7",
     "react": "^18.2.0",
@@ -13,7 +11,6 @@
     "react-map-gl": "^7.0.25",
     "react-photoswipe-gallery": "^2.2.7",
     "react-router-dom": "^6.11.2",
-    "react-scripts": "5.0.1",
     "react-timeago": "^7.1.0",
     "sass": "^1.62.1",
     "swr": "^2.2.2",

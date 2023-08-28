@@ -4,40 +4,21 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "node app/app.js",
-    "develop": "concurrently -r \"npm run develop --prefix client\" \"nodemon app/app.js --watch app\"",
-    "prebuild": "npm install --prefix client",
-    "build": "npm run build --prefix client"
+    "start": "npm run start -w app",
+    "develop": "concurrently -r \"npm run develop -w app\" \"npm run develop -w client\"",
+    "build": "npm run build -w client"
   },
   "engines": {
     "node": "^14.8.0 || ^16.0.0"
   },
-  "dependencies": {
-    "@aws-sdk/client-s3": "^3.345.0",
-    "@sanity/client": "^6.1.2",
-    "axios": "^1.4.0",
-    "bcryptjs": "^2.4.3",
-    "color": "^4.2.3",
-    "connect-mongo": "^5.0.0",
-    "dotenv": "^16.1.4",
-    "express": "^4.18.2",
-    "express-promise-router": "^4.1.1",
-    "express-session": "^1.17.3",
-    "express-validator": "^7.0.1",
-    "geojson-vt": "^3.2.1",
-    "gravatar": "^1.8.2",
-    "helmet": "^7.0.0",
-    "http-errors": "^2.0.0",
-    "mongoose": "^7.2.2",
-    "mongoose-geojson-schema": "^2.2.4",
-    "morgan": "^1.10.0",
-    "multer": "^1.4.5-lts.1",
-    "nanoid": "^4.0.2",
-    "sharp": "^0.32.1",
-    "vt-pbf": "^3.1.3"
-  },
+  "workspaces": [
+    "app",
+    "client",
+    "common",
+    "seeder",
+    "studio"
+  ],
   "devDependencies": {
-    "concurrently": "^8.1.0",
-    "nodemon": "^2.0.22"
+    "concurrently": "^8.1.0"
   }
 }
