@@ -36,11 +36,15 @@ export const AttachmentViewer = props => {
                         height={ image.large.height }
                     >
                         { props => (
-                            <img
-                                src={ image.small.url }
-                                ref={ props.ref }
+                            <button
                                 onClick={ props.open }
-                            />
+                                aria-label="Enlarge image attachment"
+                            >
+                                <img
+                                    src={ image.small.url }
+                                    ref={ props.ref }
+                                />
+                            </button>
                         ) }
                     </Item>
                 )) }

@@ -864,13 +864,18 @@ h1.title {
 .attachment-list {
     display: flex;
     gap: 10px;
-    height: 125px;
     overflow-x: auto;
     
-    img {
-        cursor: pointer;
+    button {
         border-radius: 5px;
         overflow: hidden;
+        flex-shrink: 0;
+        padding: 0;
+        
+        img {
+            display: block;
+            height: 125px;
+        }
     }
 }
 
