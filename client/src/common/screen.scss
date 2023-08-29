@@ -14,7 +14,7 @@ body {
     
     @include dark {
         color: #ccc;
-        background-color: #2a2a2a;
+        background-color: #1d1d1d;
     }
 }
 
@@ -124,7 +124,7 @@ a {
     text-decoration-line: underline;
     
     @include dark {
-        color: #7786b6;
+        color: #7d8ec1;
     }
 }
 
@@ -140,7 +140,11 @@ fieldset,
 
 .subtitle {
     letter-spacing: 0.25px;
-    opacity: 0.5;
+    opacity: 0.75;
+    
+    @include dark {
+        opacity: 0.6;
+    }
 }
 
 .link-external {
@@ -354,10 +358,10 @@ a.button-rounded {
         display: block;
         width: calc(100% - 20px);
         margin: 6px auto;
-        border-bottom: 1px solid #d0d0d0;
+        border-bottom: 1px solid #dcdcdc;
         
         @include dark {
-            border-color: #424242;
+            border-color: #3d3d3d;
         }
     }
     
@@ -753,7 +757,11 @@ h1.title {
         margin-left: auto;
         padding-right: 7px;
         font-weight: weight('light');
-        opacity: 0.5;
+        opacity: 0.75;
+        
+        @include dark {
+            opacity: 0.6;
+        }
     }
     
     .profile-picture {
@@ -808,8 +816,12 @@ h1.title {
     }
     
     .menu-toggle {
-        color: #8b8b8b;
+        color: #747474;
         vertical-align: -3px;
+        
+        @include dark {
+            color: #828282;
+        }
     }
 }
 
@@ -818,18 +830,18 @@ h1.title {
     text-align: left;
     font-size: 14px;
     letter-spacing: 1px;
-    opacity: 0.6;
+    opacity: 0.7;
     transition: 0.3s ease opacity;
     
     @include dark {
-        opacity: 0.45;
+        opacity: 0.5;
     }
     
     &:hover {
-        opacity: 0.7;
+        opacity: 0.8;
         
         @include dark {
-            opacity: 0.55;
+            opacity: 0.6;
         }
     }
     
@@ -908,7 +920,7 @@ h1.title {
         padding-top: 20px;
         
         @include dark {
-            border-top-color: #3d3d3d;
+            border-top-color: #313131;
         }
     }
     
