@@ -1027,9 +1027,15 @@ h1.title {
     padding: 6px 0;
     list-style: none;
     line-height: 2;
-    white-space: nowrap;
+    
+    li {
+        display: flex;
+        align-items: flex-start;
+    }
     
     .stop-icon {
+        flex-shrink: 0;
+        margin-top: 0.5rem;
         margin-left: calc(-9px - 2px / 2);
     }
     
