@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { Tab, TabList, TabPanel, useTabStore } from '@ariakit/react';
 import { useQuery } from '@hooks/query';
@@ -7,7 +7,7 @@ import { RouteIcon } from '@components/route-icon';
 import { Icon } from '@components/icon';
 import i18n from '@assets/i18n-strings.json';
 
-export const RouteDetails = props => {
+export const RouteDetails = () => {
     const { route } = useParams();
     
     const navigate = useNavigate();

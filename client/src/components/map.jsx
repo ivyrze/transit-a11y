@@ -1,5 +1,5 @@
 import React, { forwardRef, useRef, useState, useImperativeHandle, useEffect, useMemo, useCallback } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import MapboxGL from 'mapbox-gl/dist/mapbox-gl';
 import Mapbox, { Source, Layer, GeolocateControl } from 'react-map-gl';
 import { MapImage } from '@components/map-image';
@@ -9,8 +9,6 @@ import { useImmutableQuery } from '@hooks/query';
 import styles from '@assets/mapbox-style.json';
 
 export const Map = forwardRef((props, ref) => {
-    const { onRouteListUpdate } = props;
-    
     const [
         startupAgency,
         flyCoords,
@@ -27,7 +25,6 @@ export const Map = forwardRef((props, ref) => {
     
     const { theme } = useTheme();
     const navigate = useNavigate();
-    const { agency } = useParams();
     
     const map = useRef();
     const [ loaded, setLoaded ] = useState(false);

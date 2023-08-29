@@ -5,7 +5,7 @@ import { useAuth } from '@hooks/auth';
 import { Review } from '@components/review';
 import { Icon } from '@components/icon';
 
-export const ProfilePage = props => {
+export const ProfilePage = () => {
     const { username } = useParams();
     
     const { data, size, setSize } = useInfiniteQuery(page => ({

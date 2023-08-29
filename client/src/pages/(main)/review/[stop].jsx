@@ -21,7 +21,7 @@ export const ReviewForm = () => {
     const showStopCard = () => navigate('/stop/' + stop);
     const closeCard = () => navigate('/');
     
-    const handleFormResponse = response => closeCard();
+    const handleFormResponse = () => closeCard();
     
     return (
         <div className="sidebar-card review-card">
