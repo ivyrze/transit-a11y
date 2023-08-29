@@ -11,7 +11,7 @@ import { AttachmentViewer } from '@components/attachment-viewer';
 import { useErrorStatus } from '@hooks/error';
 import { queryHelper } from '@hooks/query';
 import { getStatePriority } from '@common/a11y-states';
-import i18n from '@common/i18n-strings.json';
+import i18n from '@assets/i18n-strings.json';
 
 export const Review = forwardRef((props, ref) => {
     const { review, showOptions, allowEditing } = props;

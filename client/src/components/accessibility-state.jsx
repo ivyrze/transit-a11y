@@ -1,5 +1,5 @@
 import { Icon } from '@components/icon';
-import i18n from '@common/i18n-strings.json';
+import i18n from '@assets/i18n-strings.json';
 import { accessibilityStates, accessibilityGroups } from '@common/a11y-states';
 
 export const AccessibilityState = props => {

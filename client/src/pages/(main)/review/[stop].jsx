@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useImmutableQuery } from '@hooks/query';
 import { FormWrapper } from '@components/form-wrapper';
 import { ReviewFields } from '@components/review-fields';
-import i18n from '@common/i18n-strings.json';
+import i18n from '@assets/i18n-strings.json';
 
 export const ReviewForm = () => {
     const { stop } = useParams();

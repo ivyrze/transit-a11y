@@ -6,7 +6,7 @@ import { MapImage } from '@components/map-image';
 import { useMapStore } from '@hooks/store';
 import { useTheme } from '@hooks/theme';
 import { useImmutableQuery } from '@hooks/query';
-import styles from '@common/mapbox-style.json';
+import styles from '@assets/mapbox-style.json';
 
 export const Map = forwardRef((props, ref) => {
     const { onRouteListUpdate } = props;
@@ -96,7 +96,7 @@ export const Map = forwardRef((props, ref) => {
     const interactiveLayers = [ "stops-icon", "stops-label" ];
     
     const mapImages = useMemo(() => {
-        const icons = import.meta.glob('../assets/map-*.png', {
+        const icons = import.meta.glob('../assets/images/map-*.png', {
             as: 'url', eager: true
         });
         

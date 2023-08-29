@@ -8,7 +8,7 @@ import { useMapStore } from '@hooks/store';
 import { AccessibilityState } from '@components/accessibility-state';
 import { Review } from '@components/review';
 import { Icon } from '@components/icon';
-import i18n from '@common/i18n-strings.json';
+import i18n from '@assets/i18n-strings.json';
 
 export const StopDetails = () => {
     const { stop } = useParams();

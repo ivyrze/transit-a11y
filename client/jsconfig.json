@@ -1,7 +1,8 @@
 {
     "compilerOptions": {
         "paths": {
-            "@common/*": ["../common/*", "./src/*"],
+            "@assets/*": ["./src/assets/*"],
+            "@common/*": ["../common/*"],
             "@components/*": ["./src/components/*"],
             "@hooks/*": ["./src/hooks/*"]
         }

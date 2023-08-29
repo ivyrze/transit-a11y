@@ -5,7 +5,7 @@ import { useQuery } from '@hooks/query';
 import { AccessibilityState } from '@components/accessibility-state';
 import { RouteIcon } from '@components/route-icon';
 import { Icon } from '@components/icon';
-import i18n from '@common/i18n-strings.json';
+import i18n from '@assets/i18n-strings.json';
 
 export const RouteDetails = props => {
     const { route } = useParams();

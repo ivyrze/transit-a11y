@@ -43,7 +43,7 @@ $font-faces: (
     @each $slug, $variant in map-get($options, 'variants') {
         @font-face {
             font-family: $name;
-            src: url('/fonts/' + $prefix + '-' + $slug + '.woff2') format('woff2');
+            src: url('../fonts/' + $prefix + '-' + $slug + '.woff2') format('woff2');
             font-weight: map-get($variant, 'weight');
             font-style: map-get($variant, 'style');
             font-display: block;
