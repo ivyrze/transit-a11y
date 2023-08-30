@@ -69,9 +69,9 @@ export const StopDetails = () => {
     );
     
     return (
-        <div className="sidebar-card stop-details-card">
+        <main className="sidebar-card stop-details-card">
             <div className="card-header">
-                <h2>{ details.name }</h2>
+                <h1>{ details.name }</h1>
                 <div className="card-actions">
                     <Menu>
                         <MenuItem render={
@@ -159,7 +159,7 @@ export const StopDetails = () => {
                     Source: <a target="_blank" href={ details.agency.url } rel="noreferrer" className="link-minimal">{ details.agency.name }</a>
                 </span>
             ) }
-        </div>
+        </main>
     );
 };
 

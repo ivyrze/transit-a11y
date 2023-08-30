@@ -10,22 +10,26 @@
     }
 }
 
-h1.title {
-    font-size: 26px;
+header.global-header {
+    &.header-minimal {
+        .title {
+            font-size: 26px;
+        }
+        
+        #main-menu {
+            top: 41px;
+            right: 24px;
+            
+            .menu-toggle {
+                font-size: 20px;
+            }
+        }
+    }
 }
 
 .user-profile {
     .review-timestamp {
         display: none;
-    }
-}
-
-#main-menu {
-    top: 41px;
-    right: 24px;
-    
-    .menu-toggle {
-        font-size: 20px;
     }
 }
 

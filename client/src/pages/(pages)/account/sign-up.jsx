@@ -9,7 +9,7 @@ export const SignUpPage = () => {
     const handleFormResponse = () => navigate('/');
     
     return (
-        <div className="form-fullscreen">
+        <main className="form-fullscreen">
             <h1>Sign up</h1>
             <FormWrapper
                 action="/api/account/sign-up"
@@ -55,7 +55,7 @@ export const SignUpPage = () => {
                     <FormSubmit className="button-filled button-primary">Submit</FormSubmit>
                 </fieldset>
             </FormWrapper>
-        </div>
+        </main>
     );
 };
 

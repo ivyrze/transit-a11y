@@ -24,9 +24,9 @@ export const ReviewForm = () => {
     const handleFormResponse = () => closeCard();
     
     return (
-        <div className="sidebar-card review-card">
+        <main className="sidebar-card review-card">
             <div className="card-header">
-                <h2>{ details.name }</h2>
+                <h1>{ details.name }</h1>
             </div>
             <span className="subtitle">
                 { i18n.stopSubheadings[details.agency.vehicle] }
@@ -42,7 +42,7 @@ export const ReviewForm = () => {
                     onCancel={ showStopCard }
                 />
             </FormWrapper>
-        </div>
+        </main>
     );
 };
 

@@ -1,14 +1,12 @@
 import React, { useRef, useCallback } from 'react';
 import { Outlet } from 'react-router-dom';
+import { Header } from '@components/header';
 import { Search } from '@components/search';
 import { Map } from '@components/map';
-import { MainMenu } from '@components/main-menu';
 
 import 'mapbox-gl/dist/mapbox-gl.css';
 
-export const IndexPage = () => {
-    const title = 'is the metro accessible?';
-    
+export const IndexLayout = () => {
     const map = useRef();
     
     const handleGeolocationTrigger = useCallback(() => {
@@ -18,13 +16,11 @@ export const IndexPage = () => {
     return (
         <>
             <div id="sidebar-container">
-                <h1 className="title">
-                    { title }
-                </h1>
-                <MainMenu />
-                <Search
-                    onGeolocationTriggered={ handleGeolocationTrigger }
-                />
+                <Header minimal>
+                    <Search
+                        onGeolocationTriggered={ handleGeolocationTrigger }
+                    />
+                </Header>
                 <Outlet />
             </div>
             <Map ref={ map } />
@@ -32,4 +28,4 @@ export const IndexPage = () => {
     );
 };
 
-export default IndexPage;
+export default IndexLayout;

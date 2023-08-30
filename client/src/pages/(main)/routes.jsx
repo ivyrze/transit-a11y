@@ -24,9 +24,9 @@ export const RouteList = () => {
     if (!routes) { return; }
     
     return (
-        <div className="sidebar-card">
+        <main className="sidebar-card">
             <div className="card-header">
-                <h2 className="alt-header">Nearby routes</h2>
+                <h1 className="alt-header">Nearby routes</h1>
                 <button className="button-rounded card-close"
                     aria-label="Close"
                     onClick={ closeCard }
@@ -55,7 +55,7 @@ export const RouteList = () => {
                     <p>There are no nearby routes.</p>
                 ) }
             </div>
-        </div>
+        </main>
     );
 };
 

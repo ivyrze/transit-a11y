@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useInfiniteQuery } from '@hooks/query';
 import { useAuth } from '@hooks/auth';
 import { Review } from '@components/review';
-import { Icon } from '@components/icon';
 
 export const ProfilePage = () => {
     const { username } = useParams();
@@ -33,14 +32,7 @@ export const ProfilePage = () => {
     const moreReviewsAvailable = details.count > reviews.length;
     
     return (
-        <div className="page-fullscreen">
-            <Link
-                className="button-rounded page-close"
-                to="/"
-                aria-label="Close"
-            >
-                <Icon name= "close" />
-            </Link>
+        <main className="page-fullscreen">
             <div className="user-profile">
                 <img
                     className="profile-picture"
@@ -71,7 +63,7 @@ export const ProfilePage = () => {
                     </button>
                 ) }
             </div>
-        </div>
+        </main>
     );
 };
 

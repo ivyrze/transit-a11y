@@ -36,15 +36,15 @@ export const RouteDetails = () => {
     ));
     
     return (
-        <div className="sidebar-card route-details-card">
+        <main className="sidebar-card route-details-card">
             <div className="card-header">
-                <h2>
+                <h1>
                     { details.name }
                     <RouteIcon
                         number={ details.number }
                         color={ details.color }
                     />
-                </h2>
+                </h1>
                 <button
                     className="button-rounded card-close"
                     aria-label="Close"
@@ -82,7 +82,7 @@ export const RouteDetails = () => {
                     </ul>
                 </TabPanel>
             )) }
-        </div>
+        </main>
     );
 };
 

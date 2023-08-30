@@ -15,7 +15,7 @@ export const LoginPage = () => {
     };
     
     return (
-        <div className="form-fullscreen">
+        <main className="form-fullscreen">
             <h1>Login</h1>
             <FormWrapper
                 action="/api/account/login"
@@ -46,7 +46,7 @@ export const LoginPage = () => {
                 </fieldset>
                 <p>Don't have an account? <Link to="/account/sign-up" className="link-regular">Sign up with an invite code</Link>.</p>
             </FormWrapper>
-        </div>
+        </main>
     );
 };
 
