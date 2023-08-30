@@ -41,7 +41,7 @@ export const MainMenu = () => {
                             className="menu-item"
                         >
                             <Icon name="route" />
-                            Show nearby routes
+                            Route explorer
                         </Link>
                     } />
                 </MenuGroup>
@@ -55,7 +55,7 @@ export const MainMenu = () => {
                                     className="menu-item"
                                 >
                                     <Icon name="user" />
-                                    View profile
+                                    Your profile
                                 </Link>
                             } />
                             <MenuItem render={
