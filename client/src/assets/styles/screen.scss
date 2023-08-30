@@ -28,6 +28,17 @@ button,
     }
 }
 
+hr {
+    margin-block: 40px;
+    border: none;
+    height: 1px;
+    background-color: #dcdcdc;
+    
+    @include dark {
+        background-color: #3d3d3d;
+    }
+}
+
 input,
 select,
 textarea,
@@ -1146,18 +1157,20 @@ header.global-header {
     }
 }
 
-.about-card p:first-of-type {
-    margin-block-start: 14px;
+.about-graphic {
+    max-width: 140px;
 }
 
-.about-card p:last-of-type {
-    margin-block-end: 10px;
+.about-headline {
+    font-size: 32px;
+    font-weight: weight('light');
+    letter-spacing: -0.75px;
 }
 
 .form-fullscreen,
 .notice-fullscreen,
 .page-fullscreen {
-    padding: 50px 30px;
+    padding: 55px 30px 80px;
     max-width: 550px;
     margin-inline: auto;
 }
