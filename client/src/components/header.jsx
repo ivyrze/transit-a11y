@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { MainMenu } from '@components/main-menu';
 
 export const Header = props => {
-    const { minimal, children } = props;
+    const { minimal, menu = true, children } = props;
     
     return (
         <header className={
@@ -16,7 +16,7 @@ export const Header = props => {
             >
                 is the metro accessible?
             </Link>
-            <MainMenu />
+            { menu && <MainMenu /> }
             { children }
         </header>
     )

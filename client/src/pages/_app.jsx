@@ -3,6 +3,7 @@ import { Outlet } from 'react-router-dom';
 import { ThemeProvider } from '@hooks/theme';
 import { ErrorHandler } from '@hooks/error';
 import { AuthProvider } from '@hooks/auth';
+import { ErrorFullscreen } from '@components/error-fullscreen';
 
 export const App = () => {
     return (
@@ -15,5 +16,7 @@ export const App = () => {
         </ThemeProvider>
     );
 };
+
+export const Catch = () => <ErrorFullscreen />;
 
 export default App;

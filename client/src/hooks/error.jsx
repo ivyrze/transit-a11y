@@ -1,6 +1,6 @@
 import React, { createContext, useState, useEffect, useMemo, useContext } from 'react';
 import { useLocation } from 'react-router-dom';
-import { ErrorPage } from '../pages/error';
+import { ErrorFullscreen } from '@components/error-fullscreen';
 
 const ErrorStatusContext = createContext();
 
@@ -17,7 +17,7 @@ export const ErrorHandler = ({ children }) => {
     return (
         <ErrorStatusContext.Provider value={ contextPayload }>
             { errorStatus ? (
-                <ErrorPage { ...errorStatus } />
+                <ErrorFullscreen { ...errorStatus } />
             ) : children }
         </ErrorStatusContext.Provider>
     );
