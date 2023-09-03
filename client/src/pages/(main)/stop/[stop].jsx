@@ -4,7 +4,7 @@ import { MenuItem, Disclosure, DisclosureContent, useDisclosureStore } from '@ar
 import { Menu } from '@components/menu';
 import { useQuery } from '@hooks/query';
 import { useAuth } from '@hooks/auth';
-import { useMapStore } from '@hooks/store';
+import { useMapStore, shallow } from '@hooks/store';
 import { AccessibilityState } from '@components/accessibility-state';
 import { Review } from '@components/review';
 import { Icon } from '@components/icon';
@@ -20,7 +20,7 @@ export const StopDetails = () => {
     });
     
     const disclosureStore = useDisclosureStore();
-    const disclosureState = disclosureStore.useState();
+    const disclosureState = disclosureStore.useState(state => state.open);
     const { auth, setAuthRedirect } = useAuth();
     const navigate = useNavigate();
     
@@ -30,7 +30,7 @@ export const StopDetails = () => {
     ] = useMapStore(state => [
         state.flyTo,
         state.setStopOpened
-    ]);
+    ], shallow);
     
     useEffect(() => {
         setStopOpened({ [stop]: true });
@@ -136,7 +136,7 @@ export const StopDetails = () => {
                                 className="review-drawer-toggle"
                                 store={ disclosureStore }
                             >
-                                { i18n.reviewsToggleStates[disclosureState.open ? 'hide' : 'show'] }
+                                { i18n.reviewsToggleStates[disclosureState ? 'hide' : 'show'] }
                                 <Icon name="chevron" />
                             </Disclosure>
                             <DisclosureContent store={ disclosureStore }>

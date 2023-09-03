@@ -1,6 +1,7 @@
-import { create } from 'zustand';
+import { createWithEqualityFn } from 'zustand/traditional';
+export { shallow } from 'zustand/shallow';
 
-export const useMapStore = create(set => ({
+export const useMapStore = createWithEqualityFn(set => ({
     startupAgency: false,
     setStartupAgency: value => set({ startupAgency: value }),
     flyCoords: false,
@@ -21,4 +22,4 @@ export const useMapStore = create(set => ({
         openedStopHistory: { ...state.openedStopHistory, ...value }
     })),
     clearOpenedStopHistory: () => set(() => ({ openedStopHistory: {} }))
-}));
+}), Object.is);

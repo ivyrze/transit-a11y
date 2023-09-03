@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import MapboxGL from 'mapbox-gl/dist/mapbox-gl';
 import Mapbox, { Source, Layer, GeolocateControl } from 'react-map-gl';
 import { MapImage } from '@components/map-image';
-import { useMapStore } from '@hooks/store';
+import { useMapStore, shallow } from '@hooks/store';
 import { useTheme } from '@hooks/theme';
 import { useImmutableQuery } from '@hooks/query';
 import { styleFactory } from '@assets/mapbox-style';
@@ -29,7 +29,7 @@ export const Map = forwardRef((props, ref) => {
         state.clearOverriddenStopStyles,
         state.openedStopHistory,
         state.clearOpenedStopHistory
-    ]);
+    ], shallow);
     
     const { theme } = useTheme();
     const navigate = useNavigate();

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useMapStore } from '@hooks/store';
+import { useMapStore, shallow } from '@hooks/store';
 import { RouteIcon } from '@components/route-icon';
 import { Icon } from '@components/icon';
 
@@ -12,7 +12,7 @@ export const RouteList = () => {
     ] = useMapStore(state => [
         state.setShouldQueryRoutes,
         state.routeList
-    ]);
+    ], shallow);
     
     useEffect(() => {
         setShouldQueryRoutes(true);

@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useImmutableQuery } from '@hooks/query';
 import { FormWrapper } from '@components/form-wrapper';
 import { ReviewFields } from '@components/review-fields';
-import { useMapStore } from '@hooks/store';
+import { useMapStore, shallow } from '@hooks/store';
 import { getStateGroup } from '@common/a11y-states';
 import i18n from '@assets/i18n-strings.json';
 
@@ -23,7 +23,7 @@ export const ReviewForm = () => {
     ] = useMapStore(state => [
         state.overrideStopStyle,
         state.setStopOpened
-    ]);
+    ], shallow);
     
     useEffect(() => {
         setStopOpened({ [stop]: true });
