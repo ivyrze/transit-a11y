@@ -1,6 +1,13 @@
-export const styleFactory = theme => {
+export const styleFactory = (theme, overriddenStopStyles) => {
     const isLight = theme === "light-mode";
+    
     const iconSuffix = isLight ? "light" : "dark";
+    const baseIcon = ["concat", ["get", "wheelchair_boarding"], "-" + iconSuffix];
+    
+    const overriddenIcons = Object.entries(overriddenStopStyles).map(entry => {
+        entry[1] = entry[1] + "-" + iconSuffix;
+        return entry;
+    }).flat();
     
     return [
         {
@@ -125,7 +132,11 @@ export const styleFactory = theme => {
                 ],
                 "circle-color": [
                     "match",
-                    ["get", "wheelchair_boarding"],
+                    [
+                        "coalesce",
+                        ["feature-state", "style"],
+                        ["get", "wheelchair_boarding"]
+                    ],
                     ["inaccessible"],
                     isLight ? "#ff7d7d" : "#361717",
                     ["warning"],
@@ -136,7 +147,11 @@ export const styleFactory = theme => {
                 ],
                 "circle-stroke-color": [
                     "match",
-                    ["get", "wheelchair_boarding"],
+                    [
+                        "coalesce",
+                        ["feature-state", "style"],
+                        ["get", "wheelchair_boarding"]
+                    ],
                     ["inaccessible"],
                     isLight ? "#811616" : "#fdacac",
                     ["warning"],
@@ -161,7 +176,12 @@ export const styleFactory = theme => {
                     ["zoom"],
                     "",
                     14,
-                    ["concat", ["get", "wheelchair_boarding"], "-" + iconSuffix]
+                    overriddenIcons.length ? [
+                        "match",
+                        ["get", "stop_id"],
+                        ...overriddenIcons,
+                        baseIcon
+                    ] : baseIcon
                 ],
                 "icon-size": [
                     "interpolate",

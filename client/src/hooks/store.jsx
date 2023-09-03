@@ -10,5 +10,10 @@ export const useMapStore = create(set => ({
     shouldQueryRoutes: false,
     setShouldQueryRoutes: value => set({ shouldQueryRoutes: value }),
     routeList: false,
-    setRouteList: value => set({ routeList: value })
+    setRouteList: value => set({ routeList: value }),
+    overriddenStopStyles: {},
+    overrideStopStyle: value => set(state => ({
+        overriddenStopStyles: { ...state.overriddenStopStyles, ...value }
+    })),
+    clearOverriddenStopStyles: () => set(() => ({ overriddenStopStyles: {} })),
 }));

@@ -3,6 +3,8 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useImmutableQuery } from '@hooks/query';
 import { FormWrapper } from '@components/form-wrapper';
 import { ReviewFields } from '@components/review-fields';
+import { useMapStore } from '@hooks/store';
+import { getStateGroup } from '@common/a11y-states';
 import i18n from '@assets/i18n-strings.json';
 
 export const ReviewForm = () => {
@@ -15,13 +17,19 @@ export const ReviewForm = () => {
     });
     
     const navigate = useNavigate();
+    const overrideStopStyle = useMapStore(state => state.overrideStopStyle);
     
     if (!details?.name) { return null; }
     
     const showStopCard = () => navigate('/stop/' + stop);
     const closeCard = () => navigate('/');
     
-    const handleFormResponse = () => closeCard();
+    const handleFormResponse = response => {
+        if (response?.accessibility) {
+            overrideStopStyle({ [stop]: getStateGroup(response.accessibility).style });
+        }
+        closeCard();
+    };
     
     return (
         <main className="sidebar-card review-card">

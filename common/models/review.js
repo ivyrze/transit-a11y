@@ -34,7 +34,7 @@ const PriorityTrigger = async function (review) {
 
 const ConsensusTrigger = async function (review) {
     await review.populate('stop');
-    await review.stop.consensus();
+    Object.assign(review.stop, await review.stop.consensus());
 };
 
 const CleanupTrigger = function (review) {

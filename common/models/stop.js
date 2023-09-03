@@ -76,7 +76,10 @@ StopSchema.method({
         tags = [ ...new Set(tags) ];
         
         // Update the stop object with consensus values
-        await this.updateOne({ accessibility, tags });
+        const newValues = { accessibility, tags };
+        await this.updateOne(newValues);
+        
+        return newValues;
     }
 });
 

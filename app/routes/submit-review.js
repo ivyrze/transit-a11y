@@ -158,5 +158,5 @@ router.post('/', upload.array('attachments', 3), validator.checkSchema(schema), 
     });
     await review.save();
     
-    res.json({});
+    res.json({ accessibility: review.stop.accessibility });
 });

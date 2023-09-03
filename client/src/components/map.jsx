@@ -14,13 +14,17 @@ export const Map = forwardRef((props, ref) => {
         flyCoords,
         setCameraCoords,
         shouldQueryRoutes,
-        setRouteList
+        setRouteList,
+        overriddenStopStyles,
+        clearOverriddenStopStyles
     ] = useMapStore(state => [
         state.startupAgency,
         state.flyCoords,
         state.setCameraCoords,
         state.shouldQueryRoutes,
-        state.setRouteList
+        state.setRouteList,
+        state.overriddenStopStyles,
+        state.clearOverriddenStopStyles
     ]);
     
     const { theme } = useTheme();
@@ -38,7 +42,9 @@ export const Map = forwardRef((props, ref) => {
     
     const bounds = data?.bounds;
     
-    const layers = useMemo(() => styleFactory(theme), [ theme ]);
+    const layers = useMemo(() => {
+        return styleFactory(theme, overriddenStopStyles);
+    }, [ theme, overriddenStopStyles ]);
     
     useImperativeHandle(ref, () => ({
         triggerGeolocation: () => geolocateControl.current?.trigger()
@@ -91,6 +97,22 @@ export const Map = forwardRef((props, ref) => {
             essential: false
         });
     }, [ flyCoords ]);
+    
+    useEffect(() => {
+        if (!loaded || !Object.keys(overriddenStopStyles).length) { return; }
+        
+        Object.keys(overriddenStopStyles).forEach(stop => {
+            map.current?.setFeatureState({
+                source: 'internal-api',
+                sourceLayer: 'stops',
+                id: stop
+            }, {
+                style: overriddenStopStyles[stop]
+            });
+        });
+        
+        return clearOverriddenStopStyles;
+    }, [ loaded, overriddenStopStyles ]);
     
     const interactiveLayers = [ "stops-icon", "stops-label" ];
     
