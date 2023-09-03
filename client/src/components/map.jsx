@@ -46,8 +46,21 @@ export const Map = forwardRef((props, ref) => {
     
     const bounds = data?.bounds;
     
-    const layers = useMemo(() => {
-        return styleFactory(theme, overriddenStopStyles);
+    const mapLayers = useMemo(() => {
+        const reversedLayers = styleFactory(theme, overriddenStopStyles).reverse();
+        return reversedLayers.map((layer, index) => {
+            const beforeId = index > 0 ?
+                reversedLayers[index - 1]?.id :
+                "settlement-minor-label";
+            
+            return (
+                <Layer
+                    key={ layer.id }
+                    beforeId={ beforeId }
+                    { ...layer }
+                / >
+            );
+        });
     }, [ theme, overriddenStopStyles ]);
     
     useImperativeHandle(ref, () => ({
@@ -215,19 +228,7 @@ export const Map = forwardRef((props, ref) => {
                     minzoom={ 8 }
                     maxzoom={ 16 }
                 >
-                    { layers.reverse().map((layer, index) => {
-                        const beforeId = index > 0 ?
-                            layers[index - 1]?.id :
-                            "settlement-minor-label";
-                        
-                        return (
-                            <Layer
-                                key={ layer.id }
-                                beforeId={ beforeId }
-                                { ...layer }
-                            / >
-                        );
-                    }) }
+                    { mapLayers }
                 </Source>
                 { mapImages }
             </Mapbox>
