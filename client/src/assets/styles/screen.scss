@@ -158,6 +158,15 @@ fieldset,
     }
 }
 
+.icon {
+    line-height: 1;
+    
+    svg {
+        width: 1em;
+        height: 1em;
+    }
+}
+
 .link-external {
     font-size: 0.75em;
     font-weight: weight('medium');
@@ -561,11 +570,6 @@ header.global-header {
             padding: 8px 14px;
             font-size: 22px;
             line-height: 1;
-            
-            .icon {
-                display: block;
-                height: 1em;
-            }
         }
         
         button:nth-of-type(2) {

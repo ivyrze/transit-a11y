@@ -2,6 +2,7 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import generouted from '@generouted/react-router/plugin'
 import jsconfigPaths from 'vite-jsconfig-paths';
+import svgr from "vite-plugin-svgr";
 
 export default defineConfig({
     server: {
@@ -14,5 +15,5 @@ export default defineConfig({
             }
         }
     },
-    plugins: [ jsconfigPaths(), react(), generouted() ],
+    plugins: [ jsconfigPaths(), react(), generouted(), svgr() ],
 })

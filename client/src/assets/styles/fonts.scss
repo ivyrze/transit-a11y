@@ -27,14 +27,6 @@ $font-faces: (
                 weight: bold, style: italic
             )
         )
-    ),
-    'Accessibility Icon Pack': (
-        prefix: 'icon',
-        variants: (
-            'pack': (
-                weight: 400, style: normal
-            )
-        )
     )
 );
 
@@ -47,64 +39,6 @@ $font-faces: (
             font-weight: map-get($variant, 'weight');
             font-style: map-get($variant, 'style');
             font-display: block;
-        }
-    }
-}
-
-.icon {
-    &::before {
-        font-family: 'Accessibility Icon Pack';
-    }
-    
-    $icons: (
-        'search': '\e000',
-        'close': '\e001',
-        'add': '\e002',
-        'link': '\e003',
-        'error': '\e004',
-        'accessible': '\e005',
-        'warning': '\e006',
-        'inaccessible': '\e007',
-        'unknown': '\e008',
-        'at-grade': '\e009',
-        'above-grade': '\e00a',
-        'below-grade': '\e00b',
-        'elevator': '\e00c',
-        'escalator': '\e00d',
-        'ramp-entrance': '\e00e',
-        'bench': '\e00f',
-        'shelter': '\e010',
-        'display': '\e011',
-        'heating': '\e012',
-        'chevron': '\e013',
-        'ellipsis': '\e014',
-        'trash': '\e015',
-        'user': '\e016',
-        'login': '\e017',
-        'menu': '\e018',
-        'location': '\e019',
-        'route': '\e01a',
-        'pencil': '\e01b',
-        'donation': '\e01d',
-        'book': '\e01e'
-    );
-    
-    $icons-alt: (
-        'accessible': '\e005',
-        'warning': '\e01c',
-        'inaccessible': '\e001',
-        'unknown': '\e008'
-    );
-    
-    @each $name, $glyph in $icons {
-        &.icon-#{$name}::before {
-            content: $glyph;
-        }
-    }
-    
-    @each $name, $glyph in $icons-alt {
-        &.icon-#{$name}.icon-alt::before {
-            content: $glyph;
         }
     }
 }
