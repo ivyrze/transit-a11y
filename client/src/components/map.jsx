@@ -6,7 +6,7 @@ import { MapImage } from '@components/map-image';
 import { useMapStore } from '@hooks/store';
 import { useTheme } from '@hooks/theme';
 import { useImmutableQuery } from '@hooks/query';
-import styles from '@assets/mapbox-style.json';
+import { styleFactory } from '@assets/mapbox-style';
 
 export const Map = forwardRef((props, ref) => {
     const [
@@ -37,6 +37,8 @@ export const Map = forwardRef((props, ref) => {
     });
     
     const bounds = data?.bounds;
+    
+    const layers = useMemo(() => styleFactory(theme), [ theme ]);
     
     useImperativeHandle(ref, () => ({
         triggerGeolocation: () => geolocateControl.current?.trigger()
@@ -176,7 +178,7 @@ export const Map = forwardRef((props, ref) => {
                     minzoom={ 8 }
                     maxzoom={ 16 }
                 >
-                    { styles[theme].map(layer => (
+                    { layers.map(layer => (
                         <Layer
                             key={ layer.id }
                             beforeId="settlement-minor-label"
