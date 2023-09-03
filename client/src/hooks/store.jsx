@@ -16,4 +16,9 @@ export const useMapStore = create(set => ({
         overriddenStopStyles: { ...state.overriddenStopStyles, ...value }
     })),
     clearOverriddenStopStyles: () => set(() => ({ overriddenStopStyles: {} })),
+    openedStopHistory: {},
+    setStopOpened: value => set(state => ({
+        openedStopHistory: { ...state.openedStopHistory, ...value }
+    })),
+    clearOpenedStopHistory: () => set(() => ({ openedStopHistory: {} }))
 }));

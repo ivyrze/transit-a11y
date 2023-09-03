@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useImmutableQuery } from '@hooks/query';
 import { FormWrapper } from '@components/form-wrapper';
@@ -17,7 +17,18 @@ export const ReviewForm = () => {
     });
     
     const navigate = useNavigate();
-    const overrideStopStyle = useMapStore(state => state.overrideStopStyle);
+    const [
+        overrideStopStyle,
+        setStopOpened
+    ] = useMapStore(state => [
+        state.overrideStopStyle,
+        state.setStopOpened
+    ]);
+    
+    useEffect(() => {
+        setStopOpened({ [stop]: true });
+        return () => setStopOpened({ [stop]: false });
+    }, [ stop, setStopOpened ]);
     
     if (!details?.name) { return null; }
     

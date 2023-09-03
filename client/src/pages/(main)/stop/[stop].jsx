@@ -24,7 +24,18 @@ export const StopDetails = () => {
     const { auth, setAuthRedirect } = useAuth();
     const navigate = useNavigate();
     
-    const flyTo = useMapStore(state => state.flyTo);
+    const [
+        flyTo,
+        setStopOpened
+    ] = useMapStore(state => [
+        state.flyTo,
+        state.setStopOpened
+    ]);
+    
+    useEffect(() => {
+        setStopOpened({ [stop]: true });
+        return () => setStopOpened({ [stop]: false });
+    }, [ stop, setStopOpened ]);
     
     useEffect(() => {
         if (!details?.coordinates) { return; }

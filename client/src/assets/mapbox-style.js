@@ -77,6 +77,28 @@ export const styleFactory = (theme, overriddenStopStyles) => {
             }
         },
         {
+            "id": "stop-opened",
+            "type": "circle",
+            "source": "internal-api",
+            "source-layer": "stops",
+            "minzoom": 12,
+            "paint": {
+                "circle-radius": [
+                    "interpolate",
+                    ["linear"],
+                    ["zoom"],
+                    12,
+                    2,
+                    15,
+                    12,
+                    20,
+                    40
+                ],
+                "circle-opacity": ["case", ["!=", ["feature-state", "opened"], true], 0, 0.25],
+                "circle-color": isLight ? "#999999" : "#777777"
+            }
+        },
+        {
             "id": "stops-icon",
             "type": "circle",
             "source": "internal-api",
@@ -115,7 +137,7 @@ export const styleFactory = (theme, overriddenStopStyles) => {
                     11,
                     0.5,
                     20,
-                    2
+                    ["case", ["!=", ["feature-state", "opened"], true], 2, 3]
                 ],
                 "circle-stroke-opacity": [
                     "interpolate",

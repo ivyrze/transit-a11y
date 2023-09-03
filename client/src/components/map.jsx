@@ -16,7 +16,9 @@ export const Map = forwardRef((props, ref) => {
         shouldQueryRoutes,
         setRouteList,
         overriddenStopStyles,
-        clearOverriddenStopStyles
+        clearOverriddenStopStyles,
+        openedStopHistory,
+        clearOpenedStopHistory
     ] = useMapStore(state => [
         state.startupAgency,
         state.flyCoords,
@@ -24,7 +26,9 @@ export const Map = forwardRef((props, ref) => {
         state.shouldQueryRoutes,
         state.setRouteList,
         state.overriddenStopStyles,
-        state.clearOverriddenStopStyles
+        state.clearOverriddenStopStyles,
+        state.openedStopHistory,
+        state.clearOpenedStopHistory
     ]);
     
     const { theme } = useTheme();
@@ -99,20 +103,31 @@ export const Map = forwardRef((props, ref) => {
     }, [ flyCoords ]);
     
     useEffect(() => {
-        if (!loaded || !Object.keys(overriddenStopStyles).length) { return; }
+        if (!loaded) { return; }
         
-        Object.keys(overriddenStopStyles).forEach(stop => {
+        const setStopFeatureState = (stop, state) => {
             map.current?.setFeatureState({
                 source: 'internal-api',
                 sourceLayer: 'stops',
                 id: stop
-            }, {
-                style: overriddenStopStyles[stop]
-            });
+            }, state);
+        };
+        
+        Object.keys(overriddenStopStyles).forEach(stop => {
+            setStopFeatureState(stop, { style: overriddenStopStyles[stop] });
         });
         
-        return clearOverriddenStopStyles;
-    }, [ loaded, overriddenStopStyles ]);
+        Object.keys(openedStopHistory).forEach(stop => {
+            setStopFeatureState(stop, { opened: openedStopHistory[stop] });
+        });
+    }, [ loaded, openedStopHistory ]);
+    
+    useEffect(() => {
+        return () => {
+            clearOverriddenStopStyles();
+            clearOpenedStopHistory();
+        };
+    }, [ clearOverriddenStopStyles, clearOpenedStopHistory ]);
     
     const interactiveLayers = [ "stops-icon", "stops-label" ];
     
@@ -200,13 +215,19 @@ export const Map = forwardRef((props, ref) => {
                     minzoom={ 8 }
                     maxzoom={ 16 }
                 >
-                    { layers.map(layer => (
-                        <Layer
-                            key={ layer.id }
-                            beforeId="settlement-minor-label"
-                            { ...layer }
-                        / >
-                    )) }
+                    { layers.reverse().map((layer, index) => {
+                        const beforeId = index > 0 ?
+                            layers[index - 1]?.id :
+                            "settlement-minor-label";
+                        
+                        return (
+                            <Layer
+                                key={ layer.id }
+                                beforeId={ beforeId }
+                                { ...layer }
+                            / >
+                        );
+                    }) }
                 </Source>
                 { mapImages }
             </Mapbox>
