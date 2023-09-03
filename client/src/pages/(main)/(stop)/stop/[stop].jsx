@@ -1,10 +1,9 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { MenuItem, Disclosure, DisclosureContent, useDisclosureStore } from '@ariakit/react';
 import { Menu } from '@components/menu';
 import { useQuery } from '@hooks/query';
 import { useAuth } from '@hooks/auth';
-import { useMapStore, shallow } from '@hooks/store';
 import { AccessibilityState } from '@components/accessibility-state';
 import { Review } from '@components/review';
 import { Icon } from '@components/icon';
@@ -23,28 +22,6 @@ export const StopDetails = () => {
     const disclosureState = disclosureStore.useState(state => state.open);
     const { auth, setAuthRedirect } = useAuth();
     const navigate = useNavigate();
-    
-    const [
-        flyTo,
-        setStopOpened
-    ] = useMapStore(state => [
-        state.flyTo,
-        state.setStopOpened
-    ], shallow);
-    
-    useEffect(() => {
-        setStopOpened({ [stop]: true });
-        return () => setStopOpened({ [stop]: false });
-    }, [ stop, setStopOpened ]);
-    
-    useEffect(() => {
-        if (!details?.coordinates) { return; }
-        
-        flyTo([
-            details.coordinates.longitude,
-            details.coordinates.latitude
-        ]);
-    }, [ details?.coordinates, flyTo ]);
     
     if (!details?.name) { return null; }
     

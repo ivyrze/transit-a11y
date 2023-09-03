@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useImmutableQuery } from '@hooks/query';
 import { FormWrapper } from '@components/form-wrapper';
 import { ReviewFields } from '@components/review-fields';
-import { useMapStore, shallow } from '@hooks/store';
+import { useMapStore } from '@hooks/store';
 import { getStateGroup } from '@common/a11y-states';
 import i18n from '@assets/i18n-strings.json';
 
@@ -17,18 +17,7 @@ export const ReviewForm = () => {
     });
     
     const navigate = useNavigate();
-    const [
-        overrideStopStyle,
-        setStopOpened
-    ] = useMapStore(state => [
-        state.overrideStopStyle,
-        state.setStopOpened
-    ], shallow);
-    
-    useEffect(() => {
-        setStopOpened({ [stop]: true });
-        return () => setStopOpened({ [stop]: false });
-    }, [ stop, setStopOpened ]);
+    const overrideStopStyle = useMapStore(state => state.overrideStopStyle);
     
     if (!details?.name) { return null; }
     
