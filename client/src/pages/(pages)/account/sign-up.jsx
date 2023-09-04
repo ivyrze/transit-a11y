@@ -1,7 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FormWrapper } from '@components/form-wrapper';
-import { FormLabel, FormInput, FormError, FormSubmit } from '@ariakit/react';
+import { FormSubmit } from '@components/form-submit';
+import { FormLabel, FormInput, FormError } from '@ariakit/react';
 
 export const SignUpPage = () => {
     const navigate = useNavigate();

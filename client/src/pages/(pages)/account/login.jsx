@@ -2,7 +2,8 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@hooks/auth';
 import { FormWrapper } from '@components/form-wrapper';
-import { FormLabel, FormInput, FormError, FormSubmit } from '@ariakit/react';
+import { FormSubmit } from '@components/form-submit';
+import { FormLabel, FormInput, FormError } from '@ariakit/react';
 
 export const LoginPage = () => {
     const navigate = useNavigate();

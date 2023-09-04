@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useRef } from 'react';
+import React, { createContext, useContext, useRef, useState } from 'react';
 import { Form, useFormStore } from '@ariakit/react';
 import { useNavigate } from 'react-router-dom';
 import { useErrorStatus } from '@hooks/error';
@@ -13,11 +13,15 @@ export const FormWrapper = props => {
     const formStore = useFormStore({ defaultValues });
     const formRef = useRef();
     
+    const [ isLoading, setIsLoading ] = useState(false);
+    
     const { setErrorStatus } = useErrorStatus();
     const { setAuthRedirect } = useAuth();
     const navigate = useNavigate();
     
     formStore.useSubmit(async () => {
+        setIsLoading(true);
+        
         let data = new FormData(formRef.current);
         if (onSubmit) {
             onSubmit(data);
@@ -49,13 +53,15 @@ export const FormWrapper = props => {
             }
         }
         
+        setIsLoading(false);
+        
         if (response.data?.errors) {
             formStore.setErrors(response.data.errors);
         }
     });
     
     return (
-        <FormContext.Provider value={ formStore }>
+        <FormContext.Provider value={{ formStore, isLoading }}>
             <Form
                 store={ formStore }
                 ref={ formRef }
