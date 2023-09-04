@@ -1,7 +1,10 @@
 import React from 'react';
-import { FaMagnifyingGlass, FaXmark, FaCirclePlus, FaArrowUpRightFromSquare, FaFaceFrown, FaWheelchairMove, FaTriangleExclamation, FaBan, FaQuestion, FaArrowRightFromBracket, FaArrowsUpToLine, FaArrowsDownToLine, FaElevator, FaStairs, FaChair, FaPersonShelter, FaTv, FaFire, FaChevronDown, FaEllipsis, FaTrashCan, FaUser, FaDoorOpen, FaLocationArrow, FaRoute, FaPencil, FaHandHoldingHeart, FaBookOpenReader, FaExclamation } from 'react-icons/fa6';
+import { FaXmark, FaWheelchairMove, FaTriangleExclamation, FaExclamation, FaBan, FaQuestion } from 'react-icons/fa6';
+import { PiMagnifyingGlassBold, PiXBold, PiPlusCircleFill, PiArrowSquareOut, PiSmileySad, PiArrowLineRightFill, PiArrowLineUpFill, PiArrowLineDownFill, PiElevatorFill, PiEscalatorUpFill, PiChairFill, PiMonitorBold, PiFlameFill, PiCaretDown, PiDotsThreeBold, PiTrashSimpleFill, PiSignInBold, PiNavigationArrowBold, PiPathBold, PiPencilSimpleFill, PiHeartFill, PiBookOpenFill } from 'react-icons/pi';
 import { ReactComponent as IconRampEntrance } from '@assets/images/icon-ramp-entrance.svg';
+import { ReactComponent as IconShelter } from '@assets/images/icon-shelter.svg';
 import { ReactComponent as IconMenu } from '@assets/images/icon-menu.svg';
+import { ReactComponent as IconUser } from '@assets/images/icon-user.svg';
 
 export const Icon = props => {
     const { name, alt } = props;
@@ -9,42 +12,42 @@ export const Icon = props => {
     const altClass = alt ? " icon-alt" : "";
     
     const primaryIcons = {
-        search: FaMagnifyingGlass,
-        close: FaXmark,
-        add: FaCirclePlus,
-        link: FaArrowUpRightFromSquare,
-        error: FaFaceFrown,
+        search: PiMagnifyingGlassBold,
+        close: PiXBold,
+        add: PiPlusCircleFill,
+        link: PiArrowSquareOut,
+        error: PiSmileySad,
         accessible: FaWheelchairMove,
         warning: FaTriangleExclamation,
         inaccessible: FaBan,
         unknown: FaQuestion,
-        'at-grade': FaArrowRightFromBracket,
-        'above-grade': FaArrowsUpToLine,
-        'below-grade': FaArrowsDownToLine,
-        elevator: FaElevator,
-        escalator: FaStairs,
+        'at-grade': PiArrowLineRightFill,
+        'above-grade': PiArrowLineUpFill,
+        'below-grade': PiArrowLineDownFill,
+        elevator: PiElevatorFill,
+        escalator: PiEscalatorUpFill,
         'ramp-entrance': IconRampEntrance,
-        bench: FaChair,
-        shelter: FaPersonShelter,
-        display: FaTv,
-        heating: FaFire,
-        chevron: FaChevronDown,
-        ellipsis: FaEllipsis,
-        trash: FaTrashCan,
-        user: FaUser,
-        login: FaDoorOpen,
+        bench: PiChairFill,
+        shelter: IconShelter,
+        display: PiMonitorBold,
+        heating: PiFlameFill,
+        chevron: PiCaretDown,
+        ellipsis: PiDotsThreeBold,
+        trash: PiTrashSimpleFill,
+        user: IconUser,
+        login: PiSignInBold,
         menu: IconMenu,
-        location: FaLocationArrow,
-        route: FaRoute,
-        pencil: FaPencil,
-        donation: FaHandHoldingHeart,
-        book: FaBookOpenReader
+        location: PiNavigationArrowBold,
+        route: PiPathBold,
+        pencil: PiPencilSimpleFill,
+        donation: PiHeartFill,
+        book: PiBookOpenFill
     };
     
     const altIcons = {
         accessible: primaryIcons.accessible,
         warning: FaExclamation,
-        inaccessible: primaryIcons.close,
+        inaccessible: FaXmark,
         unknown: primaryIcons.unknown,
     };
     

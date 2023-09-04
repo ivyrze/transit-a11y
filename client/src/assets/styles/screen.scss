@@ -159,7 +159,17 @@ fieldset,
 }
 
 .icon {
-    line-height: 1;
+    font-size: 1.1em;
+    line-height: 1.1em;
+    vertical-align: middle;
+    
+    &.icon-accessible,
+    &.icon-warning,
+    &.icon-inaccessible,
+    &.icon-unknown {
+        font-size: 1em;
+        line-height: 1em;
+    }
     
     svg {
         width: 1em;
@@ -174,7 +184,6 @@ fieldset,
     
     & > .icon {
         margin-left: 8px;
-        vertical-align: -1px;
     }
 }
 
@@ -290,10 +299,6 @@ fieldset,
 
 a.button-rounded {
     float: right;
-    
-    .icon {
-        vertical-align: -0.5rem;
-    }
 }
 
 .tab-group {
@@ -351,7 +356,7 @@ a.button-rounded {
     .menu-item,
     .menu-group-label {
         width: 100%;
-        padding: 6px 12px;
+        padding: 7px 12px;
     }
     
     .menu-item {
@@ -363,8 +368,12 @@ a.button-rounded {
         text-align: left;
         cursor: pointer;
         
-        & > .icon.icon-check {
-            margin-left: auto;
+        & > .icon {
+            line-height: 0.8;
+            
+            &.icon-check {
+                margin-left: auto;
+            }
         }
     }
     
@@ -562,14 +571,13 @@ header.global-header {
     
     .search-actions {
         position: absolute;
-        top: 13px;
-        right: 5px;
+        top: 10px;
+        right: 4px;
         opacity: 0.5;
     
         button {
-            padding: 8px 14px;
+            padding: 4px 16px;
             font-size: 22px;
-            line-height: 1;
         }
         
         button:nth-of-type(2) {
@@ -739,14 +747,13 @@ header.global-header {
 
 .stop-tag,
 .stop-accessibility-state {
-    line-height: 2em;
-    border-radius: 1em;
+    padding: 5px 6px;
+    border-radius: 2em;
     background-color: #ededed;
     padding-inline: 12px;
     
     & > .icon {
-        margin-right: 8px;
-        vertical-align: -2px;
+        margin-right: 7px;
     }
 }
 
@@ -838,7 +845,6 @@ header.global-header {
     }
     
     .icon {
-        vertical-align: middle;
         margin-right: 6px;
     }
 }
@@ -863,7 +869,6 @@ header.global-header {
     
     .menu-toggle {
         color: #747474;
-        vertical-align: -3px;
         
         @include dark {
             color: #828282;
@@ -892,6 +897,8 @@ header.global-header {
     }
     
     .icon {
+        font-size: 19px;
+        line-height: 0;
         float: right;
         margin-right: 4px;
     }
@@ -903,7 +910,7 @@ header.global-header {
 
 .review-drawer-toggle,
 .review-contribute {
-    padding: 4px 0;
+    padding: 6px 0;
     text-transform: uppercase;
 }
 
@@ -913,9 +920,9 @@ header.global-header {
     letter-spacing: 0.5px;
     
     .icon {
-        font-size: 16px;
-        vertical-align: middle;
+        font-size: 19px;
         margin-right: 8px;
+        margin-left: -1px;
     }
 }
 
@@ -1148,9 +1155,6 @@ header.global-header {
     }
     
     & > .icon {
-        display: inline-block;
-        line-height: 1;
-        
         &.icon-accessible {
             scale: 0.90;
         }
