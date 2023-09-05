@@ -1048,6 +1048,8 @@ header.global-header {
     margin-top: 12px;
     
     .button-filled {
+        display: flex;
+        align-items: center;
         color: #fff;
         font-size: 20px;
         font-weight: weight('medium');
@@ -1064,14 +1066,12 @@ header.global-header {
         
         .route-icon {
             font-size: 16px;
-            vertical-align: 1px;
         }
         
         .icon {
             font-size: 18px;
-            display: inline-block;
             transform: rotate(-90deg);
-            float: right;
+            margin-left: auto;
         }
     }
     
