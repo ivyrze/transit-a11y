@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { Helmet } from 'react-helmet';
 import { Link, useNavigate } from 'react-router-dom';
 import { useMapStore, shallow } from '@hooks/store';
 import { RouteIcon } from '@components/route-icon';
@@ -25,6 +26,9 @@ export const RouteList = () => {
     
     return (
         <main className="sidebar-card">
+            <Helmet>
+                <title>Routes</title>
+            </Helmet>
             <div className="card-header">
                 <h1 className="alt-header">Nearby routes</h1>
                 <button className="button-rounded card-close"

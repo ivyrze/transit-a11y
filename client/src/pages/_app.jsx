@@ -1,4 +1,5 @@
 import React from 'react';
+import { Helmet } from 'react-helmet';
 import { Outlet } from 'react-router-dom';
 import { ThemeProvider } from '@hooks/theme';
 import { ErrorHandler } from '@hooks/error';
@@ -7,13 +8,19 @@ import { ErrorFullscreen } from '@components/error-fullscreen';
 
 export const App = () => {
     return (
-        <ThemeProvider>
-            <ErrorHandler>
-                <AuthProvider>
-                    <Outlet />
-                </AuthProvider>
-            </ErrorHandler>
-        </ThemeProvider>
+        <>
+            <Helmet
+                defaultTitle="is the metro accessible?"
+                titleTemplate="%s | is the metro accessible?"
+            />
+            <ThemeProvider>
+                <ErrorHandler>
+                    <AuthProvider>
+                        <Outlet />
+                    </AuthProvider>
+                </ErrorHandler>
+            </ThemeProvider>
+        </>
     );
 };
 

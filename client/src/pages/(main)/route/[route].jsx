@@ -1,4 +1,5 @@
 import React from 'react';
+import { Helmet } from 'react-helmet';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { Tab, TabList, TabPanel, useTabStore } from '@ariakit/react';
 import { useQuery } from '@hooks/query';
@@ -37,6 +38,9 @@ export const RouteDetails = () => {
     
     return (
         <main className="sidebar-card route-details-card">
+            <Helmet>
+                <title>{ details.name }</title>
+            </Helmet>
             <div className="card-header">
                 <h1>
                     { details.name }

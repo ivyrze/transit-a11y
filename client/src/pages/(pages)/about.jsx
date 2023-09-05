@@ -1,9 +1,13 @@
 import React from 'react';
+import { Helmet } from 'react-helmet';
 import aboutGraphic from '@assets/images/about-graphic.svg';
 
 export const AboutPage = () => {
     return (
         <main className="page-fullscreen">
+            <Helmet>
+                <title>About</title>
+            </Helmet>
             <img src={ aboutGraphic } className="about-graphic" alt="Graphic depicting a yellow gate used by the New York MTA to restrict access to broken elevators" />
             <p className="about-headline">Every day, public transportation connects millions to work, school, and community life. Disabled people are often left behind.</p>
             <p>Decades after the passage of the Americans with Disabilities Act, many <a href="https://www.nytimes.com/2022/06/22/nyregion/nyc-subway-accessibility-disabilities-elevators.html" target="_blank" rel="noreferrer" className="link-regular">transit agencies are still non-compliant</a> with it’s standards – standards which, even when implemented, are largely regarded by the disabled community as inadequate. Detroit is no exception, with thousands of bus stops lacking wheelchair-accessible infrastructure. And for riders with limited mobility, just 5% have a safe place to sit.</p>

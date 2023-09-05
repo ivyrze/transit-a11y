@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { Helmet } from 'react-helmet';
 import { Outlet } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import { useImmutableQuery } from '@hooks/query';
@@ -35,7 +36,16 @@ export const StopLayout = () => {
         ]);
     }, [ details?.coordinates, flyTo ]);
     
-    return <Outlet />;
+    if (!details?.name) { return null; }
+    
+    return (
+        <>
+            <Helmet>
+                <title>{ details.name }</title>
+            </Helmet>
+            <Outlet />
+        </>
+    );
 };
 
 export default StopLayout;

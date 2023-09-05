@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Helmet } from 'react-helmet';
 import { useParams } from 'react-router-dom';
 import { useInfiniteQuery } from '@hooks/query';
 import { useAuth } from '@hooks/auth';
@@ -33,6 +34,9 @@ export const ProfilePage = () => {
     
     return (
         <main className="page-fullscreen">
+            <Helmet>
+                <title>{ username }</title>
+            </Helmet>
             <div className="user-profile">
                 <img
                     className="profile-picture"

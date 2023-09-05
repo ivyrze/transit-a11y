@@ -1,4 +1,5 @@
 import React from 'react';
+import { Helmet } from 'react-helmet';
 import { useNavigate } from 'react-router-dom';
 import { FormWrapper } from '@components/form-wrapper';
 import { FormSubmit } from '@components/form-submit';
@@ -11,6 +12,9 @@ export const SignUpPage = () => {
     
     return (
         <main className="form-fullscreen">
+            <Helmet>
+                <title>Sign up</title>
+            </Helmet>
             <h1>Sign up</h1>
             <FormWrapper
                 action="/api/account/sign-up"

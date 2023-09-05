@@ -1,4 +1,5 @@
 import React from 'react';
+import { Helmet } from 'react-helmet';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@hooks/auth';
 import { FormWrapper } from '@components/form-wrapper';
@@ -17,6 +18,9 @@ export const LoginPage = () => {
     
     return (
         <main className="form-fullscreen">
+            <Helmet>
+                <title>Login</title>
+            </Helmet>
             <h1>Login</h1>
             <FormWrapper
                 action="/api/account/login"
