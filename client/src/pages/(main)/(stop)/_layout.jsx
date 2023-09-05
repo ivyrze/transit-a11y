@@ -36,8 +36,6 @@ export const StopLayout = () => {
         ]);
     }, [ details?.coordinates, flyTo ]);
     
-    if (!details?.name) { return null; }
-    
     return (
         <>
             <Helmet>

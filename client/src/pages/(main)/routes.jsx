@@ -22,8 +22,6 @@ export const RouteList = () => {
     
     const closeCard = () => navigate('/');
     
-    if (!routes) { return; }
-    
     return (
         <main className="sidebar-card">
             <Helmet>
@@ -39,7 +37,7 @@ export const RouteList = () => {
                 </button>
             </div>
             <div className="route-list">
-                { routes.map(route => (
+                { routes && routes.map(route => (
                     <Link
                         className="button-filled"
                         key={ route.route_id }
@@ -55,7 +53,7 @@ export const RouteList = () => {
                         <Icon name="chevron" />
                     </Link>
                 )) }
-                { !routes.length && (
+                { !routes?.length && (
                     <p>There are no nearby routes.</p>
                 ) }
             </div>

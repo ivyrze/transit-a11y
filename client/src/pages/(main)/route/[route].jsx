@@ -22,8 +22,6 @@ export const RouteDetails = () => {
         data: { id: route }
     });
     
-    if (!details) { return; }
-    
     const renderBranch = branch => branch.map((stop, index) => (
         <li key={ stop.id + "-" + index }>
             <AccessibilityState

@@ -23,8 +23,6 @@ export const StopDetails = () => {
     const { auth, setAuthRedirect } = useAuth();
     const navigate = useNavigate();
     
-    if (!details?.name) { return null; }
-    
     const gsvURL = 'https://www.google.com/maps/@?' +
         new URLSearchParams({
             api: 1,

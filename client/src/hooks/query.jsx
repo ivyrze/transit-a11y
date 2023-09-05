@@ -22,7 +22,10 @@ export const useBaseQuery = (swr, key, options) => {
         
         const response = await queryHelper(queryOptions, setErrorStatus);
         return response.data;
-    }, options);
+    }, {
+        suspense: true,
+        ...options
+    });
 };
 
 export const queryHelper = (options, setErrorStatus) => {

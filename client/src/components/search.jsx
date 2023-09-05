@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, startTransition } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { SearchResults } from '@components/search-results';
 import { Icon } from '@components/icon';
@@ -44,7 +44,9 @@ export const Search = props => {
         checkGeolocationPermissions();
     }, []);
     
-    const handleInput = event => setSearchText(event.target.value);
+    const handleInput = event => startTransition(() => {
+        setSearchText(event.target.value);
+    });
     
     const handleSubmit = event => {
         event.preventDefault();
@@ -53,7 +55,7 @@ export const Search = props => {
     
     const openStopAndClear = id => {
         navigate('/stop/' + id);
-        setSearchText('');
+        startTransition(() => { setSearchText('') });
     };
     
     return (

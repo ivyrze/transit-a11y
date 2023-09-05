@@ -19,8 +19,6 @@ export const ReviewForm = () => {
     const navigate = useNavigate();
     const overrideStopStyle = useMapStore(state => state.overrideStopStyle);
     
-    if (!details?.name) { return null; }
-    
     const showStopCard = () => navigate('/stop/' + stop);
     const closeCard = () => navigate('/');
     
