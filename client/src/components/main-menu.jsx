@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { MenuGroup, MenuGroupLabel, MenuItem } from '@ariakit/react';
 import { Menu } from '@components/menu';
 import { useAuth } from '@hooks/auth';
@@ -13,13 +13,13 @@ export const MainMenu = () => {
                 <MenuGroup className="menu-group">
                     <MenuGroupLabel className="menu-group-label">About</MenuGroupLabel>
                     <MenuItem render={
-                        <Link
+                        <NavLink
                             to="/about"
                             className="menu-item"
                         >
                             <Icon name="book" />
                             About the project
-                        </Link>
+                        </NavLink>
                     } />
                     <MenuItem render={
                         <a
@@ -36,13 +36,13 @@ export const MainMenu = () => {
                 <MenuGroup className="menu-group">
                     <MenuGroupLabel className="menu-group-label">View</MenuGroupLabel>
                     <MenuItem render={
-                        <Link
+                        <NavLink
                             to="/routes"
                             className="menu-item"
                         >
                             <Icon name="route" />
                             Route explorer
-                        </Link>
+                        </NavLink>
                     } />
                 </MenuGroup>
                 <MenuGroup className="menu-group">
@@ -50,33 +50,33 @@ export const MainMenu = () => {
                     { auth && auth.username ? (
                         <>
                             <MenuItem render={
-                                <Link
+                                <NavLink
                                     to={ "/profile/" + auth.username }
                                     className="menu-item"
                                 >
                                     <Icon name="user" />
                                     Your profile
-                                </Link>
+                                </NavLink>
                             } />
                             <MenuItem render={
-                                <Link
+                                <NavLink
                                     to="/account/logout"
                                     className="menu-item"
                                 >
                                     <Icon name="login" />
                                     Logout
-                                </Link>
+                                </NavLink>
                             } />
                         </>
                     ) : (
                         <MenuItem render={
-                            <Link
+                            <NavLink
                                 to="/account/login"
                                 className="menu-item"
                             >
                                 <Icon name="login" />
                                 Login
-                            </Link>
+                            </NavLink>
                         } />
                     ) }
                 </MenuGroup>

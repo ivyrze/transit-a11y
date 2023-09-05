@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { MainMenu } from '@components/main-menu';
 
 export const Header = props => {
@@ -10,12 +10,12 @@ export const Header = props => {
             "global-header header-minimal" :
             "global-header header-regular"
         }>
-            <Link
+            <NavLink
                 to="/"
                 className="title link-minimal"
             >
                 is the metro accessible?
-            </Link>
+            </NavLink>
             { menu && <MainMenu /> }
             { children }
         </header>
