@@ -90,13 +90,21 @@ router.use('/api/account/logout', logoutRouter);
 router.use('/api/account/sign-up', signUpRouter);
 
 // Setup production build caching
-router.use(express.static('../client/dist/', {
-    maxAge: 1000 * 60**2 * 24 * 14
+const buildPath = path.resolve('..', 'client', 'dist');
+const indexPath = path.resolve(buildPath, 'index.html');
+
+router.use(express.static(buildPath, {
+    maxAge: '14 days',
+    setHeaders: (res, path) => {
+        if (path === indexPath) {
+            res.setHeader('Cache-Control', 'public, max-age=0');
+        }
+    }
 }));
 
 router.get('*', (req, res, next) => {
     if (!req.originalUrl.startsWith('/api')) {
-        res.sendFile(path.resolve('..', 'client', 'dist', 'index.html'));
+        res.sendFile(indexPath);
     } else {
         next();
     }
