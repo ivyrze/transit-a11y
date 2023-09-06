@@ -8,6 +8,7 @@ import helmet from 'helmet';
 import mongoose from 'mongoose';
 import path from 'path';
 import crypto from 'crypto';
+import compression from 'compression';
 
 import { router as attachmentRouter } from './routes/attachment.js';
 import { router as searchRouter } from './routes/search.js';
@@ -43,6 +44,7 @@ app.use(helmet.referrerPolicy());
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(compression());
 
 if (process.env.NODE_ENV === 'production') {
     app.enable('trust proxy');
