@@ -94,7 +94,7 @@ const buildPath = path.resolve('..', 'client', 'dist');
 const indexPath = path.resolve(buildPath, 'index.html');
 
 router.use(express.static(buildPath, {
-    maxAge: '14 days',
+    maxAge: '1 year',
     setHeaders: (res, path) => {
         if (path === indexPath) {
             res.setHeader('Cache-Control', 'public, max-age=0');

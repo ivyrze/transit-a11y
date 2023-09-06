@@ -16,4 +16,13 @@ export default defineConfig({
         }
     },
     plugins: [ jsconfigPaths(), react(), generouted(), svgr() ],
-})
+    build: {
+        rollupOptions: {
+            output: {
+                manualChunks: {
+                    'mapbox-gl': [ 'react-map-gl', 'mapbox-gl' ]
+                },
+            }
+        },
+    },
+});
