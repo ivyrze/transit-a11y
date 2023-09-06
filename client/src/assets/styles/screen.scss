@@ -707,12 +707,12 @@ header.global-header {
 
 .card-header {
     display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
+    align-items: center;
     
     .card-actions {
         display: flex;
         gap: 3px;
+        margin-left: auto;
     }
 }
 

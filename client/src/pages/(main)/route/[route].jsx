@@ -40,20 +40,20 @@ export const RouteDetails = () => {
                 <title>{ details.name }</title>
             </Helmet>
             <div className="card-header">
-                <h1>
-                    { details.name }
-                    <RouteIcon
-                        number={ details.number }
-                        color={ details.color }
-                    />
-                </h1>
-                <button
-                    className="button-rounded card-close"
-                    aria-label="Close"
-                    onClick={ closeCard }
-                >
-                    <Icon name="close" />
-                </button>
+                <h1>{ details.name }</h1>
+                <RouteIcon
+                    number={ details.number }
+                    color={ details.color }
+                />
+                <div className="card-actions">
+                    <button
+                        className="button-rounded card-close"
+                        aria-label="Close"
+                        onClick={ closeCard }
+                    >
+                        <Icon name="close" />
+                    </button>
+                </div>
             </div>
             <span className="subtitle">
                 { i18n.routeSubheadings[details.agency.vehicle] }

@@ -29,12 +29,14 @@ export const RouteList = () => {
             </Helmet>
             <div className="card-header">
                 <h1 className="alt-header">Nearby routes</h1>
-                <button className="button-rounded card-close"
-                    aria-label="Close"
-                    onClick={ closeCard }
-                >
-                    <Icon name="close" />
-                </button>
+                <div className="card-actions">
+                    <button className="button-rounded card-close"
+                        aria-label="Close"
+                        onClick={ closeCard }
+                    >
+                        <Icon name="close" />
+                    </button>
+                </div>
             </div>
             <div className="route-list">
                 { routes && routes.map(route => (

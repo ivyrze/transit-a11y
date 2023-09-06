@@ -17,11 +17,11 @@ export const RouteIcon = props => {
     if (inverted) { classList.push("inverted"); }
     
     return (
-        <span
+        <div
             className={ classList.join(" ") }
             style={ styleProps }
         >
             { number }
-        </span>
+        </div>
     );
 };
