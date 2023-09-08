@@ -9,7 +9,7 @@ export const MainMenu = () => {
     
     return (
         <div id="main-menu">
-            <Menu iconName="menu">
+            <Menu iconName="menu" toggleAriaLabel="Toggle main menu">
                 <MenuGroup className="menu-group">
                     <MenuGroupLabel className="menu-group-label">About</MenuGroupLabel>
                     <MenuItem render={

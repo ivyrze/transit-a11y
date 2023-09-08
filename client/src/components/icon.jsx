@@ -6,8 +6,8 @@ import { ReactComponent as IconShelter } from '@assets/images/icon-shelter.svg';
 import { ReactComponent as IconMenu } from '@assets/images/icon-menu.svg';
 import { ReactComponent as IconUser } from '@assets/images/icon-user.svg';
 
-export const Icon = props => {
-    const { name, alt } = props;
+export const Icon = (props) => {
+    const { name, alt, ...passthroughProps } = props;
     
     const altClass = alt ? " icon-alt" : "";
     
@@ -57,9 +57,9 @@ export const Icon = props => {
     return (
         <span
             className={ "icon icon-" + name + altClass }
-            aria-hidden="true"
+            { ...passthroughProps }
         >
-            <IconChild />
+            <IconChild aria-hidden="true" />
         </span>
     );
 };

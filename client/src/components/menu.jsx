@@ -3,8 +3,7 @@ import { Menu as MenuParent, MenuButton, useMenuStore } from '@ariakit/react';
 import { Icon } from '@components/icon';
 
 export const Menu = props => {
-    const { children } = props;
-    const iconName = props.iconName ?? "ellipsis";
+    const { iconName = "ellipsis", toggleAriaLabel = "Toggle options menu", children } = props;
     
     const menuStore = useMenuStore();
     
@@ -13,6 +12,7 @@ export const Menu = props => {
             <MenuButton
                 className="button-rounded menu-toggle"
                 store={ menuStore }
+                { ...toggleAriaLabel && { "aria-label": toggleAriaLabel } }
             >
                 <Icon name={ iconName } />
             </MenuButton>

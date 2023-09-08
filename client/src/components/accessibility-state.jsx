@@ -11,6 +11,9 @@ export const AccessibilityState = props => {
     const stateStrings = i18n.accessibilityStates[state];
     const stateGroupStrings = i18n.accessibilityGroups[stateProps.group];
     
+    const iconAccessibleTitle = stateGroupProps.style.charAt(0).toUpperCase() +
+        stateGroupProps.style.slice(1) + " state";
+    
     return (
         <div { ...className && { className:
             className + " state-" + stateGroupProps.style
@@ -19,6 +22,7 @@ export const AccessibilityState = props => {
                 <Icon
                     name={ stateGroupProps.style }
                     { ...showIcon === 'alt' && { alt: true } }
+                    { ...!showHeading && { title: iconAccessibleTitle } }
                 />
             ) }
             { showHeading && (
