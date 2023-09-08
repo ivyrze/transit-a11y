@@ -3,7 +3,8 @@ import { Helmet } from 'react-helmet';
 import { useNavigate } from 'react-router-dom';
 import { FormWrapper } from '@components/form-wrapper';
 import { FormSubmit } from '@components/form-submit';
-import { FormLabel, FormInput, FormError } from '@ariakit/react';
+import { FormError } from '@components/form-error';
+import { FormLabel, FormInput } from '@ariakit/react';
 
 export const SignUpPage = () => {
     const navigate = useNavigate();

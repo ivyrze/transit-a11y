@@ -78,6 +78,11 @@ textarea,
     form &[aria-invalid="true"] {
         border-color: #c25252;
         outline-color: #c25252;
+        
+        @include dark {
+            border-color: #de5d5d;
+            outline-color: #de5d5d;
+        }
     }
 }
 
@@ -117,6 +122,23 @@ textarea,
     
     input {
         padding-top: 38px;
+    }
+    
+    .form-error {
+        color: #c25252;
+        margin-block: 5px;
+        
+        @include dark {
+            color: #de5d5d;
+        }
+        
+        & > .icon {
+            margin-right: 4px;
+        }
+        
+        & > [role="alert"] {
+            display: inline-block;
+        }
     }
 }
 

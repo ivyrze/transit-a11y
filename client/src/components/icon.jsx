@@ -1,6 +1,6 @@
 import React from 'react';
 import { FaXmark, FaWheelchairMove, FaTriangleExclamation, FaExclamation, FaBan, FaQuestion } from 'react-icons/fa6';
-import { PiMagnifyingGlassBold, PiXBold, PiPlusCircleFill, PiArrowSquareOut, PiSmileySad, PiArrowLineRightFill, PiArrowLineUpFill, PiArrowLineDownFill, PiElevatorFill, PiEscalatorUpFill, PiChairFill, PiMonitorBold, PiFlameFill, PiCaretDown, PiDotsThreeBold, PiTrashSimpleFill, PiSignInBold, PiNavigationArrowBold, PiPathBold, PiPencilSimpleFill, PiHeartFill, PiBookOpenFill, PiCircleNotchBold } from 'react-icons/pi';
+import { PiMagnifyingGlassBold, PiXBold, PiPlusCircleFill, PiArrowSquareOut, PiSmileySad, PiArrowLineRightFill, PiArrowLineUpFill, PiArrowLineDownFill, PiElevatorFill, PiEscalatorUpFill, PiChairFill, PiMonitorBold, PiFlameFill, PiCaretDown, PiDotsThreeBold, PiTrashSimpleFill, PiSignInBold, PiNavigationArrowBold, PiPathBold, PiPencilSimpleFill, PiHeartFill, PiBookOpenFill, PiCircleNotchBold, PiWarningCircleFill } from 'react-icons/pi';
 import { ReactComponent as IconRampEntrance } from '@assets/images/icon-ramp-entrance.svg';
 import { ReactComponent as IconShelter } from '@assets/images/icon-shelter.svg';
 import { ReactComponent as IconMenu } from '@assets/images/icon-menu.svg';
@@ -42,7 +42,8 @@ export const Icon = (props) => {
         pencil: PiPencilSimpleFill,
         donation: PiHeartFill,
         book: PiBookOpenFill,
-        spinner: PiCircleNotchBold
+        spinner: PiCircleNotchBold,
+        invalid: PiWarningCircleFill
     };
     
     const altIcons = {
