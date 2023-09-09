@@ -6,12 +6,15 @@ body {
     font-family: 'Akzidenz Grotesk', 'Helvetica Neue', sans-serif;
     font-size: 18px;
     line-height: 1.6;
-    color: #454545;
+    color: var(--ui-base-text-color);
+    background-color: var(--ui-base-color);
     margin: 0;
     
-    @include dark {
-        color: #ccc;
-        background-color: #1d1d1d;
+    &.page-layout {
+        @include dark {
+            --ui-base-color: #1d1d1d;
+            --ui-popup-color: #242424;
+        }
     }
 }
 

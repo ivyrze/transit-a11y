@@ -9,6 +9,7 @@ $routeColors: ('red', 'orange', 'yellow', 'green', 'blue', 'purple', 'pink', 'br
 :root {
     --ui-base-color: #fff;
     --ui-popup-color: #f9f9f9;
+    --ui-base-text-color: #454545;
     
     --horizontal-rule-color: #dcdcdc;
     --form-error-color: #c25252;
@@ -33,7 +34,8 @@ $routeColors: ('red', 'orange', 'yellow', 'green', 'blue', 'purple', 'pink', 'br
     
     @include dark {
         --ui-base-color: #111;
-        --ui-popup-color: #242424;
+        --ui-popup-color: #181818;
+        --ui-base-text-color: #ccc;
         
         --horizontal-rule-color: #3d3d3d;
         --form-error-color: #de5d5d;

@@ -1,4 +1,5 @@
 import React, { useRef, useCallback } from 'react';
+import { Helmet } from 'react-helmet';
 import { Outlet } from 'react-router-dom';
 import { Header } from '@components/header';
 import { Search } from '@components/search';
@@ -15,6 +16,9 @@ export const IndexLayout = () => {
     
     return (
         <>
+            <Helmet>
+                <body className="main-layout" />
+            </Helmet>
             <div id="sidebar-container">
                 <Header minimal>
                     <Search
