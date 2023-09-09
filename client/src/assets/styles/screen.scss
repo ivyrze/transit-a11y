@@ -1,5 +1,3 @@
-@use 'sass:list';
-
 html {
     color-scheme: light dark;
 }
@@ -32,11 +30,7 @@ hr {
     margin-block: 40px;
     border: none;
     height: 1px;
-    background-color: #dcdcdc;
-    
-    @include dark {
-        background-color: #3d3d3d;
-    }
+    background-color: var(--horizontal-rule-color);
 }
 
 .sr-only {
@@ -76,13 +70,8 @@ textarea,
     }
     
     form &[aria-invalid="true"] {
-        border-color: #c25252;
-        outline-color: #c25252;
-        
-        @include dark {
-            border-color: #de5d5d;
-            outline-color: #de5d5d;
-        }
+        border-color: var(--form-error-color);
+        outline-color: var(--form-error-color);
     }
 }
 
@@ -125,12 +114,8 @@ textarea,
     }
     
     .form-error {
-        color: #c25252;
+        color: var(--form-error-color);
         margin-block: 5px;
-        
-        @include dark {
-            color: #de5d5d;
-        }
         
         & > .icon {
             margin-right: 4px;
@@ -197,12 +182,11 @@ fieldset,
     line-height: 1.1em;
     vertical-align: middle;
     
-    &.icon-accessible,
-    &.icon-warning,
-    &.icon-inaccessible,
-    &.icon-unknown {
-        font-size: 1em;
-        line-height: 1em;
+    @each $name in $stateGroups {
+        &.icon-#{$name} {
+            font-size: 1em;
+            line-height: 1em;
+        }
     }
     
     &.icon-spinner svg {
@@ -388,7 +372,7 @@ a.button-rounded {
 }
 
 .menu-popup {
-    background: #f9f9f9;
+    background: var(--ui-popup-color);
     border-radius: 10px;
     box-shadow: 0 4px 18px rgb(0 0 0 / 15%);
     padding: 6px;
@@ -396,10 +380,6 @@ a.button-rounded {
     z-index: 1;
     max-height: var(--popover-available-height);
     overflow-y: auto;
-    
-    @include dark {
-        background: #242424;
-    }
     
     .menu-item,
     .menu-group-label {
@@ -430,11 +410,7 @@ a.button-rounded {
         display: block;
         width: calc(100% - 20px);
         margin: 6px auto;
-        border-bottom: 1px solid #dcdcdc;
-        
-        @include dark {
-            border-color: #3d3d3d;
-        }
+        border-bottom: 1px solid var(--horizontal-rule-color);
     }
     
     .menu-group-label {
@@ -533,11 +509,7 @@ header.global-header {
             }
             
             .menu-popup {
-                background: #fff;
-                
-                @include dark {
-                    background: #111;
-                }
+                background: var(--ui-base-color);
             }
         }
     }
@@ -585,19 +557,15 @@ header.global-header {
 .sidebar-card {
     width: 460px;
     max-width: 100%;
-    background-color: #fff;
     box-shadow: 0 5px 25px rgb(0 0 0 / 25%);
 }
 
 #search-container,
 #search-container input,
 .sidebar-card {
+    background-color: var(--ui-base-color);
     border-radius: 10px;
     overflow: hidden;
-    
-    @include dark {
-        background-color: #111;
-    }
 }
 
 #search-container {
@@ -713,24 +681,13 @@ header.global-header {
         margin-left: 6px;
     }
     
-    $colors: (
-        'red': #fe5757,
-        'orange': #ffa233,
-        'yellow': #ffd200,
-        'green': #8fdd3c,
-        'blue': #7796ff,
-        'purple': #c77bff,
-        'pink': #ff85c1,
-        'brown': #d39267
-    );
-    
-    @each $name, $color in $colors {
+    @each $name in $routeColors {
         &.route-#{$name} {
-            background-color: $color;
+            background-color: var(--route-color-#{$name});
         }
         
         &.route-#{$name}.inverted {
-            color: $color;
+            color: var(--route-color-#{$name});
         }
     }
     
@@ -813,33 +770,17 @@ header.global-header {
 }
 
 .stop-accessibility-state {
-    $colors: (
-        'accessible': (#85a2ff, #1a358f, #242e4f, #b2c2ff),
-        'warning': (#ffd57c, #6d4c07, #372a15, #f2c789),
-        'inaccessible': (#ff7d7d, #811616, #361717, #fdacac),
-        'unknown': (#b1b1b1, #464646, #222222, #c1c1c1)
-    );
-    
-    @each $name, $color in $colors {
+    @each $name in $stateGroups {
         &.state-#{$name} {
-            background-color: list.nth($color, 1);
-            color: list.nth($color, 2);
-            
-            @include dark {
-                background-color: list.nth($color, 3);
-                color: list.nth($color, 4);
-            }
+            color: var(--state-#{$name}-foreground);
+            background-color: var(--state-#{$name}-background);
         }
     }
 }
 
 .review-container {
-    border-top: 1px solid #dcdcdc;
+    border-top: 1px solid var(--horizontal-rule-color);
     padding-top: 14px;
-    
-    @include dark {
-        border-top-color: #3d3d3d;
-    }
 }
 
 .review-header {
@@ -875,20 +816,9 @@ header.global-header {
     font-size: 16px;
     font-weight: weight('medium');
     
-    $colors: (
-        'accessible': (#1a358f, #b2c2ff),
-        'warning': (#6d4c07, #f2c789),
-        'inaccessible': (#811616, #fdacac),
-        'unknown': (#525252, #c1c1c1)
-    );
-    
-    @each $name, $color in $colors {
+    @each $name in $stateGroups {
         &.state-#{$name} {
-            color: list.nth($color, 1);
-            
-            @include dark {
-                color: list.nth($color, 2);
-            }
+            color: var(--state-#{$name}-foreground);
         }
     }
     
@@ -1017,12 +947,8 @@ header.global-header {
     }
     
     .review-single + .review-single {
-        border-top: 1px solid #dcdcdc;
+        border-top: 1px solid var(--horizontal-rule-color);
         padding-top: 20px;
-        
-        @include dark {
-            border-top-color: #313131;
-        }
     }
     
     .review-header {

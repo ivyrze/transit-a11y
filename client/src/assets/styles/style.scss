@@ -1,7 +1,54 @@
+@use 'sass:list';
 @import 'mixins';
-
 @import 'fonts';
 @import 'normalize';
+
+$stateGroups: ('accessible', 'warning', 'inaccessible', 'unknown');
+$routeColors: ('red', 'orange', 'yellow', 'green', 'blue', 'purple', 'pink', 'brown');
+
+:root {
+    --ui-base-color: #fff;
+    --ui-popup-color: #f9f9f9;
+    
+    --horizontal-rule-color: #dcdcdc;
+    --form-error-color: #c25252;
+    
+    --state-accessible-foreground: #1a358f;
+    --state-accessible-background: #85a2ff;
+    --state-warning-foreground: #6d4c07;
+    --state-warning-background: #ffd57c;
+    --state-inaccessible-foreground: #811616;
+    --state-inaccessible-background: #ff7d7d;
+    --state-unknown-foreground: #464646;
+    --state-unknown-background: #b1b1b1;
+    
+    --route-color-red: #fe5757;
+    --route-color-orange: #ffa233;
+    --route-color-yellow: #ffd200;
+    --route-color-green: #8fdd3c;
+    --route-color-blue: #7796ff;
+    --route-color-purple: #c77bff;
+    --route-color-pink: #ff85c1;
+    --route-color-brown: #d39267;
+    
+    @include dark {
+        --ui-base-color: #111;
+        --ui-popup-color: #242424;
+        
+        --horizontal-rule-color: #3d3d3d;
+        --form-error-color: #de5d5d;
+        
+        --state-accessible-foreground: #b2c2ff;
+        --state-accessible-background: #242e4f;
+        --state-warning-foreground: #f2c789;
+        --state-warning-background: #372a15;
+        --state-inaccessible-foreground: #fdacac;
+        --state-inaccessible-background: #361717;
+        --state-unknown-foreground: #c1c1c1;
+        --state-unknown-background: #222222;
+    }
+}
+
 @import 'screen';
 
 @media screen and (max-width: 480px) {
