@@ -1,10 +1,6 @@
-@use 'sass:list';
 @import 'mixins';
 @import 'fonts';
 @import 'normalize';
-
-$stateGroups: ('accessible', 'warning', 'inaccessible', 'unknown');
-$routeColors: ('red', 'orange', 'yellow', 'green', 'blue', 'purple', 'pink', 'brown');
 
 :root {
     --ui-base-color: #fff;
@@ -52,7 +48,3 @@ $routeColors: ('red', 'orange', 'yellow', 'green', 'blue', 'purple', 'pink', 'br
 }
 
 @import 'screen';
-
-@media screen and (max-width: 480px) {
-    @import 'mobile';
-}

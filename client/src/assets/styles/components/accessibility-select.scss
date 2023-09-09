@@ -1,0 +1,16 @@
+@import './form-wrapper';
+
+.multi-select {
+    @extend .abstract-input;
+    
+    display: flex;
+    align-items: center;
+    
+    & > .icon {
+        margin-left: auto;
+    }
+    
+    &[aria-expanded="true"] > .icon {
+        transform: rotate(180deg);
+    }
+}

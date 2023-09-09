@@ -1,0 +1,105 @@
+@import '../mixins';
+
+.button-set {
+    display: flex;
+    gap: 10px;
+    margin-top: 26px;
+}
+    
+.button-filled {
+    width: 100%;
+    border-radius: 8px;
+    padding: 7px;
+}
+
+.button-filled,
+.button-rounded {
+    display: block;
+    text-align: center;
+}
+
+.button-filled {
+    background-color: #ededed;
+    transition: background-color 0.2s ease;
+    
+    @include dark {
+        background-color: #222;
+    }
+    
+    &:not(:disabled):hover {
+        background-color: #e4e4e4;
+        
+        @include dark {
+            background-color: #272727;
+        }
+    }
+    
+    &:not(:disabled):active {
+        background-color: #e0e0e0;
+        
+        @include dark {
+            background-color: #2b2b2b;
+        }
+    }
+}
+
+.button-filled.button-primary {
+    background-color: #000;
+    color: #fff;
+    
+    @include dark {
+        background-color: #444;
+    }
+    
+    &:not(:disabled):hover {
+        background-color: #191919;
+        
+        @include dark {
+            background-color: #494949;
+        }
+    }
+    
+    &:not(:disabled):active {
+        background-color: #232323;
+        
+        @include dark {
+            background-color: #4e4e4e;
+        }
+    }
+}
+
+.abstract-selectable {
+    transition: background-color 0.2s ease;
+    
+    &:hover,
+    &[data-focus-visible] {
+        background-color: rgba(0, 0, 0, 0.05);
+        
+        @include dark {
+            background-color: rgba(255, 255, 255, 0.06);
+        }
+    }
+    
+    &:active,
+    &[aria-selected="true"] {
+        background-color: rgba(0, 0, 0, 0.08);
+        
+        @include dark {
+            background-color: rgba(255, 255, 255, 0.09);
+        }
+    }
+}
+
+.button-rounded {
+    @extend .abstract-selectable;
+    
+    line-height: 1;
+    width: 1.6em;
+    aspect-ratio: 1 / 1;
+    border-radius: 50%;
+    padding: 3px 0 0;
+}
+
+a.button-rounded {
+    float: right;
+}

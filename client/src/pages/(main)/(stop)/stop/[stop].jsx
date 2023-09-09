@@ -6,8 +6,12 @@ import { useQuery } from '@hooks/query';
 import { useAuth } from '@hooks/auth';
 import { AccessibilityState } from '@components/accessibility-state';
 import { Review } from '@components/review';
+import { Link } from '@components/link';
+import { Button } from '@components/button';
 import { Icon } from '@components/icon';
 import i18n from '@assets/i18n-strings.json';
+
+import '@assets/styles/components/stop-details.scss';
 
 export const StopDetails = () => {
     const { stop } = useParams();
@@ -45,13 +49,13 @@ export const StopDetails = () => {
     const closeCard = () => navigate('/');
     
     const ContributeButton = () => (
-        <button
+        <Button
             className="review-contribute"
             onClick={ switchToReviewForm }
         >
             <Icon name="add" />
             Contribute a review
-        </button>
+        </Button>
     );
     
     return (
@@ -61,7 +65,7 @@ export const StopDetails = () => {
                 <div className="card-actions">
                     <Menu>
                         <MenuItem render={
-                            <a
+                            <Link
                                 href={ gsvURL }
                                 target="_blank"
                                 rel="noreferrer"
@@ -69,17 +73,17 @@ export const StopDetails = () => {
                             >
                                 Open in Google Street View
                                 <Icon name="link" />
-                            </a>
+                            </Link>
                         } />
                     </Menu>
                     <div className="card-actions">
-                        <button
+                        <Button
                             className="button-rounded card-close"
                             aria-label="Close"
                             onClick={ closeCard }
                         >
                             <Icon name="close" />
-                        </button>
+                        </Button>
                     </div>
                 </div>
             </div>
@@ -133,18 +137,18 @@ export const StopDetails = () => {
                 </div>
             ) }
             { details.alert && (
-                <a
+                <Link
                     className="stop-alert-link link-external"
                     href={ details.alert.url }
                     target="_blank"
                 >
                     View service alert details
                     <Icon name="link" />
-                </a>
+                </Link>
             ) }
             { (!details.alert && !details.reviews) && (
                 <span className="source-link">
-                    Source: <a target="_blank" href={ details.agency.url } rel="noreferrer" className="link-minimal">{ details.agency.name }</a>
+                    Source: <Link target="_blank" href={ details.agency.url } rel="noreferrer" className="link-minimal">{ details.agency.name }</Link>
                 </span>
             ) }
         </main>

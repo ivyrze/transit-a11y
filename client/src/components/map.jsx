@@ -8,6 +8,9 @@ import { useTheme } from '@hooks/theme';
 import { useImmutableQuery } from '@hooks/query';
 import { styleFactory } from '@assets/mapbox-style';
 
+import 'mapbox-gl/dist/mapbox-gl.css';
+import '@assets/styles/components/map.scss';
+
 export const Map = forwardRef((props, ref) => {
     const [
         startupAgency,

@@ -3,10 +3,12 @@
     -webkit-overflow-scrolling: touch;
 }
 
-button,
-input,
-select,
-textarea {
+:where(
+    button,
+    input,
+    select,
+    textarea
+) {
     color: inherit;
     font: inherit;
     appearance: none;
@@ -16,27 +18,29 @@ textarea {
     border: none;
 }
 
-button {
+:where(button) {
     cursor: pointer;
     text-align: center;
 }
 
-select,
-textarea {
+:where(
+    select,
+    textarea
+) {
     width: 100%;
 }
 
-textarea {
+:where(textarea) {
     resize: none;
 }
 
-fieldset {
+:where(fieldset) {
     border: none;
     margin: 0;
     padding: 0;
 }
 
-input[type="search"] {
+:where(input[type="search"]) {
     &::-webkit-search-decoration,
     &::-webkit-search-cancel-button,
     &::-webkit-search-results-button,

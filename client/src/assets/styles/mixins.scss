@@ -1,4 +1,5 @@
 @use 'sass:map';
+@import 'variables';
 
 @function map-deep-get($map, $keys...) {
     @each $key in $keys {
@@ -8,11 +9,19 @@
 }
 
 @function weight($variant) {
-    @return map-deep-get($font-faces, 'Akzidenz Grotesk', 'variants', $variant, 'weight');
+    @return map-deep-get($fontFaces, 'Akzidenz Grotesk', 'variants', $variant, 'weight');
 }
 
 @mixin dark() {
     @media (prefers-color-scheme: dark) {
+        & {
+            @content;
+        }
+    }
+}
+
+@mixin mobile() {
+    @media screen and (max-width: 480px) {
         & {
             @content;
         }

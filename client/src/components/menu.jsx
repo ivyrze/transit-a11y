@@ -2,6 +2,8 @@ import React from 'react';
 import { Menu as MenuParent, MenuButton, useMenuStore } from '@ariakit/react';
 import { Icon } from '@components/icon';
 
+import '@assets/styles/components/menu.scss';
+
 export const Menu = props => {
     const { iconName = "ellipsis", toggleAriaLabel = "Toggle options menu", children } = props;
     

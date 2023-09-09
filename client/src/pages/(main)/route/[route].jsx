@@ -1,12 +1,16 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import { Link, useParams, useNavigate } from 'react-router-dom';
+import { Link } from '@components/link';
+import { useParams, useNavigate } from 'react-router-dom';
 import { Tab, TabList, TabPanel, useTabStore } from '@ariakit/react';
 import { useQuery } from '@hooks/query';
 import { AccessibilityState } from '@components/accessibility-state';
 import { RouteIcon } from '@components/route-icon';
+import { Button } from '@components/button';
 import { Icon } from '@components/icon';
 import i18n from '@assets/i18n-strings.json';
+
+import '@assets/styles/components/route-details.scss';
 
 export const RouteDetails = () => {
     const { route } = useParams();
@@ -46,13 +50,13 @@ export const RouteDetails = () => {
                     color={ details.color }
                 />
                 <div className="card-actions">
-                    <button
+                    <Button
                         className="button-rounded card-close"
                         aria-label="Close"
                         onClick={ closeCard }
                     >
                         <Icon name="close" />
-                    </button>
+                    </Button>
                 </div>
             </div>
             <span className="subtitle">

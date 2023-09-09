@@ -3,6 +3,8 @@ import { AccessibilityState } from '@components/accessibility-state';
 import { Select, SelectArrow, SelectPopover, SelectGroup, SelectGroupLabel, SelectItem, SelectItemCheck, useSelectStore } from '@ariakit/react';
 import { accessibilityGroups, accessibilityStates } from '@common/a11y-states';
 
+import '@assets/styles/components/accessibility-select.scss';
+
 export const AccessibilitySelect = forwardRef(({
     value, setValue, defaultValue = [], onTouch, ...props
 }, ref) => {

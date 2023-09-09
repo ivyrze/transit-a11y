@@ -4,7 +4,10 @@ import { AccessibilitySelect } from '@components/accessibility-select';
 import { useFormContext } from '@components/form-wrapper';
 import { FormSubmit } from '@components/form-submit';
 import { Icon } from '@components/icon';
+import { Button } from '@components/button';
 import i18n from '@assets/i18n-strings.json';
+
+import '@assets/styles/components/review-fields.scss';
 
 export const ReviewFields = props => {
     const { reviewId, stopId, compactView, onCancel } = props;
@@ -68,13 +71,13 @@ export const ReviewFields = props => {
             ) }
             <fieldset className="button-set">
                 <FormSubmit className="button-filled button-primary" />
-                <button
+                <Button
                     className="button-filled form-cancel"
                     type="button"
                     onClick={ onCancel }
                 >
                     Cancel
-                </button>
+                </Button>
             </fieldset>
             { reviewId && (
                 <FormInput type="hidden" name="id" value={ reviewId } />

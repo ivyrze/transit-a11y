@@ -6,6 +6,8 @@ import { ReactComponent as IconShelter } from '@assets/images/icon-shelter.svg';
 import { ReactComponent as IconMenu } from '@assets/images/icon-menu.svg';
 import { ReactComponent as IconUser } from '@assets/images/icon-user.svg';
 
+import '@assets/styles/components/icon.scss';
+
 export const Icon = (props) => {
     const { name, alt, ...passthroughProps } = props;
     

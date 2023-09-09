@@ -1,6 +1,7 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from '@components/link';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@hooks/auth';
 import { FormWrapper } from '@components/form-wrapper';
 import { FormSubmit } from '@components/form-submit';

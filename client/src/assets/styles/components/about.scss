@@ -1,0 +1,15 @@
+@import '../mixins';
+
+.about-graphic {
+    max-width: 140px;
+}
+
+.about-headline {
+    font-size: 32px;
+    font-weight: weight('light');
+    letter-spacing: -0.75px;
+    
+    @include mobile {
+        font-size: 28px;
+    }
+}

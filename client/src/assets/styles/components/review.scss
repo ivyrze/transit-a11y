@@ -1,0 +1,72 @@
+@import '../mixins';
+
+.review-single {
+    margin-top: 16px;
+    
+    p {
+        margin-top: 6px;
+        margin-bottom: 0;
+    }
+    
+    & + .review-contribute {
+        margin-top: 16px;
+    }
+    
+    .attachment-list {
+        margin-top: 16px;
+        padding-bottom: 12px;
+        box-sizing: content-box;
+    }
+    
+    .menu-toggle {
+        color: #747474;
+        
+        @include dark {
+            color: #828282;
+        }
+    }
+}
+
+.review-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+    font-size: 16px;
+    
+    .review-author,
+    .review-stop {
+        font-weight: weight('medium');
+    }
+    
+    .review-timestamp {
+        margin-left: auto;
+        padding-right: 7px;
+        font-weight: weight('light');
+        opacity: 0.75;
+        
+        @include dark {
+            opacity: 0.6;
+        }
+    }
+    
+    .profile-picture {
+        width: 1.5em;
+        height: 1.5em;
+    }
+}
+    
+.review-accessibility-state {
+    font-size: 16px;
+    font-weight: weight('medium');
+    
+    @each $name in $stateGroups {
+        &.state-#{$name} {
+            color: var(--state-#{$name}-foreground);
+        }
+    }
+    
+    .icon {
+        margin-right: 6px;
+    }
+}

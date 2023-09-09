@@ -1,0 +1,35 @@
+@import '../mixins';
+
+.route-icon {
+    display: inline-block;
+    color: #fff;
+    font-weight: weight('medium');
+    text-align: center;
+    line-height: 1.5;
+    border-radius: 0.75em;
+    letter-spacing: 0;
+    padding: 0 8px;
+    margin-left: 8px;
+    
+    @include dark {
+        color: #050505;
+    }
+    
+    & + & {
+        margin-left: 6px;
+    }
+    
+    @each $name in $routeColors {
+        &.route-#{$name} {
+            background-color: var(--route-color-#{$name});
+        }
+        
+        &.route-#{$name}.inverted {
+            color: var(--route-color-#{$name});
+        }
+    }
+    
+    &.inverted {
+        background-color: #fff;
+    }
+}

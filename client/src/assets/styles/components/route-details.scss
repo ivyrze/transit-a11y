@@ -1,0 +1,138 @@
+@import '../mixins';
+
+.route-details-card {
+    .route-icon {
+        font-size: 18px;
+        vertical-align: 2px;
+        margin-left: 10px;
+    }
+}
+
+.stop-list-tree {
+    border-left: 2px solid #b3b3b3;
+    margin: 0 15px;
+    padding: 6px 0;
+    list-style: none;
+    line-height: 2;
+    
+    li {
+        display: flex;
+        align-items: flex-start;
+    }
+    
+    .stop-icon {
+        flex-shrink: 0;
+        margin-top: 0.5rem;
+        margin-left: calc(-9px - 2px / 2);
+    }
+    
+    a {
+        margin-left: 15px;
+    }
+    
+    .branch-set {
+        margin-left: calc(30px - 2px);
+        margin-block: 18px;
+        border-left: 2px solid #b3b3b3;
+        position: relative;
+        
+        .branch-base {
+            margin-left: -30px;
+            
+            a {
+                margin-left: calc(30px + 15px);
+            }
+        }
+        
+        &::before,
+        &::after {
+            content: '';
+            display: block;
+            width: 28px;
+            height: 11px;
+            position: absolute;
+            left: -30px;
+            border: 2px solid #b3b3b3;
+        }
+        
+        &::before {
+            top: -11px;
+            border-top-right-radius: 8px;
+            border-bottom: none;
+            border-left: none;
+        }
+        
+        &::after {
+            bottom: -11px;
+            border-bottom-right-radius: 8px;
+            border-top: none;
+            border-left: none;
+        }
+    }
+}
+
+.stop-icon {
+    width: 18px;
+    aspect-ratio: 1;
+    border-radius: 5px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+    padding-top: 2px;
+    background: #161616;
+    color: #ebebeb;
+    
+    @include dark {
+        background: #f2f2f2;
+        color: #161616;
+    }
+    
+    & > .icon {
+        &.icon-accessible {
+            scale: 0.90;
+        }
+        
+        &.icon-inaccessible {
+            scale: 1.15;
+        }
+    }
+}
+
+.tab-group {
+    display: grid;
+    grid-auto-flow: column;
+    gap: 5px;
+    font-size: 16px;
+    background: #eee;
+    padding: 5px 6px;
+    margin: 20px 0;
+    border-radius: 21px;
+    overflow: hidden;
+    
+    @include dark {
+        background: #1b1b1b;
+    }
+    
+    button {
+        font-weight: weight('medium');
+        height: 2em;
+        border-radius: 1em;
+        opacity: 0.85;
+        transition: opacity 0.3s ease, background 0.2s ease;
+        
+        &:hover,
+        &[data-active-item] {
+            opacity: 1;
+        }
+        
+        &[data-active-item] {
+            background: #fff;
+            box-shadow: 0 1px 30px rgba(0, 0, 0, 0.1);
+            
+            @include dark {
+                background: #343434;
+            }
+        }
+    }
+}

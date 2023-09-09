@@ -2,8 +2,9 @@ import React, { forwardRef, useState } from 'react';
 import TimeAgo from 'react-timeago';
 import { MenuItem } from '@ariakit/react';
 import { Menu } from '@components/menu';
-import { Link } from 'react-router-dom';
+import { Link } from '@components/link';
 import { Icon } from '@components/icon';
+import { Button } from '@components/button';
 import { FormWrapper } from '@components/form-wrapper';
 import { ReviewFields } from '@components/review-fields';
 import { AccessibilityState } from '@components/accessibility-state';
@@ -11,6 +12,8 @@ import { AttachmentViewer } from '@components/attachment-viewer';
 import { useErrorStatus } from '@hooks/error';
 import { queryHelper } from '@hooks/query';
 import { getStatePriority } from '@common/a11y-states';
+
+import '@assets/styles/components/review.scss';
 
 export const Review = forwardRef((props, ref) => {
     const { review, showOptions, allowEditing } = props;
@@ -89,23 +92,23 @@ export const Review = forwardRef((props, ref) => {
                     <Menu>
                         { allowEditing && (
                             <MenuItem render={
-                                <button
+                                <Button
                                     onClick={ startEditing }
                                     className="menu-item"
                                 >
                                     <Icon name= "pencil" />
                                     Edit
-                                </button>
+                                </Button>
                             } />
                         ) }
                         <MenuItem render={
-                            <button
+                            <Button
                                 onClick={ handleDelete }
                                 className="menu-item"
                             >
                                 <Icon name="trash" />
                                 Delete
-                            </button>
+                            </Button>
                         } />
                     </Menu>
                 ) }

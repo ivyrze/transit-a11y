@@ -1,5 +1,7 @@
 import React from "react";
 
+import '@assets/styles/components/route-icon.scss';
+
 export const RouteIcon = props => {
     const { number, color, inverted } = props;
     

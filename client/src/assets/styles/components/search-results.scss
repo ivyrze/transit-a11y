@@ -1,0 +1,51 @@
+@import '../mixins';
+
+#search-results-container {
+    margin: 0 12px;
+    padding: 10px 0;
+    border-top: 1px solid #eee;
+    list-style: none;
+    
+    @include dark {
+        border-top-color: #272727;
+    }
+
+    &:empty {
+        padding: 0;
+        border: none;
+    }
+    
+    .search-result {
+        width: 100%;
+        color: #333;
+        font-size: 18px;
+        text-align: left;
+        padding: 4px 0;
+        border-radius: 8px;
+        letter-spacing: 1px;
+        cursor: pointer;
+        opacity: 0.85;
+        transition: opacity 0.3s ease;
+        
+        @include dark {
+            color: #e8e8e8;
+            opacity: 0.8;
+        }
+    }
+    
+    .search-result:hover {
+        opacity: 1;
+    }
+    
+    & > li + li {
+        margin-top: 4px;
+    }
+}
+
+.search-result {
+    & > .route-icon {
+        font-size: 12px;
+        vertical-align: 1px;
+        padding: 0 5px;
+    }
+}

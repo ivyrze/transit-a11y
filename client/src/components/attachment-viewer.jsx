@@ -1,6 +1,9 @@
 import React from 'react';
 import { Gallery, Item } from 'react-photoswipe-gallery';
+import { Button } from '@components/button';
+
 import 'photoswipe/dist/photoswipe.css'
+import '@assets/styles/components/attachment-viewer.scss';
 
 export const AttachmentViewer = props => {
     const { attachments } = props;
@@ -36,7 +39,7 @@ export const AttachmentViewer = props => {
                         height={ image.large.height }
                     >
                         { props => (
-                            <button
+                            <Button
                                 onClick={ props.open }
                                 aria-label="Enlarge image attachment"
                             >
@@ -44,7 +47,7 @@ export const AttachmentViewer = props => {
                                     src={ image.small.url }
                                     ref={ props.ref }
                                 />
-                            </button>
+                            </Button>
                         ) }
                     </Item>
                 )) }

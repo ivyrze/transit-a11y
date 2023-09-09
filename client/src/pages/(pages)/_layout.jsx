@@ -3,6 +3,8 @@ import { Helmet } from 'react-helmet';
 import { Header } from '@components/header';
 import { Outlet } from 'react-router-dom';
 
+import '@assets/styles/components/page-layout.scss';
+
 export const PageLayout = () => {
     return (
         <>

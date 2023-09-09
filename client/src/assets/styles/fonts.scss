@@ -1,36 +1,6 @@
-$font-faces: (
-    'Akzidenz Grotesk': (
-        prefix: 'akzidenz',
-        variants: (
-            'light': (
-                weight: 300, style: normal
-            ),
-            'light-italic': (
-                weight: 300, style: italic
-            ),
-            'regular': (
-                weight: normal, style: normal
-            ),
-            'regular-italic': (
-                weight: normal, style: italic
-            ),
-            'medium': (
-                weight: 500, style: normal
-            ),
-            'medium-italic': (
-                weight: 500, style: italic
-            ),
-            'bold': (
-                weight: bold, style: normal
-            ),
-            'bold-italic': (
-                weight: bold, style: italic
-            )
-        )
-    )
-);
+@import 'variables';
 
-@each $name, $options in $font-faces {
+@each $name, $options in $fontFaces {
     $prefix: map-get($options, 'prefix');
     @each $slug, $variant in map-get($options, 'variants') {
         @font-face {

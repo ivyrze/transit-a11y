@@ -1,0 +1,37 @@
+@import '../mixins';
+
+.route-list {
+    margin-top: 12px;
+    
+    .button-filled {
+        display: flex;
+        align-items: center;
+        color: #fff;
+        font-size: 20px;
+        font-weight: weight('medium');
+        text-align: left;
+        margin-top: 10px;
+        padding-inline: 10px;
+        opacity: 0.95;
+        transition: opacity 0.3s ease;
+        
+        &:hover,
+        &:active {
+            opacity: 1;
+        }
+        
+        .route-icon {
+            font-size: 16px;
+        }
+        
+        .icon {
+            font-size: 18px;
+            transform: rotate(-90deg);
+            margin-left: auto;
+        }
+    }
+    
+    p {
+        margin: 0;
+    }
+}

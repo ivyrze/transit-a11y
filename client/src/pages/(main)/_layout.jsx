@@ -5,7 +5,7 @@ import { Header } from '@components/header';
 import { Search } from '@components/search';
 import { Map } from '@components/map';
 
-import 'mapbox-gl/dist/mapbox-gl.css';
+import '@assets/styles/components/card-layout.scss';
 
 export const IndexLayout = () => {
     const map = useRef();

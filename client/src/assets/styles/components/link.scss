@@ -1,0 +1,31 @@
+@import '../mixins';
+
+.link-minimal {
+    text-decoration-line: underline;
+    text-decoration-color: transparent;
+    transition: text-decoration-color 0.3s ease;
+    
+    &:hover,
+    &:active {
+        text-decoration-color: currentcolor;
+    }
+}
+
+.link-regular {
+    color: #4b5f9f;
+    text-decoration-line: underline;
+    
+    @include dark {
+        color: #7d8ec1;
+    }
+}
+
+.link-external {
+    font-size: 0.75em;
+    font-weight: weight('medium');
+    text-transform: uppercase;
+    
+    & > .icon {
+        margin-left: 8px;
+    }
+}

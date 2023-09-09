@@ -5,6 +5,8 @@ import { useErrorStatus } from '@hooks/error';
 import { useAuth } from '@hooks/auth';
 import { queryHelper } from '@hooks/query';
 
+import '@assets/styles/components/form-wrapper.scss';
+
 const FormContext = createContext();
 
 export const FormWrapper = props => {

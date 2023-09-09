@@ -4,6 +4,9 @@ import { useParams } from 'react-router-dom';
 import { useInfiniteQuery } from '@hooks/query';
 import { useAuth } from '@hooks/auth';
 import { Review } from '@components/review';
+import { Button } from '@components/button';
+
+import '@assets/styles/components/profile.scss';
 
 export const ProfilePage = () => {
     const { username } = useParams();
@@ -59,12 +62,12 @@ export const ProfilePage = () => {
                     )) }
                 </div>
                 { moreReviewsAvailable && (
-                    <button
+                    <Button
                         onClick={ incrementPage }
                         className="button-filled button-primary"
                     >
                         Show more
-                    </button>
+                    </Button>
                 ) }
             </div>
         </main>

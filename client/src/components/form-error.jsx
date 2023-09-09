@@ -3,6 +3,8 @@ import { useFormContext } from '@components/form-wrapper';
 import { FormError as FormErrorChild } from '@ariakit/react';
 import { Icon } from '@components/icon';
 
+import '@assets/styles/components/form-error.scss';
+
 export const FormError = forwardRef((props, ref) => {
     const { name, ...passthroughProps } = props;
     

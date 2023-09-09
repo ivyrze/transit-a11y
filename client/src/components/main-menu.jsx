@@ -1,8 +1,10 @@
-import { NavLink } from 'react-router-dom';
 import { MenuGroup, MenuGroupLabel, MenuItem } from '@ariakit/react';
 import { Menu } from '@components/menu';
+import { Link } from '@components/link';
 import { useAuth } from '@hooks/auth';
 import { Icon } from '@components/icon';
+
+import '@assets/styles/components/main-menu.scss';
 
 export const MainMenu = () => {
     const { auth } = useAuth();
@@ -13,16 +15,17 @@ export const MainMenu = () => {
                 <MenuGroup className="menu-group">
                     <MenuGroupLabel className="menu-group-label">About</MenuGroupLabel>
                     <MenuItem render={
-                        <NavLink
+                        <Link
                             to="/about"
                             className="menu-item"
+                            currentAware
                         >
                             <Icon name="book" />
                             About the project
-                        </NavLink>
+                        </Link>
                     } />
                     <MenuItem render={
-                        <a
+                        <Link
                             href="https://ko-fi.com/ivyrze"
                             target="_blank"
                             rel="noopener"
@@ -30,19 +33,20 @@ export const MainMenu = () => {
                         >
                             <Icon name="donation" />
                             Support us on Ko-fi
-                        </a>
+                        </Link>
                     } />
                 </MenuGroup>
                 <MenuGroup className="menu-group">
                     <MenuGroupLabel className="menu-group-label">View</MenuGroupLabel>
                     <MenuItem render={
-                        <NavLink
+                        <Link
                             to="/routes"
                             className="menu-item"
+                            currentAware
                         >
                             <Icon name="route" />
                             Route explorer
-                        </NavLink>
+                        </Link>
                     } />
                 </MenuGroup>
                 <MenuGroup className="menu-group">
@@ -50,33 +54,36 @@ export const MainMenu = () => {
                     { auth && auth.username ? (
                         <>
                             <MenuItem render={
-                                <NavLink
+                                <Link
                                     to={ "/profile/" + auth.username }
                                     className="menu-item"
+                                    currentAware
                                 >
                                     <Icon name="user" />
                                     Your profile
-                                </NavLink>
+                                </Link>
                             } />
                             <MenuItem render={
-                                <NavLink
+                                <Link
                                     to="/account/logout"
                                     className="menu-item"
+                                    currentAware
                                 >
                                     <Icon name="login" />
                                     Logout
-                                </NavLink>
+                                </Link>
                             } />
                         </>
                     ) : (
                         <MenuItem render={
-                            <NavLink
+                            <Link
                                 to="/account/login"
                                 className="menu-item"
+                                currentAware
                             >
                                 <Icon name="login" />
                                 Login
-                            </NavLink>
+                            </Link>
                         } />
                     ) }
                 </MenuGroup>

@@ -1,0 +1,40 @@
+@import '../mixins';
+
+.user-profile {
+    h1 {
+        margin-block: 5px;
+    }
+    
+    .profile-picture {
+        width: 100px;
+    }
+    
+    .review-container {
+        border: none;
+        margin-bottom: 30px;
+    }
+    
+    .review-single {
+        margin-top: 22px;
+    }
+    
+    .review-single + .review-single {
+        border-top: 1px solid var(--horizontal-rule-color);
+        padding-top: 20px;
+    }
+    
+    .review-header {
+        margin-bottom: 10px;
+    }
+    
+    .review-timestamp {
+        @include mobile {
+            display: none;
+        }
+    }
+}
+
+.review-container {
+    border-top: 1px solid var(--horizontal-rule-color);
+    padding-top: 14px;
+}

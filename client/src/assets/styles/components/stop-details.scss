@@ -1,0 +1,102 @@
+@import '../mixins';
+
+.stop-details-card {
+    .stop-alert-link {
+        display: inline-block;
+        margin-bottom: 2px;
+    }
+    
+    .source-link {
+        display: block;
+        font-size: 16px;
+        font-weight: weight('light');
+        opacity: 0.4;
+    }
+}
+
+.stop-tags-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    font-size: 16px;
+    font-weight: weight('medium');
+    list-style: none;
+    padding: 0;
+}
+
+.stop-tag {
+    padding: 5px 6px;
+    border-radius: 2em;
+    background-color: #ededed;
+    padding-inline: 12px;
+    
+    & > .icon {
+        margin-right: 7px;
+    }
+    
+    @include dark {
+        color: #dbdbdb;
+        background-color: #222;
+    }
+}
+
+.stop-accessibility-state {
+    @extend .stop-tag;
+    
+    @each $name in $stateGroups {
+        &.state-#{$name} {
+            color: var(--state-#{$name}-foreground);
+            background-color: var(--state-#{$name}-background);
+        }
+    }
+}
+
+.review-drawer-toggle {
+    width: 100%;
+    text-align: left;
+    font-size: 14px;
+    letter-spacing: 1px;
+    opacity: 0.7;
+    transition: 0.3s ease opacity;
+    
+    @include dark {
+        opacity: 0.5;
+    }
+    
+    &:hover {
+        opacity: 0.8;
+        
+        @include dark {
+            opacity: 0.6;
+        }
+    }
+    
+    .icon {
+        font-size: 19px;
+        line-height: 0;
+        float: right;
+        margin-right: 4px;
+    }
+    
+    &[aria-expanded="true"] .icon {
+        transform: rotate(180deg);
+    }
+}
+
+.review-drawer-toggle,
+.review-contribute {
+    padding: 6px 0;
+    text-transform: uppercase;
+}
+
+.review-contribute {
+    font-size: 13px;
+    font-weight: weight('medium');
+    letter-spacing: 0.5px;
+    
+    .icon {
+        font-size: 19px;
+        margin-right: 8px;
+        margin-left: -1px;
+    }
+}

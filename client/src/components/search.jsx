@@ -1,9 +1,12 @@
 import React, { useState, useEffect, startTransition } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { SearchResults } from '@components/search-results';
+import { Button } from '@components/button';
 import { Icon } from '@components/icon';
 import { useImmutableQuery } from '@hooks/query';
 import { useMapStore } from '@hooks/store';
+
+import '@assets/styles/components/search.scss';
 
 export const Search = props => {
     const { onGeolocationTriggered } = props;
@@ -77,21 +80,21 @@ export const Search = props => {
                 onInput={ handleInput }
             />
             <div className="search-actions">
-                <button
+                <Button
                     className="search-submit"
                     aria-label="Submit search"
                     { ...!results?.length && { disabled: 'disabled' }}
                 >
                     <Icon name="search" />
-                </button>
+                </Button>
                 { geolocationEnabled && (
-                    <button
+                    <Button
                         type="button"
                         onClick={ onGeolocationTriggered }
                         aria-label="Show current location"
                     >
                         <Icon name="location" />
-                    </button>
+                    </Button>
                 ) }
             </div>
             <ul

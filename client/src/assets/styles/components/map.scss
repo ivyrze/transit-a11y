@@ -1,0 +1,26 @@
+@import '../mixins';
+
+#map-container {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    
+    @include dark {
+        .mapboxgl-ctrl.mapboxgl-ctrl-attrib {
+            background-color: rgba(0, 0, 0, 0.2);
+        }
+        
+        .mapboxgl-ctrl-attrib-button {
+            filter: invert(0.6);
+        }
+        
+        .mapboxgl-ctrl-attrib a {
+            color: #999;
+        }
+        
+        a.mapboxgl-ctrl-logo {
+            opacity: 0.5;
+        }
+    }
+}

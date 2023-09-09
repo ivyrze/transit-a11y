@@ -1,0 +1,33 @@
+@import '../mixins';
+
+.icon {
+    font-size: 1.1em;
+    line-height: 1.1em;
+    vertical-align: middle;
+    
+    @each $name in $stateGroups {
+        &.icon-#{$name} {
+            font-size: 1em;
+            line-height: 1em;
+        }
+    }
+    
+    &.icon-spinner svg {
+        animation: spinner 0.65s linear infinite;
+    }
+    
+    svg {
+        width: 1em;
+        height: 1em;
+    }
+}
+
+@keyframes spinner {
+    from {
+        rotate: 0deg;
+    }
+    
+    to {
+        rotate: 360deg;
+    }
+}

@@ -1,0 +1,11 @@
+@import '../mixins';
+
+#main-menu {
+    .menu-toggle {
+        color: #5a5a5a;
+        
+        @include dark {
+            color: #b6b6b6;
+        }
+    }
+}

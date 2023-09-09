@@ -1,0 +1,38 @@
+@import '../mixins';
+
+.attachment-list {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    
+    button {
+        border-radius: 5px;
+        overflow: hidden;
+        flex-shrink: 0;
+        padding: 0;
+        
+        img {
+            display: block;
+            height: 125px;
+        }
+    }
+}
+
+.image-gallery {
+    --pswp-bg: #fff;
+    --pswp-icon-color: #111;
+    --pswp-icon-color-secondary: #fff;
+    --pswp-icon-stroke-color: #fff;
+    
+    @include dark {
+        --pswp-bg: #000;
+        --pswp-icon-color: #eee;
+        --pswp-icon-color-secondary: #000;
+        --pswp-icon-stroke-color: #000;
+    }
+    
+    img {
+        border-radius: 8px;
+        overflow: hidden;
+    }
+}

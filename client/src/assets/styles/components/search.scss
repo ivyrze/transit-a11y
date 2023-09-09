@@ -1,0 +1,48 @@
+@import '../mixins';
+@import './card-layout';
+
+#search-container {
+    @extend .abstract-sidebar-component;
+    
+    position: relative;
+    padding: 2px;
+    flex-shrink: 0;
+    
+    input {
+        font-size: 22px;
+        padding: 12px;
+        padding-right: 5em;
+        letter-spacing: 0.5px;
+        border: none;
+        
+        &:placeholder-shown {
+            font-style: italic;
+        }
+    }
+    
+    .search-actions {
+        position: absolute;
+        top: 10px;
+        right: 4px;
+        opacity: 0.5;
+    
+        button {
+            padding: 4px 16px;
+            font-size: 22px;
+        }
+        
+        button:nth-of-type(2) {
+            border-left: 1px solid #a0a0a0;
+            margin-left: 4px;
+            
+            @include dark {
+                border-color: #737373;
+            }
+        }
+    }
+    
+    input:focus + .search-actions,
+    .search-actions:focus-within {
+        opacity: 0.85;
+    }
+}
