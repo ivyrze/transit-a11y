@@ -118,7 +118,10 @@ export const StopDetails = () => {
                                 store={ disclosureStore }
                             >
                                 { i18n.reviewsToggleStates[disclosureState ? 'hide' : 'show'] }
-                                <Icon name={ disclosureState ? "chevron-up" : "chevron-down" } />
+                                <Icon
+                                    name={ disclosureState ? "chevron-up" : "chevron-down" }
+                                    className="icon--fixed-right"
+                                />
                             </Disclosure>
                             <DisclosureContent store={ disclosureStore }>
                                 { details.reviews.map(review => (

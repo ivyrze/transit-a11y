@@ -20,6 +20,11 @@
         width: 1em;
         height: 1em;
     }
+    
+    &--fixed-right {
+        margin-left: auto;
+        line-height: 0;
+    }
 }
 
 @keyframes spinner {

@@ -52,6 +52,8 @@
 }
 
 .review-drawer-toggle {
+    display: flex;
+    align-items: center;
     width: 100%;
     text-align: left;
     font-size: 14px;
@@ -73,7 +75,6 @@
     
     .icon {
         font-size: 19px;
-        float: right;
         margin-right: 4px;
     }
 }

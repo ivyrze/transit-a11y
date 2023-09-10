@@ -60,7 +60,7 @@ export const AccessibilitySelect = forwardRef(({
                     showIcon={ false }
                 />
                 <SelectItemCheck render={ <></> }>
-                    <Icon name="check" />
+                    <Icon name="check" className="icon--fixed-right" />
                 </SelectItemCheck>
             </SelectItem>
         ));
@@ -76,7 +76,10 @@ export const AccessibilitySelect = forwardRef(({
                 { ...props }
             >
                 { renderSelectLabel(selectValue) }
-                <Icon name={ isOpened ? "chevron-up" : "chevron-down" } />
+                <Icon
+                    name={ isOpened ? "chevron-up" : "chevron-down" }
+                    className="icon--fixed-right"
+                />
             </Select>
             <SelectPopover
                 store={ selectStore }

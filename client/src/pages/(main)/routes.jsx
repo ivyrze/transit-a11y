@@ -56,7 +56,7 @@ export const RouteList = () => {
                             color={ route.route_color }
                             inverted={ true }
                         />
-                        <Icon name="chevron-right" />
+                        <Icon name="chevron-right" className="icon--fixed-right" />
                     </Link>
                 )) }
                 { !routes?.length && (
