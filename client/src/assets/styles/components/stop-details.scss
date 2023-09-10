@@ -73,13 +73,8 @@
     
     .icon {
         font-size: 19px;
-        line-height: 0;
         float: right;
         margin-right: 4px;
-    }
-    
-    &[aria-expanded="true"] .icon {
-        transform: rotate(180deg);
     }
 }
 

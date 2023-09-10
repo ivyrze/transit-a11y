@@ -1,7 +1,8 @@
 import React, { forwardRef } from 'react';
 import { AccessibilityState } from '@components/accessibility-state';
-import { Select, SelectArrow, SelectPopover, SelectGroup, SelectGroupLabel, SelectItem, SelectItemCheck, useSelectStore } from '@ariakit/react';
+import { Select, SelectPopover, SelectGroup, SelectGroupLabel, SelectItem, SelectItemCheck, useSelectStore } from '@ariakit/react';
 import { accessibilityGroups, accessibilityStates } from '@common/a11y-states';
+import { Icon } from '@components/icon';
 
 import '@assets/styles/components/accessibility-select.scss';
 
@@ -10,6 +11,7 @@ export const AccessibilitySelect = forwardRef(({
 }, ref) => {
     const selectStore = useSelectStore({ value, setValue, defaultValue });
     const selectValue = selectStore.useState("value");
+    const isOpened = selectStore.useState("open");
     
     const renderSelectLabel = value => {
         if (value.length == 0) {
@@ -57,7 +59,9 @@ export const AccessibilitySelect = forwardRef(({
                     state={ state }
                     showIcon={ false }
                 />
-                <SelectItemCheck className="icon icon-check" />
+                <SelectItemCheck render={ <></> }>
+                    <Icon name="check" />
+                </SelectItemCheck>
             </SelectItem>
         ));
     };
@@ -72,7 +76,7 @@ export const AccessibilitySelect = forwardRef(({
                 { ...props }
             >
                 { renderSelectLabel(selectValue) }
-                <SelectArrow className="icon" />
+                <Icon name={ isOpened ? "chevron-up" : "chevron-down" } />
             </Select>
             <SelectPopover
                 store={ selectStore }
