@@ -1,3 +1,5 @@
+import React from 'react';
+import cx from 'classnames';
 import { MainMenu } from '@components/main-menu';
 import { Link } from '@components/link';
 
@@ -7,11 +9,10 @@ export const Header = props => {
     const { minimal, menu = true, children } = props;
     
     return (
-        <header className={
-            minimal ?
-            "global-header header-minimal" :
-            "global-header header-regular"
-        }>
+        <header className={ cx(
+            "global-header",
+            minimal ? "header-minimal" : "header-regular"
+        ) }>
             <Link
                 to="/"
                 className="title link-minimal"

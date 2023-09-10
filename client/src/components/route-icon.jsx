@@ -1,27 +1,25 @@
 import React from "react";
+import cx from 'classnames';
 
 import '@assets/styles/components/route-icon.scss';
 
 export const RouteIcon = props => {
     const { number, color, inverted } = props;
     
-    let classList = [ "route-icon" ];
-    let styleProps = {};
-    
-    if (color.startsWith("#")) {
-        inverted ?
-            styleProps.color = color :
-            styleProps.backgroundColor = color;
-    } else {
-        classList.push("route-" + color);
-    }
-    
-    if (inverted) { classList.push("inverted"); }
+    const isGenericColor = !color.startsWith("#");
     
     return (
         <div
-            className={ classList.join(" ") }
-            style={ styleProps }
+            className={ cx(
+                "route-icon",
+                inverted && "inverted",
+                isGenericColor && "route-" + color
+            ) }
+            { ...!isGenericColor && {
+                style: {
+                    [inverted ? 'color' : 'backgroundColor']: color
+                }
+            } }
         >
             { number }
         </div>

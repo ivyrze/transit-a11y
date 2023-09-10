@@ -1,4 +1,5 @@
 import React from 'react';
+import cx from 'classnames';
 import { FaXmark, FaWheelchairMove, FaTriangleExclamation, FaExclamation, FaBan, FaQuestion } from 'react-icons/fa6';
 import { PiMagnifyingGlassBold, PiXBold, PiPlusCircleFill, PiArrowSquareOut, PiSmileySad, PiArrowLineRightFill, PiArrowLineUpFill, PiArrowLineDownFill, PiElevatorFill, PiEscalatorUpFill, PiChairFill, PiMonitorBold, PiFlameFill, PiCaretUp, PiCaretDown, PiCaretRight, PiDotsThreeBold, PiTrashSimpleFill, PiSignInBold, PiNavigationArrowBold, PiPathBold, PiPencilSimpleFill, PiHeartFill, PiBookOpenFill, PiCircleNotchBold, PiWarningCircleFill, PiCheckBold } from 'react-icons/pi';
 import { ReactComponent as IconRampEntrance } from '@assets/images/icon-ramp-entrance.svg';
@@ -9,9 +10,7 @@ import { ReactComponent as IconUser } from '@assets/images/icon-user.svg';
 import '@assets/styles/components/icon.scss';
 
 export const Icon = (props) => {
-    const { name, alt, ...passthroughProps } = props;
-    
-    const altClass = alt ? " icon-alt" : "";
+    const { name, alt, className, ...passthroughProps } = props;
     
     const primaryIcons = {
         search: PiMagnifyingGlassBold,
@@ -62,7 +61,12 @@ export const Icon = (props) => {
     
     return (
         <span
-            className={ "icon icon-" + name + altClass }
+            className={ cx(
+                "icon",
+                "icon-" + name,
+                alt && "icon-alt",
+                className
+            ) }
             { ...passthroughProps }
         >
             <IconChild aria-hidden="true" />
