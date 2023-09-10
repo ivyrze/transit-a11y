@@ -10,31 +10,25 @@
     }
     
     .review-container {
-        border: none;
         margin-bottom: 30px;
     }
     
-    .review-single {
+    .review {
         margin-top: 22px;
-    }
-    
-    .review-single + .review-single {
-        border-top: 1px solid var(--horizontal-rule-color);
-        padding-top: 20px;
-    }
-    
-    .review-header {
-        margin-bottom: 10px;
-    }
-    
-    .review-timestamp {
-        @include mobile {
-            display: none;
+        
+        & + .review {
+            border-top: 1px solid var(--horizontal-rule-color);
+            padding-top: 20px;
+        }
+        
+        &__header {
+            margin-bottom: 10px;
+        }
+        
+        &__timestamp {
+            @include mobile {
+                display: none;
+            }
         }
     }
-}
-
-.review-container {
-    border-top: 1px solid var(--horizontal-rule-color);
-    padding-top: 14px;
 }

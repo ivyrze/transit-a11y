@@ -5,22 +5,20 @@
     gap: 10px;
     margin-top: 26px;
 }
+
+.button {
+    display: block;
+    text-align: center;
+    transition: background-color 0.2s ease;
+}
     
-.button-filled {
+.button--filled {
+    @extend .button;
+    
     width: 100%;
     border-radius: 8px;
     padding: 7px;
-}
-
-.button-filled,
-.button-rounded {
-    display: block;
-    text-align: center;
-}
-
-.button-filled {
     background-color: #ededed;
-    transition: background-color 0.2s ease;
     
     @include dark {
         background-color: #222;
@@ -43,7 +41,9 @@
     }
 }
 
-.button-filled.button-primary {
+.button--filled.button--primary {
+    @extend .button;
+    
     background-color: #000;
     color: #fff;
     
@@ -69,8 +69,6 @@
 }
 
 .abstract-selectable {
-    transition: background-color 0.2s ease;
-    
     &:hover,
     &[data-focus-visible] {
         background-color: rgba(0, 0, 0, 0.05);
@@ -90,8 +88,8 @@
     }
 }
 
-.button-rounded {
-    @extend .abstract-selectable;
+.button--rounded {
+    @extend .button, .abstract-selectable;
     
     line-height: 1;
     width: 1.6em;
@@ -100,6 +98,6 @@
     padding: 3px 0 0;
 }
 
-a.button-rounded {
+a.button--rounded {
     float: right;
 }

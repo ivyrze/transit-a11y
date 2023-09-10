@@ -11,11 +11,11 @@ export const Header = props => {
     return (
         <header className={ cx(
             "global-header",
-            minimal ? "header-minimal" : "header-regular"
+            minimal ? "header--minimal" : "header--regular"
         ) }>
             <Link
                 to="/"
-                className="title link-minimal"
+                className="title link--minimal"
                 currentAware
             >
                 is the metro accessible?

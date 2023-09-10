@@ -8,7 +8,7 @@
 }
 
 header.global-header {
-    &.header-minimal {
+    &.header--minimal {
         margin-bottom: 24px;
         
         .title {
@@ -36,21 +36,21 @@ header.global-header {
                 right: 24px;
             }
             
-            .menu-toggle {
+            .menu {
+                background: var(--ui-base-color);
+            }
+            
+            .menu__toggle {
                 font-size: 24px;
                 
                 @include mobile {
                     font-size: 20px;
                 }
             }
-            
-            .menu-popup {
-                background: var(--ui-base-color);
-            }
         }
     }
     
-    &.header-regular {
+    &.header--regular {
         position: fixed;
         inset: 0 0 auto;
         padding: 22px 30px;

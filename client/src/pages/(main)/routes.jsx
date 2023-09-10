@@ -31,10 +31,10 @@ export const RouteList = () => {
             <Helmet>
                 <title>Routes</title>
             </Helmet>
-            <div className="card-header">
-                <h1 className="alt-header">Nearby routes</h1>
-                <div className="card-actions">
-                    <Button className="button-rounded card-close"
+            <div className="card__header">
+                <h1 className="card__alt-heading">Nearby routes</h1>
+                <div className="card__actions">
+                    <Button className="button--rounded"
                         aria-label="Close"
                         onClick={ closeCard }
                     >
@@ -45,7 +45,7 @@ export const RouteList = () => {
             <div className="route-list">
                 { routes && routes.map(route => (
                     <Link
-                        className="button-filled"
+                        className="button--filled"
                         key={ route.route_id }
                         to={ "/route/" + route.route_id }
                         style={{ backgroundColor: route.route_color }}

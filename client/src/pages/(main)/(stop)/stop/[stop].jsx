@@ -60,25 +60,25 @@ export const StopDetails = () => {
     
     return (
         <main className="sidebar-card stop-details-card">
-            <div className="card-header">
+            <div className="card__header">
                 <h1>{ details.name }</h1>
-                <div className="card-actions">
+                <div className="card__actions">
                     <Menu>
                         <MenuItem render={
                             <Link
                                 href={ gsvURL }
                                 target="_blank"
                                 rel="noreferrer"
-                                className="menu-item"
+                                className="menu__item"
                             >
                                 Open in Google Street View
                                 <Icon name="link" />
                             </Link>
                         } />
                     </Menu>
-                    <div className="card-actions">
+                    <div className="card__actions">
                         <Button
-                            className="button-rounded card-close"
+                            className="button--rounded"
                             aria-label="Close"
                             onClick={ closeCard }
                         >
@@ -141,7 +141,7 @@ export const StopDetails = () => {
             ) }
             { details.alert && (
                 <Link
-                    className="stop-alert-link link-external"
+                    className="stop-alert-link link--external"
                     href={ details.alert.url }
                     target="_blank"
                 >
@@ -151,7 +151,7 @@ export const StopDetails = () => {
             ) }
             { (!details.alert && !details.reviews) && (
                 <span className="source-link">
-                    Source: <Link target="_blank" href={ details.agency.url } rel="noreferrer" className="link-minimal">{ details.agency.name }</Link>
+                    Source: <Link target="_blank" href={ details.agency.url } rel="noreferrer" className="link--minimal">{ details.agency.name }</Link>
                 </span>
             ) }
         </main>

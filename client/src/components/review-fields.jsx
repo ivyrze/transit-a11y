@@ -70,9 +70,9 @@ export const ReviewFields = props => {
                 </fieldset>
             ) }
             <fieldset className="button-set">
-                <FormSubmit className="button-filled button-primary" />
+                <FormSubmit className="button--filled button--primary" />
                 <Button
-                    className="button-filled form-cancel"
+                    className="button--filled form-cancel"
                     type="button"
                     onClick={ onCancel }
                 >

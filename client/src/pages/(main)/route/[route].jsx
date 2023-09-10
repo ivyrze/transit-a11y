@@ -34,7 +34,7 @@ export const RouteDetails = () => {
                 showHeading={ false }
                 showIcon="alt"
             />
-            <Link to={ "/stop/" + stop.id } className="link-minimal">{ stop.name }</Link>
+            <Link to={ "/stop/" + stop.id } className="link--minimal">{ stop.name }</Link>
         </li>
     ));
     
@@ -43,15 +43,15 @@ export const RouteDetails = () => {
             <Helmet>
                 <title>{ details.name }</title>
             </Helmet>
-            <div className="card-header">
+            <div className="card__header">
                 <h1>{ details.name }</h1>
                 <RouteIcon
                     number={ details.number }
                     color={ details.color }
                 />
-                <div className="card-actions">
+                <div className="card__actions">
                     <Button
-                        className="button-rounded card-close"
+                        className="button--rounded"
                         aria-label="Close"
                         onClick={ closeCard }
                     >

@@ -1,6 +1,6 @@
 @import '../mixins';
 
-.link-minimal {
+.link--minimal {
     text-decoration-line: underline;
     text-decoration-color: transparent;
     transition: text-decoration-color 0.3s ease;
@@ -11,7 +11,7 @@
     }
 }
 
-.link-regular {
+.link--regular {
     color: #4b5f9f;
     text-decoration-line: underline;
     
@@ -20,7 +20,7 @@
     }
 }
 
-.link-external {
+.link--external {
     font-size: 0.75em;
     font-weight: weight('medium');
     text-transform: uppercase;

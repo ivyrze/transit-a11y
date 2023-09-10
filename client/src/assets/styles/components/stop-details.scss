@@ -12,6 +12,10 @@
         font-weight: weight('light');
         opacity: 0.4;
     }
+    
+    .review-container {
+        border-top: 1px solid var(--horizontal-rule-color);
+    }
 }
 
 .stop-tags-container {

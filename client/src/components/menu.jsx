@@ -12,14 +12,14 @@ export const Menu = props => {
     return (
         <>
             <MenuButton
-                className="button-rounded menu-toggle"
+                className="menu__toggle button--rounded"
                 store={ menuStore }
                 { ...toggleAriaLabel && { "aria-label": toggleAriaLabel } }
             >
                 <Icon name={ iconName } />
             </MenuButton>
             <MenuParent
-                className="menu-popup"
+                className="menu"
                 store={ menuStore }
             >
                 { children }

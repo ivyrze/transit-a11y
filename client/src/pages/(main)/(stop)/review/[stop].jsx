@@ -31,7 +31,7 @@ export const ReviewForm = () => {
     
     return (
         <main className="sidebar-card review-card">
-            <div className="card-header">
+            <div className="card__header">
                 <h1>{ details.name }</h1>
             </div>
             <span className="subtitle">

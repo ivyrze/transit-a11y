@@ -46,7 +46,7 @@
         letter-spacing: -0.5px;
         margin-block: 0;
         
-        &.alt-header {
+        &.card__alt-heading {
             font-size: 14px;
             letter-spacing: 1px;
             padding-top: 8px;
@@ -55,11 +55,11 @@
     }
 }
 
-.card-header {
+.card__header {
     display: flex;
     align-items: center;
     
-    .card-actions {
+    .card__actions {
         display: flex;
         gap: 3px;
         margin-left: auto;

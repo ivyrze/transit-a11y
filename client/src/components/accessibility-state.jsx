@@ -18,8 +18,8 @@ export const AccessibilityState = props => {
     
     return (
         <div className={ cx(
-            "state-" + stateGroupProps.style,
-            className
+            className,
+            "state-" + stateGroupProps.style
         ) }>
             { showIcon && (
                 <Icon

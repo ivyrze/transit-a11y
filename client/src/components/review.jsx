@@ -59,8 +59,8 @@ export const Review = forwardRef((props, ref) => {
     delete defaultValues.id;
     
     return (
-        <article className="review-single">
-            <div className="review-header">
+        <article className="review">
+            <div className="review__header">
                 { details.author ? (
                     <>
                         <img className="profile-picture"
@@ -69,7 +69,7 @@ export const Review = forwardRef((props, ref) => {
                         />
                         <Link
                             to={ "/profile/" + details.author.username }
-                            className="review-author link-minimal"
+                            className="review__author link--minimal"
                         >
                             { details.author.username }
                         </Link>
@@ -77,14 +77,14 @@ export const Review = forwardRef((props, ref) => {
                 ) : (
                     <Link
                         to={ "/stop/" + details.stop.id }
-                        className="review-stop link-minimal"
+                        className="review__stop link--minimal"
                         ref={ ref }
                     >
                         { details.stop.name }
                     </Link>
                 ) }
                 <TimeAgo
-                    className="review-timestamp"
+                    className="review__timestamp"
                     date={ details.timestamp }
                     title=""
                 />
@@ -94,7 +94,7 @@ export const Review = forwardRef((props, ref) => {
                             <MenuItem render={
                                 <Button
                                     onClick={ startEditing }
-                                    className="menu-item"
+                                    className="menu__item"
                                 >
                                     <Icon name= "pencil" />
                                     Edit
@@ -104,7 +104,7 @@ export const Review = forwardRef((props, ref) => {
                         <MenuItem render={
                             <Button
                                 onClick={ handleDelete }
-                                className="menu-item"
+                                className="menu__item"
                             >
                                 <Icon name="trash" />
                                 Delete
@@ -117,7 +117,7 @@ export const Review = forwardRef((props, ref) => {
                 <>
                     { details.accessibility.map(accessibility => (
                         <AccessibilityState
-                            className="review-accessibility-state"
+                            className="review__accessibility-state"
                             state={ accessibility }
                             key={ accessibility }
                         />

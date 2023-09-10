@@ -20,7 +20,7 @@
     text-align: center;
     
     & > input[type="checkbox"] {
-        @extend .button-filled;
+        @extend .button--filled;
         
         position: absolute;
         width: 100%;
@@ -31,7 +31,7 @@
         border-radius: 8px;
         
         &:checked {
-            @extend .button-primary;
+            @extend .button--primary;
         }
         
         &:checked + label {

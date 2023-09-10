@@ -49,9 +49,9 @@ export const LoginPage = () => {
                     </div>
                 </fieldset>
                 <fieldset>
-                    <FormSubmit className="button-filled button-primary">Submit</FormSubmit>
+                    <FormSubmit className="button--filled button--primary">Submit</FormSubmit>
                 </fieldset>
-                <p>Don't have an account? <Link to="/account/sign-up" className="link-regular">Sign up with an invite code</Link>.</p>
+                <p>Don't have an account? <Link to="/account/sign-up" className="link--regular">Sign up with an invite code</Link>.</p>
             </FormWrapper>
         </main>
     );

@@ -12,12 +12,12 @@ export const MainMenu = () => {
     return (
         <div id="main-menu">
             <Menu iconName="menu" toggleAriaLabel="Toggle main menu">
-                <MenuGroup className="menu-group">
-                    <MenuGroupLabel className="menu-group-label">About</MenuGroupLabel>
+                <MenuGroup className="menu__group">
+                    <MenuGroupLabel className="menu__group-label">About</MenuGroupLabel>
                     <MenuItem render={
                         <Link
                             to="/about"
-                            className="menu-item"
+                            className="menu__item"
                             currentAware
                         >
                             <Icon name="book" />
@@ -29,19 +29,19 @@ export const MainMenu = () => {
                             href="https://ko-fi.com/ivyrze"
                             target="_blank"
                             rel="noopener"
-                            className="menu-item"
+                            className="menu__item"
                         >
                             <Icon name="donation" />
                             Support us on Ko-fi
                         </Link>
                     } />
                 </MenuGroup>
-                <MenuGroup className="menu-group">
-                    <MenuGroupLabel className="menu-group-label">View</MenuGroupLabel>
+                <MenuGroup className="menu__group">
+                    <MenuGroupLabel className="menu__group-label">View</MenuGroupLabel>
                     <MenuItem render={
                         <Link
                             to="/routes"
-                            className="menu-item"
+                            className="menu__item"
                             currentAware
                         >
                             <Icon name="route" />
@@ -49,14 +49,14 @@ export const MainMenu = () => {
                         </Link>
                     } />
                 </MenuGroup>
-                <MenuGroup className="menu-group">
-                    <MenuGroupLabel className="menu-group-label">User</MenuGroupLabel>
+                <MenuGroup className="menu__group">
+                    <MenuGroupLabel className="menu__group-label">User</MenuGroupLabel>
                     { auth && auth.username ? (
                         <>
                             <MenuItem render={
                                 <Link
                                     to={ "/profile/" + auth.username }
-                                    className="menu-item"
+                                    className="menu__item"
                                     currentAware
                                 >
                                     <Icon name="user" />
@@ -66,7 +66,7 @@ export const MainMenu = () => {
                             <MenuItem render={
                                 <Link
                                     to="/account/logout"
-                                    className="menu-item"
+                                    className="menu__item"
                                     currentAware
                                 >
                                     <Icon name="login" />
@@ -78,7 +78,7 @@ export const MainMenu = () => {
                         <MenuItem render={
                             <Link
                                 to="/account/login"
-                                className="menu-item"
+                                className="menu__item"
                                 currentAware
                             >
                                 <Icon name="login" />

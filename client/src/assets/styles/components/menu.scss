@@ -1,7 +1,7 @@
 @import '../mixins';
 @import './button';
 
-.menu-popup {
+.menu {
     background: var(--ui-popup-color);
     border-radius: 10px;
     box-shadow: 0 4px 18px rgb(0 0 0 / 15%);
@@ -11,13 +11,13 @@
     max-height: var(--popover-available-height);
     overflow-y: auto;
     
-    .menu-item,
-    .menu-group-label {
+    &__item,
+    &__group-label {
         width: 100%;
         padding: 7px 12px;
     }
     
-    .menu-item {
+    &__item {
         @extend .abstract-selectable;
         
         display: flex;
@@ -33,7 +33,7 @@
         }
     }
     
-    .menu-group + .menu-group::before {
+    &__group + &__group::before {
         content: '';
         display: block;
         width: calc(100% - 20px);
@@ -41,7 +41,7 @@
         border-bottom: 1px solid var(--horizontal-rule-color);
     }
     
-    .menu-group-label {
+    &__group-label {
         font-size: 16px;
         font-weight: weight('regular');
         opacity: 0.85;

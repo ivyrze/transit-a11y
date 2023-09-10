@@ -64,7 +64,7 @@ export const ProfilePage = () => {
                 { moreReviewsAvailable && (
                     <Button
                         onClick={ incrementPage }
-                        className="button-filled button-primary"
+                        className="button--filled button--primary"
                     >
                         Show more
                     </Button>

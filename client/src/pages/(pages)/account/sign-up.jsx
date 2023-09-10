@@ -58,7 +58,7 @@ export const SignUpPage = () => {
                     </div>
                 </fieldset>
                 <fieldset className="button-set">
-                    <FormSubmit className="button-filled button-primary">Submit</FormSubmit>
+                    <FormSubmit className="button--filled button--primary">Submit</FormSubmit>
                 </fieldset>
             </FormWrapper>
         </main>

@@ -1,7 +1,7 @@
 @import '../mixins';
 
 #main-menu {
-    .menu-toggle {
+    .menu__toggle {
         color: #5a5a5a;
         
         @include dark {

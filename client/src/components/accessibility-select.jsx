@@ -33,8 +33,8 @@ export const AccessibilitySelect = forwardRef(({
                     .map(state => state[0]);
                 
                 return (
-                    <SelectGroup className="menu-group" key={ group }>
-                        <SelectGroupLabel className="menu-group-label">
+                    <SelectGroup className="menu__group" key={ group }>
+                        <SelectGroupLabel className="menu__group-label">
                             <AccessibilityState
                                 state={ states[0] }
                                 showHeading="group"
@@ -53,7 +53,7 @@ export const AccessibilitySelect = forwardRef(({
             <SelectItem
                 key={ state }
                 value={ state }
-                className="menu-item"
+                className="menu__item"
             >
                 <AccessibilityState
                     state={ state }
@@ -83,7 +83,7 @@ export const AccessibilitySelect = forwardRef(({
             </Select>
             <SelectPopover
                 store={ selectStore }
-                className="menu-popup"
+                className="menu"
                 onBlur={ onTouch }
                 fitViewport={ true }
                 sameWidth
