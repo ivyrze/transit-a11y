@@ -2,7 +2,7 @@ import express from 'express';
 import validator from 'express-validator';
 import promiseRouter from 'express-promise-router';
 import httpErrors from 'http-errors';
-import { pojoCleanup, colorSort } from '../../common/utils.js';
+import { pojoCleanup } from '../../common/utils.js';
 import { Stop } from '../../common/models/stop.js'
 import { Route } from '../../common/models/route.js'
 
@@ -107,7 +107,9 @@ router.post('/', validator.checkSchema(schema), async (req, res, next) => {
         result.id = result._id;
         
         result.routes = routes.filter(route => route.directions.includes(result.id));
-        result.routes.sort(colorSort);
+        result.routes.sort((a, b) => {
+            return a.number.localeCompare(b.number, 'en', { numeric: true });
+        });
         
         return result;
     });

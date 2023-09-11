@@ -1,5 +1,4 @@
 import dotenv from 'dotenv';
-import color from 'color';
 import * as nanoid from 'nanoid';
 
 dotenv.config();
@@ -48,8 +47,4 @@ export const generateUUID = () => {
     return [ 7, 6, 6, 4 ].map(length => {
         return nanoid.customAlphabet(charset, length)();
     }).join("-");
-};
-
-export const colorSort = (a, b) => {
-    return (color(a.color).hue() > color(b.color).hue()) ? 1 : -1;
 };
