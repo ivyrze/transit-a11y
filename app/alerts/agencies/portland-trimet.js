@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Stop } from '../../../common/models/stop.js';
+import { prisma } from '../../../common/prisma/index.js';
 
 const endpoint = 'https://developer.trimet.org/ws/v2/alerts';
 const agencyPrefix = 'trimet';
@@ -33,7 +33,10 @@ export const status = async synonyms => {
             stop = stop.agency + '-' + stop.id;
         } else {
             // Lookup stop ID from stop name instead
-            stop = (await Stop.find({ name }, [ '_id' ]).lean())[0]?._id;
+            stop = (await prisma.stop.findFirst({
+                select: { id: true },
+                where: { name }
+            })).id;
             if (!stop || !stop.startsWith(agencyPrefix)) { return; }
         }
         

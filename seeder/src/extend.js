@@ -2,7 +2,7 @@ import { createClient } from '@sanity/client';
 import { sanityOptions } from '../../common/utils.js';
 
 export const extend = async (agency, stops, routes, id) => {
-    const client = createClient(sanityOptions);
+    const client = createClient(sanityOptions());
     
     const appendicies = await client.fetch(
         `*[(_type == "agency" && id == "` + id + `")
@@ -92,9 +92,13 @@ export const extend = async (agency, stops, routes, id) => {
     routes = routes.map(route => {
         route.route_directions = route.route_directions.map(direction => {
             direction.segments = direction.segments.map(segment => {
-                return segment.map(branch => branch.filter(stop => {
-                    return !skipped.includes(stop);
-                }));
+                segment.branches = segment.branches.map(branch => {
+                    branch.stops = branch.stops.filter(stop => {
+                        return !skipped.includes(stop);
+                    });
+                    return branch;
+                });
+                return segment;
             });
             return direction;
         });

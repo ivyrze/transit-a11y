@@ -2,10 +2,7 @@ import express from 'express';
 import validator from 'express-validator';
 import promiseRouter from 'express-promise-router';
 import httpErrors from 'http-errors';
-import { Stop } from '../../common/models/stop.js';
-import { Agency } from '../../common/models/agency.js';
-import { Review } from '../../common/models/review.js';
-import { pojoCleanup } from '../../common/utils.js';
+import { prisma } from '../../common/prisma/index.js';
 
 export const router = promiseRouter();
 
@@ -26,43 +23,43 @@ router.post('/', validator.checkSchema(schema), async (req, res, next) => {
     const { id } = validator.matchedData(req);
     
     // Run query and parse output
-    let details = await Stop.findById(id, [
-        'name',
-        'description',
-        'coordinates',
-        'accessibility',
-        'alert',
-        'tags',
-        'url'
-    ]).populate({ path: 'reviews', select: [
-        '_id',
-        'accessibility',
-        'timestamp',
-        'author',
-        'attachments',
-        'comments'
-    ], populate: { path: 'author', select: [
-        'username',
-        'email'
-    ] } });
+    const details = await prisma.stop.findUnique({
+        select: {
+            name: true,
+            description: true,
+            coordinates: true,
+            accessibility: true,
+            alert: true,
+            tags: true,
+            url: true,
+            agencyId: true,
+            reviews: { select: {
+                id: true,
+                accessibility: true,
+                timestamp: true,
+                author: true,
+                attachments: { select: {
+                    filename: true,
+                    sizes: true
+                } },
+                comments: true,
+                author: { select: {
+                    username: true,
+                    avatar: true
+                } },
+            }, orderBy: {
+                timestamp: 'desc'
+            } }
+        },
+        where: {
+            id
+        }
+    });
     
     // Make sure that the stop exists
     if (!details) {
         next(new httpErrors.NotFound()); return;
     }
-    
-    const key = details.getAgencyKey();
-    details = details.toObject({
-        virtuals: [ 'reviews', 'avatar', 'filename' ]
-    });
-    
-    details.reviews = details.reviews.map(review => {
-        review.id = review._id;
-        delete review._id;
-        return review;
-    });
-    
-    details = pojoCleanup(details, details, { _id: false });
     
     let [ longitude, latitude ] = details.coordinates;
     details.coordinates = { longitude, latitude };
@@ -71,13 +68,18 @@ router.post('/', validator.checkSchema(schema), async (req, res, next) => {
         details.accessibility = 'service-alert';
     }
     
-    details.agency = await Agency.findById(key, [
-        '-_id',
-        'name',
-        'url',
-        'vehicle',
-        'reviews'
-    ]).lean();
+    details.agency = await prisma.agency.findUnique({
+        select: {
+            name: true,
+            url: true,
+            vehicle: true,
+            reviews: true
+        },
+        where: {
+            id: details.agencyId
+        }
+    });
+    delete details.agencyId;
     
     if (!details.agency) {
         next(new httpErrors.NotFound()); return;
@@ -89,27 +91,7 @@ router.post('/', validator.checkSchema(schema), async (req, res, next) => {
         delete details.url;
     }
     
-    if (details.agency.reviews === true) {
-        // Cleanup from Gravatar and attachment virtuals
-        details.reviews = details.reviews.map(review => {
-            delete review.author.email;
-            if (review.attachments?.length) {
-                review.attachments = review.attachments.map(attachment => ({
-                    filename: attachment.filename,
-                    sizes: attachment.sizes
-                }));
-            } else {
-                delete review.attachments;
-            }
-            
-            return review;
-        });
-        
-        // Sort by review submission date
-        details.reviews.sort((a, b) => {
-            return new Date(b.timestamp) - new Date(a.timestamp);
-        });
-    } else {
+    if (details.agency.reviews !== true) {
         delete details.reviews;
     }
     delete details.agency.reviews;

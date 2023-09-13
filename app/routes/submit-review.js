@@ -4,11 +4,12 @@ import promiseRouter from 'express-promise-router';
 import httpErrors from 'http-errors';
 import multer from 'multer';
 import sharp from 'sharp';
+import { randomUUID } from 'crypto';
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
-import { Review } from '../../common/models/review.js';
-import { Stop } from '../../common/models/stop.js';
+import * as tiles from './map-tiles.js';
+import { prisma } from '../../common/prisma/index.js';
 import { accessibilityStates } from '../../common/a11y-states.js';
-import { errorFormatter, generateUUID } from '../../common/utils.js';
+import { errorFormatter, statePrioritySort } from '../../common/utils.js';
 
 export const router = promiseRouter();
 
@@ -91,16 +92,31 @@ router.post('/', upload.array('attachments', 3), validator.checkSchema(schema), 
     const { stop, features, accessibility, comments } = validator.matchedData(req);
     
     // Verify that the stop exists
-    if (!await Stop.findById(stop)) {
+    if (!await prisma.stop.findUnique({ where: { id: stop }})) {
         next(new httpErrors.NotFound()); return;
     }
     
     // User has already made a review for this stop
-    await Review.findOneAndDelete({ stop, author: req.session.user });
+    const existing = await prisma.review.findFirst({
+        select: {
+            id: true
+        },
+        where: {
+            AND: {
+                stopId: stop,
+                authorId: req.session.user
+            }
+        }
+    });
+    
+    if (existing) {
+        await prisma.review.cleanupAndDelete(existing.id);
+    }
     
     // Handle review attachments
     const attachments = await Promise.all((req.files ?? []).map(async file => {
-        const id = generateUUID();
+        const id = randomUUID();
+        
         const sizes = await Promise.all(proxies.map(async proxy => {
             // Create resized proxy file, factoring in EXIF rotation
             let image = (proxy.quality != 'original') ?
@@ -136,27 +152,26 @@ router.post('/', upload.array('attachments', 3), validator.checkSchema(schema), 
         }));
         
         return {
-            _id: id,
-            type: file.mimetype,
-            sizes
+            id, type: file.mimetype, sizes
         };
     }));
     
     // Create review object
-    const id = generateUUID();
-    const timestamp = new Date().toISOString().substring(0, 16) + 'Z';
+    accessibility.sort(statePrioritySort);
     
-    const review = new Review({
-        _id: id,
-        stop: stop,
-        accessibility,
-        ...(features && { tags: Object.keys(features) }),
-        timestamp,
-        author: req.session.user,
-        ...(attachments && { attachments }),
-        ...(comments && { comments })
+    await prisma.review.create({
+        data: {
+            stop: { connect: { id: stop } },
+            accessibility,
+            ...(features && { tags: Object.keys(features) }),
+            author: { connect: { id: req.session.user } },
+            ...(attachments.length && { attachments: { create: attachments } }),
+            ...(comments && { comments })
+        }
     });
-    await review.save();
     
-    res.json({ accessibility: review.stop.accessibility });
+    const consensus = await prisma.stop.consensus(stop);
+    await tiles.invalidateSingle(stop, consensus.accessibility);
+    
+    res.json({ accessibility: consensus.accessibility });
 });

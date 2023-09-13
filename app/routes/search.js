@@ -2,9 +2,7 @@ import express from 'express';
 import validator from 'express-validator';
 import promiseRouter from 'express-promise-router';
 import httpErrors from 'http-errors';
-import { pojoCleanup } from '../../common/utils.js';
-import { Stop } from '../../common/models/stop.js'
-import { Route } from '../../common/models/route.js'
+import { prisma } from '../../common/prisma/index.js';
 
 export const router = promiseRouter();
 
@@ -34,95 +32,58 @@ router.post('/', validator.checkSchema(schema), async (req, res, next) => {
     
     const { query, longitude, latitude } = validator.matchedData(req);
     
-    let results = await Stop.aggregate([
-        {
-            $search: {
-                compound: {
-                    should: [{
-                        autocomplete: {
-                            query,
-                            path: 'name',
-                            fuzzy: {
-                                maxEdits: 2,
-                                prefixLength: 2
-                            },
-                            score: { boost: { value: 2 } }
-                        }
-                    },
-                    {
-                        equals: {
-                            path: 'major',
-                            value: true,
-                            score: { boost: { value: 1 } }
-                        }
-                    }]
-                }
-            }
-        },
-        {
-            $match: {
-                coordinates: {
-                    $geoWithin: {
-                        $centerSphere: [
-                            [ longitude, latitude ],
-                            100 / 3963
-                        ]
-                    }
-                }
-            }
-        },
-        {
-            $limit: 10
-        },
-        {
-            $project: {
-                _id: true,
-                name: true
-            }
-        }
-    ]);
+    const wildcardQuery = query.trim().split(" ").map(word => "%" + word + "%").join(" ");
     
-    let routes = await Route.find({
-        'directions.segments': {
-            '$elemMatch': {
-                '$elemMatch': {
-                    '$elemMatch': {
-                        '$in': results.map(result => result._id)
-                    }
-                }
-            }
-        }
-    }, [
-        'number',
-        'color',
-        'directions'
-    ]).lean();
+    let results = await prisma.$queryRaw`
+        SELECT id, name FROM "Stop"
+        WHERE name ILIKE ${wildcardQuery}
+        AND ST_DistanceSphere(
+            ST_MakePoint(${longitude},${latitude}),
+            ST_MakePoint(coordinates[1], coordinates[2])
+        ) < 100000
+        LIMIT 10
+    `;
     
-    routes = routes.map(route => {
-        route.directions = route.directions.map(direction => direction.segments).flat(3);
-        return route;
+    results = await prisma.stop.findMany({
+        select: {
+            id: true,
+            name: true,
+            routeBranches: {
+                include: { segment: {
+                    include: { direction: {
+                        include: { route: {
+                            select: {
+                                id: true,
+                                number: true,
+                                color: true
+                            }
+                        } }
+                    } }
+                } }
+            }
+        },
+        where: {
+            id: { in: results.map(result => result.id) }
+        }
     });
     
     results = results.map(result => {
-        result.id = result._id;
+        result.routes = result.routeBranches.map(route => {
+            return route.segment.direction.route;
+        });
+        delete result.routeBranches;
         
-        result.routes = routes.filter(route => route.directions.includes(result.id));
+        const routeIds = result.routes.map(route => route.id);
+        result.routes = result.routes.filter((route, index) => {
+            return !routeIds.includes(route.id, index + 1);
+        });
+        
         result.routes.sort((a, b) => {
             return a.number.localeCompare(b.number, 'en', { numeric: true });
         });
         
         return result;
     });
-    
-    results = results.map(result => {
-        result.routes = result.routes.map(route => {
-            delete route.directions;
-            return route;
-        });
-        return result;
-    })
-    
-    results = pojoCleanup(results, results, { _id: false });
     
     res.json({ results });
 });

@@ -5,9 +5,13 @@ export const transform = (object, options) => {
         if (source == 'stop_id' && object.route_directions) {
             object.route_directions = object.route_directions.map(direction => {
                 direction.segments = direction.segments.map(segment => {
-                    return segment.map(branch => branch.map(stop => {
-                        return transformations[options.type](stop, options);
-                    }));
+                    segment.branches = segment.branches.map(branch => {
+                        branch.stops = branch.stops.map(stop => {
+                            return transformations[options.type](stop, options);
+                        });
+                        return branch;
+                    });
+                    return segment;
                 });
                 return direction;
             });

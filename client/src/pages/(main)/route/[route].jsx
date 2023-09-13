@@ -26,7 +26,7 @@ export const RouteDetails = () => {
         data: { id: route }
     });
     
-    const renderBranch = branch => branch.map((stop, index) => (
+    const renderBranch = branch => branch.stops.map((stop, index) => (
         <li key={ stop.id + "-" + index }>
             <AccessibilityState
                 className="stop-icon"
@@ -73,16 +73,16 @@ export const RouteDetails = () => {
                 <TabPanel store={ tabStore } key={ directionIndex }>
                     <ul className="stop-list-tree">
                         { direction.segments.map((segment, segmentIndex) => {
-                            return (segment.length > 1) ? (
+                            return (segment.branches.length > 1) ? (
                                 <div className="branch-set" key={ segmentIndex }>
-                                    { segment.map((branch, branchIndex) => (
+                                    { segment.branches.map((branch, branchIndex) => (
                                         <div className={ branchIndex == 0 ? "branch-base" : "branch-deviation" } key={ branchIndex }>
                                             { renderBranch(branch) }
                                         </div>
                                     )) }
                                 </div>
                             ) : (
-                                renderBranch(segment[0])
+                                renderBranch(segment.branches[0])
                             );
                         }) }
                     </ul>

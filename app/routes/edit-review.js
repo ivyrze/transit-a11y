@@ -2,10 +2,10 @@ import express from 'express';
 import validator from 'express-validator';
 import promiseRouter from 'express-promise-router';
 import httpErrors from 'http-errors';
-import { Review } from '../../common/models/review.js';
-import { User } from '../../common/models/user.js';
+import * as tiles from './map-tiles.js';
+import { prisma } from '../../common/prisma/index.js';
 import { accessibilityStates } from '../../common/a11y-states.js';
-import { errorFormatter } from '../../common/utils.js';
+import { errorFormatter, statePrioritySort } from '../../common/utils.js';
 
 export const router = promiseRouter();
 
@@ -48,22 +48,51 @@ router.post('/', validator.checkSchema(schema), async (req, res, next) => {
     const { id, accessibility, comments } = validator.matchedData(req);
     
     // Verify that the review exists
-    let review = await Review.findById(id);
+    const review = await prisma.review.findUnique({
+        select: {
+            authorId: true,
+            stopId: true
+        },
+        where: {
+            id
+        }
+    });
+    
     if (!review) {
         next(new httpErrors.NotFound()); return;
     }
     
     // Allow reviews to be edited by their author or by admins
-    if (review.author != req.session.user) {
-        const { admin } = await User.findById(req.session.user, [ 'admin' ]).lean();
+    if (review.authorId != req.session.user) {
+        const { admin } = await prisma.user.findUnique({
+            select: {
+                admin: true
+            },
+            where: {
+                id: req.session.user
+            }
+        });
+        
         if (!admin) {
             next(new httpErrors.Unauthorized()); return;
         }
     }
     
     // Apply requested changes
-    Object.assign(review, { accessibility, comments });
-    await review.save();
+    accessibility.sort(statePrioritySort);
+    
+    await prisma.review.update({
+        data: {
+            accessibility,
+            comments
+        },
+        where: {
+            id
+        }
+    });
+    
+    const consensus = await prisma.stop.consensus(review.stopId);
+    await tiles.invalidateSingle(review.stopId, consensus.accessibility);
     
     res.json({});
 });

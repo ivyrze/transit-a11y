@@ -1,0 +1,111 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("POSTGRES_URL")
+}
+
+model Agency {
+  id      String  @id
+  name    String
+  bounds  Float[]
+  vehicle String
+  url     String
+  reviews Boolean
+  default Boolean
+}
+
+model Geometry {
+  id      String @id
+  geojson Json
+}
+
+model Invite {
+  id     String @id @default(uuid())
+  invite String @unique
+}
+
+model Review {
+  id            String             @id @default(uuid())
+  stop          Stop               @relation(fields: [stopId], references: [id])
+  stopId        String
+  author        User               @relation(fields: [authorId], references: [id])
+  authorId      String
+  accessibility String[]
+  comments      String?
+  tags          String[]
+  attachments   ReviewAttachment[]
+  timestamp     DateTime           @default(now())
+}
+
+model ReviewAttachment {
+  id       String @id @default(uuid())
+  type     String
+  review   Review @relation(fields: [reviewId], references: [id])
+  reviewId String
+  sizes    Json
+}
+
+model Route {
+  id           String           @id
+  name         String
+  number       String
+  color        String
+  directions   RouteDirection[]
+}
+
+model RouteDirection {
+  id         Int                     @id @default(autoincrement())
+  heading    String
+  route      Route                   @relation(fields: [routeId], references: [id])
+  routeId    String
+  segments   RouteDirectionSegment[]
+}
+
+model RouteDirectionSegment {
+  id           Int                    @id @default(autoincrement())
+  direction    RouteDirection         @relation(fields: [directionId], references: [id])
+  directionId  Int
+  branches     RouteDirectionBranch[]
+}
+
+model RouteDirectionBranch {
+  id        Int                   @id @default(autoincrement())
+  segment   RouteDirectionSegment @relation(fields: [segmentId], references: [id])
+  segmentId Int
+  stops     Stop[]
+}
+
+model Stop {
+  id            String                @id
+  name          String
+  description   String?
+  coordinates   Float[]
+  major         Boolean?
+  accessibility String
+  alert         StopAlert?
+  tags          String[]
+  reviews       Review[]
+  url           String?
+  routeBranches RouteDirectionBranch[]
+}
+
+model StopAlert {
+  id          Int    @id @default(autoincrement())
+  stop        Stop   @relation(fields: [stopId], references: [id])
+  stopId      String @unique
+  description String
+  url         String
+}
+
+model User {
+  id       String   @id @default(uuid())
+  username String   @unique
+  password String
+  email    String   @unique
+  created  DateTime @default(now())
+  admin    Boolean  @default(false)
+  reviews  Review[]
+}

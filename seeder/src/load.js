@@ -257,6 +257,11 @@ const calculateDirectionHeadings = (directions, stops) => {
             (direction == 1) ? 'east' : 
             (direction == 2) ? 'south' : false;
         
+        // Wrap arrays into object format
+        segments = segments.map(segment => ({
+            branches: segment.map(branch => ({ stops: branch }))
+        }));
+        
         return { heading, segments };
     });
     

@@ -4,9 +4,7 @@ import express from 'express';
 import validator from 'express-validator';
 import promiseRouter from 'express-promise-router';
 import httpErrors from 'http-errors';
-import { Stop } from '../../common/models/stop.js';
-import { Geometry } from '../../common/models/geometry.js';
-import { Review } from '../../common/models/review.js';
+import { prisma } from '../../common/prisma/index.js';
 import { getStateGroup } from '../../common/a11y-states.js';
 
 export const router = promiseRouter();
@@ -57,58 +55,42 @@ router.get('/:z/:x/:y', validator.checkSchema(schema), async (req, res, next) =>
 var geometries = {};
 var indicies = {};
 
-export const start = async () => {
-    // Initial indexing on startup
-    await generate();
-    
-    // Monitor updates from new seeds, alerts, or reviews
-    Geometry.watch([{
-        $match: {
-            operationType: 'insert'
-        }
-    }], {
-        fullDocument: 'updateLookup'
-    }).on('change', async updates => {
-        geometries[updates.fullDocument._id] = updates.fullDocument.geojson;
-        await generate();
-    });
-    
-    Stop.watch([{
-        $match: {
-            operationType: 'update'
-        }
-    }], {
-        fullDocument: 'updateLookup'
-    }).on('change', async updates => {
-        const state = updates.fullDocument.alert ?
-            "service-alert" : updates.fullDocument.accessibility;
-        await generateSingle(updates.fullDocument._id, state);
-    });
-};
-
-const generate = async (invalidate = true) => {
+export const generate = async (invalidate = true) => {
     const layers = [ 'stops', 'routes' ];
     
     for await (const layer of layers) {
         // Get raw GeoJSON from the database
         if (!geometries[layer]) {
-            geometries[layer] = (await Geometry.findById(layer)).geojson;
+            geometries[layer] = (await prisma.geometry.findUnique({
+                where: { id: layer }
+            })).geojson;
         }
         
         // Inject dynamic alert data
         if (invalidate && layer == 'stops') {
             let states = {};
-            const stops = await Stop.find({}, [ 'accessibility', 'alert' ]).lean();
+            const stops = await prisma.stop.findMany({
+                select: {
+                    id: true,
+                    accessibility: true,
+                    alert: true
+                },
+                where: {
+                    NOT: {
+                        accessibility: "unknown"
+                    }
+                }
+            });
             
             stops.forEach(stop => {
-                states[stop._id] = stop.alert ? "service-alert" : stop.accessibility;
+                states[stop.id] = stop.alert ? "service-alert" : stop.accessibility;
             });
             
             geometries[layer].features.forEach(stop => {
-                if (states[stop.properties.stop_id]) {
-                    stop.properties.wheelchair_boarding =
-                        getStateGroup(states[stop.properties.stop_id]).style;
-                }
+                stop.properties.wheelchair_boarding =
+                    states[stop.properties.stop_id] ?
+                    getStateGroup(states[stop.properties.stop_id]).style :
+                    "unknown";
             });
         }
         
@@ -117,12 +99,10 @@ const generate = async (invalidate = true) => {
     }
 };
 
-const generateSingle = async (id, state) => {
+export const invalidateSingle = async (id, state) => {
     geometries.stops.features.forEach(stop => {
-        if (stop.properties.stop_id == id) {
-            stop.properties.wheelchair_boarding = getStateGroup(state).style;
-        }
+        if (stop.properties.stop_id != id) { return; }
+        stop.properties.wheelchair_boarding = getStateGroup(state).style;
     });
-    
     await generate(false);
 };

@@ -8,6 +8,8 @@ import '@assets/styles/components/attachment-viewer.scss';
 export const AttachmentViewer = props => {
     const { attachments } = props;
     
+    if (!attachments?.length) { return; }
+    
     const qualities = [ 'large', 'small' ];
     
     const images = attachments.map(attachment => {

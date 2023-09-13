@@ -1,26 +1,34 @@
-import { Agency } from '../../common/models/agency.js';
-import { Stop } from '../../common/models/stop.js';
-import { Route } from '../../common/models/route.js';
-import { Geometry } from '../../common/models/geometry.js';
-import { Review } from '../../common/models/review.js';
+import { prisma } from '../../common/prisma/index.js';
 
-export const clean = async () => {
-    console.log("Cleaning existing GTFS data...");
+export const clean = async (agencies, stops, routes) => {
+    const replacedAgencies = agencies.map(agency => agency.agency_id);
+    const replacedStops = stops.map(stop => stop.stop_id);
+    const replacedRoutes = routes.map(route => route.route_id);
     
-    await Promise.all([
-        Agency.deleteMany(),
-        Stop.deleteMany(),
-        Route.deleteMany(),
-        Geometry.deleteMany()
-    ]);
+    const whereClause = ids => ({
+        where: { NOT: { id: { in: ids } } }
+    });
     
-    console.log("Cleaning completed successfully.");
+    return [
+        prisma.geometry.deleteMany(),
+        prisma.routeDirectionBranch.deleteMany(),
+        prisma.routeDirectionSegment.deleteMany(),
+        prisma.routeDirection.deleteMany(),
+        prisma.stopAlert.deleteMany(),
+        prisma.route.deleteMany(whereClause(replacedRoutes)),
+        prisma.stop.deleteMany(whereClause(replacedStops)),
+        prisma.agency.deleteMany(whereClause(replacedAgencies))
+    ];
 };
 
 export const orphans = async (stops) => {
-    let reviewed = await Review.find({}).distinct('stop').lean();
+    const reviewed = await prisma.review.findMany({
+        select: {
+            stopId: true
+        }
+    });
     
-    return reviewed.filter(key => {
-        return !stops.some(stop => key == stop.stop_id);
+    return reviewed.map(review => review.stopId).filter(review => {
+        return !stops.some(stop => review == stop.stop_id);
     });
 };

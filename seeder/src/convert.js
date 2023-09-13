@@ -1,8 +1,8 @@
+import { prisma } from '../../common/prisma/index.js';
 import combine from '@turf/combine';
 import * as gtfsUtils from 'gtfs/lib/geojson-utils.js';
 import * as turfUtils from '@turf/helpers';
 import turfDistance from '@turf/distance';
-import { Geometry } from '../../common/models/geometry.js';
 
 const schema = {
     routes: [
@@ -20,11 +20,10 @@ const schema = {
 };
 
 export const geojson = async (stops, routes) => {
-    stops = new Geometry({ _id: 'stops', geojson: stopsGeoJSON(stops) });
-    routes = new Geometry({ _id: 'routes', geojson: routesGeoJSON(routes) });
-    
-    await stops.save();
-    await routes.save();
+    await prisma.geometry.createMany({ data: [
+        { id: 'stops', geojson: stopsGeoJSON(stops) },
+        { id: 'routes', geojson: routesGeoJSON(routes) }
+    ]});
     
     console.log("Converted geometry to GeoJSON successfully.");
 };
@@ -148,13 +147,17 @@ const updateStopReference = (routes, from, to) => {
     for (let route in routes) {
         routes[route].route_directions = routes[route].route_directions.map(direction => {
             direction.segments = direction.segments.map(segment => {
-                return segment.map(branch => branch.map(stop => {
-                    if (stop == from) {
-                        return to;
-                    }
-                    
-                    return stop;
-                }));
+                segment.branches = segment.branches.map(branch => {
+                    branch.stops = branch.stops.map(stop => {
+                        if (stop == from) {
+                            return to;
+                        }
+                        
+                        return stop;
+                    });
+                    return branch;
+                });
+                return segment;
             });
             return direction;
         });

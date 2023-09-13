@@ -2,10 +2,8 @@ import dotenv from 'dotenv';
 import express from 'express';
 import session from 'express-session';
 import promiseRouter from 'express-promise-router';
-import mongoStore from 'connect-mongo';
 import morgan from 'morgan';
 import helmet from 'helmet';
-import mongoose from 'mongoose';
 import path from 'path';
 import crypto from 'crypto';
 import compression from 'compression';
@@ -28,6 +26,7 @@ import { router as signUpRouter } from './routes/account/sign-up.js';
 import * as alerts from './alerts/index.js';
 import * as tiles from './routes/map-tiles.js';
 
+import { prisma } from '../common/prisma/index.js';
 import { attachExitHandler } from '../common/utils.js';
 
 dotenv.config({ path: '../.env' });
@@ -61,10 +60,6 @@ app.use(session({
         secure: process.env.NODE_ENV === 'production',
         maxAge: 1000 * 60**2 * 10
     },
-    store: mongoStore.create({
-        mongoUrl: process.env.MONGO_URL,
-        touchAfter: 1000 * 60 * 30
-    }),
     secret: crypto.randomBytes(64).toString('hex'),
     saveUninitialized: false,
     resave: false
@@ -121,12 +116,11 @@ router.use((error, req, res, next) => {
     res.status(error.status).json({ status: error.status });
 });
 
-// Establish database connection
-await mongoose.connect(process.env.MONGO_URL);
-attachExitHandler(() => mongoose.disconnect());
+// Handle database connection on exit
+attachExitHandler(() => prisma.$disconnect());
 
 // Start alert polling and tile indexing
-await tiles.start();
+await tiles.generate();
 alerts.start(10 * 60 * 1000);
 
 // Start server

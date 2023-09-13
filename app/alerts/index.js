@@ -1,6 +1,6 @@
+import { prisma } from '../../common/prisma/index.js';
 import { createClient } from '@sanity/client';
 import { sanityOptions } from '../../common/utils.js';
-import { Stop } from '../../common/models/stop.js';
 
 import * as cta from './agencies/chicago-cta.js';
 import * as trimet from './agencies/portland-trimet.js';
@@ -31,7 +31,12 @@ const update = async agencies => {
     // Import new alerts
     agencies.forEach(async alerts => {
         for (const stop in alerts) {
-            await Stop.updateOne({ _id: stop }, { alert: alerts[stop] });
+            await prisma.stopAlert.create({
+                data: {
+                    ...alerts[stop],
+                    stop: { connect: { id: stop } }
+                }
+            });
         }
     });
     
@@ -41,12 +46,12 @@ const update = async agencies => {
 const extend = async () => {
     console.log("Caching Sanity Studio stop synonyms...");
     
-    const client = createClient(sanityOptions);
+    const client = createClient(sanityOptions());
     return await client.fetch('*[_type=="stop" && synonyms != null]{"agency": agency->id, id, synonyms}');
 };
 
 const synonyms = await extend();
 
 const clean = () => {
-    return Stop.updateMany({ alert: { $ne: null } }, { alert: null });
+    return prisma.stopAlert.deleteMany();
 };

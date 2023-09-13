@@ -6,6 +6,7 @@
   "scripts": {
     "start": "npm run start -w app",
     "develop": "concurrently -r \"npm run develop -w app\" \"npm run develop -w client\"",
+    "prebuild": "npm run generate -w common",
     "build": "npm run build -w client"
   },
   "engines": {

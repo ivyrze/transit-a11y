@@ -1,5 +1,4 @@
 import dotenv from 'dotenv';
-import mongoose from 'mongoose';
 import { readFile } from 'fs/promises';
 
 import { clean, orphans } from './src/clean.js';
@@ -9,16 +8,16 @@ import { extend } from './src/extend.js';
 import { store } from './src/store.js';
 import { geojson, link } from './src/convert.js';
 
+import { prisma } from '../common/prisma/index.js';
 import { attachExitHandler, attachExceptionHandler } from '../common/utils.js';
 
 // Read config file
 dotenv.config({ path: '../.env' });
 const configs = JSON.parse(await readFile('config.json'));
 
-// Create database connection
-await mongoose.connect(process.env.MONGO_URL);
-attachExitHandler(() => mongoose.disconnect());
-attachExceptionHandler(() => mongoose.disconnect());
+// Handle database connection on exit
+attachExitHandler(() => prisma.$disconnect());
+attachExceptionHandler(() => prisma.$disconnect());
 
 // Import and process GTFS data
 const processAgency = async config => {
@@ -91,17 +90,17 @@ if (orphaned.length) {
     
     console.error("Exiting without change due to fatal error.");
     
-    await mongoose.disconnect();
+    await prisma.$disconnect();
     process.exit();
 }
 
-// Remove existing database data
-await clean();
+// Remove parts of existing database data
+const transaction = await clean(agencies, stops, routes);
 
-// Store everything in Redis database
-await store(agencies, stops, routes);
+// Store everything in Postgres database
+await store(agencies, stops, routes, transaction);
 
 // Convert to GeoJSON and optionally upload to Mapbox
 await geojson(stops, routes);
 
-await mongoose.disconnect();
+await prisma.$disconnect();

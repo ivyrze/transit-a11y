@@ -11,7 +11,7 @@ import { AccessibilityState } from '@components/accessibility-state';
 import { AttachmentViewer } from '@components/attachment-viewer';
 import { useErrorStatus } from '@hooks/error';
 import { queryHelper } from '@hooks/query';
-import { getStatePriority } from '@common/a11y-states';
+import { statePrioritySort } from '@common/utils';
 
 import '@assets/styles/components/review.scss';
 
@@ -44,9 +44,7 @@ export const Review = forwardRef((props, ref) => {
             ]
         ));
         
-        newDetails.accessibility?.sort((a, b) => {
-            return getStatePriority(a) - getStatePriority(b);
-        });
+        newDetails.accessibility?.sort(statePrioritySort);
         newDetails.accessibility ??= [ 'unknown' ];
         
         setDetails({ ...details, ...newDetails });
