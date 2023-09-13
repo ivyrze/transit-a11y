@@ -137,21 +137,6 @@ export const StopDetails = () => {
                     ) }
                 </div>
             ) }
-            { details.alert && (
-                <Link
-                    className="stop-alert-link link--external"
-                    href={ details.alert.url }
-                    target="_blank"
-                >
-                    View service alert details
-                    <Icon name="link" />
-                </Link>
-            ) }
-            { (!details.alert && !details.reviews) && (
-                <span className="source-link">
-                    Source: <Link target="_blank" href={ details.agency.url } rel="noreferrer" className="link--minimal">{ details.agency.name }</Link>
-                </span>
-            ) }
         </main>
     );
 };

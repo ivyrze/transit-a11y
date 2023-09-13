@@ -7,7 +7,6 @@ const schema = {
         url: { from: 'agency_url' },
         bounds: { from: 'agency_bounds' },
         vehicle: { from: 'agency_vehicle' },
-        reviews: { from: 'agency_reviews' },
         default: { from: 'agency_default' }
     },
     stops: {

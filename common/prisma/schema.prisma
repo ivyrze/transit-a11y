@@ -13,7 +13,6 @@ model Agency {
   bounds  Float[]
   vehicle String
   url     String
-  reviews Boolean
   default Boolean
 }
 
@@ -85,19 +84,10 @@ model Stop {
   coordinates   Float[]
   major         Boolean?
   accessibility String
-  alert         StopAlert?
   tags          String[]
   reviews       Review[]
   url           String?
   routeBranches RouteDirectionBranch[]
-}
-
-model StopAlert {
-  id          Int    @id @default(autoincrement())
-  stop        Stop   @relation(fields: [stopId], references: [id])
-  stopId      String @unique
-  description String
-  url         String
 }
 
 model User {

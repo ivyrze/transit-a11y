@@ -72,8 +72,7 @@ export const generate = async (invalidate = true) => {
             const stops = await prisma.stop.findMany({
                 select: {
                     id: true,
-                    accessibility: true,
-                    alert: true
+                    accessibility: true
                 },
                 where: {
                     NOT: {
@@ -83,7 +82,7 @@ export const generate = async (invalidate = true) => {
             });
             
             stops.forEach(stop => {
-                states[stop.id] = stop.alert ? "service-alert" : stop.accessibility;
+                states[stop.id] = stop.accessibility;
             });
             
             geometries[layer].features.forEach(stop => {

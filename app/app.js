@@ -23,7 +23,6 @@ import { router as loginRouter } from './routes/account/login.js';
 import { router as logoutRouter } from './routes/account/logout.js';
 import { router as signUpRouter } from './routes/account/sign-up.js';
 
-import * as alerts from './alerts/index.js';
 import * as tiles from './routes/map-tiles.js';
 
 import { prisma } from '../common/prisma/index.js';
@@ -121,7 +120,6 @@ attachExitHandler(() => prisma.$disconnect());
 
 // Start alert polling and tile indexing
 await tiles.generate();
-alerts.start(10 * 60 * 1000);
 
 // Start server
 const port = process.env.PORT || 3001;

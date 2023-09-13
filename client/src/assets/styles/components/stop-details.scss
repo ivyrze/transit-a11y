@@ -1,18 +1,6 @@
 @import '../mixins';
 
 .stop-details-card {
-    .stop-alert-link {
-        display: inline-block;
-        margin-bottom: 2px;
-    }
-    
-    .source-link {
-        display: block;
-        font-size: 16px;
-        font-weight: weight('light');
-        opacity: 0.4;
-    }
-    
     .review-container {
         border-top: 1px solid var(--horizontal-rule-color);
     }

@@ -29,7 +29,6 @@ router.post('/', validator.checkSchema(schema), async (req, res, next) => {
             description: true,
             coordinates: true,
             accessibility: true,
-            alert: true,
             tags: true,
             url: true,
             agencyId: true,
@@ -64,16 +63,11 @@ router.post('/', validator.checkSchema(schema), async (req, res, next) => {
     let [ longitude, latitude ] = details.coordinates;
     details.coordinates = { longitude, latitude };
     
-    if (details.alert) {
-        details.accessibility = 'service-alert';
-    }
-    
     details.agency = await prisma.agency.findUnique({
         select: {
             name: true,
             url: true,
-            vehicle: true,
-            reviews: true
+            vehicle: true
         },
         where: {
             id: details.agencyId
@@ -90,11 +84,6 @@ router.post('/', validator.checkSchema(schema), async (req, res, next) => {
         details.agency.url = details.url;
         delete details.url;
     }
-    
-    if (details.agency.reviews !== true) {
-        delete details.reviews;
-    }
-    delete details.agency.reviews;
     
     res.json(details);
 });

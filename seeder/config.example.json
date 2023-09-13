@@ -2,43 +2,10 @@
     "default": "smart",
     "agencies": [
         {
-            "id": "cta",
-            "url": "http://www.transitchicago.com/downloads/sch_data/google_transit.zip",
-            "vehicle": "metro",
-            "stations": true,
-            "transformations": [
-                {
-                    "source": "stops.wheelchair_boarding",
-                    "type": "coalesce",
-                    "target": "2"
-                },
-                {
-                    "source": "stops.stop_name",
-                    "type": "parenthesis"
-                }
-            ],
-            "reviews": false
-        },
-        {
-            "id": "dtc",
-            "url": "https://github.com/ivyrze/dtc-gtfs/releases/latest/download/gtfs-static.zip",
-            "vehicle": "monorail",
-            "stations": true,
-            "reviews": false
-        },
-        {
-            "id": "qline",
-            "url": "https://data.trilliumtransit.com/gtfs/qline-mi-us/qline-mi-us.zip",
-            "vehicle": "streetcar",
-            "stations": false,
-            "reviews": false
-        },
-        {
             "id": "ddot",
             "url": "https://www.detroitmi.gov/Portals/0/docs/deptoftransportation/pdfs/ddot_gtfs.zip",
             "vehicle": "bus",
-            "stations": false,
-            "reviews": true
+            "stations": false
         },
         {
             "id": "smart",
@@ -54,42 +21,7 @@
                     "source": "stops.stop_name",
                     "type": "prettify"
                 }
-            ],
-            "reviews": true
-        },
-        {
-            "id": "trimet",
-            "url": "http://developer.trimet.org/schedule/gtfs.zip",
-            "vehicle": "light-rail",
-            "stations": true,
-            "transformations": [
-                {
-                    "source": "stops.wheelchair_boarding",
-                    "type": "override",
-                    "target": "1"
-                },
-                {
-                    "source": "routes.route_long_name",
-                    "type": "remove",
-                    "target": "MAX"
-                },
-                {
-                    "source": "stops.stop_name",
-                    "type": "remove",
-                    "target": "MAX Stn"
-                },
-                {
-                    "source": "stops.stop_name",
-                    "type": "remove",
-                    "target": "MAX Station"
-                },
-                {
-                    "source": "stops.stop_id",
-                    "type": "remove",
-                    "target": "landmark"
-                }
-            ],
-            "reviews": false
+            ]
         }
     ]
 }
