@@ -76,15 +76,13 @@ export const StopDetails = () => {
                             </Link>
                         } />
                     </Menu>
-                    <div className="card__actions">
-                        <Button
-                            className="button--rounded"
-                            aria-label="Close"
-                            onClick={ closeCard }
-                        >
-                            <Icon name="close" />
-                        </Button>
-                    </div>
+                    <Button
+                        className="button--rounded"
+                        aria-label="Close"
+                        onClick={ closeCard }
+                    >
+                        <Icon name="close" />
+                    </Button>
                 </div>
             </div>
             <span className="subtitle">
