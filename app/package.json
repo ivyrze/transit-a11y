@@ -5,16 +5,16 @@
     "develop": "nodemon app.js --watch app"
   },
   "engines": {
-    "node": "^14.8.0 || ^16.0.0"
+    "node": "^18.0.0"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.345.0",
-    "@prisma/client": "^5.2.0",
-    "@sanity/client": "^6.1.2",
-    "axios": "^1.4.0",
+    "@aws-sdk/client-s3": "^3.412.0",
+    "@prisma/client": "^5.3.0",
+    "@sanity/client": "^6.4.12",
+    "axios": "^1.5.0",
     "compression": "^1.7.4",
     "connect-mongo": "^5.0.0",
-    "dotenv": "^16.1.4",
+    "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "express-promise-router": "^4.1.1",
     "express-session": "^1.17.3",
@@ -24,10 +24,10 @@
     "http-errors": "^2.0.0",
     "morgan": "^1.10.0",
     "multer": "^1.4.5-lts.1",
-    "sharp": "^0.32.1",
+    "sharp": "^0.32.5",
     "vt-pbf": "^3.1.3"
   },
   "devDependencies": {
-    "nodemon": "^2.0.22"
+    "nodemon": "^3.0.1"
   }
 }

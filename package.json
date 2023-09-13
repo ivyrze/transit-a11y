@@ -10,7 +10,7 @@
     "build": "npm run build -w client"
   },
   "engines": {
-    "node": "^14.8.0 || ^16.0.0"
+    "node": "^18.0.0"
   },
   "workspaces": [
     "app",
