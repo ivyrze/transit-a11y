@@ -60,6 +60,8 @@ export const prisma = new PrismaClient().$extends({
                 // to determine the overall accessibility
                 let states = reviews.reduce((result, current) => {
                     current.accessibility.forEach(state => {
+                        if (state == 'unknown') { return; }
+                        
                         result[state] ??= {
                             count: 0,
                             priority: getStatePriority(state)

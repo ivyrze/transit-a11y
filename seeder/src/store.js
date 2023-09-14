@@ -98,11 +98,6 @@ const reconsensus = async () => {
     const reviewed = await prisma.review.findMany({
         select: {
             stopId: true
-        },
-        where: {
-            NOT: {
-                accessibility: { equals: [ "unknown" ] }
-            }
         }
     });
     
