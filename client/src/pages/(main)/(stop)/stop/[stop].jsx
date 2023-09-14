@@ -66,7 +66,7 @@ export const StopDetails = () => {
                     <Menu>
                         <MenuItem render={
                             <Link
-                                href={ gsvURL }
+                                to={ gsvURL }
                                 target="_blank"
                                 rel="noreferrer"
                                 className="menu__item"
