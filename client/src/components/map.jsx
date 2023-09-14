@@ -104,6 +104,8 @@ export const Map = forwardRef((props, ref) => {
     }, [ loaded, queryRenderedRoutes ]);
     
     useEffect(() => {
+        if (!loaded || !flyCoords) { return; }
+        
         let padding = {};
         if (window.innerWidth > 768) {
             padding.left = 400;
@@ -116,7 +118,7 @@ export const Map = forwardRef((props, ref) => {
             duration: 2500,
             essential: false
         });
-    }, [ flyCoords ]);
+    }, [ loaded, flyCoords ]);
     
     useEffect(() => {
         if (!loaded) { return; }
