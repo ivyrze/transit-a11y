@@ -26,5 +26,13 @@ export const useMapStore = createWithEqualityFn(set => ({
 
 export const useFormWrapperStore = createWithEqualityFn(set => ({
     isLoading: false,
-    setIsLoading: value => set({ isLoading: value })
+    setIsLoading: value => set({ isLoading: value }),
+    files: {},
+    setFiles: (key, value) => set(state => ({
+        files: { ...state.files, [key]: value }
+    })),
+    clearFiles: key => set(state => {
+        delete state.files[key];
+        return { files: state.files };
+    })
 }), Object.is);

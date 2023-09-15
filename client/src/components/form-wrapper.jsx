@@ -14,7 +14,13 @@ export const FormWrapper = props => {
     const formStore = useFormStore({ defaultValues });
     const formRef = useRef();
     
-    const setIsLoading = useFormWrapperStore(state => state.setIsLoading);
+    const [
+        setIsLoading,
+        files
+    ] = useFormWrapperStore(state => [
+        state.setIsLoading,
+        state.files
+    ]);
     
     const { setErrorStatus } = useErrorStatus();
     const { setAuthRedirect } = useAuth();
@@ -28,16 +34,13 @@ export const FormWrapper = props => {
             onSubmit(data);
         }
         
-        let hasFile = false;
-        for (const elem of formRef.current.querySelectorAll('input[type="file"]')) {
-            if (elem.files.length) {
-                hasFile = true;
-            } else {
-                data.delete(elem.name);
+        if (Object.values(files)) {
+            for (const key in files) {
+                for (const file of files[key]) {
+                    data.append(key, file);
+                }
             }
-        }
-        
-        if (!hasFile) {
+        } else {
             data = new URLSearchParams(data);
         }
         

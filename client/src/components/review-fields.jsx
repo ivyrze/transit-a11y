@@ -2,6 +2,7 @@ import React from 'react';
 import { FormInput, FormLabel, useFormContext } from '@ariakit/react';
 import { AccessibilitySelect } from '@components/accessibility-select';
 import { FormSubmit } from '@components/form-submit';
+import { AttachmentInput } from '@components/attachment-input';
 import { Icon } from '@components/icon';
 import { Button } from '@components/button';
 import i18n from '@assets/i18n-strings.json';
@@ -65,7 +66,7 @@ export const ReviewFields = props => {
             { !compactView && (
                 <fieldset>
                     <legend>Do you have any photos to include?</legend>
-                    <FormInput type="file" name="attachments" accept="image/jpeg" multiple />
+                    <AttachmentInput name="attachments" />
                 </fieldset>
             ) }
             <fieldset className="button-set">

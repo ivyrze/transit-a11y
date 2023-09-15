@@ -31,7 +31,7 @@ export const AttachmentViewer = props => {
             padding: { top: 40, right: 15, bottom: 40, left: 15 },
             wheelToZoom: true
         }} >
-            <div className="attachment-list">
+            <ol className="attachment-list">
                 { images.map((image, index) => (
                     <Item
                         key={ index }
@@ -41,19 +41,22 @@ export const AttachmentViewer = props => {
                         height={ image.large.height }
                     >
                         { props => (
-                            <Button
-                                onClick={ props.open }
-                                aria-label="Enlarge image attachment"
-                            >
-                                <img
-                                    src={ image.small.url }
-                                    ref={ props.ref }
-                                />
-                            </Button>
+                            <li>
+                                <Button
+                                    className="attachment"
+                                    onClick={ props.open }
+                                    aria-label="Enlarge image attachment"
+                                >
+                                    <img
+                                        src={ image.small.url }
+                                        ref={ props.ref }
+                                    />
+                                </Button>
+                            </li>
                         ) }
                     </Item>
                 )) }
-            </div>
+            </ol>
         </Gallery>
     );
 };

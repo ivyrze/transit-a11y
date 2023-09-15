@@ -106,3 +106,19 @@
 a.button--rounded {
     float: right;
 }
+
+.button--overlay {
+    @extend .button;
+    
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 4px;
+    line-height: 0;
+    
+    &:hover {
+        background-color: rgba(0, 0, 0, 1);
+    }
+    
+    .icon {
+        line-height: 0;
+    }
+}

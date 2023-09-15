@@ -1,22 +1,5 @@
 @import '../mixins';
-
-.attachment-list {
-    display: flex;
-    gap: 10px;
-    overflow-x: auto;
-    
-    button {
-        border-radius: 5px;
-        overflow: hidden;
-        flex-shrink: 0;
-        padding: 0;
-        
-        img {
-            display: block;
-            height: 125px;
-        }
-    }
-}
+@import './attachment';
 
 .image-gallery {
     --pswp-bg: #fff;
