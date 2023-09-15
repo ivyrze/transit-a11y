@@ -1,6 +1,6 @@
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { MenuItem, Disclosure, DisclosureContent, useDisclosureStore } from '@ariakit/react';
+import { MenuItem, Disclosure, DisclosureContent, DisclosureProvider, useDisclosureStore } from '@ariakit/react';
 import { Menu } from '@components/menu';
 import { useQuery } from '@hooks/query';
 import { useAuth } from '@hooks/auth';
@@ -110,18 +110,15 @@ export const StopDetails = () => {
             { details.reviews && (
                 <div className="review-container">
                     { details.reviews.length > 0 ? (
-                        <>
-                            <Disclosure
-                                className="review-drawer-toggle"
-                                store={ disclosureStore }
-                            >
+                        <DisclosureProvider store={ disclosureStore }>
+                            <Disclosure className="review-drawer-toggle">
                                 { i18n.reviewsToggleStates[disclosureState ? 'hide' : 'show'] }
                                 <Icon
                                     name={ disclosureState ? "chevron-up" : "chevron-down" }
                                     className="icon--fixed-right"
                                 />
                             </Disclosure>
-                            <DisclosureContent store={ disclosureStore }>
+                            <DisclosureContent>
                                 { details.reviews.map(review => (
                                     <Review
                                         review={ review }
@@ -131,7 +128,7 @@ export const StopDetails = () => {
                                 )) }
                                 <ContributeButton />
                             </DisclosureContent>
-                        </>
+                        </DisclosureProvider>
                     ) : (
                         <ContributeButton />
                     ) }

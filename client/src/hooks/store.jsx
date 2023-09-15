@@ -23,3 +23,8 @@ export const useMapStore = createWithEqualityFn(set => ({
     })),
     clearOpenedStopHistory: () => set(() => ({ openedStopHistory: {} }))
 }), Object.is);
+
+export const useFormWrapperStore = createWithEqualityFn(set => ({
+    isLoading: false,
+    setIsLoading: value => set({ isLoading: value })
+}), Object.is);

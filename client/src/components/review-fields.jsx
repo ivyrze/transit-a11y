@@ -1,7 +1,6 @@
 import React from 'react';
-import { FormInput, FormLabel } from '@ariakit/react';
+import { FormInput, FormLabel, useFormContext } from '@ariakit/react';
 import { AccessibilitySelect } from '@components/accessibility-select';
-import { useFormContext } from '@components/form-wrapper';
 import { FormSubmit } from '@components/form-submit';
 import { Icon } from '@components/icon';
 import { Button } from '@components/button';
@@ -12,7 +11,7 @@ import '@assets/styles/components/review-fields.scss';
 export const ReviewFields = props => {
     const { reviewId, stopId, compactView, onCancel } = props;
     
-    const { formStore } = useFormContext();
+    const formStore = useFormContext();
     
     return (
         <>

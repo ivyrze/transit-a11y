@@ -1,6 +1,6 @@
 import React, { forwardRef } from 'react';
 import { AccessibilityState } from '@components/accessibility-state';
-import { Select, SelectPopover, SelectGroup, SelectGroupLabel, SelectItem, SelectItemCheck, useSelectStore } from '@ariakit/react';
+import { Select, SelectPopover, SelectGroup, SelectGroupLabel, SelectItem, SelectItemCheck, SelectProvider, useSelectStore } from '@ariakit/react';
 import { accessibilityGroups, accessibilityStates } from '@common/a11y-states';
 import { Icon } from '@components/icon';
 
@@ -67,9 +67,8 @@ export const AccessibilitySelect = forwardRef(({
     };
     
     return (
-        <>
+        <SelectProvider store={ selectStore }>
             <Select
-                store={ selectStore }
                 ref={ ref }
                 className="multi-select"
                 onBlur={ onTouch }
@@ -82,7 +81,6 @@ export const AccessibilitySelect = forwardRef(({
                 />
             </Select>
             <SelectPopover
-                store={ selectStore }
                 className="menu"
                 onBlur={ onTouch }
                 fitViewport={ true }
@@ -90,6 +88,6 @@ export const AccessibilitySelect = forwardRef(({
             >
                 { renderAccessibilityGroups() }
             </SelectPopover>
-        </>
+        </SelectProvider>
     );
 });

@@ -1,13 +1,12 @@
-import React, { createContext, useContext, useRef, useState } from 'react';
-import { Form, useFormStore } from '@ariakit/react';
+import React, { useRef } from 'react';
+import { Form, FormProvider, useFormStore } from '@ariakit/react';
 import { useNavigate } from 'react-router-dom';
+import { useFormWrapperStore } from '@hooks/store';
 import { useErrorStatus } from '@hooks/error';
 import { useAuth } from '@hooks/auth';
 import { queryHelper } from '@hooks/query';
 
 import '@assets/styles/components/form-wrapper.scss';
-
-const FormContext = createContext();
 
 export const FormWrapper = props => {
     const { action, method, onSubmit, onResponse, defaultValues, children, ...passthroughProps } = props;
@@ -15,7 +14,7 @@ export const FormWrapper = props => {
     const formStore = useFormStore({ defaultValues });
     const formRef = useRef();
     
-    const [ isLoading, setIsLoading ] = useState(false);
+    const setIsLoading = useFormWrapperStore(state => state.setIsLoading);
     
     const { setErrorStatus } = useErrorStatus();
     const { setAuthRedirect } = useAuth();
@@ -63,16 +62,13 @@ export const FormWrapper = props => {
     });
     
     return (
-        <FormContext.Provider value={{ formStore, isLoading }}>
+        <FormProvider store={ formStore }>
             <Form
-                store={ formStore }
                 ref={ formRef }
                 { ...passthroughProps }
             >
                 { children }
             </Form>
-        </FormContext.Provider>
+        </FormProvider>
     );
 };
-
-export const useFormContext = () => useContext(FormContext);
