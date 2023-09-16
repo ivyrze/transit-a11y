@@ -49,7 +49,7 @@ export const AttachmentInput = props => {
                     />
                     <button
                         type="button"
-                        className="attachment--delete"
+                        className="attachment__delete"
                         aria-label="Delete attachment"
                         onClick={ () => handleDelete(file) }
                     >
@@ -59,7 +59,7 @@ export const AttachmentInput = props => {
             )) }
             <li
                 { ...getRootProps() }
-                className="attachment-input--upload"
+                className="attachment-input__upload"
                 role="button"
                 aria-label="Choose files"
             >
