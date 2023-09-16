@@ -18,6 +18,7 @@
     position: relative;
     flex-grow: 1;
     text-align: center;
+    isolation: isolate;
     
     & > input[type="checkbox"] {
         @extend .button--filled;
