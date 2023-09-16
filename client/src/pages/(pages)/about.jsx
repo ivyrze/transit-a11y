@@ -1,5 +1,6 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
+import { VisuallyHidden } from '@ariakit/react';
 import { Link } from '@components/link';
 import aboutGraphic from '@assets/images/about-graphic.svg';
 
@@ -11,7 +12,7 @@ export const AboutPage = () => {
             <Helmet>
                 <title>About</title>
             </Helmet>
-            <h1 className="sr-only">About</h1>
+            <VisuallyHidden><h1>About</h1></VisuallyHidden>
             <img src={ aboutGraphic } className="about__graphic" alt="Graphic depicting a yellow gate used by the New York MTA to restrict access to broken elevators" />
             <p className="about__headline">Every day, public transportation connects millions to work, school, and community life. Disabled people are often left behind.</p>
             <p>Decades after the passage of the Americans with Disabilities Act, many <Link to="https://www.nytimes.com/2022/06/22/nyregion/nyc-subway-accessibility-disabilities-elevators.html" target="_blank" rel="noreferrer" className="link--regular">transit agencies are still non-compliant</Link> with it’s standards – standards which, even when implemented, are largely regarded by the disabled community as inadequate. Detroit is no exception, with thousands of bus stops lacking wheelchair-accessible infrastructure. And for riders with limited mobility, just 5% have a safe place to sit.</p>
