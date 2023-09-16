@@ -7,7 +7,7 @@
 .review {
     margin-top: 16px;
     
-    p {
+    & > p {
         margin-top: 6px;
         margin-bottom: 0;
     }
