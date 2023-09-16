@@ -2,7 +2,7 @@
   "type": "module",
   "scripts": {
     "start": "node app.js",
-    "develop": "nodemon app.js --watch app"
+    "develop": "nodemon app.js"
   },
   "engines": {
     "node": "^18.0.0"
@@ -29,5 +29,10 @@
   },
   "devDependencies": {
     "nodemon": "^3.0.1"
+  },
+  "nodemonConfig": {
+    "watch": [
+      "./", "../common"
+    ]
   }
 }
