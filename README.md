@@ -13,6 +13,13 @@ npm run start -w seeder
 
 ## Development
 
+You'll need to generate the Prisma database driver and migrate your database schema on initial setup and anytime the schema changes:
+
+```
+npm run generate -w common
+npm run migrate -w common
+```
+
 You can run the Express server locally with:
 
 ```
