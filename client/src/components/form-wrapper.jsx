@@ -34,7 +34,7 @@ export const FormWrapper = props => {
             onSubmit(data);
         }
         
-        if (Object.values(files)) {
+        if (Object.values(files).length) {
             for (const key in files) {
                 for (const file of files[key]) {
                     data.append(key, file);
