@@ -3,8 +3,8 @@
 
 .menu {
     background: var(--ui-popup-color);
-    border-radius: 10px;
-    box-shadow: 0 4px 18px rgb(0 0 0 / 15%);
+    border-radius: var(--ui-popup-radius);
+    box-shadow: var(--ui-popup-shadow);
     padding: 6px;
     margin: 5px 0;
     z-index: 1;

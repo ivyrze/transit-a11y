@@ -110,9 +110,10 @@ a.button--rounded {
 .button--overlay {
     @extend .button;
     
+    color: #f0f0f0;
     background-color: rgba(0, 0, 0, 0.8);
     padding: 4px;
-    line-height: 0;
+    line-height: 1;
     
     &:hover {
         background-color: rgba(0, 0, 0, 1);

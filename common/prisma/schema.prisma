@@ -45,6 +45,7 @@ model ReviewAttachment {
   review   Review @relation(fields: [reviewId], references: [id])
   reviewId String
   sizes    Json
+  alt      String?
 }
 
 model Route {

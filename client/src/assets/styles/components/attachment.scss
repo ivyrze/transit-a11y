@@ -1,13 +1,35 @@
 .attachment {
-    border-radius: 5px;
-    overflow: hidden;
+    position: relative;
     flex-shrink: 0;
-    padding: 0;
-    height: 125px;
+    
+    &,
+    img {
+        border-radius: 5px;
+        height: 145px;
+    }
     
     img {
         display: block;
-        height: 125px;
+        overflow: hidden;
+    }
+    
+    &__actions {
+        position: absolute;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 3px;
+        margin: 6px;
+        
+        .button--overlay {
+            font-size: 16px;
+            border-radius: 1em;
+            text-transform: uppercase;
+        }
+        
+        .attachment__alt {
+            padding-inline: 6px;
+            letter-spacing: 0.5px;
+        }
     }
 }
 

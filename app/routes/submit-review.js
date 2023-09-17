@@ -52,6 +52,10 @@ const schema = {
         in: 'body',
         trim: true,
         optional: { checkFalsy: true }
+    },
+    'attachmentsAlt': {
+        in: 'body',
+        optional: true
     }
 };
 
@@ -89,7 +93,7 @@ router.post('/', upload.array('attachments', 3), validator.checkSchema(schema), 
         next(new httpErrors.Unauthorized()); return;
     }
     
-    const { stop, features, accessibility, comments } = validator.matchedData(req);
+    const { stop, features, accessibility, comments, attachmentsAlt } = validator.matchedData(req);
     
     // Verify that the stop exists
     if (!await prisma.stop.findUnique({ where: { id: stop }})) {
@@ -116,6 +120,7 @@ router.post('/', upload.array('attachments', 3), validator.checkSchema(schema), 
     // Handle review attachments
     const attachments = await Promise.all((req.files ?? []).map(async file => {
         const id = randomUUID();
+        const alt = attachmentsAlt?.[file.originalname];
         
         const sizes = await Promise.all(proxies.map(async proxy => {
             // Create resized proxy file, factoring in EXIF rotation
@@ -152,7 +157,7 @@ router.post('/', upload.array('attachments', 3), validator.checkSchema(schema), 
         }));
         
         return {
-            id, type: file.mimetype, sizes
+            id, type: file.mimetype, sizes, ...(alt?.length && { alt })
         };
     }));
     

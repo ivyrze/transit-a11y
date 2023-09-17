@@ -49,7 +49,8 @@ router.post('/', validator.checkSchema(schema), async (req, res, next) => {
                     timestamp: true,
                     attachments: { select: {
                         filename: true,
-                        sizes: true
+                        sizes: true,
+                        alt: true
                     } },
                     comments: true,
                 },

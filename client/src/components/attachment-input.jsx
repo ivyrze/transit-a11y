@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDropzone } from 'react-dropzone';
+import { AttachmentPopover } from '@components/attachment-popover';
+import { Button } from '@components/button';
 import { Icon } from '@components/icon';
 import { useFormWrapperStore } from '@hooks/store';
 
@@ -47,14 +49,20 @@ export const AttachmentInput = props => {
                         src={ file.preview }
                         onLoad={ () => handleCleanup(file) }
                     />
-                    <button
-                        type="button"
-                        className="attachment__delete"
-                        aria-label="Delete attachment"
-                        onClick={ () => handleDelete(file) }
-                    >
-                        <Icon name="close" />
-                    </button>
+                    <div className="attachment__actions">
+                        <AttachmentPopover
+                            name={ "attachmentsAlt[" + file.name + "]" }
+                            isEditing={ true }
+                        />
+                        <Button
+                            type="button"
+                            className="button--overlay"
+                            aria-label="Delete attachment"
+                            onClick={ () => handleDelete(file) }
+                        >
+                            <Icon name="close" />
+                        </Button>
+                    </div>
                 </li>
             )) }
             <li
