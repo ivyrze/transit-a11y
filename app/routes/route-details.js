@@ -32,10 +32,15 @@ router.post('/', validator.checkSchema(schema), async (req, res, next) => {
                 include: { segments: {
                     include: { branches: {
                         include: { stops: {
-                            select: {
-                                id: true,
-                                name: true,
-                                accessibility: true
+                            include: { stop: {
+                                select: {
+                                    id: true,
+                                    name: true,
+                                    accessibility: true
+                                },
+                            } },
+                            orderBy: {
+                                order: 'asc'
                             }
                         } }
                     } }

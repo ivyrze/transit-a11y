@@ -34,8 +34,8 @@ const schema = {
             return { create: directions.map(direction => {
                 direction.segments = { create: direction.segments.map(segment => {
                     segment.branches = { create: segment.branches.map(branch => {
-                        branch.stops = { connect: branch.stops.map(stop => {
-                            return { id: stop };
+                        branch.stops = { create: branch.stops.map((stop, index) => {
+                            return { stopId: stop, order: index };
                         }) };
                         return branch;
                     }) };

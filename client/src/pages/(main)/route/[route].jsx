@@ -26,7 +26,7 @@ export const RouteDetails = () => {
         data: { id: route }
     });
     
-    const renderBranch = branch => branch.stops.map((stop, index) => (
+    const renderBranch = branch => branch.stops.map(({ stop }, index) => (
         <li key={ stop.id + "-" + index }>
             <AccessibilityState
                 className="stop-icon"

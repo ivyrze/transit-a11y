@@ -75,7 +75,17 @@ model RouteDirectionBranch {
   id        Int                   @id @default(autoincrement())
   segment   RouteDirectionSegment @relation(fields: [segmentId], references: [id])
   segmentId Int
-  stops     Stop[]
+  stops     RouteDirectionStop[]
+}
+
+model RouteDirectionStop {
+  stop     Stop                 @relation(fields: [stopId], references: [id])
+  stopId   String
+  branch   RouteDirectionBranch @relation(fields: [branchId], references: [id])
+  branchId Int
+  order    Int
+  
+  @@id([stopId, branchId, order])
 }
 
 model Stop {
@@ -88,7 +98,7 @@ model Stop {
   tags          String[]
   reviews       Review[]
   url           String?
-  routeBranches RouteDirectionBranch[]
+  routeBranches RouteDirectionStop[]
 }
 
 model User {
