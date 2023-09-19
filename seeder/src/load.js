@@ -183,7 +183,7 @@ const associateRouteDirections = async (route, stations) => {
     }
     
     // Group trips by direction id
-    let directions = [];
+    let directions = {};
     trips.forEach(trip => {
         directions[trip.direction_id] ??= [];
         
@@ -203,7 +203,7 @@ const associateRouteDirections = async (route, stations) => {
         }
     }
     
-    return directions;
+    return Object.values(directions);
 };
 
 const calculateRouteBranches = directions => {
