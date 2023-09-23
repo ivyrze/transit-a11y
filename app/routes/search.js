@@ -49,14 +49,16 @@ router.post('/', validator.checkSchema(schema), async (req, res, next) => {
             id: true,
             name: true,
             routeBranches: {
-                include: { segment: {
-                    include: { direction: {
-                        include: { route: {
-                            select: {
-                                id: true,
-                                number: true,
-                                color: true
-                            }
+                include: { branch: {
+                    include: { segment: {
+                        include: { direction: {
+                            include: { route: {
+                                select: {
+                                    id: true,
+                                    number: true,
+                                    color: true
+                                }
+                            } }
                         } }
                     } }
                 } }
@@ -68,8 +70,8 @@ router.post('/', validator.checkSchema(schema), async (req, res, next) => {
     });
     
     results = results.map(result => {
-        result.routes = result.routeBranches.map(route => {
-            return route.segment.direction.route;
+        result.routes = result.routeBranches.map(({ branch }) => {
+            return branch.segment.direction.route;
         });
         delete result.routeBranches;
         
