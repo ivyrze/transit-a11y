@@ -46,11 +46,11 @@ export const AttachmentViewer = props => {
                                 <Button
                                     onClick={ props.open }
                                     className="attachment__enlarge"
-                                    aria-label="Enlarge image attachment"
                                 >
                                     <img
-                                        src={ image.small.url }
                                         ref={ props.ref }
+                                        src={ image.small.url }
+                                        alt={ attachments[index].alt }
                                     />
                                 </Button>
                                 <div className="attachment__actions">
