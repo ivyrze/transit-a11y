@@ -11,6 +11,7 @@ export const clean = async (agencies, stops, routes) => {
     
     return [
         prisma.geometry.deleteMany(),
+        prisma.routeDirectionStop.deleteMany(),
         prisma.routeDirectionBranch.deleteMany(),
         prisma.routeDirectionSegment.deleteMany(),
         prisma.routeDirection.deleteMany(),
