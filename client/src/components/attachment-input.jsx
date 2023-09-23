@@ -22,7 +22,8 @@ export const AttachmentInput = props => {
     
     const { getRootProps, getInputProps } = useDropzone({
         accept: {
-            'image/jpeg': []
+            'image/jpeg': [],
+            'image/heic': []
         },
         onDrop: acceptedFiles => {
             setFiles(name, acceptedFiles.map(file => Object.assign(file, {

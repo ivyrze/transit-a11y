@@ -4,6 +4,7 @@ import promiseRouter from 'express-promise-router';
 import httpErrors from 'http-errors';
 import multer from 'multer';
 import sharp from 'sharp';
+import heicConvert from 'heic-convert';
 import { randomUUID } from 'crypto';
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 import * as tiles from './map-tiles.js';
@@ -76,7 +77,12 @@ const proxies = [
         quality: 'large',
         height: 2000
     }
-]
+];
+
+const formats = {
+    jpeg: 'image/jpeg',
+    heif: 'image/heic'
+};
 
 router.post('/', upload.array('attachments', 3), validator.checkSchema(schema), async (req, res, next) => {
     // Check incoming parameters
@@ -85,8 +91,20 @@ router.post('/', upload.array('attachments', 3), validator.checkSchema(schema), 
         res.status(new httpErrors.BadRequest().status).json({ errors: errors.mapped() }); return;
     }
     
-    if (req.files?.some(file => file.mimetype != "image/jpeg")) {
-        res.status(new httpErrors.BadRequest().status).json({ errors: { attachments: 'Images must be .jpg files' }}); return;
+    const hasInvalidImageFormat = async files => {
+        const promises = await Promise.allSettled(files.map(async file => {
+            const metadata = await sharp(file.buffer).metadata();
+            
+            if (!Object.keys(formats).includes(metadata.format)) {
+                return Promise.reject(); 
+            }
+        }));
+        
+        return promises.every(promise => promise.status !== "fulfilled");
+    };
+    
+    if (await hasInvalidImageFormat(req.files)) {
+        res.status(new httpErrors.BadRequest().status).json({ errors: { attachments: 'Images must be .jpeg or .heic files' }}); return;
     }
     
     if (!req.session.user) {
@@ -122,15 +140,23 @@ router.post('/', upload.array('attachments', 3), validator.checkSchema(schema), 
         const id = randomUUID();
         const alt = attachmentsAlt?.[file.originalname];
         
+        const { format: originalFormat } = await sharp(file.buffer).metadata();
+        const processableOriginal = (originalFormat == 'heif') ?
+            await heicConvert({
+                buffer: file.buffer,
+                format: 'png'.toUpperCase()
+            }) : file.buffer;
+        
         const sizes = await Promise.all(proxies.map(async proxy => {
             // Create resized proxy file, factoring in EXIF rotation
-            let image = (proxy.quality != 'original') ?
-                await sharp(file.buffer)
+            const image = (proxy.quality != 'original') ?
+                await sharp(processableOriginal)
                     .rotate()
                     .resize({
                         height: proxy.height,
                         fit: 'inside'
                     })
+                    .toFormat('jpeg')
                     .toBuffer({
                         quality: 85,
                         progressive: true,
@@ -138,17 +164,20 @@ router.post('/', upload.array('attachments', 3), validator.checkSchema(schema), 
                     }) :
                 file.buffer;
             
+            const metadata = await sharp(image).metadata();
+            const extension = formats[
+                (proxy.quality == 'original') ? originalFormat : metadata.format
+            ].split('/')[1];
+            
             // Upload proxy file
             const command = new PutObjectCommand({
-                Key: proxy.quality + '/' + id + '.' + file.mimetype.split('/')[1],
+                Key: proxy.quality + '/' + id + '.' + extension,
                 Bucket: process.env.AWS_BUCKET_NAME,
                 Body: image
             });
             await client.send(command);
             
             // Prepare database object
-            const metadata = await sharp(image).metadata();
-            
             return {
                 quality: proxy.quality,
                 width: metadata.width,
@@ -157,7 +186,7 @@ router.post('/', upload.array('attachments', 3), validator.checkSchema(schema), 
         }));
         
         return {
-            id, type: file.mimetype, sizes, ...(alt?.length && { alt })
+            id, type: formats[originalFormat], sizes, ...(alt?.length && { alt })
         };
     }));
     

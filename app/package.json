@@ -20,6 +20,7 @@
     "express-session": "^1.17.3",
     "express-validator": "^7.0.1",
     "geojson-vt": "^3.2.1",
+    "heic-convert": "^1.2.4",
     "helmet": "^7.0.0",
     "http-errors": "^2.0.0",
     "morgan": "^1.10.0",
@@ -32,7 +33,8 @@
   },
   "nodemonConfig": {
     "watch": [
-      "./", "../common"
+      "./",
+      "../common"
     ]
   }
 }

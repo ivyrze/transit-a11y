@@ -25,7 +25,7 @@ export const prisma = new PrismaClient().$extends({
             filename: {
                 needs: { id: true, type: true },
                 compute: attachment => {
-                    return attachment.id + '.' + attachment.type.split('/')[1];
+                    return attachment.id + '.jpeg';
                 }
             }
         },
@@ -118,19 +118,23 @@ export const prisma = new PrismaClient().$extends({
         },
         reviewAttachment: {
             cleanupAndDelete: async id => {
-                const { filename } = await prisma.reviewAttachment.findUnique({
-                    select: { filename: true },
+                const { filename, type } = await prisma.reviewAttachment.findUnique({
+                    select: { filename: true, type: true },
                     where: { id }
                 });
+                const originalExtension = type.split('/')[1];
                 
                 const client = new S3Client();
-                const qualities = [ 'original', 'large', 'small' ];
-                await Promise.all(qualities.map(quality => {
+                const qualities = [ 'large', 'small' ];
+                await Promise.all([ ...qualities.map(quality => {
                     return client.send(new DeleteObjectCommand({
                         Key: quality + '/' + filename,
                         Bucket: process.env.AWS_BUCKET_NAME
                     }));
-                }))
+                }), client.send(new DeleteObjectCommand({
+                    Key: 'original/' + filename.split('.')[0] + '.' + originalExtension,
+                    Bucket: process.env.AWS_BUCKET_NAME
+                })) ]);
                 
                 await prisma.reviewAttachment.delete({ where: { id } });
             }
