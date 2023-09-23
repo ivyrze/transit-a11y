@@ -29,22 +29,25 @@ router.post('/', validator.checkSchema(schema), async (req, res, next) => {
             number: true,
             color: true,
             directions: {
-                include: { segments: {
-                    include: { branches: {
-                        include: { stops: {
-                            include: { stop: {
-                                select: {
-                                    id: true,
-                                    name: true,
-                                    accessibility: true
-                                },
-                            } },
-                            orderBy: {
-                                order: 'asc'
-                            }
+                select: {
+                    heading: true,
+                    segments: {
+                        select: { branches: {
+                            select: { stops: {
+                                select: { stop: {
+                                    select: {
+                                        id: true,
+                                        name: true,
+                                        accessibility: true
+                                    },
+                                } },
+                                orderBy: {
+                                    order: 'asc'
+                                }
+                            } }
                         } }
-                    } }
-                } }
+                    }
+                }
             },
             agencyId: true
         }, where: {

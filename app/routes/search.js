@@ -49,10 +49,10 @@ router.post('/', validator.checkSchema(schema), async (req, res, next) => {
             id: true,
             name: true,
             routeBranches: {
-                include: { branch: {
-                    include: { segment: {
-                        include: { direction: {
-                            include: { route: {
+                select: { branch: {
+                    select: { segment: {
+                        select: { direction: {
+                            select: { route: {
                                 select: {
                                     id: true,
                                     number: true,
