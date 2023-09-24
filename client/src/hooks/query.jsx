@@ -29,7 +29,10 @@ export const useBaseQuery = (swr, key, options) => {
 };
 
 export const queryHelper = (options, setErrorStatus) => {
-    return axios(options).catch(error => {
+    return axios({
+        withCredentials: true,
+        ...options
+    }).catch(error => {
         setErrorStatus({
             status: error.request.status,
             message: error.request.statusText

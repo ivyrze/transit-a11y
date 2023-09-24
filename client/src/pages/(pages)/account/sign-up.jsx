@@ -1,6 +1,7 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '@hooks/auth';
 import { FormWrapper } from '@components/form-wrapper';
 import { FormSubmit } from '@components/form-submit';
 import { FormError } from '@components/form-error';
@@ -8,8 +9,13 @@ import { FormLabel, FormInput } from '@ariakit/react';
 
 export const SignUpPage = () => {
     const navigate = useNavigate();
+    const { authRedirect, mutateAuth, setAuthRedirect } = useAuth();
     
-    const handleFormResponse = () => navigate('/');
+    const handleFormResponse = response => {
+        navigate(authRedirect ?? '/');
+        mutateAuth(response);
+        setAuthRedirect();
+    };
     
     return (
         <main className="form-fullscreen">

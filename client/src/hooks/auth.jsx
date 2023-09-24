@@ -8,7 +8,7 @@ export const AuthProvider = ({ children }) => {
         method: 'get',
         url: '/api/check-auth'
     }, {
-        refreshInterval: 30**2 * 1000,
+        refreshInterval: 60**2 * 1000,
         revalidateOnFocus: false
     });
     

@@ -1,12 +1,12 @@
 import dotenv from 'dotenv';
 import express from 'express';
-import session from 'express-session';
 import promiseRouter from 'express-promise-router';
 import morgan from 'morgan';
 import helmet from 'helmet';
 import path from 'path';
-import crypto from 'crypto';
 import compression from 'compression';
+import cookieParser from 'cookie-parser';
+import jwt from 'jsonwebtoken';
 
 import { router as attachmentRouter } from './routes/attachment.js';
 import { router as searchRouter } from './routes/search.js';
@@ -54,40 +54,59 @@ if (process.env.NODE_ENV === 'production') {
     });
 }
 
-app.use(session({
-    cookie: {
-        secure: process.env.NODE_ENV === 'production',
-        maxAge: 1000 * 60**2 * 10
-    },
-    secret: crypto.randomBytes(64).toString('hex'),
-    saveUninitialized: false,
-    resave: false
-}));
+// API error handling
+const apiRouter = promiseRouter();
+app.use(apiRouter);
+
+apiRouter.use((error, req, res, next) => {
+    if (!error.status) {
+        // Unexpected error not thrown by input checking
+        throw error;
+        error.status = 500;
+    }
+    
+    res.status(error.status).json({ status: error.status });
+});
+
+// API authentication middleware
+apiRouter.use(cookieParser());
+apiRouter.use((req, res, next) => {
+    if (req.cookies.token) {
+        try {
+            req.user = jwt.verify(req.cookies.token, process.env.JWT_SECRET);
+        } catch {
+            res.clearCookie('token', { httpOnly: true });
+        }
+    }
+    
+    req.user ??= {};
+    next();
+});
 
 // Setup routes
-const router = promiseRouter();
-app.use(router);
-
-router.use('/api/attachment', attachmentRouter);
-router.use('/api/search', searchRouter);
-router.use('/api/stop-details', stopDetailsRouter);
-router.use('/api/route-details', routeDetailsRouter);
-router.use('/api/submit-review', submitReviewRouter);
-router.use('/api/edit-review', editReviewRouter);
-router.use('/api/delete-review', deleteReviewRouter);
-router.use('/api/map-bounds', mapBoundsRouter);
-router.use('/api/map-tiles', mapTilesRouter);
-router.use('/api/check-auth', checkAuthRouter);
-router.use('/api/profile', profileRouter);
-router.use('/api/account/login', loginRouter);
-router.use('/api/account/logout', logoutRouter);
-router.use('/api/account/sign-up', signUpRouter);
+apiRouter.use('/api/attachment', attachmentRouter);
+apiRouter.use('/api/search', searchRouter);
+apiRouter.use('/api/stop-details', stopDetailsRouter);
+apiRouter.use('/api/route-details', routeDetailsRouter);
+apiRouter.use('/api/submit-review', submitReviewRouter);
+apiRouter.use('/api/edit-review', editReviewRouter);
+apiRouter.use('/api/delete-review', deleteReviewRouter);
+apiRouter.use('/api/map-bounds', mapBoundsRouter);
+apiRouter.use('/api/map-tiles', mapTilesRouter);
+apiRouter.use('/api/check-auth', checkAuthRouter);
+apiRouter.use('/api/profile', profileRouter);
+apiRouter.use('/api/account/login', loginRouter);
+apiRouter.use('/api/account/logout', logoutRouter);
+apiRouter.use('/api/account/sign-up', signUpRouter);
 
 // Setup production build caching
+const clientRouter = promiseRouter();
+app.use(clientRouter);
+
 const buildPath = path.resolve('..', 'client', 'dist');
 const indexPath = path.resolve(buildPath, 'index.html');
 
-router.use(express.static(buildPath, {
+clientRouter.use(express.static(buildPath, {
     maxAge: '1 year',
     setHeaders: (res, path) => {
         if (path === indexPath) {
@@ -96,23 +115,12 @@ router.use(express.static(buildPath, {
     }
 }));
 
-router.get('*', (req, res, next) => {
+clientRouter.get('*', (req, res, next) => {
     if (!req.originalUrl.startsWith('/api')) {
         res.sendFile(indexPath);
     } else {
         next();
     }
-});
-
-// API error handling
-router.use((error, req, res, next) => {
-    if (!error.status) {
-        // Unexpected error not thrown by input checking
-        throw error;
-        error.status = 500;
-    }
-    
-    res.status(error.status).json({ status: error.status });
 });
 
 // Handle database connection on exit

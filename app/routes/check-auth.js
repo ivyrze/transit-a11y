@@ -6,7 +6,7 @@ import { prisma } from '../../common/prisma/index.js';
 export const router = promiseRouter();
 
 router.get('/', async (req, res, next) => {
-    if (!req.session.user) {
+    if (!req.user.id) {
         res.json({}); return;
     }
     
@@ -16,7 +16,7 @@ router.get('/', async (req, res, next) => {
             admin: true
         },
         where: {
-            id: req.session.user
+            id: req.user.id
         }
     });
     

@@ -77,7 +77,7 @@ router.post('/', upload.array('attachments', 3), validator.checkSchema(schema), 
         res.status(new httpErrors.BadRequest().status).json({ errors: { attachments: 'Images must be .jpeg or .heic files' }}); return;
     }
     
-    if (!req.session.user) {
+    if (!req.user.id) {
         next(new httpErrors.Unauthorized()); return;
     }
     
@@ -96,7 +96,7 @@ router.post('/', upload.array('attachments', 3), validator.checkSchema(schema), 
         where: {
             AND: {
                 stopId: stop,
-                authorId: req.session.user
+                authorId: req.user.id
             }
         }
     });
@@ -120,7 +120,7 @@ router.post('/', upload.array('attachments', 3), validator.checkSchema(schema), 
             stop: { connect: { id: stop } },
             accessibility,
             ...(features && { tags: Object.keys(features) }),
-            author: { connect: { id: req.session.user } },
+            author: { connect: { id: req.user.id } },
             ...(attachments.length && { attachments: { create: attachments } }),
             ...(comments && { comments })
         }

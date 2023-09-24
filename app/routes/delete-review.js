@@ -21,7 +21,7 @@ router.post('/', validator.checkSchema(schema), async (req, res, next) => {
         res.status(new httpErrors.BadRequest().status).json({ errors: errors.mapped() }); return;
     }
     
-    if (!req.session.user) {
+    if (!req.user.id) {
         next(new httpErrors.Unauthorized()); return;
     }
     
@@ -46,13 +46,13 @@ router.post('/', validator.checkSchema(schema), async (req, res, next) => {
     }
     
     // Allow reviews to be deleted by their author or by admins
-    if (review.authorId != req.session.user) {
+    if (review.authorId != req.user.id) {
         const { admin } = await prisma.user.findUnique({
             select: {
                 admin: true
             },
             where: {
-                id: req.session.user
+                id: req.user.id
             }
         });
         

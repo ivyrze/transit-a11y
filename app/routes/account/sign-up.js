@@ -2,6 +2,7 @@ import express from 'express';
 import validator from 'express-validator';
 import promiseRouter from 'express-promise-router';
 import httpErrors from 'http-errors';
+import jwt from 'jsonwebtoken';
 import { prisma } from '../../../common/prisma/index.js';
 import { errorFormatter } from '../../../common/utils.js';
 
@@ -53,8 +54,16 @@ router.post('/', validator.checkSchema(schema), async (req, res, next) => {
     });
     
     // Automatically log the user in
-    req.session.user = user.id;
-    req.session.save();
+    const token = jwt.sign({
+        id: user.id
+    }, process.env.JWT_SECRET, {
+        expiresIn: '8h'
+    });
     
-    res.json({});
+    res.cookie('token', token, {
+        maxAge: 8 * 60**2 * 1000,
+        httpOnly: true
+    });
+    
+    res.json({ username, admin: false });
 });

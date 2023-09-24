@@ -8,7 +8,7 @@ import { useAuth } from '@hooks/auth';
 export const LogoutPage = () => {
     const { mutateAuth } = useAuth();
     
-    useImmutableQuery({
+    const { isValidating } = useImmutableQuery({
         method: 'get',
         url: '/api/account/logout'
     }, {
@@ -16,8 +16,10 @@ export const LogoutPage = () => {
     });
     
     useEffect(() => {
-        mutateAuth({});
-    }, []);
+        if (!isValidating) {
+            mutateAuth({});
+        }
+    }, [ isValidating ]);
     
     return (
         <main className="notice-fullscreen">
