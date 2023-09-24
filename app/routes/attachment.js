@@ -2,7 +2,7 @@ import express from 'express';
 import validator from 'express-validator';
 import promiseRouter from 'express-promise-router';
 import httpErrors from 'http-errors';
-import { S3Client, GetObjectCommand } from '@aws-sdk/client-s3';
+import { prisma } from '../../common/prisma/index.js';
 
 export const router = promiseRouter();
 
@@ -21,8 +21,6 @@ const schema = {
     }
 };
 
-const client = new S3Client();
-
 router.get('/:quality/:filename', validator.checkSchema(schema), async (req, res, next) => {
     // Check incoming parameters
     const errors = validator.validationResult(req);
@@ -34,10 +32,7 @@ router.get('/:quality/:filename', validator.checkSchema(schema), async (req, res
     
     // Proxy image request to S3 bucket
     try {
-        const response = await client.send(new GetObjectCommand({
-            Key: quality + '/' + filename,
-            Bucket: process.env.AWS_BUCKET_NAME
-        }));
+        const response = await prisma.reviewAttachment.downloadFile(quality, filename);
         response.Body.pipe(res);
     } catch {
         next(new httpErrors.NotFound()); return;

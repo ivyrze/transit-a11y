@@ -2,7 +2,6 @@ import express from 'express';
 import validator from 'express-validator';
 import promiseRouter from 'express-promise-router';
 import httpErrors from 'http-errors';
-import bcrypt from 'bcryptjs';
 import { prisma } from '../../../common/prisma/index.js';
 import { errorFormatter } from '../../../common/utils.js';
 
@@ -28,11 +27,10 @@ router.post('/', validator.checkSchema(schema), async (req, res, next) => {
     
     const { username, password } = validator.matchedData(req);
     
-    // Get hashed password from the database
+    // Get user info to be used in the session object
     const user = await prisma.user.findUnique({
         select: {
             id: true,
-            password: true,
             admin: true
         },
         where: {
@@ -40,7 +38,7 @@ router.post('/', validator.checkSchema(schema), async (req, res, next) => {
         }
     });
     
-    if (!user || !bcrypt.compareSync(password, user.password)) {
+    if (!user || !await prisma.user.verifyPassword(username, password)) {
         // User doesn't exist or password doesn't match hash
         res.json({ errors: { password: 'Invalid username or password' } }); return;
     }

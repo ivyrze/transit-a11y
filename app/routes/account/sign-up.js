@@ -48,8 +48,9 @@ router.post('/', validator.checkSchema(schema), async (req, res, next) => {
     }
     
     // Create user object
-    const hash = bcrypt.hashSync(password);
-    const user = await prisma.user.create({ email, username, password: hash });
+    const user = await prisma.user.create({
+        email, username, password: await prisma.user.hashPassword(password)
+    });
     
     // Automatically log the user in
     req.session.user = user.id;
