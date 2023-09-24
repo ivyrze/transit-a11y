@@ -45,13 +45,6 @@ export const accessibilityStates = new Map([
         }
     ],
     [
-        "service-alert",
-        {
-            "group": "temporary-inaccessible",
-            "unreviewable": true
-        }
-    ],
-    [
         "construction",
         {
             "group": "temporary-inaccessible"
@@ -85,13 +78,6 @@ export const accessibilityStates = new Map([
         "other-complicated",
         {
             "group": "complicated"
-        }
-    ],
-    [
-        "inaccessible",
-        {
-            "group": "inaccessible",
-            "unreviewable": true
         }
     ],
     [
@@ -154,7 +140,7 @@ export const getStatePriority = state => {
     
     const statePriorities = [ ...accessibilityStates ].sort((a, b) => {
         return (groupPriorities.findIndex(c => c === a[1].group) -
-            groupPriorities.findIndex(d => d === b[1].group));;
+            groupPriorities.findIndex(d => d === b[1].group));
     });
     
     return statePriorities.findIndex(priority => priority[0] === state);

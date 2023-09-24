@@ -69,9 +69,6 @@
             "heading": "Other – it's complicated",
             "description": "This stop may or may not be accessible depending on your individual circumstances. Refer to the reviews below for more information."
         },
-        "inaccessible": {
-            "description": "This stop has significant access barriers and is not equipped with alternative entryways."
-        },
         "no-sign": {
             "heading": "Missing bus stop sign and infrastructure",
             "description": "This stop doesn't have a sign or any other obvious indication that a bus should stop at this location."
