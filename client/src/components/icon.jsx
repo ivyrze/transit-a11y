@@ -1,6 +1,6 @@
 import React from 'react';
 import cx from 'classnames';
-import { FaXmark, FaWheelchairMove, FaTriangleExclamation, FaExclamation, FaBan, FaQuestion } from 'react-icons/fa6';
+import { FaXmark, FaWheelchairMove, FaTriangleExclamation, FaExclamation, FaBan, FaQuestion, FaAsterisk } from 'react-icons/fa6';
 import { PiMagnifyingGlassBold, PiXBold, PiPlusCircleFill, PiArrowSquareOut, PiSmileySad, PiArrowLineRightFill, PiArrowLineUpFill, PiArrowLineDownFill, PiElevatorFill, PiEscalatorUpFill, PiChairFill, PiMonitorBold, PiFlameFill, PiCaretUp, PiCaretDown, PiCaretRight, PiDotsThreeBold, PiTrashSimpleFill, PiSignInBold, PiNavigationArrowBold, PiPathBold, PiPencilSimpleFill, PiHeartFill, PiBookOpenFill, PiCircleNotchBold, PiWarningCircleFill, PiCheckBold, PiUploadSimpleFill } from 'react-icons/pi';
 import { ReactComponent as IconRampEntrance } from '@assets/images/icon-ramp-entrance.svg';
 import { ReactComponent as IconShelter } from '@assets/images/icon-shelter.svg';
@@ -22,6 +22,7 @@ export const Icon = (props) => {
         warning: FaTriangleExclamation,
         inaccessible: FaBan,
         unknown: FaQuestion,
+        auxiliary: FaAsterisk,
         'at-grade': PiArrowLineRightFill,
         'above-grade': PiArrowLineUpFill,
         'below-grade': PiArrowLineDownFill,
@@ -56,6 +57,7 @@ export const Icon = (props) => {
         warning: FaExclamation,
         inaccessible: FaXmark,
         unknown: primaryIcons.unknown,
+        auxiliary: primaryIcons.auxiliary
     };
     
     const IconChild = !alt ? primaryIcons[name] : altIcons[name];

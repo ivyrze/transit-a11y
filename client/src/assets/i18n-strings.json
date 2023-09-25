@@ -34,7 +34,8 @@
         "accessible": "Likely accessible",
         "temporary-inaccessible": "Temporarily inaccessible",
         "complicated": "It's complicated",
-        "inaccessible": "Not accessible"
+        "inaccessible": "Not accessible",
+        "auxiliary": "Auxiliary information"
     },
     "accessibilityStates": {
         "unknown": {
@@ -100,6 +101,9 @@
         "other-inaccessible": {
             "heading": "Other – not accessible",
             "description": "This stop is not accessible. Refer to the reviews below for more information."
+        },
+        "auxiliary": {
+            "description": "There is only auxiliary data available for this stop. The reviews below may contain additional information."
         }
     },
     "tagLabels": {

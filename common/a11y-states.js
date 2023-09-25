@@ -28,6 +28,12 @@ export const accessibilityGroups = new Map([
         {
             "style": "inaccessible"
         }
+    ],
+    [
+        "auxiliary",
+        {
+            "style": "auxiliary"
+        }
     ]
 ]);
 
@@ -126,6 +132,12 @@ export const accessibilityStates = new Map([
         "other-inaccessible",
         {
             "group": "inaccessible"
+        }
+    ],
+    [
+        "auxiliary",
+        {
+            "group": "auxiliary"
         }
     ]
 ]);

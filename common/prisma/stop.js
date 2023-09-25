@@ -53,7 +53,8 @@ export const StopMethods = {
                 (a[1].priority - b[1].priority);
         });
         
-        const accessibility = states[0]?.[0] ?? 'unknown';
+        const accessibility = states[0]?.[0] ??
+            (reviews.length ? 'auxiliary' : 'unknown');
         
         // Mark any accessibility features that have over 75% consensus
         const frequencies = tags.reduce((result, current) => {

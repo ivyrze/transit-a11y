@@ -25,7 +25,7 @@ export const AccessibilitySelect = forwardRef(({
     
     const renderAccessibilityGroups = () => {
         return [ ...accessibilityGroups.keys() ]
-            .filter(group => group !== 'unknown')
+            .filter(group => group !== 'unknown' && group !== 'auxiliary')
             .map(group => {
                 const states = [ ...accessibilityStates ]
                     .filter(state => state[1].group === group)

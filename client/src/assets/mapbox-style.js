@@ -159,6 +159,8 @@ export const styleFactory = (theme, overriddenStopStyles) => {
                         ["feature-state", "style"],
                         ["get", "wheelchair_boarding"]
                     ],
+                    ["auxiliary"],
+                    isLight ? "#d38eff" : "#3a2248",
                     ["inaccessible"],
                     isLight ? "#ff7d7d" : "#361717",
                     ["warning"],
@@ -174,6 +176,8 @@ export const styleFactory = (theme, overriddenStopStyles) => {
                         ["feature-state", "style"],
                         ["get", "wheelchair_boarding"]
                     ],
+                    ["auxiliary"],
+                    isLight ? "#5d1d85" : "#e1b2ff",
                     ["inaccessible"],
                     isLight ? "#811616" : "#fdacac",
                     ["warning"],
