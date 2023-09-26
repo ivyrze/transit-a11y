@@ -1,4 +1,4 @@
-import React, { useState, useEffect, startTransition } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { SearchResults } from '@components/search-results';
 import { Button } from '@components/button';
@@ -26,6 +26,7 @@ export const Search = props => {
             query: searchText,
         }
     } : null, {
+        suspense: false,
         keepPreviousData: true,
         dataNoRevalidate: {
             longitude: cameraCoords?.longitude,
@@ -47,9 +48,7 @@ export const Search = props => {
         checkGeolocationPermissions();
     }, []);
     
-    const handleInput = event => startTransition(() => {
-        setSearchText(event.target.value);
-    });
+    const handleInput = event => setSearchText(event.target.value);
     
     const handleSubmit = event => {
         event.preventDefault();
@@ -58,7 +57,7 @@ export const Search = props => {
     
     const openStopAndClear = id => {
         navigate('/stop/' + id);
-        startTransition(() => { setSearchText('') });
+        setSearchText('');
     };
     
     return (
