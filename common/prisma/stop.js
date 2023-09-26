@@ -14,11 +14,16 @@ export const StopMethods = {
     consensus: async id => {
         let reviews = (await prisma.stop.findUnique({
             select: {
-                reviews: { select: {
-                    accessibility: true,
-                    tags: true,
-                    timestamp: true
-                } }
+                reviews: {
+                    select: {
+                        accessibility: true,
+                        tags: true,
+                        timestamp: true,
+                    },
+                    where: {
+                        archived: false
+                    }
+                }
             },
             where: {
                 id

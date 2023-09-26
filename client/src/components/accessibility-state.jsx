@@ -5,7 +5,7 @@ import i18n from '@assets/i18n-strings.json';
 import { accessibilityStates, accessibilityGroups } from '@common/a11y-states';
 
 export const AccessibilityState = props => {
-    const { state, className, showHeading = true, showIcon = true } = props;
+    const { state, className, showHeading = true, showIcon = true, archived = false } = props;
     
     const stateProps = accessibilityStates.get(state);
     const stateGroupProps = accessibilityGroups.get(stateProps.group);
@@ -16,11 +16,8 @@ export const AccessibilityState = props => {
     const iconAccessibleTitle = stateGroupProps.style.charAt(0).toUpperCase() +
         stateGroupProps.style.slice(1) + " state";
     
-    return (
-        <div className={ cx(
-            className,
-            "state-" + stateGroupProps.style
-        ) }>
+    const componentInner = (
+        <>
             { showIcon && (
                 <Icon
                     name={ stateGroupProps.style }
@@ -33,6 +30,15 @@ export const AccessibilityState = props => {
                 stateGroupStrings :
                 stateStrings.heading
             ) }
+        </>
+    );
+
+    return (
+        <div className={ cx(
+            className,
+            "state-" + stateGroupProps.style
+        ) }>
+            { !archived ? componentInner : <del>{ componentInner }</del> }
         </div>
     );
 };

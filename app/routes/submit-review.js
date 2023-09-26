@@ -88,23 +88,6 @@ router.post('/', upload.array('attachments', 3), validator.checkSchema(schema), 
         next(new httpErrors.NotFound()); return;
     }
     
-    // User has already made a review for this stop
-    const existing = await prisma.review.findFirst({
-        select: {
-            id: true
-        },
-        where: {
-            AND: {
-                stopId: stop,
-                authorId: req.user.id
-            }
-        }
-    });
-    
-    if (existing) {
-        await prisma.review.cleanupAndDelete(existing.id);
-    }
-    
     // Handle review attachments
     const attachments = await Promise.all(files.map(async file => {
         return prisma.reviewAttachment.uploadAndPrepareCreate(

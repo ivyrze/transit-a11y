@@ -81,35 +81,40 @@ export const Review = forwardRef((props, ref) => {
                         { details.stop.name }
                     </Link>
                 ) }
-                <TimeAgo
-                    className="review__timestamp"
-                    date={ details.timestamp }
-                    title=""
-                />
-                { showOptions && (
-                    <Menu>
-                        { allowEditing && (
+                <div className="review__actions">
+                    { review.archived && (
+                        <Icon name="archived" title="Archived review" />
+                    ) }
+                    <TimeAgo
+                        className="review__timestamp"
+                        date={ details.timestamp }
+                        title=""
+                    />
+                    { showOptions && (
+                        <Menu>
+                            { allowEditing && (
+                                <MenuItem render={
+                                    <Button
+                                        onClick={ startEditing }
+                                        className="menu__item"
+                                    >
+                                        <Icon name= "pencil" />
+                                        Edit
+                                    </Button>
+                                } />
+                            ) }
                             <MenuItem render={
                                 <Button
-                                    onClick={ startEditing }
+                                    onClick={ handleDelete }
                                     className="menu__item"
                                 >
-                                    <Icon name= "pencil" />
-                                    Edit
+                                    <Icon name="trash" />
+                                    Delete
                                 </Button>
                             } />
-                        ) }
-                        <MenuItem render={
-                            <Button
-                                onClick={ handleDelete }
-                                className="menu__item"
-                            >
-                                <Icon name="trash" />
-                                Delete
-                            </Button>
-                        } />
-                    </Menu>
-                ) }
+                        </Menu>
+                    ) }
+                </div>
             </div>
             { !editing ? (
                 <>
@@ -118,6 +123,7 @@ export const Review = forwardRef((props, ref) => {
                             className="review__accessibility-state"
                             state={ accessibility }
                             key={ accessibility }
+                            archived={ review.archived }
                         />
                     )) }
                     { details.comments && (

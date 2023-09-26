@@ -37,6 +37,7 @@ model Review {
   tags          String[]
   attachments   ReviewAttachment[]
   timestamp     DateTime           @default(now())
+  archived      Boolean            @default(false)
 }
 
 model ReviewAttachment {
