@@ -1,31 +1,19 @@
-import express from 'express';
-import validator from 'express-validator';
-import promiseRouter from 'express-promise-router';
-import httpErrors from 'http-errors';
-import * as tiles from './map-tiles.js';
+import { Hono } from 'hono';
+import { HTTPException } from 'hono/http-exception';
+import { z } from 'zod';
+import { validator } from '../middleware/validator.js'; 
 import { prisma } from '../../common/prisma/index.js';
-import { errorFormatter } from '../../common/utils.js';
+import * as tiles from './map-tiles.js';
 
-export const router = promiseRouter();
+const schema = z.object({
+    id: z.string()
+});
 
-const schema = {
-    id: {
-        in: 'body'
-    }
-};
+const router = new Hono();
 
-router.post('/', validator.checkSchema(schema), async (req, res, next) => {
-    // Check incoming parameters
-    const errors = validator.validationResult(req).formatWith(errorFormatter);
-    if (!errors.isEmpty()) {
-        res.status(new httpErrors.BadRequest().status).json({ errors: errors.mapped() }); return;
-    }
-    
-    if (!req.user.id) {
-        next(new httpErrors.Unauthorized()); return;
-    }
-    
-    const { id } = validator.matchedData(req);
+router.post('/', validator('json', schema), async c => {
+    const { id } = c.req.valid('json');
+    const auth = c.get('jwtPayload');
     
     // Verify that the review exists
     const review = await prisma.review.findUnique({
@@ -42,22 +30,22 @@ router.post('/', validator.checkSchema(schema), async (req, res, next) => {
     });
     
     if (!review) {
-        next(new httpErrors.NotFound()); return;
+        throw new HTTPException(404);
     }
     
     // Allow reviews to be deleted by their author or by admins
-    if (review.authorId != req.user.id) {
+    if (review.authorId != auth.id) {
         const { admin } = await prisma.user.findUnique({
             select: {
                 admin: true
             },
             where: {
-                id: req.user.id
+                id: auth.id
             }
         });
         
         if (!admin) {
-            next(new httpErrors.Unauthorized()); return;
+            throw new HTTPException(401);
         }
     }
     
@@ -66,5 +54,7 @@ router.post('/', validator.checkSchema(schema), async (req, res, next) => {
     const consensus = await prisma.stop.consensus(review.stopId);
     await tiles.invalidateSingle(review.stopId, consensus.accessibility);
     
-    res.json({});
+    return c.json({});
 });
+
+export default router;

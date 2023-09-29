@@ -19,8 +19,6 @@ export const attachExceptionHandler = func => {
     });
 };
 
-export const errorFormatter = ({ msg }) => msg;
-
 export const statePrioritySort = (a, b) => {
     return getStatePriority(a) - getStatePriority(b);
 };

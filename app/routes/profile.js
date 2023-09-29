@@ -1,31 +1,18 @@
-import express from 'express';
-import validator from 'express-validator';
-import promiseRouter from 'express-promise-router';
-import httpErrors from 'http-errors';
+import { Hono } from 'hono';
+import { HTTPException } from 'hono/http-exception';
+import { z } from 'zod';
+import { validator } from '../middleware/validator.js'; 
 import { prisma } from '../../common/prisma/index.js';
 
-export const router = promiseRouter();
+const schema = z.object({
+    username: z.string(),
+    page: z.number().gte(1)
+});
 
-const schema = {
-    username: {
-        in: 'body'
-    },
-    page: {
-        in: 'body',
-        isInt: { options: {
-            min: 1
-        } }
-    }
-};
+const router = new Hono();
 
-router.post('/', validator.checkSchema(schema), async (req, res, next) => {
-    // Check incoming parameters
-    const errors = validator.validationResult(req);
-    if (!errors.isEmpty()) {
-        next(new httpErrors.BadRequest()); return;
-    }
-    
-    const { username, page } = validator.matchedData(req);
+router.post('/', validator('json', schema), async c => {
+    const { username, page } = c.req.valid('json');
     
     const reviewsPerPage = 25;
     
@@ -73,8 +60,10 @@ router.post('/', validator.checkSchema(schema), async (req, res, next) => {
     
     // Check outgoing data
     if (!details) {
-        next(new httpErrors.NotFound()); return;
+        throw new HTTPException(404);
     }
     
-    res.json(details);
+    return c.json(details);
 });
+
+export default router;

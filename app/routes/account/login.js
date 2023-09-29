@@ -1,32 +1,19 @@
-import express from 'express';
-import validator from 'express-validator';
-import promiseRouter from 'express-promise-router';
-import httpErrors from 'http-errors';
-import jwt from 'jsonwebtoken';
+import { Hono } from 'hono';
+import { z } from 'zod';
+import { validator } from '../../middleware/validator.js';
 import { prisma } from '../../../common/prisma/index.js';
-import { errorFormatter } from '../../../common/utils.js';
+import { sign } from 'hono/jwt';
+import { setCookie } from 'hono/cookie';
 
-export const router = promiseRouter();
+const schema = z.object({
+    username: z.string(),
+    password: z.string().min(10)
+});
 
-const schema = {
-    username: {
-        in: 'body',
-        isAlphanumeric: true
-    },
-    password: {
-        in: 'body',
-        isEmpty: { negated: true }
-    }
-};
+const router = new Hono();
 
-router.post('/', validator.checkSchema(schema), async (req, res, next) => {
-    // Check incoming parameters
-    const errors = validator.validationResult(req).formatWith(errorFormatter);
-    if (!errors.isEmpty()) {
-        res.status(new httpErrors.BadRequest().status).json({ errors: errors.mapped() }); return;
-    }
-    
-    const { username, password } = validator.matchedData(req);
+router.post('/', validator('form', schema), async c => {
+    const { username, password } = c.req.valid('form');
     
     // Get user info to be used in the session object
     const user = await prisma.user.findUnique({
@@ -41,20 +28,26 @@ router.post('/', validator.checkSchema(schema), async (req, res, next) => {
     
     if (!user || !await prisma.user.verifyPassword(username, password)) {
         // User doesn't exist or password doesn't match hash
-        res.json({ errors: { password: 'Invalid username or password' } }); return;
+        c.status(400);
+        return c.json({ errors: { password: 'Invalid username or password' } });
     }
     
     // Successfully validated credentials, now create JWT
-    const token = jwt.sign({
+    const token = await sign({
         id: user.id
-    }, process.env.JWT_SECRET, {
-        expiresIn: '8h'
+    }, process.env.JWT_SECRET);
+    
+    const tokenLifetime = 8 * 60**2 * 1000;
+    const expirationDate = new Date(new Date().getTime() + tokenLifetime);
+
+    setCookie(c, 'token', token, {
+        maxAge: tokenLifetime,
+        expires: expirationDate,
+        httpOnly: true,
+        path: '/'
     });
     
-    res.cookie('token', token, {
-        maxAge: 8 * 60**2 * 1000,
-        httpOnly: true
-    });
-    
-    res.json({ username, admin: user.admin });
+    return c.json({ username, admin: user.admin });
 });
+
+export default router;

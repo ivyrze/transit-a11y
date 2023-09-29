@@ -1,9 +1,14 @@
-import express from 'express';
-import promiseRouter from 'express-promise-router';
+import { Hono } from 'hono';
+import { deleteCookie } from 'hono/cookie';
 
-export const router = promiseRouter();
+const router = new Hono();
 
-router.get('/', async (req, res, next) => {
-    res.clearCookie('token', { httpOnly: true });
-    res.json({});
+router.get('/', async c => {
+    deleteCookie(c, 'token', {
+        path: '/'
+    });
+    
+    return c.json({});
 });
+
+export default router;

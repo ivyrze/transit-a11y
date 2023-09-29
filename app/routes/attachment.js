@@ -1,40 +1,29 @@
-import express from 'express';
-import validator from 'express-validator';
-import promiseRouter from 'express-promise-router';
-import httpErrors from 'http-errors';
+import { Hono } from 'hono';
+import { HTTPException } from 'hono/http-exception';
+import { z } from 'zod';
+import { validator } from '../middleware/validator.js'; 
 import { prisma } from '../../common/prisma/index.js';
 
-export const router = promiseRouter();
+const schema = z.object({
+    quality: z.enum([ "original", "large", "small" ]),
+    filename: z.string().includes('.')
+});
 
-const schema = {
-    quality: {
-        in: 'params',
-        isIn: { options: [[
-            'original',
-            'large',
-            'small'
-        ]] }
-    },
-    filename: {
-        in: 'params',
-        contains: { options: '.' }
-    }
-};
+const router = new Hono();
 
-router.get('/:quality/:filename', validator.checkSchema(schema), async (req, res, next) => {
-    // Check incoming parameters
-    const errors = validator.validationResult(req);
-    if (!errors.isEmpty()) {
-        next(new httpErrors.BadRequest()); return;
-    }
-    
-    const { quality, filename } = validator.matchedData(req);
+router.get('/:quality/:filename', validator('param', schema), async c => {
+    const { quality, filename } = c.req.valid('param');
     
     // Proxy image request to S3 bucket
     try {
-        const response = await prisma.reviewAttachment.downloadFile(quality, filename);
-        response.Body.pipe(res);
+        const file = await prisma.reviewAttachment.downloadFile(quality, filename);
+
+        return c.stream(async stream => {
+            await stream.pipe(file.Body.transformToWebStream());
+        });
     } catch {
-        next(new httpErrors.NotFound()); return;
+        throw new HTTPException(404);
     }
 });
+
+export default router;

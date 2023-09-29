@@ -1,36 +1,18 @@
-import express from 'express';
-import validator from 'express-validator';
-import promiseRouter from 'express-promise-router';
-import httpErrors from 'http-errors';
+import { Hono } from 'hono';
+import { z } from 'zod';
+import { validator } from '../middleware/validator.js'; 
 import { prisma } from '../../common/prisma/index.js';
 
-export const router = promiseRouter();
+const schema = z.object({
+    query: z.string(),
+    longitude: z.coerce.number(),
+    latitude: z.coerce.number()
+});
 
-const schema = {
-    query: {
-        in: 'body',
-        isEmpty: { negated: true }
-    },
-    longitude: {
-        in: 'body',
-        isFloat: true,
-        toFloat: true
-    },
-    latitude: {
-        in: 'body',
-        isFloat: true,
-        toFloat: true
-    }
-};
+const router = new Hono();
 
-router.post('/', validator.checkSchema(schema), async (req, res, next) => {
-    // Check incoming parameters
-    const errors = validator.validationResult(req);
-    if (!errors.isEmpty()) {
-        next(new httpErrors.BadRequest()); return;
-    }
-    
-    const { query, longitude, latitude } = validator.matchedData(req);
+router.post('/', validator('json', schema), async c => {
+    const { query, longitude, latitude } = c.req.valid('json');
     
     const wildcardQuery = query.trim().split(" ").map(word => "%" + word + "%").join(" ");
     
@@ -87,5 +69,7 @@ router.post('/', validator.checkSchema(schema), async (req, res, next) => {
         return result;
     });
     
-    res.json({ results });
+    return c.json({ results });
 });
+
+export default router;

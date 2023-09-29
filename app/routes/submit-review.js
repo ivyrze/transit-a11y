@@ -1,97 +1,53 @@
-import express from 'express';
-import validator from 'express-validator';
-import promiseRouter from 'express-promise-router';
-import httpErrors from 'http-errors';
-import multer from 'multer';
-import * as tiles from './map-tiles.js';
+import { Hono } from 'hono';
+import { HTTPException } from 'hono/http-exception';
+import { z } from 'zod';
+import { validator } from '../middleware/validator.js';
 import { prisma } from '../../common/prisma/index.js';
+import * as tiles from './map-tiles.js';
 import { accessibilityStates } from '../../common/a11y-states.js';
-import { errorFormatter, statePrioritySort } from '../../common/utils.js';
+import { statePrioritySort } from '../../common/utils.js';
 
-export const router = promiseRouter();
-
-const schema = {
-    stop: {
-        in: 'body',
-        contains: { options: '-' }
-    },
-    'features.bench': {
-        in: 'body',
-        optional: true
-    },
-    'features.shelter': {
-        in: 'body',
-        optional: true
-    },
-    'features.display': {
-        in: 'body',
-        optional: true
-    },
-    'features.heating': {
-        in: 'body',
-        optional: true
-    },
-    accessibility: {
-        in: 'body',
-        toArray: true,
-        customSanitizer: { options: value => {
-            return value.length ? value : [ 'unknown' ]
-        } }
-    },
-    'accessibility.*': {
-        in: 'body',
-        isIn: { options: [
-            [ ...accessibilityStates.keys() ]
-                .filter(state => !state.unreviewable)
-        ] }
-    },
-    comments: {
-        in: 'body',
-        trim: true,
-        optional: { checkFalsy: true }
-    },
-    'attachmentsAlt': {
-        in: 'body',
-        optional: true
-    }
-};
-
-const upload = multer({
-    storage: multer.memoryStorage()
+const schema = z.object({
+    stop: z.string().includes('-'),
+    features: z.array(z.enum(
+        [ 'bench', 'shelter', 'display', 'heating' ]
+    )).optional(),
+    accessibility: z.array(z.enum(
+        [ ...accessibilityStates.keys() ]
+            .filter(state => !state.unreviewable)
+    )).default([ 'unknown' ]),
+    comments: z.string().trim().optional(),
+    attachmentsAlt: z.array(z.string()).optional()
 });
 
-router.post('/', upload.array('attachments', 3), validator.checkSchema(schema), async (req, res, next) => {
-    // Check incoming parameters
-    const errors = validator.validationResult(req).formatWith(errorFormatter);
-    if (!errors.isEmpty()) {
-        res.status(new httpErrors.BadRequest().status).json({ errors: errors.mapped() }); return;
-    }
+const router = new Hono();
+
+router.post('/', validator('form', schema), async c => {
+    const { stop, comments, attachmentsAlt } = c.req.valid('form');
+    const { 'features[]': features, 'accessibility[]': accessibility = [ 'unknown' ] } = await c.req.parseBody();
+    const auth = c.get('jwtPayload');
+
+    const form = await c.req.formData();
+    const files = form.getAll('attachments');
     
-    const files = req?.files ?? [];
-    
-    const validity = await Promise.all(files.map(file => {
-        return prisma.reviewAttachment.isValidFormat(file.buffer);
+    const validity = await Promise.all(files.map(async file => {
+        return await prisma.reviewAttachment.isValidFormat(await file.arrayBuffer());
     }));
     
     if (validity.includes(false)) {
-        res.status(new httpErrors.BadRequest().status).json({ errors: { attachments: 'Images must be .jpeg or .heic files' }}); return;
+        c.status(400);
+        return c.json({ errors: { attachments: 'Images must be .jpeg or .heic files' }});
     }
-    
-    if (!req.user.id) {
-        next(new httpErrors.Unauthorized()); return;
-    }
-    
-    const { stop, features, accessibility, comments, attachmentsAlt } = validator.matchedData(req);
     
     // Verify that the stop exists
     if (!await prisma.stop.findUnique({ where: { id: stop }})) {
-        next(new httpErrors.NotFound()); return;
+        throw new HTTPException(404);
     }
     
     // Handle review attachments
     const attachments = await Promise.all(files.map(async file => {
-        return prisma.reviewAttachment.uploadAndPrepareCreate(
-            file.buffer, attachmentsAlt?.[file.originalname]
+        return await prisma.reviewAttachment.uploadAndPrepareCreate(
+            await file.arrayBuffer(), attachmentsAlt?.[file.name]
         );
     }));
     
@@ -102,8 +58,8 @@ router.post('/', upload.array('attachments', 3), validator.checkSchema(schema), 
         data: {
             stop: { connect: { id: stop } },
             accessibility,
-            ...(features && { tags: Object.keys(features) }),
-            author: { connect: { id: req.user.id } },
+            ...(features && { tags: features }),
+            author: { connect: { id: auth.id } },
             ...(attachments.length && { attachments: { create: attachments } }),
             ...(comments && { comments })
         }
@@ -112,5 +68,7 @@ router.post('/', upload.array('attachments', 3), validator.checkSchema(schema), 
     const consensus = await prisma.stop.consensus(stop);
     await tiles.invalidateSingle(stop, consensus.accessibility);
     
-    res.json({ accessibility: consensus.accessibility });
+    return c.json({ accessibility: consensus.accessibility });
 });
+
+export default router;

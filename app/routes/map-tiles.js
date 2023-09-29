@@ -1,56 +1,39 @@
 import vtPbf from 'vt-pbf';
 import geojsonVt from 'geojson-vt';
-import express from 'express';
-import validator from 'express-validator';
-import promiseRouter from 'express-promise-router';
-import httpErrors from 'http-errors';
+import { Hono } from 'hono';
+import { z } from 'zod';
+import { validator } from '../middleware/validator.js'; 
 import { prisma } from '../../common/prisma/index.js';
 import { getStateGroup } from '../../common/a11y-states.js';
 
-export const router = promiseRouter();
+const schema = z.object({
+    z: z.coerce.number(),
+    x: z.coerce.number(),
+    y: z.coerce.number()
+});
 
-const schema = {
-    z: {
-        in: 'params',
-        isInt: true,
-        toInt: true
-    },
-    x: {
-        in: 'params',
-        isInt: true,
-        toInt: true
-    },
-    y: {
-        in: 'params',
-        isInt: true,
-        toInt: true
-    }
-};
+const router = new Hono();
 
-router.get('/:z/:x/:y', validator.checkSchema(schema), async (req, res, next) => {
-    // Check incoming parameters
-    const errors = validator.validationResult(req);
-    if (!errors.isEmpty()) {
-        next(new httpErrors.BadRequest()); return;
-    }
-    
-    const { z, x, y } = validator.matchedData(req);
+router.get('/:z/:x/:y', validator('param', schema), async c => {
+    const { z, x, y } = c.req.valid('param');
     
     // Generate binary data from the indexed geometry layers
     var tiles = {};
     Object.keys(indicies).forEach(layer => {
         tiles[layer] = indicies[layer].getTile(z, x, y);
     });
+    c.header('Content-Type', 'application/octet-stream');
     
     if (!Object.values(tiles).includes(null)) {
         const buffer = vtPbf.fromGeojsonVt(tiles, { version: 2, maxZoom: 16 });
-        
-        res.write(buffer, 'binary');
-        res.end(null, 'binary');
+
+        return c.body(buffer.buffer);
     } else {
-        res.send();
+        return c.body();
     }
 });
+
+export default router;
 
 var geometries = {};
 var indicies = {};

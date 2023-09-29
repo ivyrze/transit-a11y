@@ -1,13 +1,13 @@
-import express from 'express';
-import promiseRouter from 'express-promise-router';
-import httpErrors from 'http-errors';
+import { Hono } from 'hono';
+import { HTTPException } from 'hono/http-exception';
 import { prisma } from '../../common/prisma/index.js';
 
-export const router = promiseRouter();
+const router = new Hono();
 
-router.get('/', async (req, res, next) => {
-    if (!req.user.id) {
-        res.json({}); return;
+router.get('/', async c => {
+    const auth = c.get('jwtPayload');
+    if (!auth?.id) {
+        return c.json({});
     }
     
     const user = await prisma.user.findUnique({
@@ -16,13 +16,15 @@ router.get('/', async (req, res, next) => {
             admin: true
         },
         where: {
-            id: req.user.id
+            id: auth.id
         }
     });
     
     if (!user) {
-        next(new httpErrors.InternalServerError()); return;
+        throw new HTTPException(500);
     }
     
-    res.json({ username: user.username, admin: user.admin });
+    return c.json({ username: user.username, admin: user.admin });
 });
+
+export default router;

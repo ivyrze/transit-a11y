@@ -1,26 +1,17 @@
-import express from 'express';
-import validator from 'express-validator';
-import promiseRouter from 'express-promise-router';
-import httpErrors from 'http-errors';
+import { Hono } from 'hono';
+import { HTTPException } from 'hono/http-exception';
+import { z } from 'zod';
+import { validator } from '../middleware/validator.js'; 
 import { prisma } from '../../common/prisma/index.js';
 
-export const router = promiseRouter();
+const router = new Hono();
 
-const schema = {
-    id: {
-        in: 'body',
-        contains: { options: '-' }
-    }
-};
+const schema = z.object({
+    id: z.string().includes('-')
+});
 
-router.post('/', validator.checkSchema(schema), async (req, res, next) => {
-    // Check incoming parameters
-    const errors = validator.validationResult(req);
-    if (!errors.isEmpty()) {
-        next(new httpErrors.BadRequest()); return;
-    }
-    
-    const { id } = validator.matchedData(req);
+router.post('/', validator('json', schema), async c => {
+    const { id } = c.req.valid('json');
     
     // Run query and parse output
     const details = await prisma.stop.findUnique({
@@ -58,7 +49,7 @@ router.post('/', validator.checkSchema(schema), async (req, res, next) => {
     
     // Make sure that the stop exists
     if (!details) {
-        next(new httpErrors.NotFound()); return;
+        throw new HTTPException(404);
     }
     
     let [ longitude, latitude ] = details.coordinates;
@@ -77,7 +68,7 @@ router.post('/', validator.checkSchema(schema), async (req, res, next) => {
     delete details.agencyId;
     
     if (!details.agency) {
-        next(new httpErrors.NotFound()); return;
+        throw new HTTPException(404);
     }
     
     // Use stop-specific URL and fallback to agency-wide URL
@@ -86,5 +77,7 @@ router.post('/', validator.checkSchema(schema), async (req, res, next) => {
         delete details.url;
     }
     
-    res.json(details);
+    return c.json(details);
 });
+
+export default router;

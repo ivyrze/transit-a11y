@@ -1,51 +1,35 @@
-import express from 'express';
-import validator from 'express-validator';
-import promiseRouter from 'express-promise-router';
-import httpErrors from 'http-errors';
-import jwt from 'jsonwebtoken';
+import { Hono } from 'hono';
+import { z } from 'zod';
+import { validator } from '../../middleware/validator.js';
 import { prisma } from '../../../common/prisma/index.js';
-import { errorFormatter } from '../../../common/utils.js';
+import { sign } from 'hono/jwt';
+import { setCookie } from 'hono/cookie';
 
-export const router = promiseRouter();
+const schema = z.object({
+    invite: z.string(),
+    email: z.string().email(),
+    username: z.string(),
+    password: z.string().min(10)
+});
 
-const schema = {
-    invite: {
-        in: 'body',
-        isEmpty: { negated: true }
-    },
-    email: {
-        in: 'body',
-        isEmail: true
-    },
-    username: {
-        in: 'body',
-        isAlphanumeric: true
-    },
-    password: {
-        in: 'body',
-        isLength: { options: { min: 10 } }
-    }
-};
+const router = new Hono();
 
-router.post('/', validator.checkSchema(schema), async (req, res, next) => {
-    // Check incoming parameters
-    const errors = validator.validationResult(req).formatWith(errorFormatter);
-    if (!errors.isEmpty()) {
-        res.status(new httpErrors.BadRequest().status).json({ errors: errors.mapped() }); return;
-    }
-    
-    const { invite, email, username, password } = validator.matchedData(req);
+router.post('/', validator('form', schema), async c => {
+    const { invite, email, username, password } = c.req.valid('form');
     
     // Validate and use one-time invite code
     if (!await prisma.invite.delete({ where: { invite } })) {
-        res.json({ errors: { invite: 'Unrecognized invitation code' } }); return;
+        c.status(400);
+        return c.json({ errors: { invite: 'Unrecognized invitation code' } });
     }
     
     // Check that email and username aren't already in use
     if (await prisma.user.findUnique({ where: { username } })) {
-        res.json({ errors: { username: 'Username is already in use' } }); return;
+        c.status(400);
+        return c.json({ errors: { username: 'Username is already in use' } });
     } else if (await prisma.user.findUnique({ where: { email } })) {
-        res.json({ errors: { email: 'Email is already in use' } }); return;
+        c.status(400);
+        return c.json({ errors: { email: 'Email is already in use' } });
     }
     
     // Create user object
@@ -54,16 +38,16 @@ router.post('/', validator.checkSchema(schema), async (req, res, next) => {
     });
     
     // Automatically log the user in
-    const token = jwt.sign({
+    const token = await sign({
         id: user.id
-    }, process.env.JWT_SECRET, {
-        expiresIn: '8h'
-    });
+    }, process.env.JWT_SECRET);
     
-    res.cookie('token', token, {
+    setCookie(c, 'token', token, {
         maxAge: 8 * 60**2 * 1000,
         httpOnly: true
     });
     
-    res.json({ username, admin: false });
+    return c.json({ username, admin: false });
 });
+
+export default router;

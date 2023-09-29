@@ -24,9 +24,15 @@ export const ReviewFields = props => {
                             <li className="feature-option" key={ feature }>
                                 <FormInput
                                     type="checkbox"
-                                    name={ "features[" + feature + "]" }
+                                    id={ "feature-" + feature }
+                                    name="features[]"
+                                    value={ feature }
+                                    aria-describedby={ "feature-" + feature + "-label" }
                                 />
-                                <FormLabel name={ "features[" + feature + "]" }>
+                                <FormLabel
+                                    id={ "feature-" + feature + "-label" }
+                                    htmlFor={ "feature-" + feature }
+                                >
                                     <Icon name={ feature } />
                                     { i18n.tagLabels[feature] }
                                 </FormLabel>
@@ -40,11 +46,11 @@ export const ReviewFields = props => {
                     <legend>What's the accessibility state at this stop?</legend>
                 ) }
                 <FormInput
-                    name="accessibility"
+                    name="accessibility[]"
                     render={
                         <AccessibilitySelect
-                            setValue={ value => formStore.setValue("accessibility", value) }
-                            onTouch={ () => formStore.setFieldTouched("accessibility", true) }
+                            setValue={ value => formStore.setValue("accessibility[]", value) }
+                            onTouch={ () => formStore.setFieldTouched("accessibility[]", true) }
                         />
                     }
                 />

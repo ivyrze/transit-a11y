@@ -1,14 +1,21 @@
-import express from 'express';
-import promiseRouter from 'express-promise-router';
-import httpErrors from 'http-errors';
+import { Hono } from 'hono';
+import { HTTPException } from 'hono/http-exception';
+import { z } from 'zod';
+import { zValidator } from '@hono/zod-validator'; 
 import { prisma } from '../../common/prisma/index.js';
 
-export const router = promiseRouter();
+const schema = z.optional(
+    z.object({
+        agency: z.string()
+    })
+);
 
-router.post('/', async (req, res, next) => {
+const router = new Hono();
+
+router.post('/', async c => {
     // Get bounding box of requested or default agency
-    const query = req.body.agency ?
-        { id: req.body.agency } :
+    const query = c.req.valid('json')?.agency ?
+        { id: c.req.valid('json').agency } :
         { default: true };
     
     const bounds = (await prisma.agency.findFirst({
@@ -20,8 +27,10 @@ router.post('/', async (req, res, next) => {
     
     // Show a not found error for incorrect agency permalinks
     if (!bounds) {
-        next(new httpErrors.NotFound()); return;
+        throw new HTTPException(404);
     }
     
-    res.json({ bounds });
+    return c.json({ bounds });
 });
+
+export default router;
