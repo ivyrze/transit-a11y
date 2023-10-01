@@ -10,7 +10,7 @@
   "dependencies": {
     "@hono/node-server": "^1.2.0",
     "@hono/zod-validator": "^0.1.9",
-    "@prisma/client": "^5.3.0",
+    "@prisma/client": "^5.3.1",
     "dotenv": "^16.3.1",
     "geojson-vt": "^3.2.1",
     "heic-convert": "^1.2.4",

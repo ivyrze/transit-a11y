@@ -2,10 +2,10 @@ import React from 'react';
 import cx from 'classnames';
 import { FaXmark, FaWheelchairMove, FaTriangleExclamation, FaExclamation, FaBan, FaQuestion, FaAsterisk } from 'react-icons/fa6';
 import { PiMagnifyingGlassBold, PiXBold, PiPlusCircleFill, PiArrowSquareOut, PiSmileySad, PiArrowLineRightFill, PiArrowLineUpFill, PiArrowLineDownFill, PiElevatorFill, PiEscalatorUpFill, PiChairFill, PiMonitorBold, PiFlameFill, PiCaretUp, PiCaretDown, PiCaretRight, PiDotsThreeBold, PiTrashSimpleFill, PiSignInBold, PiNavigationArrowBold, PiPathBold, PiPencilSimpleFill, PiHeartFill, PiBookOpenFill, PiCircleNotchBold, PiWarningCircleFill, PiCheckBold, PiUploadSimpleFill, PiClockCounterClockwiseFill } from 'react-icons/pi';
-import { ReactComponent as IconRampEntrance } from '@assets/images/icon-ramp-entrance.svg';
-import { ReactComponent as IconShelter } from '@assets/images/icon-shelter.svg';
-import { ReactComponent as IconMenu } from '@assets/images/icon-menu.svg';
-import { ReactComponent as IconUser } from '@assets/images/icon-user.svg';
+import IconRampEntrance from '@assets/images/icon-ramp-entrance.svg?react';
+import IconShelter from '@assets/images/icon-shelter.svg?react';
+import IconMenu from '@assets/images/icon-menu.svg?react';
+import IconUser from '@assets/images/icon-user.svg?react';
 
 import '@assets/styles/components/icon.scss';
 

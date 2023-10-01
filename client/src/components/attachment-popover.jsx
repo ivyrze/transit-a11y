@@ -13,7 +13,6 @@ export const AttachmentPopover = props => {
         <PopoverProvider>
             <PopoverDisclosure
                 className="button--overlay attachment__alt"
-                aria-haspopup="dialog"
             >
                 { isEditing ? "+Alt" : "Alt" }
             </PopoverDisclosure>
