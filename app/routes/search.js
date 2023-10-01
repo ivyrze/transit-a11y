@@ -14,19 +14,14 @@ const router = new Hono();
 router.post('/', validator('json', schema), async c => {
     const { query, longitude, latitude } = c.req.valid('json');
     
-    const wildcardQuery = query.trim().split(" ").map(word => "%" + word + "%").join(" ");
+    const where = query.trim().split(" ").map(word => ({
+        name: {
+            contains: word,
+            mode: 'insensitive'
+        }
+    }));
     
-    let results = await prisma.$queryRaw`
-        SELECT id, name FROM "Stop"
-        WHERE name ILIKE ${wildcardQuery}
-        AND ST_DistanceSphere(
-            ST_MakePoint(${longitude},${latitude}),
-            ST_MakePoint(coordinates[1], coordinates[2])
-        ) < 100000
-        LIMIT 10
-    `;
-    
-    results = await prisma.stop.findMany({
+    let results = await prisma.stop.findMany({
         select: {
             id: true,
             name: true,
@@ -46,9 +41,10 @@ router.post('/', validator('json', schema), async c => {
                 } }
             }
         },
-        where: {
-            id: { in: results.map(result => result.id) }
-        }
+        where: where.length == 1 ? where[0] : {
+            AND: where
+        },
+        take: 10
     });
     
     results = results.map(result => {
