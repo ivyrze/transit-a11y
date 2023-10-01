@@ -17,6 +17,9 @@ router.get('/:quality/:filename', validator('param', schema), async c => {
     // Proxy image request to S3 bucket
     try {
         const file = await prisma.reviewAttachment.downloadFile(quality, filename);
+        c.header('Content-Type', file.ContentType);
+        c.header('Last-Modified', file.LastModified);
+        c.header('ETag', file.ETag);
 
         return c.stream(async stream => {
             await stream.pipe(file.Body.transformToWebStream());
