@@ -2,8 +2,6 @@ import { createWithEqualityFn } from 'zustand/traditional';
 export { shallow } from 'zustand/shallow';
 
 export const useMapStore = createWithEqualityFn(set => ({
-    startupAgency: false,
-    setStartupAgency: value => set({ startupAgency: value }),
     flyCoords: false,
     flyTo: value => set({ flyCoords: value }),
     cameraCoords: false,

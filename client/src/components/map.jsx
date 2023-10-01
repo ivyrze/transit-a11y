@@ -13,7 +13,6 @@ import '@assets/styles/components/map.scss';
 
 export const Map = forwardRef((props, ref) => {
     const [
-        startupAgency,
         flyCoords,
         setCameraCoords,
         shouldQueryRoutes,
@@ -23,7 +22,6 @@ export const Map = forwardRef((props, ref) => {
         openedStopHistory,
         clearOpenedStopHistory
     ] = useMapStore(state => [
-        state.startupAgency,
         state.flyCoords,
         state.setCameraCoords,
         state.shouldQueryRoutes,
@@ -42,9 +40,8 @@ export const Map = forwardRef((props, ref) => {
     const geolocateControl = useRef();
     
     const { data } = useImmutableQuery({
-        method: 'post',
-        url: '/api/map-bounds',
-        ...(startupAgency && { data: { agency: startupAgency } })
+        method: 'get',
+        url: '/api/map-bounds'
     });
     
     const bounds = data?.bounds;
