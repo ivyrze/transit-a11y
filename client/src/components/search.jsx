@@ -15,9 +15,7 @@ export const Search = props => {
     const [ geolocationEnabled, setGeolocationEnabled ] = useState(false);
     const navigate = useNavigate();
     
-    const cameraCoords = useMapStore.getState().cameraCoords?.viewState;
-    
-    const shouldQuery = searchText.length >= 2 && cameraCoords;
+    const shouldQuery = searchText.length >= 2;
     
     const { data } = useImmutableQuery(shouldQuery ? {
         method: 'post',
@@ -27,11 +25,7 @@ export const Search = props => {
         }
     } : null, {
         suspense: false,
-        keepPreviousData: true,
-        dataNoRevalidate: {
-            longitude: cameraCoords?.longitude,
-            latitude: cameraCoords?.latitude
-        }
+        keepPreviousData: true
     });
     const results = data?.results;
     

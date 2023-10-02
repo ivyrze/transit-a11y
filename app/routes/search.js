@@ -4,15 +4,13 @@ import { validator } from '../middleware/validator.js';
 import { prisma } from '../../common/prisma/index.js';
 
 const schema = z.object({
-    query: z.string(),
-    longitude: z.coerce.number(),
-    latitude: z.coerce.number()
+    query: z.string()
 });
 
 const router = new Hono();
 
 router.post('/', validator('json', schema), async c => {
-    const { query, longitude, latitude } = c.req.valid('json');
+    const { query } = c.req.valid('json');
     
     const where = query.trim().split(" ").map(word => ({
         name: {

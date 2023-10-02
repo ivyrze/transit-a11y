@@ -14,7 +14,6 @@ import '@assets/styles/components/map.scss';
 export const Map = forwardRef((props, ref) => {
     const [
         flyCoords,
-        setCameraCoords,
         shouldQueryRoutes,
         setRouteList,
         overriddenStopStyles,
@@ -23,7 +22,6 @@ export const Map = forwardRef((props, ref) => {
         clearOpenedStopHistory
     ] = useMapStore(state => [
         state.flyCoords,
-        state.setCameraCoords,
         state.shouldQueryRoutes,
         state.setRouteList,
         state.overriddenStopStyles,
@@ -84,16 +82,6 @@ export const Map = forwardRef((props, ref) => {
         
         setRouteList(routes);
     }, [ shouldQueryRoutes, setRouteList ]);
-    
-    useEffect(() => {
-        if (!bounds) { return; }
-        setCameraCoords({
-            viewState: {
-                longitude: (bounds[0] + bounds[2]) / 2,
-                latitude: (bounds[1] + bounds[3]) / 2
-            }
-        });
-    }, [ bounds, setCameraCoords ]);
     
     useEffect(() => {
         if (!loaded) { return; }
@@ -168,7 +156,6 @@ export const Map = forwardRef((props, ref) => {
     const handleLoad = () => setLoaded(true);
         
     const handleMove = event => {
-        setCameraCoords(event);
         queryRenderedRoutes();
     };
     

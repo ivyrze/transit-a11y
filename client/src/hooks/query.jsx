@@ -12,15 +12,7 @@ export const useBaseQuery = (swr, key, options) => {
     const { setErrorStatus } = useErrorStatus();
     
     return swr(key, async key => {
-        const queryOptions = {
-            ...key,
-            data: {
-                ...key?.data,
-                ...options?.dataNoRevalidate
-            }
-        };
-        
-        const response = await queryHelper(queryOptions, setErrorStatus);
+        const response = await queryHelper(key, setErrorStatus);
         return response.data;
     }, {
         suspense: true,
