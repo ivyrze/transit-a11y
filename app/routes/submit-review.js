@@ -28,10 +28,16 @@ router.post('/', validator('form', schema), async c => {
     const auth = c.get('jwtPayload');
 
     const form = await c.req.formData();
-    const files = form.getAll('attachments');
+    const files = await Promise.all(form.getAll('attachments').map(async file => {
+        // Array buffer conversion required by legacy sharp version
+        return {
+            buffer: Buffer.from(await file.arrayBuffer()),
+            alt: attachmentsAlt?.[file.name]
+        };
+    }));
     
-    const validity = await Promise.all(files.map(async file => {
-        return await prisma.reviewAttachment.isValidFormat(await file.arrayBuffer());
+    const validity = await Promise.all(files.map(file => {
+        return prisma.reviewAttachment.isValidFormat(file.buffer);
     }));
     
     if (validity.includes(false)) {
@@ -45,10 +51,8 @@ router.post('/', validator('form', schema), async c => {
     }
     
     // Handle review attachments
-    const attachments = await Promise.all(files.map(async file => {
-        return await prisma.reviewAttachment.uploadAndPrepareCreate(
-            await file.arrayBuffer(), attachmentsAlt?.[file.name]
-        );
+    const attachments = await Promise.all(files.map(file => {
+        return prisma.reviewAttachment.uploadAndPrepareCreate(file.buffer, file.alt);
     }));
     
     // Create review object

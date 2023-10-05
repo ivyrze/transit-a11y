@@ -1,0 +1,20 @@
+{
+    "phases": {
+        "setup": {
+            "aptPkgs": [
+                "...", "build-essential", "libheif-dev", "libvips-dev"
+            ],
+            "nixPkgs": [
+                "...", "glib", "vips"
+            ],
+            "nixLibs": [
+                "glib", "vips"
+            ]
+        }
+    },
+    "build": {
+        "cmds": [
+            "npm run prebuild"
+        ]
+    }
+}

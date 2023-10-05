@@ -1,6 +1,5 @@
 import { prisma } from './index.js';
 import sharp from 'sharp';
-import heicConvert from 'heic-convert';
 import { S3Client, PutObjectCommand, GetObjectCommand, DeleteObjectCommand } from '@aws-sdk/client-s3';
 import { randomUUID } from 'crypto';
 
@@ -37,16 +36,8 @@ export const ReviewAttachmentMethods = {
         const { format } = await sharp(original).metadata();
         const type = prisma.reviewAttachment.allowedFormats[format];
         
-        const processableOriginal = (format == 'heif') ?
-            await heicConvert({
-                buffer: original,
-                format: 'png'.toUpperCase()
-            }) : original;
-        
         const sizes = await Promise.all(prisma.reviewAttachment.defaultProxySizes.map(size => {
-            return prisma.reviewAttachment.createSizeObject(
-                id, size.quality == "original" ? original : processableOriginal, size
-            );
+            return prisma.reviewAttachment.createSizeObject(id, original, size);
         }));
         
         return {
