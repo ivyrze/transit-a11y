@@ -1,6 +1,5 @@
 import { Hono } from 'hono';
 import { serve } from '@hono/node-server';
-import { serveStatic } from '@hono/node-server/serve-static';
 import { compress } from 'hono/compress';
 import { logger } from 'hono/logger';
 import { secureHeaders } from 'hono/secure-headers';
@@ -22,29 +21,16 @@ app.use('*', logger());
 app.use('*', secureHeaders());
 
 // Setup routes
-const api = new Hono();
 for (const path in routes) {
     if (routes[path].auth) {
         // Authentication middleware opt-in per-route
-        api.use(path, jwt({
+        app.use(path, jwt({
             required: routes[path]?.auth === 'required'
         }));
     }
 
-    api.route(path, routes[path].router);
+    app.route(path, routes[path].router);
 }
-
-app.route('/api', api);
-
-// Serve production client assets
-app.use('/:path{(?!api).+}?', serveStatic({
-    root: '../client/dist/'
-}));
-
-app.use('/:path{(?!api).+}?', serveStatic({
-    root: '../client/dist/',
-    path: '/'
-}));
 
 // Start alert polling and tile indexing
 await tiles.generate();
