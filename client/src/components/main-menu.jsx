@@ -26,7 +26,7 @@ export const MainMenu = () => {
                     } />
                     <MenuItem render={
                         <Link
-                            href="https://ko-fi.com/ivyrze"
+                            to="https://ko-fi.com/ivyrze"
                             target="_blank"
                             rel="noopener"
                             className="menu__item"
