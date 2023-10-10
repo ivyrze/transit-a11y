@@ -3,6 +3,7 @@ import searchRouter from './routes/search.js';
 import stopDetailsRouter from './routes/stop-details.js';
 import routeDetailsRouter from './routes/route-details.js';
 import submitReviewRouter from './routes/submit-review.js';
+import archiveReviewRouter from './routes/archive-review.js';
 import editReviewRouter from './routes/edit-review.js';
 import deleteReviewRouter from './routes/delete-review.js';
 import mapBoundsRouter from './routes/map-bounds.js';
@@ -28,6 +29,10 @@ export const routes = {
     },
     '/submit-review': {
         router: submitReviewRouter,
+        auth: 'required'
+    },
+    '/archive-review': {
+        router: archiveReviewRouter,
         auth: 'required'
     },
     '/edit-review': {

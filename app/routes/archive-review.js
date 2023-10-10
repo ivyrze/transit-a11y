@@ -1,0 +1,66 @@
+import { Hono } from 'hono';
+import { HTTPException } from 'hono/http-exception';
+import { z } from 'zod';
+import { validator } from '../middleware/validator.js'; 
+import { prisma } from '../../common/prisma/index.js';
+import * as tiles from './map-tiles.js';
+
+const schema = z.object({
+    id: z.string()
+});
+
+const router = new Hono();
+
+router.post('/', validator('json', schema), async c => {
+    const { id } = c.req.valid('json');
+    const auth = c.get('jwtPayload');
+    
+    // Verify that the review exists
+    const review = await prisma.review.findUnique({
+        select: {
+            archived: true,
+            authorId: true,
+            stopId: true,
+        },
+        where: {
+            id
+        }
+    });
+    
+    if (!review) {
+        throw new HTTPException(404);
+    }
+    
+    // Allow reviews to be archived by their author or by admins
+    if (review.authorId != auth.id) {
+        const { admin } = await prisma.user.findUnique({
+            select: {
+                admin: true
+            },
+            where: {
+                id: auth.id
+            }
+        });
+        
+        if (!admin) {
+            throw new HTTPException(401);
+        }
+    }
+    
+    // Toggle the archived field
+    await prisma.review.update({
+        data: {
+            archived: !review.archived
+        },
+        where: {
+            id
+        }
+    });
+    
+    const consensus = await prisma.stop.consensus(review.stopId);
+    await tiles.invalidateSingle(review.stopId, consensus.accessibility);
+    
+    return c.json({});
+});
+
+export default router;

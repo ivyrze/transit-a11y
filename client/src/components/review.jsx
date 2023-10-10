@@ -31,6 +31,15 @@ export const Review = forwardRef((props, ref) => {
         }, setErrorStatus);
         setDeleted(true);
     };
+
+    const handleArchive = async () => {
+        await queryHelper({
+            method: 'post',
+            url: '/api/archive-review',
+            data: { id: details.id }
+        }, setErrorStatus);
+        setDetails({ ...details, archived: !details.archived });
+    };
     
     const startEditing = () => setEditing(true);
     const stopEditing = () => setEditing(false);
@@ -85,7 +94,7 @@ export const Review = forwardRef((props, ref) => {
                     </Link>
                 ) }
                 <div className="review__actions">
-                    { review.archived && (
+                    { details.archived && (
                         <Icon name="archived" title="Archived review" />
                     ) }
                     <TimeAgo
@@ -108,6 +117,18 @@ export const Review = forwardRef((props, ref) => {
                             ) }
                             <MenuItem render={
                                 <Button
+                                    onClick={ handleArchive }
+                                    className="menu__item"
+                                >
+                                    <Icon name="archive" />
+                                    { !details.archived ?
+                                        "Archive" :
+                                        "Unarchive"
+                                    }
+                                </Button>
+                            } />
+                            <MenuItem render={
+                                <Button
                                     onClick={ handleDelete }
                                     className="menu__item"
                                 >
@@ -126,7 +147,7 @@ export const Review = forwardRef((props, ref) => {
                             className="review__accessibility-state"
                             state={ accessibility }
                             key={ accessibility }
-                            archived={ review.archived }
+                            archived={ details.archived }
                         />
                     )) }
                     { details.comments && (
