@@ -52,7 +52,7 @@ model ReviewAttachment {
 model Route {
   id           String           @id
   name         String
-  number       String
+  number       Int
   color        String
   directions   RouteDirection[]
 }

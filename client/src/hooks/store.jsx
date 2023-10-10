@@ -4,10 +4,6 @@ export { shallow } from 'zustand/shallow';
 export const useMapStore = createWithEqualityFn(set => ({
     flyCoords: false,
     flyTo: value => set({ flyCoords: value }),
-    shouldQueryRoutes: false,
-    setShouldQueryRoutes: value => set({ shouldQueryRoutes: value }),
-    routeList: false,
-    setRouteList: value => set({ routeList: value }),
     overriddenStopStyles: {},
     overrideStopStyle: value => set(state => ({
         overriddenStopStyles: { ...state.overriddenStopStyles, ...value }

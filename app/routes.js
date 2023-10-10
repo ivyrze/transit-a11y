@@ -2,6 +2,7 @@ import attachmentRouter from './routes/attachment.js';
 import searchRouter from './routes/search.js';
 import stopDetailsRouter from './routes/stop-details.js';
 import routeDetailsRouter from './routes/route-details.js';
+import routeListRouter from './routes/route-list.js';
 import submitReviewRouter from './routes/submit-review.js';
 import archiveReviewRouter from './routes/archive-review.js';
 import editReviewRouter from './routes/edit-review.js';
@@ -26,6 +27,9 @@ export const routes = {
     },
     '/route-details': {
         router: routeDetailsRouter
+    },
+    '/route-list': {
+        router: routeListRouter
     },
     '/submit-review': {
         router: submitReviewRouter,

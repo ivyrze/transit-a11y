@@ -56,9 +56,7 @@ router.post('/', validator('json', schema), async c => {
             return !routeIds.includes(route.id, index + 1);
         });
         
-        result.routes.sort((a, b) => {
-            return a.number.localeCompare(b.number, 'en', { numeric: true });
-        });
+        result.routes.sort((a, b) => a.number - b.number);
         
         return result;
     });

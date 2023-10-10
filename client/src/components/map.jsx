@@ -1,4 +1,4 @@
-import React, { forwardRef, useRef, useState, useImperativeHandle, useEffect, useMemo, useCallback } from 'react';
+import React, { forwardRef, useRef, useState, useImperativeHandle, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import MapboxGL from 'mapbox-gl/dist/mapbox-gl';
 import Mapbox, { Source, Layer, GeolocateControl } from 'react-map-gl';
@@ -14,16 +14,12 @@ import '@assets/styles/components/map.scss';
 export const Map = forwardRef((props, ref) => {
     const [
         flyCoords,
-        shouldQueryRoutes,
-        setRouteList,
         overriddenStopStyles,
         clearOverriddenStopStyles,
         openedStopHistory,
         clearOpenedStopHistory
     ] = useMapStore(state => [
         state.flyCoords,
-        state.shouldQueryRoutes,
-        state.setRouteList,
         state.overriddenStopStyles,
         state.clearOverriddenStopStyles,
         state.openedStopHistory,
@@ -64,29 +60,6 @@ export const Map = forwardRef((props, ref) => {
     useImperativeHandle(ref, () => ({
         triggerGeolocation: () => geolocateControl.current?.trigger()
     }));
-    
-    const queryRenderedRoutes = useCallback(() => {
-        if (!shouldQueryRoutes) { return; }
-        
-        const query = map.current.queryRenderedFeatures({
-            layers: [ "route-primary" ]
-        });
-        
-        // De-duplicate and sort route matches
-        let routes = {};
-        query.forEach(route => routes[route.id] = route.properties);
-        
-        routes = Object.values(routes).sort((a, b) => {
-            return a.route_short_name.localeCompare(b.route_short_name, undefined, { numeric: true });
-        });
-        
-        setRouteList(routes);
-    }, [ shouldQueryRoutes, setRouteList ]);
-    
-    useEffect(() => {
-        if (!loaded) { return; }
-        queryRenderedRoutes();
-    }, [ loaded, queryRenderedRoutes ]);
     
     useEffect(() => {
         if (!loaded || !flyCoords) { return; }
@@ -155,10 +128,6 @@ export const Map = forwardRef((props, ref) => {
     
     const handleLoad = () => setLoaded(true);
         
-    const handleMove = event => {
-        queryRenderedRoutes();
-    };
-    
     const handleClick = event => {
         if (event.features.length) {
             navigate('/stop/' + event.features[0].id);
@@ -197,7 +166,6 @@ export const Map = forwardRef((props, ref) => {
                 fitBoundsOptions={{ padding: 72 }}
                 transformRequest={ prefixHostname }
                 onLoad={ handleLoad }
-                onMove={ handleMove }
                 onClick={ handleClick }
                 onMouseEnter={ handleMouseEnter }
                 onMouseLeave={ handleMouseLeave }
