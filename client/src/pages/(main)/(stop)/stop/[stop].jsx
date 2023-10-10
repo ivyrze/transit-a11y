@@ -104,8 +104,7 @@ export const StopDetails = () => {
                 )) }
             </ul>
             <p className="stop-accessibility-info">
-                { details.alert?.description ?? details.description ??
-                    i18n.accessibilityStates[details.accessibility].description }
+                { details.description ?? i18n.accessibilityStates[details.accessibility].description }
             </p>
             { details.reviews && (
                 <div className="review-container">

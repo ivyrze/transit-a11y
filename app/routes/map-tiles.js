@@ -49,7 +49,7 @@ export const generate = async (invalidate = true) => {
             })).geojson;
         }
         
-        // Inject dynamic alert data
+        // Inject accessibility states from reviews
         if (invalidate && layer == 'stops') {
             let states = {};
             const stops = await prisma.stop.findMany({

@@ -40,7 +40,7 @@ export default {
             name: 'accessibility',
             type: 'string',
             title: 'Accessibility state',
-            description: 'Overrides the provided wheelchair boarding value, but not warnings from alerts',
+            description: 'Overrides the provided wheelchair boarding value',
             options: {
                 list: [
                     { title: 'Defer to agency', value: undefined },

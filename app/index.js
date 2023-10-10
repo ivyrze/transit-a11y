@@ -32,7 +32,7 @@ for (const path in routes) {
     app.route(path, routes[path].router);
 }
 
-// Start alert polling and tile indexing
+// Start map tile indexing
 await tiles.generate();
 
 // Start server
