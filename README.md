@@ -20,7 +20,7 @@ npm run generate -w common
 npm run migrate -w common
 ```
 
-You can run the Express server locally with:
+You can run the stack locally with:
 
 ```
 npm run develop
