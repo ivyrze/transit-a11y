@@ -67,7 +67,7 @@ export const Search = props => {
             <input
                 type="search"
                 name="search"
-                placeholder="Search by station..."
+                placeholder="Search by stop name..."
                 aria-autocomplete="list"
                 value={ searchText }
                 onInput={ handleInput }
