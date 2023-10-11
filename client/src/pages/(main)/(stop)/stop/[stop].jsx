@@ -1,13 +1,13 @@
 import React from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { MenuItem, Disclosure, DisclosureContent, DisclosureProvider, useDisclosureStore } from '@ariakit/react';
+import { useParams } from 'react-router-dom';
+import { MenuItem } from '@ariakit/react';
 import { Menu } from '@components/menu';
 import { useQuery } from '@hooks/query';
-import { useAuth } from '@hooks/auth';
 import { AccessibilityState } from '@components/accessibility-state';
 import { Review } from '@components/review';
+import { ReviewDrawer } from '@components/review-drawer';
+import { CardClose } from '@components/card-close';
 import { Link } from '@components/link';
-import { Button } from '@components/button';
 import { Icon } from '@components/icon';
 import i18n from '@assets/i18n-strings.json';
 
@@ -22,11 +22,6 @@ export const StopDetails = () => {
         data: { id: stop }
     });
     
-    const disclosureStore = useDisclosureStore();
-    const disclosureState = disclosureStore.useState(state => state.open);
-    const { auth, setAuthRedirect } = useAuth();
-    const navigate = useNavigate();
-    
     const gsvURL = 'https://www.google.com/maps/@?' +
         new URLSearchParams({
             api: 1,
@@ -37,27 +32,6 @@ export const StopDetails = () => {
             ].join(',')
         });
         
-    const switchToReviewForm = () => {
-        if (Object.keys(auth).length) {
-            navigate('/review/' + stop);
-        } else {
-            navigate('/account/login');
-            setAuthRedirect('/review/' + stop);
-        }
-    };
-    
-    const closeCard = () => navigate('/');
-    
-    const ContributeButton = () => (
-        <Button
-            className="review-contribute"
-            onClick={ switchToReviewForm }
-        >
-            <Icon name="add" />
-            Contribute a review
-        </Button>
-    );
-    
     return (
         <main className="sidebar-card stop-details-card">
             <div className="card__header">
@@ -76,13 +50,7 @@ export const StopDetails = () => {
                             </Link>
                         } />
                     </Menu>
-                    <Button
-                        className="button--rounded"
-                        aria-label="Close"
-                        onClick={ closeCard }
-                    >
-                        <Icon name="close" />
-                    </Button>
+                    <CardClose />
                 </div>
             </div>
             <span className="subtitle">
@@ -108,29 +76,15 @@ export const StopDetails = () => {
             </p>
             { details.reviews && (
                 <div className="review-container">
-                    { details.reviews.length > 0 ? (
-                        <DisclosureProvider store={ disclosureStore }>
-                            <Disclosure className="review-drawer-toggle">
-                                { i18n.reviewsToggleStates[disclosureState ? 'hide' : 'show'] }
-                                <Icon
-                                    name={ disclosureState ? "chevron-up" : "chevron-down" }
-                                    className="icon--fixed-right"
-                                />
-                            </Disclosure>
-                            <DisclosureContent>
-                                { details.reviews.map(review => (
-                                    <Review
-                                        review={ review }
-                                        key={ review.id }
-                                        showOptions={ false }
-                                    />
-                                )) }
-                                <ContributeButton />
-                            </DisclosureContent>
-                        </DisclosureProvider>
-                    ) : (
-                        <ContributeButton />
-                    ) }
+                    <ReviewDrawer>
+                        { details.reviews.map(review => (
+                            <Review
+                                review={ review }
+                                key={ review.id }
+                                showOptions={ false }
+                            />
+                        )) }
+                    </ReviewDrawer>
                 </div>
             ) }
         </main>
