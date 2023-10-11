@@ -10,10 +10,10 @@ export const ContributeButton = () => {
 
     const switchToReviewForm = () => {
         if (Object.keys(auth).length) {
-            navigate('/review/' + stop);
+            navigate('./review');
         } else {
             navigate('/account/login');
-            setAuthRedirect('/review/' + stop);
+            setAuthRedirect('./review');
         }
     };
 
