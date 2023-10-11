@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { MenuItem } from '@ariakit/react';
 import { Menu } from '@components/menu';
 import { useQuery } from '@hooks/query';
-import { AccessibilityState } from '@components/accessibility-state';
+import { TagList } from '@components/tag-list';
 import { Review } from '@components/review';
 import { ReviewDrawer } from '@components/review-drawer';
 import { CardClose } from '@components/card-close';
@@ -56,21 +56,11 @@ export const StopDetails = () => {
             <span className="subtitle">
                 { i18n.stopSubheadings[details.agency.vehicle] }
             </span>
-            <ul className="stop-tags-container">
-                <li>
-                    <AccessibilityState
-                        className="stop-accessibility-state"
-                        state={ details.accessibility }
-                        showHeading="group"
-                    />
-                </li>
-                { details.tags.map(tag => (
-                    <li className="stop-tag" key={ tag }>
-                        <Icon name={ tag } />
-                        { i18n.tagLabels[tag] }
-                    </li>
-                )) }
-            </ul>
+            <TagList
+                className="tag-list--rounded"
+                state={ details.accessibility }
+                tags={ details.tags }
+            />
             <p className="stop-accessibility-info">
                 { details.description ?? i18n.accessibilityStates[details.accessibility].description }
             </p>
@@ -81,7 +71,6 @@ export const StopDetails = () => {
                             <Review
                                 review={ review }
                                 key={ review.id }
-                                showOptions={ false }
                             />
                         )) }
                     </ReviewDrawer>

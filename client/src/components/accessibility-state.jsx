@@ -4,6 +4,8 @@ import { Icon } from '@components/icon';
 import i18n from '@assets/i18n-strings.json';
 import { accessibilityStates, accessibilityGroups } from '@common/a11y-states';
 
+import '@assets/styles/components/accessibility-state.scss';
+
 export const AccessibilityState = props => {
     const { state, className, showHeading = true, showIcon = true, archived = false } = props;
     

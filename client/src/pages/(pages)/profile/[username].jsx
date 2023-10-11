@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { useParams } from 'react-router-dom';
 import { useInfiniteQuery } from '@hooks/query';
-import { useAuth } from '@hooks/auth';
 import { Review } from '@components/review';
 import { Button } from '@components/button';
 
@@ -19,8 +18,6 @@ export const ProfilePage = () => {
     
     const details = data?.[data?.length - 1];
     const reviews = data?.map(page => page.reviews).flat();
-    
-    const { auth } = useAuth();
     
     const [ focusedIndex, setFocusedIndex ] = useState(-1);
     
@@ -56,8 +53,6 @@ export const ProfilePage = () => {
                             ref={ index === focusedIndex ? i => i?.focus() : undefined }
                             review={ review }
                             key={ review.id }
-                            showOptions={ (auth.username == username || auth.admin) }
-                            allowEditing={ auth.admin }
                         />
                     )) }
                 </div>

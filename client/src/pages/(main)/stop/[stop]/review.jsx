@@ -2,7 +2,13 @@ import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useImmutableQuery } from '@hooks/query';
 import { FormWrapper } from '@components/form-wrapper';
-import { ReviewFields } from '@components/review-fields';
+import { FormInput } from '@ariakit/react';
+import { FormSubmit } from '@components/form-submit';
+import { AccessibilitySelect } from '@components/accessibility-select';
+import { TagSelect } from '@components/tag-select';
+import { CommentsInput } from '@components/comments-input';
+import { AttachmentInput } from '@components/attachment-input';
+import { Button } from '@components/button';
 import { useMapStore } from '@hooks/store';
 import { getStateGroup } from '@common/a11y-states';
 import i18n from '@assets/i18n-strings.json';
@@ -43,10 +49,33 @@ export const ReviewForm = () => {
                 autoComplete="off"
                 onResponse={ handleFormResponse }
             >
-                <ReviewFields
-                    stopId={ stop }
-                    onCancel={ showStopCard }
-                />
+                <fieldset>
+                    <legend>What features are available at this stop?</legend>
+                    <TagSelect />
+                </fieldset>
+                <fieldset>
+                    <legend>What's the accessibility state at this stop?</legend>
+                    <AccessibilitySelect />
+                </fieldset>
+                <fieldset>
+                    <legend>Any additional comments?</legend>
+                    <CommentsInput />
+                </fieldset>
+                <fieldset>
+                    <legend>Do you have any photos to include?</legend>
+                    <AttachmentInput />
+                </fieldset>
+                <fieldset className="button-set">
+                    <FormSubmit className="button--filled button--primary" />
+                    <Button
+                        className="button--filled"
+                        type="button"
+                        onClick={ showStopCard }
+                    >
+                        Cancel
+                    </Button>
+                </fieldset>
+                <FormInput type="hidden" name="stop" value={ stop } />
             </FormWrapper>
         </main>
     );

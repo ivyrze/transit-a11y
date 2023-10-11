@@ -1,0 +1,44 @@
+@import '../mixins';
+
+.tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    font-weight: weight('medium');
+    list-style: none;
+    padding: 0;
+    
+    .stop-tag {
+        & > .icon {
+            margin-right: 7px;
+        }
+    }
+
+    &--rounded {
+        gap: 10px;
+
+        .stop-tag {
+            padding: 5px 6px;
+            border-radius: 2em;
+            background-color: #ededed;
+            padding-inline: 12px;
+            
+            @include dark {
+                color: #dbdbdb;
+                background-color: #222;
+            }
+        }
+    }
+}
+
+
+.stop-accessibility-state {
+    @extend .stop-tag;
+    
+    @each $name in $stateGroups {
+        &.state-#{$name} {
+            color: var(--state-#{$name}-foreground);
+            background-color: var(--state-#{$name}-background);
+        }
+    }
+}

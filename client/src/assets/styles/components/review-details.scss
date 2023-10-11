@@ -1,0 +1,50 @@
+.review-details {
+    &__header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-block: 10px;
+
+        h1 {
+            margin-block: 0;
+        }
+
+        del {
+            text-decoration-thickness: 7px;
+        }
+
+        .menu__toggle {
+            font-size: 22px;
+        }
+    }
+
+    &__author {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-block: 15px 40px;
+    }
+
+    &__field {
+        margin-bottom: 22px;
+
+        h2 {
+            font-size: 20px;
+            margin-block: 0 12px;
+        }
+
+        p {
+            margin-block: 0;
+        }
+    }
+
+    &__timestamp {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+    }
+
+    &__fallback {
+        font-style: italic;
+    }
+}

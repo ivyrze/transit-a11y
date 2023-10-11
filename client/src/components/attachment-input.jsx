@@ -8,7 +8,7 @@ import { useFormWrapperStore } from '@hooks/store';
 import '@assets/styles/components/attachment-input.scss';
 
 export const AttachmentInput = props => {
-    const { name } = props;
+    const { name = "attachments" } = props;
     
     const [
         files,

@@ -1,0 +1,15 @@
+@import '../mixins';
+
+.accessibility-state {
+    font-weight: weight('medium');
+    
+    @each $name in $stateGroups {
+        &.state-#{$name} {
+            color: var(--state-#{$name}-foreground);
+        }
+    }
+    
+    .icon {
+        margin-right: 6px;
+    }
+}

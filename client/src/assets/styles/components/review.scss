@@ -14,8 +14,6 @@
     
     &__header {
         display: flex;
-        align-items: center;
-        gap: 10px;
         margin-bottom: 8px;
         font-size: 16px;
     }
@@ -49,29 +47,13 @@
     &__timestamp {
         font-weight: weight('light');
     }
-    
-    &__accessibility-state {
+
+    .accessibility-state {
         font-size: 16px;
-        font-weight: weight('medium');
-        
-        @each $name in $stateGroups {
-            &.state-#{$name} {
-                color: var(--state-#{$name}-foreground);
-            }
-        }
-        
-        .icon {
-            margin-right: 6px;
-        }
     }
     
     & + .review-contribute {
         margin-top: 16px;
-    }
-    
-    .profile-picture {
-        width: 1.5em;
-        height: 1.5em;
     }
     
     .attachment-list {

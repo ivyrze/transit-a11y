@@ -1,17 +1,50 @@
 import React, { forwardRef } from 'react';
 import { AccessibilityState } from '@components/accessibility-state';
-import { Select, SelectPopover, SelectGroup, SelectGroupLabel, SelectItem, SelectItemCheck, SelectProvider, useSelectStore } from '@ariakit/react';
+import { FormInput, Select, SelectPopover, SelectGroup, SelectGroupLabel, SelectItem, SelectItemCheck, SelectProvider, useSelectStore, useFormContext } from '@ariakit/react';
 import { accessibilityGroups, accessibilityStates } from '@common/a11y-states';
 import { Icon } from '@components/icon';
 
 import '@assets/styles/components/accessibility-select.scss';
 
-export const AccessibilitySelect = forwardRef(({
-    value, setValue, defaultValue = [], onTouch, ...props
-}, ref) => {
-    const selectStore = useSelectStore({ value, setValue, defaultValue });
-    const selectValue = selectStore.useState("value");
-    const isOpened = selectStore.useState("open");
+export const AccessibilitySelect = forwardRef((props, ref) => {
+    const { name = "accessibility[]" } = props;
+
+    const formStore = useFormContext();
+    const setValue = value => formStore.setValue(name, value);
+    const onTouch = () => formStore.setFieldTouched(name, true);
+    
+    const renderSelect = props => {
+        const selectStore = useSelectStore({
+            value: props.value, setValue, defaultValue: []
+        });
+        const selectValue = selectStore.useState("value");
+        const isOpened = selectStore.useState("open");
+
+        return (
+            <SelectProvider store={ selectStore }>
+                <Select
+                    ref={ ref }
+                    className="multi-select"
+                    onBlur={ onTouch }
+                    { ...props }
+                >
+                    { renderSelectLabel(selectValue) }
+                    <Icon
+                        name={ isOpened ? "chevron-up" : "chevron-down" }
+                        className="icon--fixed-right"
+                    />
+                </Select>
+                <SelectPopover
+                    className="menu"
+                    onBlur={ onTouch }
+                    fitViewport={ true }
+                    sameWidth
+                >
+                    { renderAccessibilityGroups() }
+                </SelectPopover>
+            </SelectProvider>
+        );
+    };
     
     const renderSelectLabel = value => {
         if (value.length == 0) {
@@ -65,29 +98,11 @@ export const AccessibilitySelect = forwardRef(({
             </SelectItem>
         ));
     };
-    
+
     return (
-        <SelectProvider store={ selectStore }>
-            <Select
-                ref={ ref }
-                className="multi-select"
-                onBlur={ onTouch }
-                { ...props }
-            >
-                { renderSelectLabel(selectValue) }
-                <Icon
-                    name={ isOpened ? "chevron-up" : "chevron-down" }
-                    className="icon--fixed-right"
-                />
-            </Select>
-            <SelectPopover
-                className="menu"
-                onBlur={ onTouch }
-                fitViewport={ true }
-                sameWidth
-            >
-                { renderAccessibilityGroups() }
-            </SelectPopover>
-        </SelectProvider>
+        <FormInput
+            name={ name }
+            render={ renderSelect }
+        />
     );
 });

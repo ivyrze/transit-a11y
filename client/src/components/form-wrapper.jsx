@@ -53,7 +53,7 @@ export const FormWrapper = props => {
             setAuthRedirect(-1);
         } else if (response.status < 400 && !response.data.errors) {
             if (onResponse) {
-                onResponse(response.data);
+                onResponse(response.data, data);
             }
         }
         

@@ -3,6 +3,7 @@ import searchRouter from './routes/search.js';
 import stopDetailsRouter from './routes/stop-details.js';
 import routeDetailsRouter from './routes/route-details.js';
 import routeListRouter from './routes/route-list.js';
+import reviewDetailsRouter from './routes/review-details.js';
 import submitReviewRouter from './routes/submit-review.js';
 import archiveReviewRouter from './routes/archive-review.js';
 import editReviewRouter from './routes/edit-review.js';
@@ -30,6 +31,9 @@ export const routes = {
     },
     '/route-list': {
         router: routeListRouter
+    },
+    '/review-details': {
+        router: reviewDetailsRouter
     },
     '/submit-review': {
         router: submitReviewRouter,
