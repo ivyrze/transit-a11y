@@ -5,6 +5,7 @@ import { ThemeProvider } from '@hooks/theme';
 import { ErrorHandler } from '@hooks/error';
 import { AuthProvider } from '@hooks/auth';
 import { ErrorFullscreen } from '@components/error-fullscreen';
+import { Analytics } from '@vercel/analytics/react';
 
 export const App = () => {
     return (
@@ -20,6 +21,7 @@ export const App = () => {
                     </AuthProvider>
                 </ErrorHandler>
             </ThemeProvider>
+            <Analytics />
         </>
     );
 };
