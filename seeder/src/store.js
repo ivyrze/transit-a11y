@@ -27,7 +27,7 @@ const schema = {
             (route.route_long_name ?? route.route_short_name)
         },
         number: { generate: route =>
-            (route.route_short_name ?? route.route_long_name).match(/\w(?!.*\d)|\d+/)[0]
+            (parseInt((route.route_short_name ?? route.route_long_name).match(/\w(?!.*\d)|\d+/)[0]))
         },
         color: { from: 'route_color' },
         directions: { from: 'route_directions', apply: directions => {
