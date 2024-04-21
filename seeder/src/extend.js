@@ -44,7 +44,7 @@ export const extend = async (agency, stops, routes, id) => {
         
         let shapes = [];
         appendix.route_shapes.forEach((shape, index) => {
-            JSON.parse(shape).geometry.coordinates.forEach(coords => {
+            JSON.parse(shape.geojson).geometry.coordinates.forEach(coords => {
                 shapes.push({
                     shape_id: index,
                     shape_pt_lon: coords[0],

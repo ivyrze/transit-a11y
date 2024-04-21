@@ -25,9 +25,9 @@ export default {
         {
             name: 'shapes',
             type: 'array',
-            of: [{ type: 'string' }],
+            of: [{ type: 'shape' }],
             title: 'Shapes',
-            description: 'Include a shape in GeoJSON feature format for each unique trip routing'
+            description: 'Overrides the provided route shapes'
         },
         {
             name: 'agency',
