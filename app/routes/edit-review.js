@@ -1,7 +1,7 @@
 import { Hono } from 'hono';
 import { HTTPException } from 'hono/http-exception';
 import { z } from 'zod';
-import { validator } from '../middleware/validator.js'; 
+import { validator, zCoerceArray } from '../middleware/validator.js'; 
 import { prisma } from '../../common/prisma/index.js';
 import * as tiles from './map-tiles.js';
 import { accessibilityStates } from '../../common/a11y-states.js';
@@ -9,18 +9,17 @@ import { statePrioritySort } from '../../common/utils.js';
 
 const schema = z.object({
     id: z.string().includes('-'),
-    accessibility: z.array(z.enum(
+    accessibility: zCoerceArray(z.enum(
         [ ...accessibilityStates.keys() ]
             .filter(state => !state.unreviewable)
-    )).default([ 'unknown' ]),
+    ), 'unknown'),
     comments: z.string().trim().optional()
 });
 
 const router = new Hono();
 
 router.post('/', validator('form', schema), async c => {
-    const { id, comments } = c.req.valid('form');
-    const { 'accessibility[]': accessibility = [ 'unknown' ] } = await c.req.parseBody();
+    const { id, accessibility, comments } = c.req.valid('form');
     const auth = c.get('jwtPayload');
     
     // Verify that the review exists

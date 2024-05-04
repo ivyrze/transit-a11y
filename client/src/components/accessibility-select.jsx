@@ -7,7 +7,7 @@ import { Icon } from '@components/icon';
 import '@assets/styles/components/accessibility-select.scss';
 
 export const AccessibilitySelect = forwardRef((props, ref) => {
-    const { name = "accessibility[]" } = props;
+    const { name = "accessibility" } = props;
 
     const formStore = useFormContext();
     const setValue = value => formStore.setValue(name, value);

@@ -47,13 +47,10 @@ export const ReviewDetails = () => {
         const newDetails = Object.fromEntries(
             Array.from(data.keys())
             .map(key => [
-                key, key === 'accessibility[]' ? 
+                key, key === 'accessibility' ? 
                     data.getAll(key) : data.get(key)
             ]
         ));
-
-        newDetails.accessibility = newDetails['accessibility[]'];
-        delete newDetails['accessibility[]'];
 
         newDetails.accessibility?.sort(statePrioritySort);
         newDetails.accessibility ??= [ 'unknown' ];

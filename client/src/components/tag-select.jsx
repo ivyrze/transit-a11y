@@ -13,7 +13,7 @@ export const TagSelect = () => {
                     <FormInput
                         type="checkbox"
                         id={ "feature-" + feature }
-                        name="features[]"
+                        name="features"
                         value={ feature }
                         aria-describedby={ "feature-" + feature + "-label" }
                     />

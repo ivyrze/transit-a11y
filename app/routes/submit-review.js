@@ -1,7 +1,7 @@
 import { Hono } from 'hono';
 import { HTTPException } from 'hono/http-exception';
 import { z } from 'zod';
-import { validator } from '../middleware/validator.js';
+import { validator, zCoerceArray } from '../middleware/validator.js';
 import { prisma } from '../../common/prisma/index.js';
 import * as tiles from './map-tiles.js';
 import { accessibilityStates } from '../../common/a11y-states.js';
@@ -9,13 +9,13 @@ import { statePrioritySort } from '../../common/utils.js';
 
 const schema = z.object({
     stop: z.string().includes('-'),
-    features: z.array(z.enum(
+    features: zCoerceArray(z.enum(
         [ 'bench', 'shelter', 'display', 'heating' ]
     )).optional(),
-    accessibility: z.array(z.enum(
+    accessibility: zCoerceArray(z.enum(
         [ ...accessibilityStates.keys() ]
             .filter(state => !state.unreviewable)
-    )).default([ 'unknown' ]),
+    ), 'unknown'),
     comments: z.string().trim().optional(),
     attachmentsAlt: z.array(z.string()).optional()
 });
@@ -23,8 +23,7 @@ const schema = z.object({
 const router = new Hono();
 
 router.post('/', validator('form', schema), async c => {
-    const { stop, comments, attachmentsAlt } = c.req.valid('form');
-    const { 'features[]': features, 'accessibility[]': accessibility = [ 'unknown' ] } = await c.req.parseBody();
+    const { stop, accessibility, features, comments, attachmentsAlt } = c.req.valid('form');
     const auth = c.get('jwtPayload');
 
     const form = await c.req.formData();
