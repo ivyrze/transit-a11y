@@ -20,6 +20,6 @@
     "studio"
   ],
   "devDependencies": {
-    "concurrently": "^8.1.0"
+    "concurrently": "^8.2.1"
   }
 }

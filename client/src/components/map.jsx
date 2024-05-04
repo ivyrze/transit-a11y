@@ -109,7 +109,7 @@ export const Map = forwardRef((props, ref) => {
     
     const mapImages = useMemo(() => {
         const icons = import.meta.glob('../assets/images/map-*.png', {
-            as: 'url', eager: true
+            query: '?url', import: 'default', eager: true
         });
         
         return Object.keys(icons).map(icon => {

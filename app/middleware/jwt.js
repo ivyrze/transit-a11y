@@ -1,8 +1,10 @@
 import { verify } from 'hono/jwt';
 import { HTTPException } from 'hono/http-exception';
+import { createMiddleware } from 'hono/factory';
+import { getCookie } from 'hono/cookie';
 
-export const jwt = options => async (c, next) => {
-    const token = c.req.cookie('token');
+export const jwt = options => createMiddleware(async (c, next) => {
+    const token = getCookie(c, 'token');
 
     if (!token) {
         if (options.required) {
@@ -27,6 +29,6 @@ export const jwt = options => async (c, next) => {
     c.set('jwtPayload', payload);
 
     await next();
-};
+});
 
 export default jwt;

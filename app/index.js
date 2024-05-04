@@ -16,9 +16,9 @@ global.crypto ??= crypto;
 const app = new Hono();
 
 // Attach middlewares
-app.use('*', compress());
-app.use('*', logger());
-app.use('*', secureHeaders());
+app.use(compress());
+app.use(logger());
+app.use(secureHeaders());
 
 // Setup routes
 for (const path in routes) {
