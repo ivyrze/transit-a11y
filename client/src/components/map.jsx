@@ -17,13 +17,17 @@ export const Map = forwardRef((props, ref) => {
         overriddenStopStyles,
         clearOverriddenStopStyles,
         openedStopHistory,
-        clearOpenedStopHistory
+        clearOpenedStopHistory,
+        stopVisibility,
+        routeVisibility
     ] = useMapStore(state => [
         state.flyCoords,
         state.overriddenStopStyles,
         state.clearOverriddenStopStyles,
         state.openedStopHistory,
-        state.clearOpenedStopHistory
+        state.clearOpenedStopHistory,
+        state.stopVisibility,
+        state.routeVisibility
     ], shallow);
     
     const { theme } = useTheme();
@@ -46,16 +50,28 @@ export const Map = forwardRef((props, ref) => {
             const beforeId = index > 0 ?
                 reversedLayers[index - 1]?.id :
                 "settlement-minor-label";
+
+            let filter;
+            if (stopVisibility.length && layer.id.startsWith("stop")) {
+                filter = [
+                    "in", ["get", "stop_id"], ["literal", stopVisibility]
+                ];
+            } else if (routeVisibility.length && layer.id.startsWith("route")) {
+                filter = [
+                    "in", ["get", "route_id"], ["literal", routeVisibility]
+                ];
+            }
             
             return (
                 <Layer
                     key={ layer.id }
                     beforeId={ beforeId }
+                    { ...(filter && { filter }) }
                     { ...layer }
                 / >
             );
         });
-    }, [ theme, overriddenStopStyles ]);
+    }, [ theme, overriddenStopStyles, stopVisibility, routeVisibility ]);
     
     useImperativeHandle(ref, () => ({
         triggerGeolocation: () => geolocateControl.current?.trigger()

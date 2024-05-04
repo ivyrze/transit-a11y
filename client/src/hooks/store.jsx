@@ -13,7 +13,11 @@ export const useMapStore = createWithEqualityFn(set => ({
     setStopOpened: value => set(state => ({
         openedStopHistory: { ...state.openedStopHistory, ...value }
     })),
-    clearOpenedStopHistory: () => set(() => ({ openedStopHistory: {} }))
+    clearOpenedStopHistory: () => set(() => ({ openedStopHistory: {} })),
+    stopVisibility: [],
+    setStopVisibility: value => set({ stopVisibility: value }),
+    routeVisibility: [],
+    setRouteVisibility: value => set({ routeVisibility: value })
 }), Object.is);
 
 export const useFormWrapperStore = createWithEqualityFn(set => ({

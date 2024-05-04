@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { Link } from '@components/link';
 import { useParams } from 'react-router-dom';
@@ -7,6 +7,7 @@ import { CardClose } from '@components/card-close';
 import { useQuery } from '@hooks/query';
 import { AccessibilityState } from '@components/accessibility-state';
 import { RouteIcon } from '@components/route-icon';
+import { useMapStore, shallow } from '@hooks/store';
 import i18n from '@assets/i18n-strings.json';
 
 import '@assets/styles/components/route-details.scss';
@@ -21,6 +22,30 @@ export const RouteDetails = () => {
         url: '/api/route-details',
         data: { id: route }
     });
+
+    const [
+        setStopVisibility,
+        setRouteVisibility
+    ] = useMapStore(state => [
+        state.setStopVisibility,
+        state.setRouteVisibility
+    ], shallow);
+    
+    useEffect(() => {
+        const stops = details.directions
+            .map(direction => direction.segments).flat()
+            .map(segment => segment.branches).flat()
+            .map(branch => branch.stops).flat()
+            .map(relation => relation.stop.id);
+
+        setStopVisibility(stops);
+        setRouteVisibility([ route ]);
+        
+        return () => {
+            setStopVisibility([]);
+            setRouteVisibility([]);
+        }
+    }, [ details, setStopVisibility, setRouteVisibility ]);
     
     const renderBranch = branch => branch.stops.map(({ stop }, index) => (
         <li key={ stop.id + "-" + index }>
