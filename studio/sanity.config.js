@@ -1,5 +1,5 @@
 import { defineConfig } from 'sanity';
-import { deskTool } from 'sanity/desk';
+import { structureTool } from "sanity/structure";
 import { visionTool } from '@sanity/vision';
 import { colorInput } from "@sanity/color-input";
 import schemas from './schemas/schema';
@@ -11,7 +11,7 @@ export default defineConfig({
     dataset: import.meta.env.MODE,
     projectId: import.meta.env.SANITY_STUDIO_API_PROJECT_ID,
     plugins: [
-        deskTool({ structure: deskStructure }),
+        structureTool({ structure: deskStructure }),
         visionTool(),
         colorInput()
     ],

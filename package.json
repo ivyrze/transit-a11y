@@ -10,7 +10,7 @@
     "build": "npm run build -w client"
   },
   "engines": {
-    "node": "^18.0.0"
+    "node": ">= 20.11.0"
   },
   "workspaces": [
     "app",
@@ -20,6 +20,6 @@
     "studio"
   ],
   "devDependencies": {
-    "concurrently": "^8.2.1"
+    "concurrently": "^8.2.2"
   }
 }

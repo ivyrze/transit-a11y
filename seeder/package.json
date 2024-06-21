@@ -4,19 +4,19 @@
     "start": "node seeder.js"
   },
   "engines": {
-    "node": "^18.0.0"
+    "node": ">= 20.11.0"
   },
   "dependencies": {
-    "@prisma/client": "^5.13.0",
-    "@turf/bbox": "^6.5.0",
-    "@turf/bearing": "^6.5.0",
-    "@turf/combine": "^6.5.0",
-    "@turf/distance": "^6.5.0",
-    "@turf/helpers": "^6.5.0",
-    "axios": "^1.6.8",
+    "@prisma/client": "^5.15.1",
+    "@turf/bbox": "^7.0.0",
+    "@turf/bearing": "^7.0.0",
+    "@turf/combine": "^7.0.0",
+    "@turf/distance": "^7.0.0",
+    "@turf/helpers": "^7.0.0",
+    "axios": "^1.7.2",
     "diff": "^5.2.0",
     "dotenv": "^16.4.5",
-    "gtfs": "^4.10.2",
+    "gtfs": "^4.12.0",
     "node-stream-zip": "^1.15.0",
     "progress": "^2.0.3",
     "temp": "^0.9.4"
