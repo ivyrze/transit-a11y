@@ -24,17 +24,6 @@ export const MainMenu = () => {
                             About the project
                         </Link>
                     } />
-                    <MenuItem render={
-                        <Link
-                            to="https://ko-fi.com/ivyrze"
-                            target="_blank"
-                            rel="noopener"
-                            className="menu__item"
-                        >
-                            <Icon name="donation" />
-                            Support us on Ko-fi
-                        </Link>
-                    } />
                 </MenuGroup>
                 <MenuGroup className="menu__group">
                     <MenuGroupLabel className="menu__group-label">View</MenuGroupLabel>
