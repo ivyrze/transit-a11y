@@ -17,12 +17,6 @@ const router = new Hono();
 router.post('/', validator('form', schema), async c => {
     const { invite, email, username, password } = c.req.valid('form');
     
-    // Validate and use one-time invite code
-    if (!await prisma.invite.delete({ where: { invite } })) {
-        c.status(400);
-        return c.json({ errors: { invite: 'Unrecognized invitation code' } });
-    }
-    
     // Check that email and username aren't already in use
     if (await prisma.user.findUnique({ where: { username } })) {
         c.status(400);
@@ -31,10 +25,22 @@ router.post('/', validator('form', schema), async c => {
         c.status(400);
         return c.json({ errors: { email: 'Email is already in use' } });
     }
+
+    // Validate and use one-time invite code
+    try {
+        await prisma.invite.delete({ where: { invite } });
+    } catch {
+        c.status(400);
+        return c.json({ errors: { invite: 'Unrecognized invitation code' } });
+    }
     
     // Create user object
     const user = await prisma.user.create({
-        email, username, password: await prisma.user.hashPassword(password)
+        data: {
+            email,
+            username,
+            password: await prisma.user.hashPassword(password)
+        }
     });
     
     // Automatically log the user in
