@@ -108,6 +108,12 @@ model User {
   password String
   email    String   @unique
   created  DateTime @default(now())
-  admin    Boolean  @default(false)
+  role     Role     @default(LIMITED)
   reviews  Review[]
+}
+
+enum Role {
+  LIMITED
+  FULL
+  ADMIN
 }

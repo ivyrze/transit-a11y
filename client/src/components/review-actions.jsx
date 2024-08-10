@@ -31,11 +31,11 @@ export const ReviewActions = props => {
         onArchive();
     };
 
-    if (auth.username != review.author.username && !auth.admin) { return null; }
+    if (auth.username != review.author.username && auth.role != 'ADMIN') { return null; }
 
     return (
         <Menu>
-            { auth.admin && (
+            { auth.role == 'ADMIN' && (
                 <MenuItem render={
                     <Button
                         onClick={ onEdit }

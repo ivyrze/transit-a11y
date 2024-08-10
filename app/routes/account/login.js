@@ -19,7 +19,7 @@ router.post('/', validator('form', schema), async c => {
     const user = await prisma.user.findUnique({
         select: {
             id: true,
-            admin: true
+            role: true
         },
         where: {
             username
@@ -47,7 +47,7 @@ router.post('/', validator('form', schema), async c => {
         path: '/'
     });
     
-    return c.json({ username, admin: user.admin });
+    return c.json({ username, role: user.role });
 });
 
 export default router;

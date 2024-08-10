@@ -13,7 +13,7 @@ router.get('/', async c => {
     const user = await prisma.user.findUnique({
         select: {
             username: true,
-            admin: true
+            role: true
         },
         where: {
             id: auth.id
@@ -24,7 +24,7 @@ router.get('/', async c => {
         throw new HTTPException(500);
     }
     
-    return c.json({ username: user.username, admin: user.admin });
+    return c.json({ username: user.username, role: user.role });
 });
 
 export default router;

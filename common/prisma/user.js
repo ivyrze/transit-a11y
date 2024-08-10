@@ -26,5 +26,16 @@ export const UserMethods = {
     },
     hashPassword: password => {
         return bcrypt.hash(password);
+    },
+    hasRole: async (id, requiredRole) => {
+        const { role } = await prisma.user.findUnique({
+            select: {
+                role: true
+            },
+            where: {
+                id
+            }
+        });
+        return role === requiredRole;
     }
 };

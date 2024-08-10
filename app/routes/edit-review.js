@@ -39,16 +39,7 @@ router.post('/', validator('form', schema), async c => {
     
     // Allow reviews to be edited by their author or by admins
     if (review.authorId != auth.id) {
-        const { admin } = await prisma.user.findUnique({
-            select: {
-                admin: true
-            },
-            where: {
-                id: auth.id
-            }
-        });
-        
-        if (!admin) {
+        if (!await prisma.user.hasRole(auth.id, 'ADMIN')) {
             throw new HTTPException(401);
         }
     }

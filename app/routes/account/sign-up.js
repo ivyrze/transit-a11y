@@ -47,7 +47,7 @@ router.post('/', validator('form', schema), async c => {
         httpOnly: true
     });
     
-    return c.json({ username, admin: false });
+    return c.json({ username, role: 'LIMITED' });
 });
 
 export default router;

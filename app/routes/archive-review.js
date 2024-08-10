@@ -33,16 +33,7 @@ router.post('/', validator('json', schema), async c => {
     
     // Allow reviews to be archived by their author or by admins
     if (review.authorId != auth.id) {
-        const { admin } = await prisma.user.findUnique({
-            select: {
-                admin: true
-            },
-            where: {
-                id: auth.id
-            }
-        });
-        
-        if (!admin) {
+        if (!await prisma.user.hasRole(auth.id, 'ADMIN')) {
             throw new HTTPException(401);
         }
     }
