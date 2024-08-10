@@ -8,7 +8,9 @@ import { AccessibilitySelect } from '@components/accessibility-select';
 import { TagSelect } from '@components/tag-select';
 import { CommentsInput } from '@components/comments-input';
 import { AttachmentInput } from '@components/attachment-input';
+import { InfoNotice } from '@components/info-notice';
 import { Button } from '@components/button';
+import { useAuth } from '@hooks/auth';
 import { useMapStore } from '@hooks/store';
 import { getStateGroup } from '@common/a11y-states';
 import i18n from '@assets/i18n-strings.json';
@@ -21,6 +23,8 @@ export const ReviewForm = () => {
         url: '/api/stop-details',
         data: { id: stop }
     });
+
+    const { auth } = useAuth();
     
     const navigate = useNavigate();
     const overrideStopStyle = useMapStore(state => state.overrideStopStyle);
@@ -55,7 +59,11 @@ export const ReviewForm = () => {
                 </fieldset>
                 <fieldset>
                     <legend>What's the accessibility state at this stop?</legend>
-                    <AccessibilitySelect />
+                    { auth.role != 'LIMITED' ? (
+                        <AccessibilitySelect />
+                    ) : (
+                        <InfoNotice iconName="lock">You don't have permissions to set an accessibility state.</InfoNotice>
+                    )}
                 </fieldset>
                 <fieldset>
                     <legend>Any additional comments?</legend>

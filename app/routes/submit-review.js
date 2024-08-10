@@ -53,6 +53,13 @@ router.post('/', validator('form', schema), async c => {
     const attachments = await Promise.all(files.map(file => {
         return prisma.reviewAttachment.uploadAndPrepareCreate(file.buffer, file.alt);
     }));
+
+    // Force reviews from limited accounts to not have
+    // an accessibility state
+    if (await prisma.user.hasRole(auth.id, 'LIMITED')) {
+        accessibility.splice(0, accessibility.length);
+        accessibility.push('unknown');
+    }
     
     // Create review object
     accessibility.sort(statePrioritySort);

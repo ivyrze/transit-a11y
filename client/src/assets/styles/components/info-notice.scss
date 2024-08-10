@@ -1,0 +1,12 @@
+@import '../mixins';
+
+.info-notice {
+    font-size: 16px;
+    font-weight: weight('light');
+    margin-block: 4px;
+    
+    & > .icon {
+        font-size: 15px;
+        margin-right: 4px;
+    }
+}
