@@ -14,14 +14,16 @@ export const FormError = forwardRef((props, ref) => {
     if (!errorMessage || !isTouched) { return null; }
     
     return (
-        <div className="form-error">
-            <Icon name="invalid" />
-            <FormErrorChild
-                ref={ ref }
-                name={ name }
-                { ...passthroughProps }
-            >
-            </FormErrorChild>
-        </div>
+        <FormErrorChild
+            ref={ ref }
+            name={ name }
+            render={
+                <div className="form-error">
+                    <Icon name="invalid" />
+                    { errorMessage }
+                </div>
+            }
+            { ...passthroughProps }
+        />
     );
 });
