@@ -28,7 +28,7 @@ export const ProfilePage = () => {
         setSize(size + 1);
     };
     
-    const reviewCount = `${new Intl.NumberFormat().format(details.count)} review${details.count > 1 ? 's' : ''}`;
+    const reviewCount = `${new Intl.NumberFormat().format(details.count)} review${details.count !== 1 ? 's' : ''}`;
     
     const moreReviewsAvailable = details.count > reviews.length;
     
