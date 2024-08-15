@@ -34,7 +34,7 @@
     
     @include mobile {
         @supports selector(:has(*)) {
-            &:has(.multi-select[aria-expanded="true"]) {
+            &:has(.select[aria-expanded="true"]) {
                 overflow-y: hidden;
             }
         }

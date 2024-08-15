@@ -1,8 +1,0 @@
-@import './form-wrapper';
-
-.multi-select {
-    @extend .abstract-input;
-    
-    display: flex;
-    align-items: center;
-}
