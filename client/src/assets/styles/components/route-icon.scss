@@ -19,16 +19,6 @@
         margin-left: 6px;
     }
     
-    @each $name in $routeColors {
-        &.route-#{$name} {
-            background-color: var(--route-color-#{$name});
-        }
-        
-        &.route-#{$name}.inverted {
-            color: var(--route-color-#{$name});
-        }
-    }
-    
     &.inverted {
         background-color: #fff;
     }

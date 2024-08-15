@@ -12,14 +12,11 @@ export const RouteIcon = props => {
         <div
             className={ cx(
                 "route-icon",
-                inverted && "inverted",
-                isGenericColor && "route-" + color
+                inverted && "inverted"
             ) }
-            { ...!isGenericColor && {
-                style: {
-                    [inverted ? 'color' : 'backgroundColor']: color
-                }
-            } }
+            style={{
+                [inverted ? 'color' : 'backgroundColor']: color
+            }}
         >
             { number }
         </div>

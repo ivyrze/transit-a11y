@@ -24,15 +24,6 @@
     --state-auxiliary-foreground: var(--state-unknown-foreground);
     --state-auxiliary-background: var(--state-unknown-background);
     
-    --route-color-red: #fe5757;
-    --route-color-orange: #ffa233;
-    --route-color-yellow: #ffd200;
-    --route-color-green: #8fdd3c;
-    --route-color-blue: #7796ff;
-    --route-color-purple: #c77bff;
-    --route-color-pink: #ff85c1;
-    --route-color-brown: #d39267;
-    
     @include dark {
         --ui-base-color: #111;
         --ui-popup-color: #181818;

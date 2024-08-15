@@ -141,27 +141,9 @@ const transformations = {
 
 const transformationsMulti = {
     colorContinuity: object => {
-        const colors = [
-            'red', 'orange', 'yellow', 'green', 'blue', 'purple', 'pink', 'brown'
-        ];
-        
-        const name = object.route_long_name ?? object.route_short_name;
-        const replaced = colors.some(color => {
-            if (new RegExp('\\b' + color + '\\b', 'i').test(name)) {
-                object.route_color = color;
-                return true;
-            }
-            
-            return false;
-        });
-        
-        if (!replaced) {
-            console.warn("Continuity warning: Route '" + name + "' has partially supported color.");
-            
-            object.route_color = object.route_color.toLowerCase();
-            if (!object.route_color.startsWith("#")) {
-                object.route_color = "#" + object.route_color;
-            }
+        object.route_color = object.route_color.toLowerCase();
+        if (!object.route_color.startsWith("#")) {
+            object.route_color = "#" + object.route_color;
         }
         
         return object;
