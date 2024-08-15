@@ -16,13 +16,24 @@ router.get('/', async c => {
             number: 'asc'
         }
     });
+
+    const agencies = await prisma.agency.findMany({
+        select: {
+            id: true,
+            name: true,
+            default: true
+        },
+        orderBy: {
+            name: 'asc'
+        }
+    });
     
     // Make sure that the routes exist
     if (!routes?.length) {
         throw new HTTPException(500);
     }
     
-    return c.json(routes);
+    return c.json({ routes, agencies });
 });
 
 export default router;

@@ -3,15 +3,31 @@ import { Helmet } from 'react-helmet';
 import { Link } from '@components/link';
 import { CardClose } from '@components/card-close';
 import { RouteIcon } from '@components/route-icon';
+import { Select } from '@components/select';
+import { SelectItem, useSelectStore } from '@ariakit/react';
 import { Icon } from '@components/icon';
 import { useImmutableQuery } from '@hooks/query';
 
 import '@assets/styles/components/route-list.scss';
 
 export const RouteList = () => {
-    const { data: routes } = useImmutableQuery({
+    const { data } = useImmutableQuery({
         method: 'get',
         url: '/api/route-list'
+    });
+
+    const defaultValue = data?.agencies.find(agency => {
+        return agency.default === true;
+    }).id;
+    const renderSelectLabel = () => data?.agencies.find(agency => {
+        return agency.id == selectValue;
+    }).name;
+    
+    const selectStore = useSelectStore({ defaultValue });
+    const selectValue = selectStore.useState("value");
+
+    const routes = data?.routes.filter(route => {
+        return route.id.startsWith(selectValue);
     });
     
     return (
@@ -26,6 +42,20 @@ export const RouteList = () => {
                 </div>
             </div>
             <div className="route-list">
+                <Select
+                    store={ selectStore }
+                    valueLabel={ renderSelectLabel }
+                >
+                    { data?.agencies.map(agency => (
+                        <SelectItem
+                            className="select__item"
+                            key={ agency.id }
+                            value={ agency.id }
+                        >
+                            { agency.name }
+                        </SelectItem>
+                    )) }
+                </Select>
                 { routes && routes.map(route => (
                     <Link
                         className="button--filled"
