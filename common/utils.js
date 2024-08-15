@@ -2,7 +2,7 @@ import { getStatePriority } from './a11y-states.js';
 
 export const sanityOptions = () => ({
     projectId: process.env.SANITY_STUDIO_API_PROJECT_ID,
-    dataset: process.env.NODE_ENV ?? 'development',
+    dataset: process.env.SANITY_STUDIO_DATASET ?? "production",
     apiVersion: "2021-10-21",
     useCdn: false
 });
