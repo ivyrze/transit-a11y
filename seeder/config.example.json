@@ -22,6 +22,18 @@
                     "type": "prettify"
                 }
             ]
+        },
+        {
+            "id": "aaata",
+            "url": "https://www.theride.org/sites/default/files/google/google_transit.zip",
+            "vehicle": "bus",
+            "stations": false,
+            "transformations": [
+                {
+                    "source": "stops.stop_name",
+                    "type": "prettify"
+                }
+            ]
         }
     ]
 }
