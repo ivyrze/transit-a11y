@@ -1,23 +1,6 @@
 import { prisma } from '../../common/prisma/index.js';
-import combine from '@turf/combine';
-import * as gtfsUtils from 'gtfs/lib/geojson-utils.js';
 import * as turfUtils from '@turf/helpers';
 import turfDistance from '@turf/distance';
-
-const schema = {
-    routes: [
-        'route_id',
-        'route_short_name',
-        'route_long_name',
-        'route_color'
-    ],
-    stops: [
-        'stop_id',
-        'stop_name',
-        'wheelchair_boarding',
-        'is_major'
-    ]
-};
 
 export const geojson = async (stops, routes) => {
     await prisma.geometry.createMany({ data: [
@@ -29,38 +12,46 @@ export const geojson = async (stops, routes) => {
 };
 
 const routesGeoJSON = routes => {
-    return turfUtils.featureCollection(routes.map(route => {
-        // Simplify route shape representation and isolate geometry
-        let features = gtfsUtils.shapesToGeoJSONFeatures(route.route_shapes);
-        
-        // Merge to multi line string format and remove collection wrapper
-        if (features.length > 1) {
-            features = combine(turfUtils.featureCollection(features)).features;
-        }
-        features = features[0];
-        
-        // Gather properties to be reattached
-        features.properties = Object.fromEntries(schema.routes.map(property => {
-            return [ property, route[property] ];
-        }));
-        
-        return features;
-    }));
+    const features = routes.map(route => {
+        const shapes = Object.values(Object.groupBy(
+            route.route_shapes,
+            shape => shape.shape_id
+        ));
+
+        const lines = shapes.map(shape => {
+            return shape.map(coord => {
+                return [
+                    coord.shape_pt_lon,
+                    coord.shape_pt_lat
+                ];
+            });
+        });
+
+        return turfUtils.multiLineString(lines, {
+            route_id: route.route_id,
+            route_short_name: route.route_short_name,
+            route_long_name: route.route_long_name,
+            route_color: route.route_color
+        });
+    });
+
+    return turfUtils.featureCollection(features);
 };
 
 const stopsGeoJSON = stops => {
-    let collection = gtfsUtils.stopsToGeoJSON(stops);
-    
-    // Remove unnecessary properties
-    collection.features.forEach(feature => {
-        Object.keys(feature.properties).forEach(property => {
-            if (!schema.stops.includes(property)) {
-                delete feature.properties[property];
-            }
-        })
+    const features = stops.map(stop => {
+        return turfUtils.point([
+            stop.stop_lon,
+            stop.stop_lat
+        ], {
+            stop_id: stop.stop_id,
+            stop_name: stop.stop_name,
+            wheelchair_boarding: stop.wheelchair_boarding,
+            is_major: stop.is_major
+        });
     });
     
-    return collection;
+    return turfUtils.featureCollection(features);
 };
 
 export const link = datasets => {

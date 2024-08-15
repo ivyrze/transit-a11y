@@ -10,7 +10,6 @@
     "@prisma/client": "^5.18.0",
     "@turf/bbox": "^7.0.0",
     "@turf/bearing": "^7.0.0",
-    "@turf/combine": "^7.0.0",
     "@turf/distance": "^7.0.0",
     "@turf/helpers": "^7.0.0",
     "axios": "^1.7.3",
