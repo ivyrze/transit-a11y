@@ -48,23 +48,46 @@ export const SignUpPage = () => {
                 <fieldset>
                     <legend>Account credentials</legend>
                     <div className="form-infield">
-                        <FormLabel name="email">Your email address</FormLabel>
-                        <FormInput name="email" type="email" required />
+                        <FormLabel name="email">
+                            Your email address
+                        </FormLabel>
+                        <FormInput
+                            name="email"
+                            type="email"
+                            required
+                        />
                         <FormError name="email" />
                     </div>
                     <div className="form-infield">
-                        <FormLabel name="username">Create a username</FormLabel>
-                        <FormInput name="username" type="text" required />
+                        <FormLabel name="username">
+                            Create a username
+                        </FormLabel>
+                        <FormInput
+                            name="username"
+                            type="text"
+                            autoComplete="username"
+                            required
+                        />
                         <FormError name="username" />
                     </div>
                     <div className="form-infield">
-                        <FormLabel name="password">Create a password</FormLabel>
-                        <FormInput name="password" type="password" minLength="10" required />
+                        <FormLabel name="password">
+                            Create a password
+                        </FormLabel>
+                        <FormInput
+                            name="password"
+                            type="password"
+                            autoComplete="new-password"
+                            minLength="10"
+                            required
+                        />
                         <FormError name="password" />
                     </div>
                 </fieldset>
                 <fieldset className="button-set">
-                    <FormSubmit className="button--filled button--primary">Submit</FormSubmit>
+                    <FormSubmit className="button--filled button--primary">
+                        Submit
+                    </FormSubmit>
                 </fieldset>
             </FormWrapper>
         </main>
