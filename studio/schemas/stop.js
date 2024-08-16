@@ -37,19 +37,6 @@ export default {
             description: 'When checked, all child stop links are removed'
         },
         {
-            name: 'accessibility',
-            type: 'string',
-            title: 'Accessibility state',
-            description: 'Overrides the provided wheelchair boarding value',
-            options: {
-                list: [
-                    { title: 'Defer to agency', value: undefined },
-                    { title: 'Likely accessible', value: '1' },
-                    { title: 'Not accessible', value: '2' },
-                ]
-            }
-        },
-        {
             name: 'description',
             type: 'text',
             title: 'Accessibility description',

@@ -17,7 +17,6 @@ export const extend = async (agency, stops, routes, id) => {
                 "stop_name": name,
                 "stop_tags": tags,
                 "stop_url": url,
-                "wheelchair_boarding": accessibility,
                 "accessibility_desc": description,
                 unlinked != true => {
                     "linked_with": linked[]->{
