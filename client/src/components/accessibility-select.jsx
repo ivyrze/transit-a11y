@@ -28,13 +28,15 @@ export const AccessibilitySelect = forwardRef((props, ref) => {
     
     const renderAccessibilityGroups = () => {
         return [ ...accessibilityGroups.keys() ]
-            .filter(group => group !== 'unknown' && group !== 'auxiliary')
+            .filter(group => group !== 'unknown')
             .map(group => {
                 const states = [ ...accessibilityStates ]
                     .filter(state => state[1].group === group)
                     .filter(state => !state[1].unreviewable)
                     .map(state => state[0]);
                 
+                if (!states.length) { return; }
+
                 return (
                     <SelectGroup className="select__group" key={ group }>
                         <SelectGroupLabel className="select__group-label">

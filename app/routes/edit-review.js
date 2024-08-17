@@ -10,8 +10,9 @@ import { statePrioritySort } from '../../common/utils.js';
 const schema = z.object({
     id: z.string().includes('-'),
     accessibility: zCoerceArray(z.enum(
-        [ ...accessibilityStates.keys() ]
-            .filter(state => !state.unreviewable)
+        [ ...accessibilityStates ]
+            .filter(state => !state[1].unreviewable)
+            .map(state => state[0])
     ), 'unknown'),
     comments: z.string().trim().optional()
 });

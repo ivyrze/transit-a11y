@@ -13,8 +13,9 @@ const schema = z.object({
         [ 'bench', 'shelter', 'display', 'heating' ]
     )).optional(),
     accessibility: zCoerceArray(z.enum(
-        [ ...accessibilityStates.keys() ]
-            .filter(state => !state.unreviewable)
+        [ ...accessibilityStates ]
+            .filter(state => !state[1].unreviewable)
+            .map(state => state[0])
     ), 'unknown'),
     comments: z.string().trim().optional(),
     attachmentsAlt: z.array(z.string()).optional()

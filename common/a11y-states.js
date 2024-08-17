@@ -137,7 +137,8 @@ export const accessibilityStates = new Map([
     [
         "auxiliary",
         {
-            "group": "auxiliary"
+            "group": "auxiliary",
+            "unreviewable": true
         }
     ]
 ]);
