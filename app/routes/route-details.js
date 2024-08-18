@@ -5,13 +5,16 @@ import { validator } from '../middleware/validator.js';
 import { prisma } from '../../common/prisma/index.js';
 
 const schema = z.object({
-    id: z.string().includes('-')
+    id: z.string().includes('-'),
+    perspective: z.enum(
+        [ 'reviews', 'agency' ]
+    )
 });
 
 const router = new Hono();
 
 router.post('/', validator('json', schema), async c => {
-    const { id } = c.req.valid('json');
+    const { id, perspective } = c.req.valid('json');
     
     // Run query and parse output
     let details = await prisma.route.findUnique({
@@ -29,7 +32,9 @@ router.post('/', validator('json', schema), async c => {
                                     select: {
                                         id: true,
                                         name: true,
-                                        accessibility: true
+                                        accessibility: { select: {
+                                            [perspective]: true
+                                        } }
                                     },
                                 } },
                                 orderBy: {
@@ -64,6 +69,20 @@ router.post('/', validator('json', schema), async c => {
     if (!details.agency) {
         throw new HTTPException(404);
     }
+
+    details.directions = details.directions.map(direction => {
+        direction.segments = direction.segments.map(segment => {
+            segment.branches = segment.branches.map(branch => {
+                branch.stops = branch.stops.map(({ stop }) => {
+                    stop.accessibility = stop.accessibility[perspective];
+                    return { stop };
+                });
+                return branch;
+            });
+            return segment;
+        });
+        return direction;
+    });
     
     return c.json(details);
 });

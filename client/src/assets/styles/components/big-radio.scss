@@ -1,0 +1,19 @@
+@import '../mixins';
+
+.big-radio {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    &__label {
+        font-weight: weight('medium');
+    }
+
+    &__description {
+        font-weight: weight('regular');
+    }
+
+    & + & {
+        margin-top: 8px;
+    }
+}

@@ -5,13 +5,15 @@
             "id": "ddot",
             "url": "https://www.detroitmi.gov/Portals/0/docs/deptoftransportation/pdfs/ddot_gtfs.zip",
             "vehicle": "bus",
-            "stations": false
+            "stations": false,
+            "ignoreAccessibility": true
         },
         {
             "id": "smart",
             "url": "https://apps1.smartbus.org/gtfs/smart_gtfs.zip",
             "vehicle": "bus",
             "stations": false,
+            "ignoreAccessibility": true,
             "transformations": [
                 {
                     "source": "stops.stop_name",

@@ -32,3 +32,8 @@ export const useFormWrapperStore = createWithEqualityFn(set => ({
         return { files: state.files };
     })
 }), Object.is);
+
+export const usePerspectiveStore = createWithEqualityFn(set => ({
+    perspective: 'reviews',
+    setPerspective: value => set({ perspective: value })
+}), Object.is);

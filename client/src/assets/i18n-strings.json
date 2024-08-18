@@ -40,7 +40,7 @@
     "accessibilityStates": {
         "unknown": {
             "heading": "Unknown accessibility state",
-            "description": "There isn't any accessibility data available about this stop. Consider adding your own review below."
+            "description": "There isn't any accessibility data available about this stop. Consider checking under a different perspective setting."
         },
         "accessible": {
             "heading": "Usually free of access barriers",
@@ -101,6 +101,9 @@
         "other-inaccessible": {
             "heading": "Other – not accessible",
             "description": "This stop is not accessible. Refer to the reviews below for more information."
+        },
+        "inaccessible": {
+            "description": "This stop is not accessible. No further information is available."
         },
         "auxiliary": {
             "description": "There is only auxiliary data available for this stop. The reviews below may contain additional information."

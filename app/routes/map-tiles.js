@@ -52,20 +52,20 @@ export const generate = async (invalidate = true) => {
         // Inject accessibility states from reviews
         if (invalidate && layer == 'stops') {
             let states = {};
-            const stops = await prisma.stop.findMany({
+            const stops = await prisma.accessibility.findMany({
                 select: {
-                    id: true,
-                    accessibility: true
+                    stopId: true,
+                    reviews: true
                 },
                 where: {
                     NOT: {
-                        accessibility: "unknown"
+                        reviews: "unknown"
                     }
                 }
             });
             
             stops.forEach(stop => {
-                states[stop.id] = stop.accessibility;
+                states[stop.stopId] = stop.reviews;
             });
             
             geometries[layer].features.forEach(stop => {

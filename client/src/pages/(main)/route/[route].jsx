@@ -7,7 +7,7 @@ import { CardClose } from '@components/card-close';
 import { useQuery } from '@hooks/query';
 import { AccessibilityState } from '@components/accessibility-state';
 import { RouteIcon } from '@components/route-icon';
-import { useMapStore, shallow } from '@hooks/store';
+import { useMapStore, usePerspectiveStore, shallow } from '@hooks/store';
 import i18n from '@assets/i18n-strings.json';
 
 import '@assets/styles/components/route-details.scss';
@@ -17,12 +17,6 @@ export const RouteDetails = () => {
     
     const tabStore = useTabStore();
     
-    const { data: details } = useQuery({
-        method: 'post',
-        url: '/api/route-details',
-        data: { id: route }
-    });
-
     const [
         setStopVisibility,
         setRouteVisibility
@@ -30,6 +24,17 @@ export const RouteDetails = () => {
         state.setStopVisibility,
         state.setRouteVisibility
     ], shallow);
+
+    const perspective = usePerspectiveStore(state => state.perspective);
+
+    const { data: details } = useQuery({
+        method: 'post',
+        url: '/api/route-details',
+        data: {
+            id: route,
+            perspective
+        }
+    });
     
     useEffect(() => {
         const stops = details.directions

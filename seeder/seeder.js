@@ -48,7 +48,9 @@ const processAgency = async config => {
     routes = routes.map(route => transformDefault(route, { id: config.id }));
     
     // Set base data for review-enabled agencies
-    stops = stops.map(stop => (stop.wheelchair_boarding = 0, stop));
+    if (config.ignoreAccessibility) {
+        stops = stops.map(stop => (stop.wheelchair_boarding = 0, stop));
+    }
     stops = stops.map(stop => (stop.stop_tags = [], stop));
     
     // Merge agency constants into object for storage

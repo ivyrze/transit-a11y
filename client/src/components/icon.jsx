@@ -1,7 +1,7 @@
 import React from 'react';
 import cx from 'classnames';
 import { FaXmark, FaWheelchairMove, FaTriangleExclamation, FaExclamation, FaBan, FaQuestion, FaAsterisk } from 'react-icons/fa6';
-import { PiMagnifyingGlassBold, PiXBold, PiPlusCircleFill, PiArrowSquareOut, PiSmileySad, PiArrowLineRightFill, PiArrowLineUpFill, PiArrowLineDownFill, PiElevatorFill, PiEscalatorUpFill, PiChairFill, PiMonitorBold, PiFlameFill, PiCaretUp, PiCaretDown, PiCaretRight, PiDotsThreeBold, PiTrashSimpleFill, PiSignInBold, PiNavigationArrowBold, PiPathBold, PiPencilSimpleFill, PiBookOpenFill, PiCircleNotchBold, PiWarningCircleFill, PiCheckBold, PiUploadSimpleFill, PiArchiveFill, PiClockCounterClockwiseFill, PiLock } from 'react-icons/pi';
+import { PiMagnifyingGlassBold, PiXBold, PiPlusCircleFill, PiArrowSquareOut, PiSmileySad, PiArrowLineRightFill, PiArrowLineUpFill, PiArrowLineDownFill, PiElevatorFill, PiEscalatorUpFill, PiChairFill, PiMonitorBold, PiFlameFill, PiCaretUp, PiCaretDown, PiCaretRight, PiDotsThreeBold, PiTrashSimpleFill, PiSignInBold, PiNavigationArrowBold, PiPathBold, PiPencilSimpleFill, PiBookOpenFill, PiCircleNotchBold, PiWarningCircleFill, PiCheckBold, PiUploadSimpleFill, PiArchiveFill, PiClockCounterClockwiseFill, PiLock, PiEyeBold } from 'react-icons/pi';
 import IconRampEntrance from '@assets/images/icon-ramp-entrance.svg?react';
 import IconShelter from '@assets/images/icon-shelter.svg?react';
 import IconMenu from '@assets/images/icon-menu.svg?react';
@@ -51,7 +51,8 @@ export const Icon = (props) => {
         upload: PiUploadSimpleFill,
         archive: PiArchiveFill,
         archived: PiClockCounterClockwiseFill,
-        lock: PiLock
+        lock: PiLock,
+        perspective: PiEyeBold
     };
     
     const altIcons = {

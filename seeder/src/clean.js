@@ -17,6 +17,7 @@ export const clean = async (agencies, stops, routes) => {
         prisma.routeDirection.deleteMany(),
         prisma.route.deleteMany(whereClause(replacedRoutes)),
         prisma.stop.deleteMany(whereClause(replacedStops)),
+        prisma.accessibility.deleteMany(),
         prisma.agency.deleteMany(whereClause(replacedAgencies))
     ];
 };

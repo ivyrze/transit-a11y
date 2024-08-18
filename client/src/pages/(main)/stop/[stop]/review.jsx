@@ -11,17 +11,22 @@ import { AttachmentInput } from '@components/attachment-input';
 import { InfoNotice } from '@components/info-notice';
 import { Button } from '@components/button';
 import { useAuth } from '@hooks/auth';
-import { useMapStore } from '@hooks/store';
+import { useMapStore, usePerspectiveStore } from '@hooks/store';
 import { getStateGroup } from '@common/a11y-states';
 import i18n from '@assets/i18n-strings.json';
 
 export const ReviewForm = () => {
     const { stop } = useParams();
+
+    const perspective = usePerspectiveStore(state => state.perspective);
     
     const { data: details } = useImmutableQuery({
         method: 'post',
         url: '/api/stop-details',
-        data: { id: stop }
+        data: {
+            id: stop,
+            perspective
+        }
     });
 
     const { auth } = useAuth();

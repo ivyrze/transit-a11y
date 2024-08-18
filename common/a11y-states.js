@@ -135,6 +135,13 @@ export const accessibilityStates = new Map([
         }
     ],
     [
+        "inaccessible",
+        {
+            "group": "inaccessible",
+            "unreviewable": true
+        }
+    ],
+    [
         "auxiliary",
         {
             "group": "auxiliary",

@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { MenuItem } from '@ariakit/react';
 import { Menu } from '@components/menu';
 import { useQuery } from '@hooks/query';
+import { usePerspectiveStore } from '@hooks/store';
 import { TagList } from '@components/tag-list';
 import { Review } from '@components/review';
 import { ReviewDrawer } from '@components/review-drawer';
@@ -15,11 +16,16 @@ import '@assets/styles/components/stop-details.scss';
 
 export const StopDetails = () => {
     const { stop } = useParams();
+
+    const perspective = usePerspectiveStore(state => state.perspective);
     
     const { data: details } = useQuery({
         method: 'post',
         url: '/api/stop-details',
-        data: { id: stop }
+        data: {
+            id: stop,
+            perspective
+        }
     });
     
     const gsvURL = 'https://www.google.com/maps/@?' +
@@ -75,6 +81,11 @@ export const StopDetails = () => {
                         )) }
                     </ReviewDrawer>
                 </div>
+            ) }
+            { perspective == "agency" && (
+                <span className="source-link">
+                    Source: <Link target="_blank" href={ details.agency.url } rel="noreferrer" className="link--minimal">{ details.agency.name }</Link>
+                </span>
             ) }
         </main>
     );

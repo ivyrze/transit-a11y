@@ -3,15 +3,20 @@ import { Helmet } from 'react-helmet';
 import { Outlet } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import { useImmutableQuery } from '@hooks/query';
-import { useMapStore, shallow } from '@hooks/store';
+import { useMapStore, usePerspectiveStore, shallow } from '@hooks/store';
 
 export const StopLayout = () => {
     const { stop } = useParams();
+
+    const perspective = usePerspectiveStore(state => state.perspective);
     
     const { data: details } = useImmutableQuery({
         method: 'post',
         url: '/api/stop-details',
-        data: { id: stop }
+        data: {
+            id: stop,
+            perspective
+        }
     });
     
     const [

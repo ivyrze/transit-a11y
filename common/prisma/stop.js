@@ -71,12 +71,15 @@ export const StopMethods = {
         tags = [ ...new Set(tags) ];
         
         // Update the stop object with consensus values
-        const newValues = { accessibility, tags };
+        await prisma.accessibility.update({
+            data: { reviews: accessibility },
+            where: { stopId: id }
+        });
         await prisma.stop.update({
-            data: newValues,
+            data: { tags },
             where: { id }
         });
         
-        return newValues;
+        return { accessibility, tags };
     }
 };

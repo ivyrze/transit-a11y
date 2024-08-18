@@ -40,6 +40,32 @@ textarea,
     }
 }
 
+input[type="checkbox"],
+input[type="radio"] {
+    display: inline-block;
+    width: auto;
+    margin-inline: 0 6px;
+    padding: 8px;
+    color: #1d96e8;
+
+    &:checked {
+        border-color: currentColor;
+    }
+}
+
+input[type="radio"] {
+    border-radius: 50%;
+
+    &:checked {
+        background: radial-gradient(
+            circle,
+            currentColor 0%,
+            currentColor 39.99%,
+            transparent 40%
+        );
+    }
+}
+
 legend,
 label {
     font-weight: weight('medium');

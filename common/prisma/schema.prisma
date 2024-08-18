@@ -95,11 +95,18 @@ model Stop {
   description   String?
   coordinates   Float[]
   major         Boolean?
-  accessibility String
+  accessibility Accessibility?
   tags          String[]
   reviews       Review[]
   url           String?
   routeBranches RouteDirectionStop[]
+}
+
+model Accessibility {
+  stop    Stop   @relation(fields: [stopId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  stopId  String @unique
+  reviews String @default("unknown")
+  agency  String @default("unknown")
 }
 
 model User {

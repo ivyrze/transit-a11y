@@ -37,6 +37,16 @@ export const MainMenu = () => {
                             Route explorer
                         </Link>
                     } />
+                    <MenuItem render={
+                        <Link
+                            to="/perspectives"
+                            className="menu__item"
+                            currentAware
+                        >
+                            <Icon name="perspective" />
+                            Switch perspectives
+                        </Link>
+                    } />
                 </MenuGroup>
                 <MenuGroup className="menu__group">
                     <MenuGroupLabel className="menu__group-label">User</MenuGroupLabel>
