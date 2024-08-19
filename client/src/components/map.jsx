@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import MapboxGL from 'mapbox-gl/dist/mapbox-gl';
 import Mapbox, { Source, Layer, GeolocateControl } from 'react-map-gl';
 import { MapImage } from '@components/map-image';
-import { useMapStore, shallow } from '@hooks/store';
+import { useMapStore, usePerspectiveStore, shallow } from '@hooks/store';
 import { useTheme } from '@hooks/theme';
 import { useImmutableQuery } from '@hooks/query';
 import { styleFactory } from '@assets/mapbox-style';
@@ -31,6 +31,7 @@ export const Map = forwardRef((props, ref) => {
     ], shallow);
     
     const { theme } = useTheme();
+    const perspective = usePerspectiveStore(state => state.perspective);
     const navigate = useNavigate();
     
     const map = useRef();
@@ -68,7 +69,7 @@ export const Map = forwardRef((props, ref) => {
                     beforeId={ beforeId }
                     { ...(filter && { filter }) }
                     { ...layer }
-                / >
+                />
             );
         });
     }, [ theme, overriddenStopStates, stopVisibility, routeVisibility ]);
@@ -196,7 +197,7 @@ export const Map = forwardRef((props, ref) => {
                 <Source
                     id="internal-api"
                     type="vector"
-                    tiles={[ '/api/map-tiles/{z}/{x}/{y}' ]}
+                    tiles={[ `/api/map-tiles/${perspective}/{z}/{x}/{y}` ]}
                     promoteId={{ 'stops':'stop_id','routes':'route_id' }}
                     minzoom={ 8 }
                     maxzoom={ 16 }

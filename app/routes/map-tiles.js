@@ -4,6 +4,9 @@ import { validator } from '../middleware/validator.js';
 import { prisma } from '../../common/prisma/index.js';
 
 const schema = z.object({
+    perspective: z.enum(
+        [ 'reviews', 'agency' ]
+    ),
     z: z.coerce.number(),
     x: z.coerce.number(),
     y: z.coerce.number()
@@ -11,8 +14,8 @@ const schema = z.object({
 
 const router = new Hono();
 
-router.get('/:z/:x/:y', validator('param', schema), async c => {
-    const { z, x, y } = c.req.valid('param');
+router.get('/:perspective/:z/:x/:y', validator('param', schema), async c => {
+    const { perspective, z, x, y } = c.req.valid('param');
 
     const tile = await prisma.$queryRaw`
         SELECT string_agg(mvt, '') as tile
@@ -42,7 +45,10 @@ router.get('/:z/:x/:y', validator('param', schema), async c => {
                     name AS stop_name,
                     id AS stop_id,
                     major AS is_major,
-                    reviews AS wheelchair_boarding
+                    CASE
+                        WHEN ${ perspective == "reviews" } THEN reviews
+                        WHEN ${ perspective == "agency" } THEN agency
+                    END as wheelchair_boarding
                     FROM "Stop"
                     INNER JOIN "Accessibility"
                     ON "Accessibility"."stopId" = "Stop".id
