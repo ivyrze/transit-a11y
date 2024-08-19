@@ -1,5 +1,5 @@
 import React from 'react';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import { VisuallyHidden } from '@ariakit/react';
 import { Link } from '@components/link';
 import aboutGraphic from '@assets/images/about-graphic.svg';

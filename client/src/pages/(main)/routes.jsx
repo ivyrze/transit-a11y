@@ -1,5 +1,5 @@
 import React from 'react';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import { Link } from '@components/link';
 import { CardClose } from '@components/card-close';
 import { RouteIcon } from '@components/route-icon';

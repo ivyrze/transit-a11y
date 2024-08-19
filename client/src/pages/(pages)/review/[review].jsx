@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Helmet } from "react-helmet";
+import { Helmet } from "react-helmet-async";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@hooks/query";
 import { AuthorLink } from "@components/author-link";

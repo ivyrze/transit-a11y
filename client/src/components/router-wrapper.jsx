@@ -1,4 +1,4 @@
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import { announce, focusElement, elementFromTarget } from 'oaf-side-effects';
 
 export const RouterWrapper = () => {

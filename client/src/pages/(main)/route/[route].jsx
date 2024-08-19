@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import { Link } from '@components/link';
 import { useParams } from 'react-router-dom';
 import { Tab, TabList, TabPanel, useTabStore } from '@ariakit/react';
