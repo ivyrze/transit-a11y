@@ -14,16 +14,16 @@ import '@assets/styles/components/map.scss';
 export const Map = forwardRef((props, ref) => {
     const [
         flyCoords,
-        overriddenStopStyles,
-        clearOverriddenStopStyles,
+        overriddenStopStates,
+        clearOverriddenStopStates,
         openedStopHistory,
         clearOpenedStopHistory,
         stopVisibility,
         routeVisibility
     ] = useMapStore(state => [
         state.flyCoords,
-        state.overriddenStopStyles,
-        state.clearOverriddenStopStyles,
+        state.overriddenStopStates,
+        state.clearOverriddenStopStates,
         state.openedStopHistory,
         state.clearOpenedStopHistory,
         state.stopVisibility,
@@ -45,7 +45,7 @@ export const Map = forwardRef((props, ref) => {
     const bounds = data?.bounds;
     
     const mapLayers = useMemo(() => {
-        const reversedLayers = styleFactory(theme, overriddenStopStyles).reverse();
+        const reversedLayers = styleFactory(theme, overriddenStopStates).reverse();
         return reversedLayers.map((layer, index) => {
             const beforeId = index > 0 ?
                 reversedLayers[index - 1]?.id :
@@ -71,7 +71,7 @@ export const Map = forwardRef((props, ref) => {
                 / >
             );
         });
-    }, [ theme, overriddenStopStyles, stopVisibility, routeVisibility ]);
+    }, [ theme, overriddenStopStates, stopVisibility, routeVisibility ]);
     
     useImperativeHandle(ref, () => ({
         triggerGeolocation: () => geolocateControl.current?.trigger()
@@ -105,8 +105,8 @@ export const Map = forwardRef((props, ref) => {
             }, state);
         };
         
-        Object.keys(overriddenStopStyles).forEach(stop => {
-            setStopFeatureState(stop, { style: overriddenStopStyles[stop] });
+        Object.keys(overriddenStopStates).forEach(stop => {
+            setStopFeatureState(stop, { accessibility: overriddenStopStates[stop] });
         });
         
         Object.keys(openedStopHistory).forEach(stop => {
@@ -116,10 +116,10 @@ export const Map = forwardRef((props, ref) => {
     
     useEffect(() => {
         return () => {
-            clearOverriddenStopStyles();
+            clearOverriddenStopStates();
             clearOpenedStopHistory();
         };
-    }, [ clearOverriddenStopStyles, clearOpenedStopHistory ]);
+    }, [ clearOverriddenStopStates, clearOpenedStopHistory ]);
     
     const interactiveLayers = [ "stops-icon", "stops-label" ];
     

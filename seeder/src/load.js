@@ -72,7 +72,7 @@ export const load = async config => {
     }
     
     // Remove routes that have no trips associated with them
-    routes = routes.filter(route => route.route_shapes.length);
+    routes = routes.filter(route => route.route_shapes);
     
     agency.agency_bounds = calculateAgencyBounds(routes);
     
@@ -300,18 +300,25 @@ const assignStopMajority = async stops => {
     return stops;
 };
 
-const assembleRouteShape = route => {
-    return gtfs.getShapes({ route_id: route });
+const assembleRouteShape = async route => {
+    const shapes = Object.values(Object.groupBy(
+        await gtfs.getShapes({ route_id: route }),
+        shape => shape.shape_id
+    ));
+    if (!shapes.length) { return; }
+
+    return shapes.map(shape => {
+        return turfUtils.lineString(shape.map(coord => {
+            return [
+                coord.shape_pt_lon,
+                coord.shape_pt_lat
+            ];
+        }));
+    });
 };
 
 const calculateAgencyBounds = routes => {
-    let points = [];
-    routes.forEach(route => {
-        points = points.concat(route.route_shapes.map(shape => {
-            return turfUtils.point([ shape.shape_pt_lon, shape.shape_pt_lat ]);
-        }));
-    });
-
-    const bounds = turfBounds(turfUtils.featureCollection(points));
+    const shapes = routes.map(route => route.route_shapes).flat();
+    const bounds = turfBounds(turfUtils.featureCollection(shapes));
     return [ bounds[0], bounds[3], bounds[2], bounds[1] ];
 };

@@ -12,7 +12,6 @@ import { InfoNotice } from '@components/info-notice';
 import { Button } from '@components/button';
 import { useAuth } from '@hooks/auth';
 import { useMapStore, usePerspectiveStore } from '@hooks/store';
-import { getStateGroup } from '@common/a11y-states';
 import i18n from '@assets/i18n-strings.json';
 
 export const ReviewForm = () => {
@@ -32,14 +31,14 @@ export const ReviewForm = () => {
     const { auth } = useAuth();
     
     const navigate = useNavigate();
-    const overrideStopStyle = useMapStore(state => state.overrideStopStyle);
+    const overrideStopState = useMapStore(state => state.overrideStopState);
     
     const showStopCard = () => navigate('/stop/' + stop);
     const closeCard = () => navigate('/');
     
     const handleFormResponse = response => {
         if (response?.accessibility) {
-            overrideStopStyle({ [stop]: getStateGroup(response.accessibility).style });
+            overrideStopState({ [stop]: response.accessibility });
         }
         closeCard();
     };

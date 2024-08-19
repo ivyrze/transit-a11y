@@ -3,7 +3,6 @@ import { HTTPException } from 'hono/http-exception';
 import { z } from 'zod';
 import { validator } from '../middleware/validator.js'; 
 import { prisma } from '../../common/prisma/index.js';
-import * as tiles from './map-tiles.js';
 
 const schema = z.object({
     id: z.string()
@@ -42,8 +41,7 @@ router.post('/', validator('json', schema), async c => {
     
     await prisma.review.cleanupAndDelete(id);
     
-    const consensus = await prisma.stop.consensus(review.stopId);
-    await tiles.invalidateSingle(review.stopId, consensus.accessibility);
+    await prisma.stop.consensus(review.stopId);
     
     return c.json({});
 });

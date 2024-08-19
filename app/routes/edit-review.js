@@ -3,7 +3,6 @@ import { HTTPException } from 'hono/http-exception';
 import { z } from 'zod';
 import { validator, zCoerceArray } from '../middleware/validator.js'; 
 import { prisma } from '../../common/prisma/index.js';
-import * as tiles from './map-tiles.js';
 import { accessibilityStates } from '../../common/a11y-states.js';
 import { statePrioritySort } from '../../common/utils.js';
 
@@ -58,8 +57,7 @@ router.post('/', validator('form', schema), async c => {
         }
     });
     
-    const consensus = await prisma.stop.consensus(review.stopId);
-    await tiles.invalidateSingle(review.stopId, consensus.accessibility);
+    await prisma.stop.consensus(review.stopId);
     
     return c.json({});
 });

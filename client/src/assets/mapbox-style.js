@@ -1,13 +1,47 @@
-export const styleFactory = (theme, overriddenStopStyles) => {
+import { accessibilityStates, getStateGroup } from '@common/a11y-states';
+
+export const styleFactory = (theme, overriddenStopStates) => {
+    let accessibilityStyles = {};
+    [ ...accessibilityStates.keys() ].forEach(state => {
+        const style = getStateGroup(state).style;
+        accessibilityStyles[style] ??= [];
+        accessibilityStyles[style].push(state);
+    });
+    accessibilityStyles = Object.entries(accessibilityStyles);
+
+    const stateInput =
+        ["get", "wheelchair_boarding"];
+    const overriddenStopMatch =
+        Object.entries(overriddenStopStates).flat();
+    
+    const getAccessibilityStyle = [
+        "case",
+        ...accessibilityStyles.map(([ style, states ]) => ([
+            [
+                "in",
+                Object.keys(overriddenStopStates).length ?
+                [
+                    "match",
+                    ["get", "stop_id"],
+                    ...overriddenStopMatch,
+                    stateInput
+                ] :
+                stateInput,
+                ["literal", states]
+            ],
+            style
+        ])).flat(1),
+        "unknown"
+    ];
+
     const isLight = theme === "light-mode";
-    
     const iconSuffix = isLight ? "light" : "dark";
-    const baseIcon = ["concat", ["get", "wheelchair_boarding"], "-" + iconSuffix];
     
-    const overriddenIcons = Object.entries(overriddenStopStyles).map(entry => {
-        entry[1] = entry[1] + "-" + iconSuffix;
-        return entry;
-    }).flat();
+    const getIconName = [
+        "concat",
+        getAccessibilityStyle,
+        "-" + iconSuffix
+    ];
     
     return [
         {
@@ -154,11 +188,7 @@ export const styleFactory = (theme, overriddenStopStyles) => {
                 ],
                 "circle-color": [
                     "match",
-                    [
-                        "coalesce",
-                        ["feature-state", "style"],
-                        ["get", "wheelchair_boarding"]
-                    ],
+                    getAccessibilityStyle,
                     ["inaccessible"],
                     isLight ? "#ff7d7d" : "#361717",
                     ["warning"],
@@ -169,11 +199,7 @@ export const styleFactory = (theme, overriddenStopStyles) => {
                 ],
                 "circle-stroke-color": [
                     "match",
-                    [
-                        "coalesce",
-                        ["feature-state", "style"],
-                        ["get", "wheelchair_boarding"]
-                    ],
+                    getAccessibilityStyle,
                     ["inaccessible"],
                     isLight ? "#811616" : "#fdacac",
                     ["warning"],
@@ -198,12 +224,7 @@ export const styleFactory = (theme, overriddenStopStyles) => {
                     ["zoom"],
                     "",
                     14,
-                    overriddenIcons.length ? [
-                        "match",
-                        ["get", "stop_id"],
-                        ...overriddenIcons,
-                        baseIcon
-                    ] : baseIcon
+                    getIconName
                 ],
                 "icon-size": [
                     "interpolate",

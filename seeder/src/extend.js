@@ -32,27 +32,15 @@ export const extend = async (agency, stops, routes, id) => {
                 "route_id": id,
                 "route_long_name": name,
                 "route_color": color.hex,
-                "route_shapes": shapes
+                "route_shapes": shapes[].geojson
             }
         }`
     );
     
-    // Convert shape GeoJSON temporarily into shape object format
     appendicies.forEach(appendix => {
-        if (appendix.route_shapes == null) { return; }
-        
-        let shapes = [];
-        appendix.route_shapes.forEach((shape, index) => {
-            JSON.parse(shape.geojson).geometry.coordinates.forEach(coords => {
-                shapes.push({
-                    shape_id: index,
-                    shape_pt_lon: coords[0],
-                    shape_pt_lat: coords[1]
-                });
-            });
+        appendix.route_shapes = appendix.route_shapes?.map(shape => {
+            return JSON.parse(shape);
         });
-        
-        appendix.route_shapes = shapes;
     });
     
     // Merge appendices into dataset objects

@@ -1,4 +1,5 @@
 import { prisma } from '../../common/prisma/index.js';
+import * as turfUtils from '@turf/helpers';
 
 const schema = {
     agencies: {
@@ -43,6 +44,17 @@ const schema = {
                 }) };
                 return direction;
             }) };
+        } },
+        shapes: { from: 'route_shapes', apply: shapes => {
+            if (shapes.length === 1) {
+                return shapes[0].geometry;
+            } else {
+                return turfUtils.multiLineString(
+                    shapes.map(shape => {
+                        return shape.geometry.coordinates;
+                    })
+                ).geometry;
+            }
         } }
     }
 };

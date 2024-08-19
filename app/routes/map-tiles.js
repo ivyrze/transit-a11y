@@ -1,10 +1,7 @@
-import vtPbf from 'vt-pbf';
-import geojsonVt from 'geojson-vt';
 import { Hono } from 'hono';
 import { z } from 'zod';
 import { validator } from '../middleware/validator.js'; 
 import { prisma } from '../../common/prisma/index.js';
-import { getStateGroup } from '../../common/a11y-states.js';
 
 const schema = z.object({
     z: z.coerce.number(),
@@ -16,75 +13,48 @@ const router = new Hono();
 
 router.get('/:z/:x/:y', validator('param', schema), async c => {
     const { z, x, y } = c.req.valid('param');
-    
-    // Generate binary data from the indexed geometry layers
-    var tiles = {};
-    Object.keys(indicies).forEach(layer => {
-        tiles[layer] = indicies[layer].getTile(z, x, y);
-    });
-    c.header('Content-Type', 'application/octet-stream');
-    
-    if (!Object.values(tiles).includes(null)) {
-        const buffer = vtPbf.fromGeojsonVt(tiles, { version: 2, maxZoom: 16 });
 
-        return c.body(buffer.buffer);
-    } else {
-        return c.body();
-    }
+    const tile = await prisma.$queryRaw`
+        SELECT string_agg(mvt, '') as tile
+        FROM (
+            (
+                SELECT ST_AsMVT(layer.*, 'routes') as mvt
+                FROM (
+                    SELECT ST_AsMVTGeom(
+                        geometry,
+                        ST_TileEnvelope(
+                            ${ z }::int, ${ x }::int, ${ y }::int
+                        )
+                    ),
+                    name AS route_name,
+                    id AS route_id
+                    FROM "Route"
+                ) layer
+            ) UNION (
+                SELECT ST_AsMVT(layer.*, 'stops') as mvt
+                FROM (
+                    SELECT ST_AsMVTGeom(
+                        geometry,
+                        ST_TileEnvelope(
+                            ${ z }::int, ${ x }::int, ${ y }::int
+                        )
+                    ),
+                    name AS stop_name,
+                    id AS stop_id,
+                    major AS is_major,
+                    reviews AS wheelchair_boarding
+                    FROM "Stop"
+                    INNER JOIN "Accessibility"
+                    ON "Accessibility"."stopId" = "Stop".id
+                    WHERE major = true
+                    OR (major = false AND ${ z >= 11 })
+                ) layer
+            )
+        ) aggregated
+    `;
+
+    c.header('Content-Type', 'application/octet-stream');
+    return c.body(tile[0].tile);
 });
 
 export default router;
-
-var geometries = {};
-var indicies = {};
-
-export const generate = async (invalidate = true) => {
-    const layers = [ 'stops', 'routes' ];
-    
-    for await (const layer of layers) {
-        // Get raw GeoJSON from the database
-        if (!geometries[layer]) {
-            geometries[layer] = (await prisma.geometry.findUnique({
-                where: { id: layer }
-            })).geojson;
-        }
-        
-        // Inject accessibility states from reviews
-        if (invalidate && layer == 'stops') {
-            let states = {};
-            const stops = await prisma.accessibility.findMany({
-                select: {
-                    stopId: true,
-                    reviews: true
-                },
-                where: {
-                    NOT: {
-                        reviews: "unknown"
-                    }
-                }
-            });
-            
-            stops.forEach(stop => {
-                states[stop.stopId] = stop.reviews;
-            });
-            
-            geometries[layer].features.forEach(stop => {
-                stop.properties.wheelchair_boarding =
-                    states[stop.properties.stop_id] ?
-                    getStateGroup(states[stop.properties.stop_id]).style :
-                    "unknown";
-            });
-        }
-        
-        // Index the layer for quick distribution later
-        indicies[layer] = geojsonVt(geometries[layer], { maxZoom: 16 });
-    }
-};
-
-export const invalidateSingle = async (id, state) => {
-    geometries.stops.features.forEach(stop => {
-        if (stop.properties.stop_id != id) { return; }
-        stop.properties.wheelchair_boarding = getStateGroup(state).style;
-    });
-    await generate(false);
-};

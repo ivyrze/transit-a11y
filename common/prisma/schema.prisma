@@ -1,10 +1,12 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions"]
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("POSTGRES_URL")
+  provider   = "postgresql"
+  url        = env("POSTGRES_URL")
+  extensions = [postgis()]
 }
 
 model Agency {
@@ -14,11 +16,6 @@ model Agency {
   vehicle String
   url     String
   default Boolean
-}
-
-model Geometry {
-  id      String @id
-  geojson Json
 }
 
 model Invite {
@@ -50,11 +47,13 @@ model ReviewAttachment {
 }
 
 model Route {
-  id           String           @id
+  id           String                   @id
   name         String
   number       Int
   color        String
   directions   RouteDirection[]
+  shapes       Json
+  geometry     Unsupported("geometry")? @default(dbgenerated())
 }
 
 model RouteDirection {
@@ -90,10 +89,11 @@ model RouteDirectionStop {
 }
 
 model Stop {
-  id            String                @id
+  id            String                   @id
   name          String
   description   String?
   coordinates   Float[]
+  geometry      Unsupported("geometry")? @default(dbgenerated())
   major         Boolean?
   accessibility Accessibility?
   tags          String[]

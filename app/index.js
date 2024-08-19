@@ -8,7 +8,6 @@ import crypto from 'crypto';
 import dotenv from 'dotenv';
 
 import routes from './routes.js';
-import * as tiles from './routes/map-tiles.js';
 
 dotenv.config({ path: '../.env' });
 global.crypto ??= crypto;
@@ -31,9 +30,6 @@ for (const path in routes) {
 
     app.route(path, routes[path].router);
 }
-
-// Start map tile indexing
-await tiles.generate();
 
 // Start server
 serve({

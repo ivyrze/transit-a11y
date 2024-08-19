@@ -6,7 +6,7 @@ import { load } from './src/load.js';
 import { transform, transformSanitize, transformDefault } from './src/transform.js';
 import { extend } from './src/extend.js';
 import { store } from './src/store.js';
-import { geojson, link } from './src/convert.js';
+import { link } from './src/convert.js';
 
 import { prisma } from '../common/prisma/index.js';
 import { attachExitHandler, attachExceptionHandler } from '../common/utils.js';
@@ -98,8 +98,5 @@ const transaction = await clean(agencies, stops, routes);
 
 // Store everything in Postgres database
 await store(agencies, stops, routes, transaction);
-
-// Convert to GeoJSON and optionally upload to Mapbox
-await geojson(stops, routes);
 
 await prisma.$disconnect();
