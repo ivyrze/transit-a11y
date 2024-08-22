@@ -14,8 +14,7 @@ export const ReviewAttachmentVirtuals = {
 
 export const ReviewAttachmentMethods = {
     allowedFormats: {
-        jpeg: 'image/jpeg',
-        heif: 'image/heic'
+        jpeg: 'image/jpeg'
     },
     defaultProxySizes: [
         {

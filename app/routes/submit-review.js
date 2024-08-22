@@ -41,7 +41,7 @@ router.post('/', validator('form', schema), async c => {
     
     if (validity.includes(false)) {
         c.status(400);
-        return c.json({ errors: { attachments: 'Images must be .jpeg or .heic files' }});
+        return c.json({ errors: { attachments: 'Images must be .jpeg files' }});
     }
     
     // Verify that the stop exists
