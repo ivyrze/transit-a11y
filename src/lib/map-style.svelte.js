@@ -20,8 +20,8 @@ export const styleFactory = () => {
                     "/api/map-tiles/" + perspectiveStore.perspective + "/{z}/{x}/{y}"
                 ],
                 "promoteId": {
-                    "stops": "stop_id",
-                    "routes": "route_id"
+                    "stops": "id",
+                    "routes": "id"
                 }
             }
         },
@@ -3228,7 +3228,7 @@ const layersFactory = () => {
                 Object.keys(overriddenStopStates).length ?
                 [
                     "match",
-                    ["get", "stop_id"],
+                    ["get", "id"],
                     ...overriddenStopMatch,
                     stateInput
                 ] :
@@ -3246,9 +3246,9 @@ const layersFactory = () => {
         "-" + (isLight ? "light" : "dark")
     ];
 
-    const getVisibilityFilter = (field, visibility) => {
+    const getVisibilityFilter = visibility => {
         return visibility.length ? [
-            "in", ["get", field], ["literal", visibility]
+            "in", ["get", "id"], ["literal", visibility]
         ] : true;
     };
     
@@ -3259,9 +3259,7 @@ const layersFactory = () => {
             "source": "api",
             "source-layer": "routes",
             "minzoom": 8,
-            "filter": getVisibilityFilter(
-                'route_id', routeVisibility
-            ),
+            "filter": getVisibilityFilter(routeVisibility),
             "layout": {"line-cap": "round", "line-join": "round"},
             "paint": {
                 "line-width": [
@@ -3295,9 +3293,7 @@ const layersFactory = () => {
             "source": "api",
             "source-layer": "routes",
             "minzoom": 8,
-            "filter": getVisibilityFilter(
-                'route_id', routeVisibility
-            ),
+            "filter": getVisibilityFilter(routeVisibility),
             "layout": {"line-cap": "round", "line-join": "round"},
             "paint": {
                 "line-width": [
@@ -3334,9 +3330,7 @@ const layersFactory = () => {
             "source": "api",
             "source-layer": "stops",
             "minzoom": 12,
-            "filter": getVisibilityFilter(
-                'stop_id', stopVisibility
-            ),
+            "filter": getVisibilityFilter(stopVisibility),
             "paint": {
                 "circle-radius": [
                     "interpolate",
@@ -3359,9 +3353,7 @@ const layersFactory = () => {
             "source": "api",
             "source-layer": "stops",
             "minzoom": 8,
-            "filter": getVisibilityFilter(
-                'stop_id', stopVisibility
-            ),
+            "filter": getVisibilityFilter(stopVisibility),
             "paint": {
                 "circle-translate": [0, 0],
                 "circle-radius": [
@@ -3380,13 +3372,13 @@ const layersFactory = () => {
                     ["linear"],
                     ["zoom"],
                     8,
-                    ["case", ["==", ["get", "is_major"], false], 0, 0],
+                    ["case", ["==", ["get", "major"], false], 0, 0],
                     8.5,
-                    ["case", ["==", ["get", "is_major"], false], 0, 1],
+                    ["case", ["==", ["get", "major"], false], 0, 1],
                     12,
-                    ["case", ["==", ["get", "is_major"], false], 0, 1],
+                    ["case", ["==", ["get", "major"], false], 0, 1],
                     12.5,
-                    ["case", ["==", ["get", "is_major"], false], 1, 1]
+                    ["case", ["==", ["get", "major"], false], 1, 1]
                 ],
                 "circle-stroke-width": [
                     "interpolate",
@@ -3402,13 +3394,13 @@ const layersFactory = () => {
                     ["linear"],
                     ["zoom"],
                     8,
-                    ["case", ["==", ["get", "is_major"], false], 0, 0],
+                    ["case", ["==", ["get", "major"], false], 0, 0],
                     9,
-                    ["case", ["==", ["get", "is_major"], false], 0, 1],
+                    ["case", ["==", ["get", "major"], false], 0, 1],
                     12,
-                    ["case", ["==", ["get", "is_major"], false], 0, 1],
+                    ["case", ["==", ["get", "major"], false], 0, 1],
                     12.5,
-                    ["case", ["==", ["get", "is_major"], false], 1, 1]
+                    ["case", ["==", ["get", "major"], false], 1, 1]
                 ],
                 "circle-color": [
                     "match",
@@ -3440,9 +3432,7 @@ const layersFactory = () => {
             "source": "api",
             "source-layer": "stops",
             "minzoom": 11,
-            "filter": getVisibilityFilter(
-                'stop_id', stopVisibility
-            ),
+            "filter": getVisibilityFilter(stopVisibility),
             "layout": {
                 "text-optional": true,
                 "text-size": 17,
@@ -3478,7 +3468,7 @@ const layersFactory = () => {
                 ],
                 "icon-optional": true,
                 "text-anchor": "bottom",
-                "text-field": ["to-string", ["get", "stop_name"]],
+                "text-field": ["to-string", ["get", "name"]],
                 "text-letter-spacing": -0.01,
                 "icon-padding": 5,
                 "text-max-width": 8
@@ -3504,9 +3494,9 @@ const layersFactory = () => {
                     ["linear"],
                     ["zoom"],
                     14,
-                    ["case", ["==", ["get", "is_major"], false], 0, 1],
+                    ["case", ["==", ["get", "major"], false], 0, 1],
                     14.5,
-                    ["case", ["==", ["get", "is_major"], false], 1, 1]
+                    ["case", ["==", ["get", "major"], false], 1, 1]
                 ],
                 "text-halo-width": 4
             }

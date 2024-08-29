@@ -12,7 +12,7 @@
 
     const handleClick = event => {
         const feature = event.detail.features[0];
-        goto('/stop/' + feature.properties.stop_id);
+        goto('/stop/' + feature.properties.id);
     };
 
     const handleLoad = () => mapStore.isLoaded = true;

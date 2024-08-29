@@ -27,8 +27,7 @@ export const GET = async ({ params }) => {
                             ${ z }::int, ${ x }::int, ${ y }::int
                         )
                     ),
-                    name AS route_name,
-                    id AS route_id
+                    name, id
                     FROM "Route"
                 ) layer
             ) UNION (
@@ -40,9 +39,7 @@ export const GET = async ({ params }) => {
                             ${ z }::int, ${ x }::int, ${ y }::int
                         )
                     ),
-                    name AS stop_name,
-                    id AS stop_id,
-                    major AS is_major,
+                    name, id, major,
                     CASE
                         WHEN ${ perspective == "reviews" } THEN reviews
                         WHEN ${ perspective == "agency" } THEN agency
