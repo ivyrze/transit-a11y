@@ -1,0 +1,30 @@
+@import '../mixins';
+
+.map-container {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+
+    .maplibregl-ctrl-geolocate {
+        display: none;
+    }
+    
+    @include dark {
+        .maplibregl-ctrl.maplibregl-ctrl-attrib {
+            background-color: rgba(0, 0, 0, 0.2);
+        }
+        
+        .maplibregl-ctrl-attrib-button {
+            filter: invert(0.6);
+        }
+        
+        .maplibregl-ctrl-attrib a {
+            color: #999;
+        }
+        
+        a.maplibregl-ctrl-logo {
+            opacity: 0.5;
+        }
+    }
+}

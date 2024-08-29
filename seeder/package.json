@@ -3,9 +3,6 @@
   "scripts": {
     "start": "node seeder.js"
   },
-  "engines": {
-    "node": ">= 21.0.0"
-  },
   "dependencies": {
     "@prisma/client": "^5.18.0",
     "@turf/bbox": "^7.0.0",

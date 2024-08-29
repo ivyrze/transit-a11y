@@ -1,4 +1,5 @@
 import dotenv from 'dotenv';
+import { prisma } from '../src/database/index.js';
 import { readFile } from 'fs/promises';
 
 import { clean, orphans } from './src/clean.js';
@@ -8,16 +9,9 @@ import { extend } from './src/extend.js';
 import { store } from './src/store.js';
 import { link } from './src/convert.js';
 
-import { prisma } from '../common/prisma/index.js';
-import { attachExitHandler, attachExceptionHandler } from '../common/utils.js';
-
 // Read config file
 dotenv.config({ path: '../.env' });
 const configs = JSON.parse(await readFile('config.json'));
-
-// Handle database connection on exit
-attachExitHandler(() => prisma.$disconnect());
-attachExceptionHandler(() => prisma.$disconnect());
 
 // Import and process GTFS data
 const processAgency = async config => {

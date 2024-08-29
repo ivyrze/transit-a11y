@@ -1,0 +1,13 @@
+@import '../mixins';
+
+.author-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: weight('medium');
+
+    .profile-picture {
+        width: 1.5em;
+        height: 1.5em;
+    }
+}

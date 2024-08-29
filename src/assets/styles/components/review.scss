@@ -1,0 +1,63 @@
+@import '../mixins';
+
+.review-container {
+    padding-top: 14px;
+}
+
+.review {
+    margin-top: 16px;
+    
+    & > p {
+        margin-top: 6px;
+        margin-bottom: 0;
+    }
+    
+    &__header {
+        display: flex;
+        margin-bottom: 8px;
+        font-size: 16px;
+    }
+    
+    &__stop {
+        font-weight: weight('medium');
+    }
+    
+    &__actions {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        color: #747474;
+        margin-left: auto;
+        margin-right: 4px;
+
+        .menu__toggle {
+            color: inherit;
+        }
+
+        & > .icon {
+            line-height: 0;
+        }
+        
+        @include dark {
+            color: #828282;
+        }
+    }
+
+    &__timestamp {
+        font-weight: weight('light');
+    }
+
+    .accessibility-state {
+        font-size: 16px;
+    }
+    
+    & + .review-contribute {
+        margin-top: 16px;
+    }
+    
+    .attachment-list {
+        margin-top: 16px;
+        padding-bottom: 12px;
+        box-sizing: content-box;
+    }
+}

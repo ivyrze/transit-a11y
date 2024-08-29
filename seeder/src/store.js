@@ -1,4 +1,4 @@
-import { prisma } from '../../common/prisma/index.js';
+import { prisma } from '../../src/database/index.js';
 import * as turfUtils from '@turf/helpers';
 
 const schema = {

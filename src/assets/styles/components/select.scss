@@ -1,0 +1,29 @@
+@import './form';
+@import './menu';
+
+.select {
+    @extend .abstract-input;
+    
+    display: flex;
+    align-items: center;
+
+    &__popover {
+        @extend .menu;
+    }
+
+    &__item {
+        @extend .menu__item;
+    }
+
+    &__group {
+        @extend .menu__group;
+    }
+
+    &__group-label {
+        @extend .menu__group-label;
+    }
+
+    &__hidden {
+        display: none;
+    }
+}

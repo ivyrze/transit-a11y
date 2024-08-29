@@ -1,0 +1,32 @@
+@import './attachment';
+@import './form';
+
+.attachment-input {
+    &__upload {
+        @extend .attachment, .abstract-input;
+        
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        border-style: dashed;
+        width: initial;
+        aspect-ratio: 2 / 3;
+
+        & > input[type="file"] {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            cursor: pointer;
+        }
+    }
+    
+    .attachment {
+        &__actions {
+            top: 0;
+            right: 0;
+            justify-content: flex-end;
+            flex-wrap: wrap-reverse;
+        }
+    }
+}

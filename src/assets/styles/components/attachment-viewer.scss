@@ -1,0 +1,39 @@
+@import '../mixins';
+@import './attachment';
+
+.attachment-viewer {
+    .attachment {
+        &__enlarge {
+            margin: 0;
+            padding: 0;
+        }
+        
+        &__actions {
+            left: 0;
+            bottom: 0;
+        }
+    }
+}
+
+.bp-wrap {
+    & > div:first-child {
+        background: var(--ui-base-color);
+    }
+
+    .bp-img {
+        border-radius: 12px;
+        overflow: hidden;
+    }
+
+    .bp-controls {
+        filter: invert(1);
+
+        @include dark {
+            filter: none;
+        }
+
+        button {
+            background: none;
+        }
+    }
+}

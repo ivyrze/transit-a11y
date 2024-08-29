@@ -1,0 +1,72 @@
+{
+  "accessible-dark": {
+    "height": 32,
+    "pixelRatio": 2,
+    "width": 32,
+    "x": 0,
+    "y": 0
+  },
+  "accessible-light": {
+    "height": 32,
+    "pixelRatio": 2,
+    "width": 32,
+    "x": 32,
+    "y": 0
+  },
+  "auxiliary-dark": {
+    "height": 32,
+    "pixelRatio": 2,
+    "width": 32,
+    "x": 64,
+    "y": 0
+  },
+  "auxiliary-light": {
+    "height": 32,
+    "pixelRatio": 2,
+    "width": 32,
+    "x": 96,
+    "y": 0
+  },
+  "inaccessible-dark": {
+    "height": 32,
+    "pixelRatio": 2,
+    "width": 32,
+    "x": 0,
+    "y": 32
+  },
+  "inaccessible-light": {
+    "height": 32,
+    "pixelRatio": 2,
+    "width": 32,
+    "x": 0,
+    "y": 64
+  },
+  "unknown-dark": {
+    "height": 32,
+    "pixelRatio": 2,
+    "width": 32,
+    "x": 0,
+    "y": 96
+  },
+  "unknown-light": {
+    "height": 32,
+    "pixelRatio": 2,
+    "width": 32,
+    "x": 32,
+    "y": 32
+  },
+  "warning-dark": {
+    "height": 32,
+    "pixelRatio": 2,
+    "width": 32,
+    "x": 64,
+    "y": 32
+  },
+  "warning-light": {
+    "height": 32,
+    "pixelRatio": 2,
+    "width": 32,
+    "x": 96,
+    "y": 32
+  }
+}

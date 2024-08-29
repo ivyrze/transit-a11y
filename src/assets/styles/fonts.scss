@@ -1,0 +1,14 @@
+@import 'variables';
+
+@each $name, $options in $fontFaces {
+    $prefix: map-get($options, 'prefix');
+    @each $slug, $variant in map-get($options, 'variants') {
+        @font-face {
+            font-family: $name;
+            src: url('/fonts/' + $prefix + '-' + $slug + '/webfont.woff2') format('woff2');
+            font-weight: map-get($variant, 'weight');
+            font-style: map-get($variant, 'style');
+            font-display: block;
+        }
+    }
+}

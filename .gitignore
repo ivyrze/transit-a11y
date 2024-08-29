@@ -1,7 +1,21 @@
-.env
 node_modules
-client/dist
-client/src/router.ts
-studio/dist
-seeder/config.json
-**.zip
+
+# Output
+.output
+.vercel
+/.svelte-kit
+/build
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Env
+.env
+.env.*
+!.env.example
+!.env.test
+
+# Vite
+vite.config.js.timestamp-*
+vite.config.ts.timestamp-*

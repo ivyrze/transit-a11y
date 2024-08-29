@@ -1,0 +1,39 @@
+@import '../mixins';
+
+.tab-list {
+    display: grid;
+    grid-auto-flow: column;
+    gap: 5px;
+    font-size: 16px;
+    background: #eee;
+    padding: 5px 6px;
+    margin: 20px 0;
+    border-radius: 21px;
+    overflow: hidden;
+    
+    @include dark {
+        background: #1b1b1b;
+    }
+    
+    .tab-item {
+        font-weight: weight('medium');
+        height: 2em;
+        border-radius: 1em;
+        opacity: 0.85;
+        transition: opacity 0.3s ease, background 0.2s ease;
+        
+        &:hover,
+        &.active {
+            opacity: 1;
+        }
+        
+        &.active {
+            background: #fff;
+            box-shadow: 0 1px 30px rgba(0, 0, 0, 0.1);
+            
+            @include dark {
+                background: #343434;
+            }
+        }
+    }
+}

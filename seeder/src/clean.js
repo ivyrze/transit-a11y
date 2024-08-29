@@ -1,4 +1,4 @@
-import { prisma } from '../../common/prisma/index.js';
+import { prisma } from '../../src/database/index.js';
 
 export const clean = async (agencies, stops, routes) => {
     const replacedAgencies = agencies.map(agency => agency.agency_id);

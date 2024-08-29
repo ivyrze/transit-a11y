@@ -1,25 +1,49 @@
 {
-  "name": "transit-a11y",
-  "type": "module",
-  "version": "1.0.0",
-  "private": true,
-  "scripts": {
-    "start": "npm run start -w app",
-    "develop": "concurrently -r \"npm run develop -w app\" \"npm run develop -w client\"",
-    "prebuild": "npm run generate -w common",
-    "build": "npm run build -w client"
-  },
-  "engines": {
-    "node": ">= 20.11.0"
-  },
-  "workspaces": [
-    "app",
-    "client",
-    "common",
-    "seeder",
-    "studio"
-  ],
-  "devDependencies": {
-    "concurrently": "^8.2.2"
-  }
+	"name": "transit-a11y",
+	"type": "module",
+	"version": "1.0.0",
+	"private": true,
+	"scripts": {
+		"develop": "vite dev",
+		"prebuild": "prisma generate",
+		"build": "vite build",
+		"preview": "vite preview",
+		"migrate": "prisma migrate dev"
+	},
+	"prisma": {
+		"schema": "./src/database/schema.prisma"
+	},
+	"workspaces": [
+		"seeder",
+		"studio"
+	],
+	"engines": {
+		"node": ">= 20.11.0"
+	},
+	"devDependencies": {
+		"@aws-sdk/client-s3": "^3.637.0",
+		"@melt-ui/pp": "^0.3.2",
+		"@prisma/client": "^5.18.0",
+		"@sveltejs/adapter-vercel": "^5.4.3",
+		"@sveltejs/kit": "^2.5.24",
+		"@sveltejs/vite-plugin-svelte": "^4.0.0-next.6",
+		"bcryptjs": "^2.4.3",
+		"gravatar": "^1.8.2",
+		"jsonwebtoken": "^9.0.2",
+		"prisma": "^5.18.0",
+		"sass-embedded": "^1.77.8",
+		"sharp": "^0.33.5",
+		"svelte": "^5.0.0-next.238",
+		"vite": "^5.4.2",
+		"zod": "^3.23.8"
+	},
+	"dependencies": {
+		"@iconify-json/fa6-solid": "^1.1.24",
+		"@iconify-json/ph": "^1.1.14",
+		"@melt-ui/svelte": "^0.83.0",
+		"bigger-picture": "^1.1.17",
+		"clsx": "^2.1.1",
+		"svelte-maplibre": "^0.9.13",
+		"unplugin-icons": "^0.19.2"
+	}
 }

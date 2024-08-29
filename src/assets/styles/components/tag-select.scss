@@ -1,0 +1,57 @@
+@import '../mixins';
+@import './button';
+
+.tag-select {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    
+    @include mobile {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+.tag-select__option {
+    position: relative;
+    flex-grow: 1;
+    text-align: center;
+    isolation: isolate;
+    
+    & > input[type="checkbox"] {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        inset: 0;
+        margin: 0;
+        border: none;
+    }
+
+    & > label {
+        @extend .button--filled;
+        
+        display: block;
+        position: relative;
+        z-index: 1;
+        cursor: pointer;
+        padding: 12px;
+        font-weight: weight('regular');
+        font-size: 16px;
+        line-height: 22px;
+        
+        & > .icon {
+            display: block;
+        }
+    }
+
+    &:has(input[type="checkbox"]:checked) > label {
+        @extend .button--primary;
+        color: #ebebeb;
+    }
+
+    &:has(input[type="checkbox"]:disabled) > label {
+        cursor: not-allowed;
+    }
+}

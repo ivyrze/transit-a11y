@@ -1,0 +1,31 @@
+@import '../mixins';
+
+.popover {
+    background: var(--ui-popup-color);
+    border-radius: var(--ui-popup-radius);
+    box-shadow: var(--ui-popup-shadow);
+    width: max-content;
+    max-width: 420px;
+    padding: 15px;
+    z-index: 1;
+    
+    &__arrow {
+        & > svg {
+            fill: var(--ui-popup-color);
+        }
+    }
+    
+    & > h1 {
+        font-size: 21px;
+        font-weight: weight('medium');
+        margin-block: 0;
+    }
+    
+    &__body {
+        margin-block: 6px 12px;
+        
+        p {
+            margin: 0;
+        }
+    }
+}
