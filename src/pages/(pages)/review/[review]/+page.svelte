@@ -130,7 +130,6 @@
                 <FormSubmit class="button--filled button--primary" />
                 <Button
                     class="button--filled"
-                    type="button"
                     onclick={ () => editing = false }
                 >
                     Cancel

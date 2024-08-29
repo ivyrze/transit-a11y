@@ -18,7 +18,6 @@
 </script>
 
 <MenuItemChild
-    type={ type == 'button' && type }
     class="menu__item"
     melt={ item }
     { ...passthroughProps }

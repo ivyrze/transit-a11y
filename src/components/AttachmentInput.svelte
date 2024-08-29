@@ -54,7 +54,6 @@
                     />
                 </Popover>
                 <Button
-                    type="button"
                     class="button--overlay"
                     aria-label="Delete attachment"
                     onclick={ () => handleDelete(index) }

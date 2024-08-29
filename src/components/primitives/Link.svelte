@@ -15,10 +15,15 @@
     const currentValue =
         currentAware && $page.url.pathname == href ?
         'page' : undefined;
+    
+    const isExternal =
+        !href.startsWith('/') && !href.startsWith('.');
 </script>
 
 <a
     { href }
+    { ...(isExternal && { 'target': '_blank' }) }
+    { ...(isExternal && { 'rel': 'noreferrer' }) }
     aria-current={ currentValue }
     use:melt
     { ...passthroughProps }

@@ -4,6 +4,7 @@
     import '$assets/styles/components/button.scss';
 
     const {
+        type = 'button',
         melt = emptyMeltElement,
         meltParams,
         children,
@@ -16,6 +17,7 @@
 </script>
 
 <button
+    { type }
     use:melt={ builder }
     { ...passthroughProps }
 >

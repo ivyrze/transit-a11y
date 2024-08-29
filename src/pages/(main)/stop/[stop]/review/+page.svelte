@@ -72,7 +72,6 @@
             <FormSubmit />
             <Button
                 class="button--filled"
-                type="button"
                 onclick={ showStopCard }
             >
                 Cancel

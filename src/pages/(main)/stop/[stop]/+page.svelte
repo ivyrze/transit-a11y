@@ -36,8 +36,6 @@
                 <MenuItem
                     type="link"
                     href={ gsvURL }
-                    target="_blank"
-                    rel="noreferrer"
                     class="menu__item"
                 >
                     Open in Google Street View
@@ -74,7 +72,7 @@
     {/if}
     {#if perspectiveStore.perspective == "agency"}
         <span class="source-link">
-            Source: <Link target="_blank" href={ data.agency.url } rel="noreferrer" class="link--minimal">{ data.agency.name }</Link>
+            Source: <Link href={ data.agency.url } class="link--minimal">{ data.agency.name }</Link>
         </span>
     {/if}
 </main>

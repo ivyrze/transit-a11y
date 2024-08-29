@@ -77,7 +77,6 @@
         </Button>
         {#if geolocationEnabled}
             <Button
-                type="button"
                 onclick={ () => mapStore.geolocateControl.trigger() }
                 aria-label="Show current location"
             >

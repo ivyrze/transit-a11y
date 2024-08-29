@@ -15,7 +15,6 @@
         <li>
                 <Button
                     class="search-result"
-                    type="button"
                     onclick={ () => onOpen(result.id) }
                 >
                     { result.name }

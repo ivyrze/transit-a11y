@@ -22,7 +22,6 @@
 </script>
 
 <Button
-    type="button"
     melt={ trigger }
     class={ triggerClass }
 >
