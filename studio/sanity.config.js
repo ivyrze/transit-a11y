@@ -9,7 +9,7 @@ import deskStructure from './desk-structure';
 export default defineConfig({
     name: 'default',
     title: 'is the metro accessible?',
-    dataset: import.meta.env.MODE,
+    dataset: import.meta.env.SANITY_STUDIO_DATASET,
     projectId: import.meta.env.SANITY_STUDIO_API_PROJECT_ID,
     plugins: [
         structureTool({ structure: deskStructure }),
