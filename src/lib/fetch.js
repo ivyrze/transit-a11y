@@ -1,3 +1,5 @@
+import { error } from "@sveltejs/kit";
+
 export const jsonFetch = async options => {
     const {
         url,
@@ -15,6 +17,10 @@ export const jsonFetch = async options => {
         body: JSON.stringify(body),
         ...passthroughOptions
     });
+
+    if (response.status != 200) {
+        return error(response.status);
+    }
 
     return await response.json();
 };
@@ -45,6 +51,10 @@ export const formDataFetch = async options => {
         body,
         ...passthroughOptions
     });
+
+    if (response.status != 200 && response.status != 400) {
+        return error(response.status);
+    }
 
     return await response.json();
 };
