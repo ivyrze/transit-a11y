@@ -18,10 +18,12 @@
         return division.amount <= Math.abs(deltaSeconds);
     });
 
-    const timeAgo = formatter.format(
-        Math.round(deltaSeconds / temporalDivisor.amount),
-        temporalDivisor.unit
-    );
+    const timeAgo = temporalDivisor ?
+        formatter.format(
+            Math.round(deltaSeconds / temporalDivisor.amount),
+            temporalDivisor.unit
+        ) :
+        'just now';
 </script>
 
 <time
