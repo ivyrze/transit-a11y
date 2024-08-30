@@ -1,24 +1,17 @@
 @import '../mixins';
 
 .icon {
-    font-size: 1.1em;
-    line-height: 1.1em;
-    vertical-align: middle;
-    
-    @each $name in $stateGroups {
-        &.icon-#{$name} {
-            font-size: 1em;
-            line-height: 1em;
-        }
+    display: inline-block;
+    line-height: 0.75em;
+    vertical-align: -0.125em;
+
+    svg {
+        width: 1em;
+        height: 1em;
     }
     
     &.icon-spinner svg {
         animation: spinner 0.65s linear infinite;
-    }
-    
-    svg {
-        width: 1em;
-        height: 1em;
     }
     
     &--fixed-right {

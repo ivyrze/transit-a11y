@@ -10,6 +10,10 @@
     z-index: 1;
     max-height: var(--popover-available-height);
     overflow-y: auto;
+
+    &__toggle {
+        padding: 0 !important;
+    }
     
     &__item,
     &__group-label {

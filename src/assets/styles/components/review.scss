@@ -33,10 +33,6 @@
         .menu__toggle {
             color: inherit;
         }
-
-        & > .icon {
-            line-height: 0;
-        }
         
         @include dark {
             color: #828282;

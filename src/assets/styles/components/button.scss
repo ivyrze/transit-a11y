@@ -95,10 +95,6 @@
     aspect-ratio: 1 / 1;
     border-radius: 50%;
     padding: 3px 0 0;
-    
-    .icon {
-        line-height: 1;
-    }
 }
 
 a.button--rounded {
@@ -115,9 +111,5 @@ a.button--rounded {
     
     &:hover {
         background-color: rgba(0, 0, 0, 1);
-    }
-    
-    .icon {
-        line-height: 0;
     }
 }

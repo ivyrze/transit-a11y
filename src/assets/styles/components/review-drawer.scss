@@ -35,6 +35,8 @@
 }
 
 .review-contribute {
+    display: flex;
+    align-items: center;
     font-size: 13px;
     font-weight: weight('medium');
     letter-spacing: 0.5px;
