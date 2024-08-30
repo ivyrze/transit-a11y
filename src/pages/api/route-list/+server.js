@@ -1,5 +1,6 @@
 import { prisma } from '$database/index';
 import { json, error } from '@sveltejs/kit';
+import { cache } from '$lib/api/cache';
 
 /** @type {import('./$types').RequestHandler} */
 export const GET = async () => {
@@ -31,5 +32,5 @@ export const GET = async () => {
         return error(500);
     }
     
-    return json({ routes, agencies });
+    return json({ routes, agencies }, cache('1d', '7d'));
 };

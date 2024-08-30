@@ -1,5 +1,6 @@
 import { prisma } from '$database/index';
 import { json } from '@sveltejs/kit';
+import { cache } from '$lib/api/cache';
 
 /** @type {import('./$types').RequestHandler} */
 export const GET = async () => {
@@ -22,5 +23,5 @@ export const GET = async () => {
     bounds[2] += expansionX;
     bounds[3] += expansionY;
     
-    return json({ bounds });
+    return json({ bounds }, cache('1d', '14d'));
 };

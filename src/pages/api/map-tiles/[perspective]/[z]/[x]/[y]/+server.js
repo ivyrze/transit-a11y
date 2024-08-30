@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { prisma } from '$database/index';
 import { validate } from '$lib/api/validator';
+import { cache } from '$lib/api/cache';
 
 const schema = z.object({
     perspective: z.enum(
@@ -56,6 +57,7 @@ export const GET = async ({ params }) => {
 
     return new Response(tile[0].tile, {
         headers: {
+            ...cache('5m', z >= 11 ? '5m' : '7d').headers,
             'Content-Type': 'application/octet-stream'
         }
     });
