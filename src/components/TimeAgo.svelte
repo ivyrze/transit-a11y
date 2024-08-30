@@ -1,4 +1,6 @@
 <script>
+    import { seconds } from '$lib/utils';
+
     const { class: className, date } = $props();
 
     const formatter = new Intl.RelativeTimeFormat('en', {
@@ -8,12 +10,12 @@
     const deltaSeconds = (new Date(date) - new Date()) / 1000;
     const temporalDivisor = [
         { unit: 'seconds', amount: 1 },
-        { unit: 'minutes', amount: 60 },
-        { unit: 'hours', amount: 60**2 },
-        { unit: 'days', amount: 60**2 * 24 },
-        { unit: 'weeks', amount: 60**2 * 24 * 7 },
-        { unit: 'months', amount: 60**2 * 24 * 30 },
-        { unit: 'years', amount: 60**2 * 24 * 365 }
+        { unit: 'minutes', amount: seconds('1m') },
+        { unit: 'hours', amount: seconds('1h') },
+        { unit: 'days', amount: seconds('1d') },
+        { unit: 'weeks', amount: seconds('7d') },
+        { unit: 'months', amount: seconds('30d') },
+        { unit: 'years', amount: seconds('1y') }
     ].reverse().find(division => {
         return division.amount <= Math.abs(deltaSeconds);
     });

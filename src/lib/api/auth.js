@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken';
+import { seconds } from '$lib/utils';
 import { JWT_SECRET } from '$env/static/private';
 import { error } from '@sveltejs/kit';
 
@@ -20,7 +21,7 @@ export const authenticate = (cookies, required = true) => {
 };
 
 export const createSession = (cookies, payload) => {
-    const tokenLifetime = 8 * 60**2;
+    const tokenLifetime = seconds('8h');
     const expirationDate = new Date(
         new Date().getTime() + tokenLifetime * 1000
     );
