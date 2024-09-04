@@ -1,5 +1,6 @@
 <script>
     import FormInput from '$components/primitives/FormInput.svelte';
+    import FormError from '$components/primitives/FormError.svelte';
     import Popover from '$components/primitives/Popover.svelte';
     import Button from '$components/primitives/Button.svelte';
     import Icon from '$components/primitives/Icon.svelte';
@@ -73,3 +74,4 @@
         <Icon name="upload" />
     </li>
 </ol>
+<FormError { name } />

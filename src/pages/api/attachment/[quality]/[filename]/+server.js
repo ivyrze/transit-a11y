@@ -12,17 +12,10 @@ const schema = z.object({
 export const GET = async ({ params }) => {
     const { quality, filename } = await validate(schema, params);
     
-    // Proxy image request to S3 bucket
+    // Proxy image request to storage bucket
     try {
         const file = await prisma.reviewAttachment.downloadFile(quality, filename);
-
-        return new Response(file.Body.transformToWebStream(), {
-            headers: {
-                'Content-Type': file.ContentType,
-                'Last-Modified': file.LastModified,
-                'ETag': file.ETag
-            }
-        });
+        return file;
     } catch {
         return error(404);
     }

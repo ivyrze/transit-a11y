@@ -1,13 +1,14 @@
 <script>
     import { setContext } from 'svelte';
     import { createForm } from '$lib/stores.svelte';
-    import { formDataFetch } from '$lib/fetch';
+    import { formDataFetch, formAttachmentFetch } from '$lib/fetch';
 
     import '$assets/styles/components/form.scss';
 
     const {
         onSubmit,
         onResponse,
+        hasAttachments = false,
         children,
         ...passthroughProps
     } = $props();
@@ -19,8 +20,10 @@
         event.preventDefault();
         onSubmit?.();
         formStore.isLoading = true;
-        
-        const response = await formDataFetch({
+
+        const fetcher = hasAttachments ?
+            formAttachmentFetch : formDataFetch;
+        const response = await fetcher({
             form: event.target
         });
         

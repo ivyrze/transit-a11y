@@ -47,6 +47,7 @@
         method="POST"
         autocomplete="off"
         onResponse={ handleFormResponse }
+        hasAttachments={ true }
     >
         <fieldset>
             <legend>What features are available at this stop?</legend>

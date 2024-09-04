@@ -8,13 +8,7 @@ export const validate = async (schema, values) => {
             const entry = entryArray.length === 1 ?
                 entryArray[0] : entryArray;
 
-            const parsedKey = key.match(/(.+?)(?:\[(.+)\])$/);
-            if (parsedKey) {
-                accumulator[parsedKey[1]] ??= {};
-                accumulator[parsedKey[1]][parsedKey[2]] = entry;
-            } else {
-                accumulator[key] = entry;
-            }
+            accumulator[key] = entry;
             return accumulator;
         }, {});
     }
