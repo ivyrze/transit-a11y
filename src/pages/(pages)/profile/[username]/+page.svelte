@@ -10,9 +10,9 @@
 
     const reviewCount = `${new Intl.NumberFormat().format(data.count)} review${data.count !== 1 ? 's' : ''}`;
 
-    const currentPage = $derived(
+    const currentPage = $derived(parseInt(
         $page.url.searchParams.get('page') ?? 1
-    );
+    ));
     const moreReviewsAvailable = $derived(
         data.count > ((currentPage - 1) * 25 + data.reviews.length)
     );
