@@ -9,7 +9,6 @@
     const { name = 'attachments' } = $props();
 
     let files = $state();
-    $inspect(files, files?.length);
     let previews = $derived(Array.from(files ?? []).map(file => {
         return URL.createObjectURL(file);
     }));
@@ -67,6 +66,7 @@
         <input
             bind:files={ files }
             type="file"
+            accept="image/jpeg"
             { name }
             multiple
         />
