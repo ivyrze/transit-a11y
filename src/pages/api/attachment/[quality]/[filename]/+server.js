@@ -4,7 +4,7 @@ import { validate } from '$lib/api/validator';
 import { error } from '@sveltejs/kit';
 
 const schema = z.object({
-    quality: z.enum([ "original", "large", "small" ]),
+    quality: z.enum([ "large", "small" ]),
     filename: z.string().includes('.')
 });
 
