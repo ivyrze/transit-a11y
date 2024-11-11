@@ -1,4 +1,4 @@
-@import '../mixins';
+@use '../mixins';
 
 .tab-list {
     display: grid;
@@ -11,12 +11,12 @@
     border-radius: 21px;
     overflow: hidden;
     
-    @include dark {
+    @include mixins.dark {
         background: #1b1b1b;
     }
     
     .tab-item {
-        font-weight: weight('medium');
+        font-weight: mixins.weight('medium');
         height: 2em;
         border-radius: 1em;
         opacity: 0.85;
@@ -31,7 +31,7 @@
             background: #fff;
             box-shadow: 0 1px 30px rgba(0, 0, 0, 0.1);
             
-            @include dark {
+            @include mixins.dark {
                 background: #343434;
             }
         }

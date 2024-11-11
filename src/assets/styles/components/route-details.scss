@@ -1,4 +1,4 @@
-@import '../mixins';
+@use '../mixins';
 
 .route-details-card {
     .route-icon {
@@ -82,7 +82,7 @@
     background: #161616;
     color: #ebebeb;
     
-    @include dark {
+    @include mixins.dark {
         background: #f2f2f2;
         color: #161616;
     }

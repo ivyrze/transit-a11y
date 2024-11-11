@@ -1,8 +1,8 @@
-@import '../mixins';
+@use '../mixins';
 
 .info-notice {
     font-size: 16px;
-    font-weight: weight('light');
+    font-weight: mixins.weight('light');
     margin-block: 4px;
     
     & > .icon {

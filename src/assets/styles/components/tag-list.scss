@@ -1,10 +1,11 @@
-@import '../mixins';
+@use '../variables';
+@use '../mixins';
 
 .tag-list {
     display: flex;
     flex-wrap: wrap;
     gap: 16px;
-    font-weight: weight('medium');
+    font-weight: mixins.weight('medium');
     list-style: none;
     padding: 0;
 
@@ -17,7 +18,7 @@
             background-color: #ededed;
             padding-inline: 12px;
             
-            @include dark {
+            @include mixins.dark {
                 color: #dbdbdb;
                 background-color: #222;
             }
@@ -29,7 +30,7 @@
 .stop-accessibility-state {
     @extend .stop-tag;
     
-    @each $name in $stateGroups {
+    @each $name in variables.$stateGroups {
         &.state-#{$name} {
             color: var(--state-#{$name}-foreground);
             background-color: var(--state-#{$name}-background);

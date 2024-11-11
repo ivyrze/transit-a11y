@@ -1,8 +1,8 @@
-@import '../mixins';
+@use '../mixins';
 
 .title {
     display: block;
-    font-weight: weight('light');
+    font-weight: mixins.weight('light');
     line-height: 1.25;
     text-transform: lowercase;
 }
@@ -16,11 +16,11 @@ header.global-header {
             margin: 15px 0;
             background-image: radial-gradient(closest-side, rgba(252, 252, 252, 0.75), transparent);
             
-            @include dark {
+            @include mixins.dark {
                 background-image: radial-gradient(closest-side, rgba(36, 36, 36, 0.6), transparent);
             }
             
-            @include mobile {
+            @include mixins.mobile {
                 font-size: 26px;
             }
         }
@@ -31,7 +31,7 @@ header.global-header {
             right: 30px;
             z-index: 1;
             
-            @include mobile {
+            @include mixins.mobile {
                 top: 41px;
                 right: 24px;
             }
@@ -43,7 +43,7 @@ header.global-header {
             .menu__toggle {
                 font-size: 24px;
                 
-                @include mobile {
+                @include mixins.mobile {
                     font-size: 20px;
                 }
             }
@@ -64,7 +64,7 @@ header.global-header {
         justify-content: space-between;
         z-index: 1;
         
-        @include dark {
+        @include mixins.dark {
             border-color: #2f2f2f;
         }
         

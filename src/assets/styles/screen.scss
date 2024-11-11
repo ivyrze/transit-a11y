@@ -1,4 +1,4 @@
-@import './mixins';
+@use 'mixins';
 
 html {
     color-scheme: light dark;
@@ -19,7 +19,7 @@ button,
 .title {
     color: #1f1f1f;
     
-    @include dark {
+    @include mixins.dark {
         color: #f9f9f9;
     }
 }
@@ -46,7 +46,7 @@ a {
     letter-spacing: 0.25px;
     opacity: 0.75;
     
-    @include dark {
+    @include mixins.dark {
         opacity: 0.6;
     }
 }

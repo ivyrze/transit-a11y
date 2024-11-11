@@ -1,4 +1,4 @@
-@import '../mixins';
+@use '../mixins';
 
 .about__graphic {
     max-width: 140px;
@@ -6,10 +6,10 @@
 
 .about__headline {
     font-size: 32px;
-    font-weight: weight('light');
+    font-weight: mixins.weight('light');
     letter-spacing: -0.75px;
     
-    @include mobile {
+    @include mixins.mobile {
         font-size: 28px;
     }
 }

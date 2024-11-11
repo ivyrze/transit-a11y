@@ -1,4 +1,4 @@
-@import '../mixins';
+@use '../mixins';
 
 .stop-details-card {
     .review-container {
@@ -12,7 +12,7 @@
     .source-link {
         display: block;
         font-size: 16px;
-        font-weight: weight('light');
+        font-weight: mixins.weight('light');
         opacity: 0.7;
     }
 }

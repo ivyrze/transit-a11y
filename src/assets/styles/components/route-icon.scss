@@ -1,9 +1,9 @@
-@import '../mixins';
+@use '../mixins';
 
 .route-icon {
     display: inline-block;
     color: #fff;
-    font-weight: weight('medium');
+    font-weight: mixins.weight('medium');
     text-align: center;
     line-height: 1.5;
     border-radius: 0.75em;
@@ -11,7 +11,7 @@
     padding: 0 8px;
     margin-left: 8px;
     
-    @include dark {
+    @include mixins.dark {
         color: #050505;
     }
     

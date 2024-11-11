@@ -1,5 +1,5 @@
-@import '../mixins';
-@import './attachment';
+@use '../mixins';
+@use 'attachment';
 
 .attachment-viewer {
     .attachment {
@@ -28,7 +28,7 @@
     .bp-controls {
         filter: invert(1);
 
-        @include dark {
+        @include mixins.dark {
             filter: none;
         }
 

@@ -1,4 +1,4 @@
-@import '../mixins';
+@use '../mixins';
 
 .route-list {
     margin-top: 12px;
@@ -8,7 +8,7 @@
         align-items: center;
         color: #fff;
         font-size: 20px;
-        font-weight: weight('medium');
+        font-weight: mixins.weight('medium');
         text-align: left;
         margin-top: 10px;
         padding-inline: 10px;

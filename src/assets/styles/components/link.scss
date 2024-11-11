@@ -1,4 +1,4 @@
-@import '../mixins';
+@use '../mixins';
 
 .link--minimal {
     text-decoration-line: underline;
@@ -15,7 +15,7 @@
     color: #4b5f9f;
     text-decoration-line: underline;
     
-    @include dark {
+    @include mixins.dark {
         color: #7d8ec1;
     }
 }

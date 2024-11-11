@@ -1,4 +1,4 @@
-@import '../mixins';
+@use '../mixins';
 
 .review-container {
     padding-top: 14px;
@@ -19,7 +19,7 @@
     }
     
     &__stop {
-        font-weight: weight('medium');
+        font-weight: mixins.weight('medium');
     }
     
     &__actions {
@@ -34,13 +34,13 @@
             color: inherit;
         }
         
-        @include dark {
+        @include mixins.dark {
             color: #828282;
         }
     }
 
     &__timestamp {
-        font-weight: weight('light');
+        font-weight: mixins.weight('light');
     }
 
     .accessibility-state {

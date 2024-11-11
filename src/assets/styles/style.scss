@@ -1,6 +1,7 @@
-@import 'mixins';
-@import 'fonts';
-@import 'normalize';
+@use 'sass:meta';
+@use 'mixins';
+@use 'fonts';
+@use 'normalize';
 
 :root {
     --ui-base-color: #fff;
@@ -24,7 +25,7 @@
     --state-auxiliary-foreground: var(--state-unknown-foreground);
     --state-auxiliary-background: var(--state-unknown-background);
     
-    @include dark {
+    @include mixins.dark {
         --ui-base-color: #111;
         --ui-popup-color: #181818;
         --ui-base-text-color: #ccc;
@@ -43,4 +44,4 @@
     }
 }
 
-@import 'screen';
+@include meta.load-css('screen');

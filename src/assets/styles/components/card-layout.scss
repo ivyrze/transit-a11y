@@ -1,4 +1,4 @@
-@import '../mixins';
+@use '../mixins';
 
 #sidebar-container {
     display: flex;
@@ -12,7 +12,7 @@
     padding: 30px 30px 50px;
     z-index: 1;
     
-    @include mobile {
+    @include mixins.mobile {
         padding: 25px 25px 40px;
     }
 }
@@ -32,7 +32,7 @@
     padding: 22px 14px 28px;
     overflow-y: auto;
     
-    @include mobile {
+    @include mixins.mobile {
         @supports selector(:has(*)) {
             &:has(.select[aria-expanded="true"]) {
                 overflow-y: hidden;
@@ -47,7 +47,7 @@
     
     h1 {
         font-size: 25px;
-        font-weight: weight('medium');
+        font-weight: mixins.weight('medium');
         letter-spacing: -0.5px;
         margin-block: 0;
         

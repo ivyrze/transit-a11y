@@ -1,4 +1,4 @@
-@import '../mixins';
+@use '../mixins';
 
 #search-results-container {
     margin: 0 12px;
@@ -6,7 +6,7 @@
     border-top: 1px solid #eee;
     list-style: none;
     
-    @include dark {
+    @include mixins.dark {
         border-top-color: #272727;
     }
 
@@ -27,7 +27,7 @@
         opacity: 0.85;
         transition: opacity 0.3s ease;
         
-        @include dark {
+        @include mixins.dark {
             color: #e8e8e8;
             opacity: 0.8;
         }

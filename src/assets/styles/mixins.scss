@@ -1,5 +1,5 @@
 @use 'sass:map';
-@import 'variables';
+@use 'variables';
 
 @function map-deep-get($map, $keys...) {
     @each $key in $keys {
@@ -9,7 +9,7 @@
 }
 
 @function weight($variant) {
-    @return map-deep-get($fontFaces, 'Akzidenz Grotesk', 'variants', $variant, 'weight');
+    @return map-deep-get(variables.$fontFaces, 'Akzidenz Grotesk', 'variants', $variant, 'weight');
 }
 
 @mixin dark() {

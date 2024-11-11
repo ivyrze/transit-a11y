@@ -1,5 +1,5 @@
-@import '../mixins';
-@import './card-layout';
+@use '../mixins';
+@use 'card-layout';
 
 #search-container {
     @extend .abstract-sidebar-component;
@@ -35,7 +35,7 @@
             border-left: 1px solid #a0a0a0;
             margin-left: 4px;
             
-            @include dark {
+            @include mixins.dark {
                 border-color: #737373;
             }
         }

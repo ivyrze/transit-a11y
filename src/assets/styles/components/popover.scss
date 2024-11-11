@@ -1,4 +1,4 @@
-@import '../mixins';
+@use '../mixins';
 
 .popover {
     background: var(--ui-popup-color);
@@ -17,7 +17,7 @@
     
     & > h1 {
         font-size: 21px;
-        font-weight: weight('medium');
+        font-weight: mixins.weight('medium');
         margin-block: 0;
     }
     

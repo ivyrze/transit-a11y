@@ -1,9 +1,10 @@
-@import '../mixins';
+@use '../variables';
+@use '../mixins';
 
 .accessibility-state {
-    font-weight: weight('medium');
+    font-weight: mixins.weight('medium');
     
-    @each $name in $stateGroups {
+    @each $name in variables.$stateGroups {
         &.state-#{$name} {
             color: var(--state-#{$name}-foreground);
         }

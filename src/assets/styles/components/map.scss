@@ -1,4 +1,4 @@
-@import '../mixins';
+@use '../mixins';
 
 .map-container {
     position: fixed;
@@ -10,7 +10,7 @@
         display: none;
     }
     
-    @include dark {
+    @include mixins.dark {
         .maplibregl-ctrl.maplibregl-ctrl-attrib {
             background-color: rgba(0, 0, 0, 0.2);
         }

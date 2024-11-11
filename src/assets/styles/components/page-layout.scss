@@ -1,4 +1,4 @@
-@import '../mixins';
+@use '../mixins';
 
 .form-fullscreen,
 .notice-fullscreen,
@@ -34,7 +34,7 @@
         color: #232323;
         margin-top: 8px;
         
-        @include dark {
+        @include mixins.dark {
             color: #f4f4f4;
         }
     }

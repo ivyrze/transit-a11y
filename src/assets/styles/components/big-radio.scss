@@ -1,4 +1,4 @@
-@import '../mixins';
+@use '../mixins';
 
 .big-radio {
     display: flex;
@@ -6,11 +6,11 @@
     gap: 8px;
 
     &__label {
-        font-weight: weight('medium');
+        font-weight: mixins.weight('medium');
     }
 
     &__description {
-        font-weight: weight('regular');
+        font-weight: mixins.weight('regular');
     }
 
     & + & {
