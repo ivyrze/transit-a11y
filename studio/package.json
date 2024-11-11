@@ -10,20 +10,20 @@
     "sanity"
   ],
   "dependencies": {
-    "@sanity/color-input": "^3.1.1",
-    "@sanity/vision": "^3.53.0",
+    "@sanity/color-input": "^4.0.1",
+    "@sanity/vision": "^3.63.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-icons": "^5.3.0",
     "react-is": "^18.3.1",
-    "sanity": "^3.53.0",
-    "styled-components": "^6.1.12"
+    "sanity": "^3.63.0",
+    "styled-components": "^6.1.13"
   },
   "devDependencies": {
     "@sanity/eslint-config-studio": "^4.0.0",
     "dotenv-cli": "^7.4.2",
-    "eslint": "^9.8.0",
+    "eslint": "^9.14.0",
     "prettier": "^3.3.3",
-    "typescript": "^5.5.4"
+    "typescript": "^5.6.3"
   }
 }

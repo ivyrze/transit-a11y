@@ -4,15 +4,15 @@
     "start": "node seeder.js"
   },
   "dependencies": {
-    "@prisma/client": "^5.18.0",
-    "@turf/bbox": "^7.0.0",
-    "@turf/bearing": "^7.0.0",
-    "@turf/distance": "^7.0.0",
-    "@turf/helpers": "^7.0.0",
-    "axios": "^1.7.3",
-    "diff": "^5.2.0",
+    "@prisma/client": "^5.22.0",
+    "@turf/bbox": "^7.1.0",
+    "@turf/bearing": "^7.1.0",
+    "@turf/distance": "^7.1.0",
+    "@turf/helpers": "^7.1.0",
+    "axios": "^1.7.7",
+    "diff": "^7.0.0",
     "dotenv": "^16.4.5",
-    "gtfs": "^4.13.4",
+    "gtfs": "^4.15.6",
     "node-stream-zip": "^1.15.0",
     "progress": "^2.0.3",
     "temp": "^0.9.4"
