@@ -65,6 +65,11 @@ const collapseStops = (stops, routes, parent) => {
         }
         
         if (stops[child].linked_with?.length) {
+            if (stops[child].linked_with.includes(parent)) {
+                console.warn("Import warning: Circular stop reference between '" + parent + "' and '" + child + "'.");
+                return;
+            }
+
             [ stops, routes ] = collapseStops(stops, routes, child);
         }
         
